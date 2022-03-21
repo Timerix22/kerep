@@ -29,7 +29,6 @@ int8 typesize(my_type type);
 
 // can store any base type
 typedef struct Unitype{
-    my_type type; 
     union {
         int64 Int64;
         uint64 UInt64;
@@ -38,11 +37,12 @@ typedef struct Unitype{
         bool Bool;
         void* VoidPtr;
     };
+    my_type type; 
 } Unitype;
 
-static const Unitype UniNull={Null,.VoidPtr=NULL};
-static const Unitype UniTrue={Bool,.Bool=true};
-static const Unitype UniFalse={Bool,.Bool=false};
+static const Unitype UniNull={.VoidPtr=NULL,.type=Null};
+static const Unitype UniTrue={.Bool=true,.type=Bool};
+static const Unitype UniFalse={.Bool=false,.type=Bool};
 
 #define Uni(TYPE,VAL) (Unitype){.type=TYPE,.TYPE=VAL}
 #define UniPtr(TYPE,VAL) (Unitype){.type=TYPE,.VoidPtr=VAL}
