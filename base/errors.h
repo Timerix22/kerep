@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 typedef enum err_t {
     SUCCESS, //not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR
@@ -14,3 +18,7 @@ void _throwstr(const char* errmesg, const char* srcfile, int line, const char* f
     CHOOSE(IFTYPE(E,int), _throwint(E,__FILE__,__LINE__,__func__), \
     CHOOSE(IFTYPE(E,char[]), _throwstr(E,__FILE__,__LINE__,__func__), \
     printf("\e[31m[%s:%d/%s] UNKNOWN ERROR\n",__FILE__,__LINE__,__func__)))
+
+#if __cplusplus
+}
+#endif

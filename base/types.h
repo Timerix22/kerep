@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "std.h"
 
 typedef int8_t int8;
@@ -10,7 +14,7 @@ typedef int32_t int32;
 typedef uint32_t uint32;
 typedef int64_t int64;
 typedef uint64_t uint64;
-typedef enum my_type{
+typedef enum __attribute__((__packed__)) my_type {
     Null, Float, Double, Char, Bool,
     UInt8, Int8, UInt16, Int16, UInt32, Int32, UInt64, Int64, 
     UInt8Ptr, Int8Ptr, UInt16Ptr, Int16Ptr, UInt32Ptr, Int32Ptr, UInt64Ptr, Int64Ptr,
@@ -19,15 +23,10 @@ typedef enum my_type{
     AutoarrInt8Ptr, AutoarrUInt8Ptr, AutoarrInt16Ptr, AutoarrUInt16Ptr, 
     AutoarrInt32Ptr, AutoarrUInt32Ptr, AutoarrInt64Ptr, AutoarrUInt64Ptr,
     AutoarrUnitypePtr, AutoarrKVPairPtr
-} __attribute__ ((__packed__)) my_type;
+} my_type;
 
-//returns type name
-const char* typename(my_type t);
+const char* my_type_name(my_type t);
 
-// returns size of type in bytes
-int8 typesize(my_type type);
-
-// can store any base type
 typedef struct Unitype{
     union {
         int64 Int64;
@@ -50,3 +49,7 @@ static const Unitype UniFalse={.Bool=false,.type=Bool};
 //frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
 void printuni(Unitype v);
+
+#if __cplusplus
+}
+#endif

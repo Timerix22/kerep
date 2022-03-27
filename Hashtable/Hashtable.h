@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "../base/base.h"
 #include "hash.h"
 #include "KeyValuePair.h"
@@ -41,3 +45,7 @@ void Hashtable_set(Hashtable* ht, char* key, Unitype u);
         Autoarr_foreach(AR, EL, codeblock);\
     }\
 })
+
+#if __cplusplus
+}
+#endif

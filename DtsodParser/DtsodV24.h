@@ -1,9 +1,9 @@
+#pragma once
+
 #if __cplusplus
 extern "C" {
 #endif
 
-#pragma once
-#include "../base/base.h"
 #include "../Hashtable/Hashtable.h"
 
 //parses text to binary values

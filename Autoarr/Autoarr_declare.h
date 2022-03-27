@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "../base/base.h"
 
 #define declare_Autoarr(type)\
@@ -50,7 +54,7 @@ Autoarr_##type __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block
     autoarr->max_block_length*(autoarr->blocks_count-1)+autoarr->block_length)
 #define Autoarr_max_length(autoarr)\
     (uint32)(autoarr->max_block_length*autoarr->max_blocks_count)
-    
+
 #define Autoarr_remove(AR){\
     if(AR->block_length==1){\
                         AR->blocks_count--;\
@@ -59,3 +63,7 @@ Autoarr_##type __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block
                     }\
                     else AR->block_length--;\
 }
+
+#if __cplusplus
+}
+#endif

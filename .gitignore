@@ -1,13 +1,12 @@
 # Build results
-[Bb]in/
+bin/
+bin-*/
 .bin/
-[Dd]ebug/
-[Rr]elease/
-[Rr]eleases/
-[Oo]bj/
-[Oo]ut/
-[Ll]og/
-[Ll]ogs/
+obj/
+obj-*/
+log/
+logs/
+logs-*/
 
 # IDE files
 .vs/

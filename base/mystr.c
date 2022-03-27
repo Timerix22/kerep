@@ -36,7 +36,7 @@ char* char_multiply(char c, uint32 n){
 }
 
 //copies str content to new char pointer value (adding '\0' at the end)
-char* string_cpToCharPtr(string str){
+char* string_cpToCptr(string str){
     char* cptr=malloc(str.length*sizeof(char)+1);
     if(str.length==0) return NULL;
     cptr[str.length]=0;

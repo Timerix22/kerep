@@ -4,7 +4,7 @@
 #include "../Hashtable/Hashtable.h"
 #include "../SearchTree/SearchTree.h"
 
-const char* typename(my_type t){
+const char* my_type_name(my_type t){
     switch (t) {
         case Null: return "Null";
         case Double: return "Double";
@@ -119,12 +119,12 @@ void Unitype_free(Unitype u){
 void printuni(Unitype v){
     switch (v.type) {
         case Null: printf("{Null}");break;
-        case Double: printf("{%s : %lf}",typename(v.type),v.Double);break;
-        case Char: printf("{%s : '%c'}",typename(v.type),v.Char);break;
+        case Double: printf("{%s : %lf}",my_type_name(v.type),v.Double);break;
+        case Char: printf("{%s : '%c'}",my_type_name(v.type),v.Char);break;
         case Bool:
-        case UInt64: printf("{%s : %lu}",typename(v.type),v.UInt64);break;
-        case Int64: printf("{%s : %ld}",typename(v.type),v.Int64);break;
-        case CharPtr: printf("{%s : \"%s\"}",typename(v.type),(char*)v.VoidPtr);break;
-        default: printf("{%s : %p}",typename(v.type),v.VoidPtr);break;
+        case UInt64: printf("{%s : %lu}",my_type_name(v.type),v.UInt64);break;
+        case Int64: printf("{%s : %ld}",my_type_name(v.type),v.Int64);break;
+        case CharPtr: printf("{%s : \"%s\"}",my_type_name(v.type),(char*)v.VoidPtr);break;
+        default: printf("{%s : %p}",my_type_name(v.type),v.VoidPtr);break;
     }
 }

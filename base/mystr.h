@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "types.h"
 
 //returns length of string (including \0)
@@ -24,7 +28,7 @@ typedef struct string{
 static const string stringNull={NULL,0};
 
 //copies str content to new char pointer value (adding '\0' at the end)
-char* string_cpToCharPtr(string str);
+char* string_cpToCptr(string str);
 
 //copies cptr content (excluding '\0' at the end) to new string
 string string_cpFromCharPtr(char* cptr);
@@ -34,3 +38,7 @@ bool string_compare(string str0, string str1);
 
 //creates new string which is reversed variant of <s>
 string string_reverse(string s);
+
+#if __cplusplus
+}
+#endif

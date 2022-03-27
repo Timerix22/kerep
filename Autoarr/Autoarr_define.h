@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "../base/base.h"
 
 #define define_Autoarr(type)\
@@ -62,3 +66,7 @@ Autoarr_##type __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block
         .functions=&__functions_list_##type\
     };\
 }
+
+#if __cplusplus
+}
+#endif

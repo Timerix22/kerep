@@ -1,14 +1,4 @@
-#include "../base/base.h"
 #include "tests.h"
-
-#include "../Hashtable/KeyValuePair.h"
-
-KeyValuePair test_marshalling(char* text){
-    //printf("<%s>\n", text);
-    Unitype u={.VoidPtr=text,.type=CharPtr};
-    KeyValuePair msg={"message",u};
-    return msg;
-}
 
 void test_all(){
     test_searchtree();

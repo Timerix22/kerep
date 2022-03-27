@@ -2,8 +2,9 @@
 #include "../Autoarr/Autoarr.h"
 
 static void printautoarr(Autoarr(uint16)* ar){
-    printf("\e[94mAutoarr(uint16): %lu\n"
-        "  max_blocks_count: %u\n"
+    printf("\e[94mAutoarr(uint16): "
+        IFWIN("%llu", "%lu")
+        "\n  max_blocks_count: %u\n"
         "  blocks_count: %u\n"
         "  max_block_length: %u\n"
         "  block_length: %u\n"

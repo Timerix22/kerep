@@ -1,5 +1,9 @@
 #pragma once
 
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "../base/base.h"
 
 typedef struct SearchTreeNode{
@@ -12,3 +16,7 @@ void STNode_free(STNode* node);
 
 void ST_push(STNode* node, const char* key, Unitype value);
 Unitype ST_pull(STNode* node, const char* key);
+
+#if __cplusplus
+}
+#endif

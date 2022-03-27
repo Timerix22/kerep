@@ -1,3 +1,9 @@
+#pragma once
+
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "../base/base.h"
 #include "../Autoarr/Autoarr.h"
 
@@ -15,3 +21,7 @@ void KeyValuePair_free(KeyValuePair p);
 void Autoarr_KeyValuePair_clear(Autoarr_KeyValuePair* ar);
 
 void printkvp(KeyValuePair p);
+
+#if __cplusplus
+}
+#endif

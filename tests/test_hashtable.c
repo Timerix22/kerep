@@ -2,8 +2,9 @@
 #include "../Hashtable/Hashtable.h"
 
 void print_hashtable(Hashtable* ht){
-    printf("\e[94mHashtable:%lu\n"
-        "  hein: %u\n"
+    printf("\e[94mHashtable: "
+        IFWIN("%llu", "%lu")
+        "\n  hein: %u\n"
         "  height: %u\n"
         "  rows: %p\n",
         sizeof(Hashtable),

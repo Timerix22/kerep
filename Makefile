@@ -1,9 +1,9 @@
 SRC=$(wildcard [^tests]**/*.c)
 TESTS=$(wildcard tests/*c) $(wildcard tests/**/*.c)
-OUTDIR=.bin
+OUTDIR=bin
 CMP=gcc
 
-all: clear_c clear_bin build_test build_dll
+all: clear_c clear_bin build_test build_lib
 
 clear_c:
 	clear
@@ -27,7 +27,7 @@ build_test_dbg:
 	@echo -e '\n\e[96m--------------[build_test_dbg]--------------\e[0m'
 	$(CMP) -O0 -g $(TEST_ARGS).dbg
 
-test:
+test: clear_c build_test
 	@echo -e '\n\e[96m----------------[test]-----------------\e[0m'
 	$(TEST_FILE)
 
@@ -36,10 +36,10 @@ valgrind: clear_c build_test_dbg
 	valgrind -s --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ \
 	--leak-check=full --show-leak-kinds=all $(TEST_FILE).dbg
 
-DLL_FILE=$(OUTDIR)/kerep.dll
-DLL_ARGS= -Wall -Wno-discarded-qualifiers \
-	-fPIC -shared -Wl,-soname,kerep.dll  \
-	$(SRC) $(TESTS) -o $(DLL_FILE)
-build_dll:
-	@echo -e '\n\e[96m-------------[build_dll]---------------\e[0m'
-	$(CMP) $(OPT_ARGS) $(DLL_ARGS)
+LIB_FILE=kerep.so
+LIB_ARGS= -Wall -Wno-discarded-qualifiers \
+	-O1 -fPIC -shared -Wl,-soname,$(LIB_FILE)  \
+	$(SRC) $(TESTS) -o $(OUTDIR)/$(LIB_FILE)
+build_lib:
+	@echo -e '\n\e[96m-------------[build_lib]---------------\e[0m'
+	$(CMP) $(OPT_ARGS) $(LIB_ARGS)

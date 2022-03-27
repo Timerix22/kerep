@@ -1,3 +1,3 @@
 # kerep
 
-My static library written in C
+My library written in C

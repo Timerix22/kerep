@@ -5,86 +5,104 @@
 #define STRB_BC 64
 #define STRB_BL 1024
 
-#define addc(B,C) StringBuilder_append_char(B,C)
+typedef struct SerializeSharedData{
+    StringBuilder* sh_builder; 
+    uint8 sh_tabs;
+} SerializeSharedData;
+#define b shared->sh_builder
+#define tabs shared->sh_tabs
 
-void __serialize(StringBuilder* b, uint8 tabs, Hashtable* dtsod){
-    
-    void AppendTabs(){
-        for(uint8 t=0; t<tabs; t++)
-            addc(b,'\t');
+void __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod);
+
+#define addc(C) StringBuilder_append_char(b,C)
+
+
+void __AppendTabs(SerializeSharedData* shared) {
+    for (uint8 t = 0; t < tabs; t++)
+        addc( '\t');
+};
+#define AppendTabs() __AppendTabs(shared)
+
+void __AppendValue(SerializeSharedData* shared, Unitype u);
+#define AppendValue(UNI) __AppendValue(shared, UNI)
+void __AppendValue(SerializeSharedData* shared, Unitype u){
+    switch(u.type){
+            case Int64:
+                StringBuilder_append_int64(b,u.Int64);
+                break;
+            case UInt64:
+                StringBuilder_append_uint64(b,u.UInt64);
+                addc('u');
+                break;
+            case Double:
+                StringBuilder_append_double(b,u.Double);
+                addc('f');
+                break;
+            case CharPtr:
+                addc('"');
+                char c;
+                while((c=*(char*)(u.VoidPtr++))){
+                    if(c=='\"') addc('\\');
+                    addc(c);
+                }
+                addc('"');
+                break;
+            case Char:
+                addc('\'');
+                addc(u.Char);
+                addc('\'');
+                break;
+            case Bool:
+                StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
+                break;
+            case Null:
+                if(!u.VoidPtr) StringBuilder_append_cptr(b, "null");
+                else throw("Null-type pointer is not 0");
+                break;
+            case AutoarrUnitypePtr:
+                addc('[');
+                Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
+                    addc(' ');
+                    AppendValue(e);
+                    addc(',');
+                }));
+                Autoarr_remove(b);
+                addc(' ');
+                addc(']');
+                break;
+            case HashtablePtr:
+                addc('{');
+                addc('\n');
+                __serialize(b,tabs+1,u.VoidPtr);
+                AppendTabs();
+                addc('}');
+                break;
+            default: dbg((u.type)); throw(ERR_WRONGTYPE); 
+    }
+};
+
+void __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
+    SerializeSharedData _shared={
+        .sh_builder=_b, 
+        .sh_tabs=_tabs
     };
-    
-    void AppendValue(Unitype u){
-        switch(u.type){
-                case Int64:
-                    StringBuilder_append_int64(b,u.Int64);
-                    break;
-                case UInt64:
-                    StringBuilder_append_uint64(b,u.UInt64);
-                    addc(b,'u');
-                    break;
-                case Double:
-                    StringBuilder_append_double(b,u.Double);
-                    addc(b,'f');
-                    break;
-                case CharPtr:
-                    addc(b,'"');
-                    char c;
-                    while((c=*(char*)(u.VoidPtr++))){
-                        if(c=='\"') addc(b,'\\');
-                        addc(b,c);
-                    }
-                    addc(b,'"');
-                    break;
-                case Char:
-                    addc(b,'\'');
-                    addc(b,u.Char);
-                    addc(b,'\'');
-                    break;
-                case Bool:
-                    StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
-                    break;
-                case Null:
-                    if(!u.VoidPtr) StringBuilder_append_cptr(b, "null");
-                    else throw("Null-type pointer is not 0");
-                    break;
-                case AutoarrUnitypePtr:
-                    addc(b,'[');
-                    Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
-                        addc(b,' ');
-                        AppendValue(e);
-                        addc(b,',');
-                    }));
-                    Autoarr_remove(b);
-                    addc(b,' ');
-                    addc(b,']');
-                    break;
-                case HashtablePtr:
-                    addc(b,'{');
-                    addc(b,'\n');
-                    __serialize(b,tabs+1,u.VoidPtr);
-                    AppendTabs();
-                    addc(b,'}');
-                    break;
-                default: dbg((u.type)); throw(ERR_WRONGTYPE); 
-        }
-    };
-    
+    SerializeSharedData* shared=&_shared;
+
     Hashtable_foreach(dtsod, p, ({
         AppendTabs();
         StringBuilder_append_cptr(b,p.key);
-        addc(b,':');
-        addc(b,' ');
+        addc(':');
+        addc(' ');
         AppendValue(p.value);
-        addc(b,';');
-        addc(b,'\n');
+        addc(';');
+        addc('\n');
     }));
 }
 
 char* DtsodV24_serialize(Hashtable* dtsod){
-    StringBuilder b=StringBuilder_create(STRB_BC,STRB_BL);
-    __serialize(&b,0,dtsod);
-    char* str=StringBuilder_build(&b);
-    Autoarr_clear((&b));
+    StringBuilder sb=StringBuilder_create(STRB_BC,STRB_BL);
+    __serialize(&sb,0,dtsod);
+    char* str=StringBuilder_build(&sb);
+    Autoarr_clear((&sb));
     return str;
 }

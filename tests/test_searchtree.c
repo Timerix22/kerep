@@ -2,7 +2,9 @@
 #include "../SearchTree/SearchTree.h"
 
 void printstnode(STNode* node){
-    printf("\e[94mSTNode: %lu\n  address: %p\n  value: ",sizeof(STNode),node);
+    printf("\e[94mSTNode: "
+    IFWIN("%llu", "%lu")
+    "\n  address: %p\n  value: ",sizeof(STNode),node);
     printuni(node->value);
     // prints pointers to all existing branches
     printf("\n  branches: %p\n", node->branches);
