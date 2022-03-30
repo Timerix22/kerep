@@ -25,7 +25,7 @@ EXPORT void CALL kerep_DtsodV24_get(Hashtable* dtsod, char* key, Unitype* output
     *output=DtsodV24_get(dtsod, key);
 }
 
-//adds or sets value
+//adds or sets the value
 EXPORT void CALL kerep_DtsodV24_addOrSet(Hashtable* dtsod, char* key, Unitype value){
     DtsodV24_addOrSet(dtsod, key, value);
 }
@@ -38,6 +38,19 @@ EXPORT void CALL kerep_DtsodV24_contains(Hashtable* dtsod, char* key, bool* outp
 //replaces value with UniNull if key exists in dtsod
 EXPORT void CALL kerep_DtsodV24_remove(Hashtable* dtsod, char* key, bool* output){
     *output=DtsodV24_remove(dtsod, key);
+}
+
+//replaces value with UniNull if key exists in dtsod
+EXPORT void CALL kerep_DtsodV24_free(Hashtable* dtsod){
+    DtsodV24_free(dtsod);
+}
+
+EXPORT void CALL kerep_DtsodV24_height(Hashtable* dtsod, uint16* heigth){
+    *heigth=Hashtable_height(dtsod);
+}
+
+EXPORT void CALL kerep_DtsodV24_getrow(Hashtable* dtsod, uint16 h, Autoarr_KeyValuePair** row){
+    *row=dtsod->rows+h;
 }
 
 #if __cplusplus

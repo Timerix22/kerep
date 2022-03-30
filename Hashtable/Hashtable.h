@@ -23,7 +23,10 @@ uint32 Hashtable_height(Hashtable* ht);
 //use cptr_copy() to create new string if needed
 #define KVPair(key,value) (KeyValuePair){key,value}
 
-
+//
+// don't add pairs with the same keys,
+// or something weird will happen
+//
 void Hashtable_add_pair(Hashtable* ht, KeyValuePair p);
 void Hashtable_add(Hashtable* ht, char* key, Unitype u);
 

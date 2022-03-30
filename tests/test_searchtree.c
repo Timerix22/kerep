@@ -35,7 +35,7 @@ void test_searchtree(){
         printuni(u);
         ST_push(node,"time", u);
         printf(" -> time\n  ");
-        u=(Unitype){.type=Double,.Double=-542.00600};
+        u=(Unitype){.type=Float64,.Float64=-542.00600};
         printuni(u);
         ST_push(node,"author_id", u);
         printf(" -> author_id\n  ");
@@ -43,7 +43,7 @@ void test_searchtree(){
         printuni(u);
         ST_push(node,"channel_id", u);
         printf(" -> channel_id\n  ");
-        u=(Unitype){.type=Double,.Double=32.2004};
+        u=(Unitype){.type=Float64,.Float64=32.2004};
         printuni(u);
         ST_push(node,"message_id", u);
         printf(" -> message_id\n  ");

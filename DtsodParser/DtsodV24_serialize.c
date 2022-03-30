@@ -34,8 +34,8 @@ void __AppendValue(SerializeSharedData* shared, Unitype u){
                 StringBuilder_append_uint64(b,u.UInt64);
                 addc('u');
                 break;
-            case Double:
-                StringBuilder_append_double(b,u.Double);
+            case Float64:
+                StringBuilder_append_double(b,u.Float64);
                 addc('f');
                 break;
             case CharPtr:

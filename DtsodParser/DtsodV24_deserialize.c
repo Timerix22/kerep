@@ -151,7 +151,7 @@ Unitype __ParseValue(DeserializeSharedData* shared, string str){
             switch(str.ptr[str.length-1]){
                 case 'f': {
                         char* _c=string_cpToCptr(str);
-                        Unitype rez=Uni(Double,strtod(_c,NULL));
+                        Unitype rez=Uni(Float64,strtod(_c,NULL));
                         free(_c);
                         return rez;
                     }

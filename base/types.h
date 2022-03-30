@@ -14,8 +14,10 @@ typedef int32_t int32;
 typedef uint32_t uint32;
 typedef int64_t int64;
 typedef uint64_t uint64;
+typedef float float32;
+typedef double float64;
 typedef enum __attribute__((__packed__)) my_type {
-    Null, Float, Double, Char, Bool,
+    Null, Float32, Float64, Char, Bool,
     UInt8, Int8, UInt16, Int16, UInt32, Int32, UInt64, Int64, 
     UInt8Ptr, Int8Ptr, UInt16Ptr, Int16Ptr, UInt32Ptr, Int32Ptr, UInt64Ptr, Int64Ptr,
     CharPtr, STNodePtr, HashtablePtr,
@@ -31,7 +33,7 @@ typedef struct Unitype{
     union {
         int64 Int64;
         uint64 UInt64;
-        double Double;
+        double Float64;
         char Char;
         bool Bool;
         void* VoidPtr;

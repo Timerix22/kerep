@@ -25,7 +25,7 @@ void Hashtable_free(Hashtable* ht){
     free(ht);
 }
 
-uint32 Hashtable_height(Hashtable* ht){ return HT_HEIGHTS[ht->hein]; }
+uint32 Hashtable_height(Hashtable* ht) { return HT_HEIGHTS[ht->hein]; }
 
 
 void Hashtable_expand(Hashtable* ht){

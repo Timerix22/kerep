@@ -7,8 +7,8 @@
 const char* my_type_name(my_type t){
     switch (t) {
         case Null: return "Null";
-        case Double: return "Double";
-        case Float: return "Float";
+        case Float64: return "Float64";
+        case Float32: return "Float32";
         case Bool: return "Bool";
         case Char: return "Char";
         case Int8: return "Int8";
@@ -49,8 +49,8 @@ const char* my_type_name(my_type t){
 void Unitype_free(Unitype u){
     switch (u.type) {
         case Null: 
-        case Float:
-        case Double: 
+        case Float32:
+        case Float64: 
         case Char: 
         case Bool: 
         case Int8: 
@@ -119,7 +119,7 @@ void Unitype_free(Unitype u){
 void printuni(Unitype v){
     switch (v.type) {
         case Null: printf("{Null}");break;
-        case Double: printf("{%s : %lf}",my_type_name(v.type),v.Double);break;
+        case Float64: printf("{%s : %lf}",my_type_name(v.type),v.Float64);break;
         case Char: printf("{%s : '%c'}",my_type_name(v.type),v.Char);break;
         case Bool:
         case UInt64: printf("{%s : %lu}",my_type_name(v.type),v.UInt64);break;

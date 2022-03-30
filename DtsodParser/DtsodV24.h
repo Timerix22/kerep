@@ -24,6 +24,9 @@ bool DtsodV24_contains(Hashtable* dtsod, char* key);
 //replaces value with UniNull if key exists in dtsod
 bool DtsodV24_remove(Hashtable* dtsod, char* key);
 
+//frees memory including memory of elements (hashtables, autoarrs, etc.)
+void DtsodV24_free(Hashtable* dtsod);
+
 #if __cplusplus
 }
 #endif
