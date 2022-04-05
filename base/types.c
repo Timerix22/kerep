@@ -115,16 +115,22 @@ void Unitype_free(Unitype u){
     }
 }
 
+void sprintuni(char* buf,Unitype v){
+    switch (v.type) {
+        case Null: sprintf(buf, "{Null}");break;
+        case Float64: sprintf(buf, "{%s : %lf}",my_type_name(v.type),v.Float64);break;
+        case Char: sprintf(buf, "{%s : '%c'}",my_type_name(v.type),v.Char);break;
+        case Bool:
+        case UInt64: sprintf(buf, "{%s : %lu}",my_type_name(v.type),v.UInt64);break;
+        case Int64: sprintf(buf, "{%s : %ld}",my_type_name(v.type),v.Int64);break;
+        case CharPtr: sprintf(buf, "{%s : \"%s\"}",my_type_name(v.type),(char*)v.VoidPtr);break;
+        default: sprintf(buf, "{%s : %p}",my_type_name(v.type),v.VoidPtr);break;
+    }
+}
 
 void printuni(Unitype v){
-    switch (v.type) {
-        case Null: printf("{Null}");break;
-        case Float64: printf("{%s : %lf}",my_type_name(v.type),v.Float64);break;
-        case Char: printf("{%s : '%c'}",my_type_name(v.type),v.Char);break;
-        case Bool:
-        case UInt64: printf("{%s : %lu}",my_type_name(v.type),v.UInt64);break;
-        case Int64: printf("{%s : %ld}",my_type_name(v.type),v.Int64);break;
-        case CharPtr: printf("{%s : \"%s\"}",my_type_name(v.type),(char*)v.VoidPtr);break;
-        default: printf("{%s : %p}",my_type_name(v.type),v.VoidPtr);break;
-    }
+    char* s=malloc(64);
+    sprintuni(s,v);
+    fputs(s, stdout);
+    free(s);
 }

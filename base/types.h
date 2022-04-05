@@ -51,6 +51,7 @@ static const Unitype UniFalse={.Bool=false,.type=Bool};
 //frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
 void printuni(Unitype v);
+void sprintuni(char* s, Unitype v);
 
 #if __cplusplus
 }

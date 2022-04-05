@@ -6,6 +6,7 @@ void test_all(){
     test_hashtable();
     test_string();
     test_dtsod();
+    test_safethrow();
     printf("\e[96m---------------------------------------\e[0m\n");
 }
 
