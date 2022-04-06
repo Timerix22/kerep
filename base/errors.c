@@ -18,14 +18,22 @@ char* errname(err_t err){
 #define ERRMSG_MAXLENGTH 1024
 
 char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
-    char* rezult=malloc(ERRMSG_MAXLENGTH);
-    sprintf(rezult,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg);
+    size_t bufsize=ERRMSG_MAXLENGTH;
+    char* rezult=malloc(bufsize);
+    IFWIN(
+        sprintf_s(rezult,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg),
+        sprintf(rezult,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg)
+    );
     return rezult;
 }
 
 char* __extendErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
-    char* rezult=malloc(cptr_length(errmsg)+ERRMSG_MAXLENGTH);
-    sprintf(rezult,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname);
+    size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
+    char* rezult=malloc(bufsize);
+    IFWIN(
+        sprintf_s(rezult,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname),
+        sprintf(rezult,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname)
+    );
     free(errmsg);
     return rezult;
 }

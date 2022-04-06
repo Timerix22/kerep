@@ -6,16 +6,15 @@
 #define STRB_BC 64
 #define STRB_BL 1024
 
-void __throw_wrongchar(char* file, int line, char* fname, char _c, char* _text) {
+Maybe ERROR_WRONGCHAR(char c, char* text){
     char errBuf[]="unexpected <c> at:\n  \""
         "00000000000000000000000000000000\"";
-    errBuf[12]=_c;
-    for (uint8 i=0; i < 32; i++)
-        errBuf[i + 22]=*(_text - 16 + i);
-    printf("\n\e[91m[%s:%d %s] throwed error: %s\n", file, line, fname, errBuf);
-    exit(128);
-};
-#define throw_wrongchar(C) __throw_wrongchar(__FILE__,__LINE__,__func__,C, text)
+    errBuf[12]=c;
+    for(uint8 i=22; i<32; i++)
+        errBuf[i]=*(text - 16 + i);
+    safethrow(cptr_copy(errBuf));
+}
+#define safethrow_wrongchar(C) return ERROR_WRONGCHAR(C, text)
 
 
 typedef struct DeserializeSharedData{
@@ -29,14 +28,15 @@ typedef struct DeserializeSharedData{
 #define readingList shared->sh_readingList
 #define calledRecursively shared->sh_calledRecursively
 
-void __SkipComment(DeserializeSharedData* shared) {
+Maybe __SkipComment(DeserializeSharedData* shared) {
     char c;
     while ((c=*++text) != '\n')
-        if (!c) throw(ERR_ENDOFSTR);
-};
+        if (!c) safethrow(ERR_ENDOFSTR);
+    return MaybeNull;
+}
 #define SkipComment() __SkipComment(shared)
 
-string __ReadName(DeserializeSharedData* shared){
+Maybe __ReadName(DeserializeSharedData* shared){
     char c;
     string nameStr={text,0};
     text--;
@@ -44,30 +44,30 @@ string __ReadName(DeserializeSharedData* shared){
         case ' ':  case '\t':
         case '\r': case '\n':
             if(nameStr.length!=0)
-                throw_wrongchar(c);
+                safethrow_wrongchar(c);
             nameStr.ptr++;
             break;
         case '=':  case ';':
         case '\'': case '"':
         case '[':  case ']':
         case '{':
-            throw_wrongchar(c);
+            safethrow_wrongchar(c);
             break;
         case '#':
-            SkipComment();
+            try(SkipComment(),_);
             if(nameStr.length!=0)
-                throw_wrongchar(c);
+                safethrow_wrongchar(c);
             nameStr.ptr=text+1; //skips '\n'
             break;
         case '}':
-            if(!calledRecursively) throw_wrongchar(c);
+            if(!calledRecursively) safethrow_wrongchar(c);
             if((*++text)!=';')
-                throw_wrongchar(c);
+                safethrow_wrongchar(c);
         case ':':
-            return nameStr;
+            return SUCCESS(UniPtr(CharPtr,string_cpToCptr(nameStr)));
         case '$':
             if(nameStr.length!=0)
-                throw_wrongchar(c);
+                safethrow_wrongchar(c);
             nameStr.ptr++;
             partOfDollarList=true;
             break;
@@ -76,17 +76,17 @@ string __ReadName(DeserializeSharedData* shared){
             break;
     }
 
-    if(nameStr.length>0) throw(ERR_ENDOFSTR);
-    return nameStr;
-};
+    if(nameStr.length>0) safethrow(ERR_ENDOFSTR);
+    return SUCCESS(UniPtr(CharPtr,NULL));
+}
 #define ReadName() __ReadName(shared)
 
-Hashtable* __deserialize(char** _text, bool _calledRecursively);
-Unitype __ReadValue(DeserializeSharedData* shared);
+Maybe __deserialize(char** _text, bool _calledRecursively);
+Maybe __ReadValue(DeserializeSharedData* shared);
 #define ReadValue() __ReadValue(shared)
 
 //returns part of <text> without quotes
-char* __ReadString(DeserializeSharedData* shared){
+Maybe __ReadString(DeserializeSharedData* shared){
     char c;
     bool prevIsBackslash=false;
     StringBuilder _b=StringBuilder_create(STRB_BC,STRB_BL);
@@ -101,7 +101,7 @@ char* __ReadString(DeserializeSharedData* shared){
             else {
                 char* str=StringBuilder_build(b);
                 Autoarr_clear(b);
-                return str;
+                return SUCCESS(UniPtr(CharPtr,str));
             }
         } 
         else {
@@ -109,24 +109,24 @@ char* __ReadString(DeserializeSharedData* shared){
             StringBuilder_append_char(b,c);
         }
     }
-    throw(ERR_ENDOFSTR);
-    return NULL;
-};
+    safethrow(ERR_ENDOFSTR);
+}
 #define ReadString() __ReadString(shared)
 
-Autoarr(Unitype)* __ReadList(DeserializeSharedData* shared){
+Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=malloc(sizeof(Autoarr(Unitype)));
     *list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     readingList=true;
     while (true){
-        Autoarr_add(list,ReadValue());
+        try(ReadValue(), val)
+            Autoarr_add(list,val.value);
         if (!readingList) break;
     }
-    return list;
+    return SUCCESS(UniPtr(AutoarrUnitypePtr,list));
 };
 #define ReadList() __ReadList(shared)
 
-Unitype __ParseValue(DeserializeSharedData* shared, string str){
+Maybe __ParseValue(DeserializeSharedData* shared, string str){
     //printf("\e[94m<\e[96m%s\e[94m>\n",string_cpToCptr(str));
     const string nullStr={"null",4};
     const string trueStr={"true",4};
@@ -134,18 +134,18 @@ Unitype __ParseValue(DeserializeSharedData* shared, string str){
     switch(*str.ptr){
         case 'n':
             if(string_compare(str,nullStr))
-                return UniNull;
-            else throw_wrongchar(*str.ptr);
+                return SUCCESS(UniNull);
+            else safethrow_wrongchar(*str.ptr);
             break;
         case 't':
             if(string_compare(str,trueStr))
-                return UniTrue;
-            else throw_wrongchar(*str.ptr);
+                return SUCCESS(UniTrue);
+            else safethrow_wrongchar(*str.ptr);
             break;
         case 'f':
             if(string_compare(str,falseStr))
-                return UniFalse;
-            else throw_wrongchar(*str.ptr);
+                return SUCCESS(UniFalse);
+            else safethrow_wrongchar(*str.ptr);
             break;
         default: 
             switch(str.ptr[str.length-1]){
@@ -153,14 +153,14 @@ Unitype __ParseValue(DeserializeSharedData* shared, string str){
                         char* _c=string_cpToCptr(str);
                         Unitype rez=Uni(Float64,strtod(_c,NULL));
                         free(_c);
-                        return rez;
+                        return SUCCESS(rez);
                     }
                 case 'u': {
                         uint64 lu=0;
                         char* _c=string_cpToCptr(str);
                         sscanf(_c,"%lu",&lu);
                         free(_c);
-                        return Uni(UInt64,lu);
+                        return SUCCESS(Uni(UInt64,lu));
                     }
                 case '0': case '1': case '2': case '3': case '4':
                 case '5': case '6': case '7': case '8': case '9': {
@@ -168,22 +168,24 @@ Unitype __ParseValue(DeserializeSharedData* shared, string str){
                         char* _c=string_cpToCptr(str);
                         if(sscanf(_c,"%li",&li)!=1){
                             char err[64];
-                            sprintf(err,"can't parse to int: <%s>",_c);
-                            throw(err);
+                            IFWIN(
+                                sprintf_s(err,64,"can't parse to int: <%s>",_c),
+                                sprintf(err,"can't parse to int: <%s>",_c)
+                            );
+                            safethrow(err);
                         }
                         free(_c);
-                        return Uni(Int64,li);
+                        return SUCCESS(Uni(Int64,li));
                     }
                 default:
-                    throw_wrongchar(str.ptr[str.length-1]);
+                    safethrow_wrongchar(str.ptr[str.length-1]);
             }
     }
-    throw(ERR_ENDOFSTR);
-    return UniNull;
+    safethrow(ERR_ENDOFSTR);
 };
 #define ParseValue(str) __ParseValue(shared, str)
 
-Unitype __ReadValue(DeserializeSharedData* shared){
+Maybe __ReadValue(DeserializeSharedData* shared){
     char c;
     string valueStr={text+1,0};
     Unitype value;
@@ -191,57 +193,60 @@ Unitype __ReadValue(DeserializeSharedData* shared){
         case ' ':  case '\t':
         case '\r': case '\n':
             if(valueStr.length!=0)
-                throw_wrongchar(c);
+                safethrow_wrongchar(c);
             valueStr.ptr++;
             break;
         case '=': case ':': 
         case '}': case '$':
-            throw_wrongchar(c);
+            safethrow_wrongchar(c);
             break;
         case '#':;
             char _c=c;
-            SkipComment();
+            try(SkipComment(),_);
             if(valueStr.length!=0)
-                throw_wrongchar(_c);
+                safethrow_wrongchar(_c);
             valueStr.ptr=text+1; //skips '\n'
             break;
         case '"':
-            if(valueStr.length!=0) throw_wrongchar(c);
-            value=UniPtr(CharPtr,ReadString());
+            if(valueStr.length!=0) safethrow_wrongchar(c);
+            try(ReadString(),maybeString)
+                value=maybeString.value;
             break;
         case '\'':
-            if(valueStr.length!=0) throw_wrongchar(c);
+            if(valueStr.length!=0) safethrow_wrongchar(c);
             char valueChar=*++text;
-            if (*++text != '\'') throw("after <'> should be char");
+            if (*++text != '\'') safethrow("after <'> should be char");
             value=Uni(Char,valueChar);
             break;
         case '[':
-            if(valueStr.length!=0) throw_wrongchar(c);
-            value=UniPtr(AutoarrUnitypePtr,ReadList());
+            if(valueStr.length!=0) safethrow_wrongchar(c);
+            try(ReadList(),maybeList)
+                value=maybeList.value;
         case ']':
             readingList=false;
             break;
         case '{':
-            if(valueStr.length!=0) throw_wrongchar(c);
+            if(valueStr.length!=0) safethrow_wrongchar(c);
             ++text; //skips '{' 
-            value=UniPtr(HashtablePtr, __deserialize(&text,true));
-            return value;
+            try(__deserialize(&text,true), val)
+                return SUCCESS(val.value);
         case ';':
         case ',':
-            if(valueStr.length!=0)
-                value=ParseValue(valueStr);
-            return value;
+            if(valueStr.length!=0){
+                try(ParseValue(valueStr),maybeParsed)
+                    value=maybeParsed.value;
+            }
+            return SUCCESS(value);
         default:
             valueStr.length++;
             break;
     }
 
-    throw(ERR_ENDOFSTR);
-    return UniNull;
-};
+    safethrow(ERR_ENDOFSTR);
+}
 
 
-Hashtable* __deserialize(char** _text, bool _calledRecursively) {
+Maybe __deserialize(char** _text, bool _calledRecursively) {
     DeserializeSharedData _shared={
         .sh_text=*_text,
         .sh_partOfDollarList=false,
@@ -254,31 +259,31 @@ Hashtable* __deserialize(char** _text, bool _calledRecursively) {
     
     text--;
     while((c=*++text)){
-        string name=ReadName();
-        if(name.length==0) //end of file or '}' in recursive call 
+        try(ReadName(), maybeName)
+        if(!maybeName.value.VoidPtr) //end of file or '}' in recursive call 
             goto END;
-        char* nameCPtr=string_cpToCptr(name);
-        Unitype value=ReadValue();
-        if(partOfDollarList){
-            Autoarr(Unitype)* list;
-            Unitype lu;
-            if(Hashtable_try_get(dict,nameCPtr, &lu)){
-                list=(Autoarr(Unitype)*)lu.VoidPtr;
+        char* nameCPtr=maybeName.value.VoidPtr;
+        try(ReadValue(), val)
+            if(partOfDollarList){
+                Autoarr(Unitype)* list;
+                Unitype lu;
+                if(Hashtable_try_get(dict,nameCPtr, &lu)){
+                    list=(Autoarr(Unitype)*)lu.VoidPtr;
+                }
+                else{
+                    list=malloc(sizeof(Autoarr(Unitype)));
+                    *list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
+                    Hashtable_add(dict,nameCPtr,UniPtr(AutoarrUnitypePtr,list));
+                }
+                Autoarr_add(list,val.value);
             }
-            else{
-                list=malloc(sizeof(Autoarr(Unitype)));
-                *list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
-                Hashtable_add(dict,nameCPtr,UniPtr(AutoarrUnitypePtr,list));
-            }
-            Autoarr_add(list,value);
-        }
-        else Hashtable_add(dict,nameCPtr,value);
+        else Hashtable_add(dict,nameCPtr,val.value);
     }
     END:
     *_text=text;
-    return dict;
+    return SUCCESS(UniPtr(HashtablePtr,dict));
 }
 
-Hashtable* DtsodV24_deserialize(char* _text) {
+Maybe DtsodV24_deserialize(char* _text) {
     return __deserialize(&_text, false);
 }

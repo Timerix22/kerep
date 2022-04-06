@@ -7,7 +7,7 @@ extern "C" {
 #include "../Hashtable/Hashtable.h"
 
 //parses text to binary values
-Hashtable* DtsodV24_deserialize(char* text);
+Maybe DtsodV24_deserialize(char* text);
 
 //creates text representation of dtsod
 char* DtsodV24_serialize(Hashtable* dtsod);

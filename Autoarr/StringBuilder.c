@@ -25,6 +25,7 @@ void StringBuilder_append_int64(StringBuilder* b, int64 a){
     uint8 i=0;
     if(a==0){
         Autoarr_add(b,'0');
+        return;
     }
     else if(a<0){
         Autoarr_add(b,'-');
@@ -44,6 +45,7 @@ void StringBuilder_append_uint64(StringBuilder* b, uint64 a){
     uint8 i=0;
     if(a==0){
         Autoarr_add(b,'0');
+        return;
     }
     char buf[24];
     while(a!=0){
@@ -51,13 +53,17 @@ void StringBuilder_append_uint64(StringBuilder* b, uint64 a){
         a/=10;
     }
     string rev=string_reverse((string){buf,i});
+    printf("\e[95mrev:%s\n",string_cpToCptr(rev));
     StringBuilder_append_string(b,rev);
     free(rev.ptr);
 }
 
 void StringBuilder_append_double(StringBuilder* b, double a){
     char buf[32];
-    sprintf(buf,"%lf",a);
+    IFWIN(
+        sprintf_s(buf,32,"%lf",a),
+        sprintf(buf,"%lf",a)
+    );
     StringBuilder_append_cptr(b,buf);
 }
 

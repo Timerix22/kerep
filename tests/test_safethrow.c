@@ -14,19 +14,19 @@ Maybe throw_errcode(){
 
 Maybe test_maybe(){
     printf("\e[94mdont_throw returns \e[92m");
-    throwNext(dont_throw(),rez0)
+    tryLast(dont_throw(),rez0)
         printMaybe(rez0);
     printf("\n");
-    throwNext(throw_error(),rez1)
+    try(throw_error(),rez1)
         printMaybe(rez1);
     throw("test_maybe failed");
     return MaybeNull;
 }
 
 
-Maybe c(){ throwNext(throw_errcode(),_) return MaybeNull; }
-Maybe b(){ throwNext(c(),_) return MaybeNull; }
-Maybe a(){ throwNext(b(),_) return MaybeNull; }
+Maybe c(){ try(throw_errcode(),_) return MaybeNull; }
+Maybe b(){ try(c(),_) return MaybeNull; }
+Maybe a(){ try(b(),_) return MaybeNull; }
 
 void test_safethrow(){
     printf("\e[96m-----------[test_safethrow]-----------\n");

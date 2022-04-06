@@ -14,7 +14,7 @@ extern "C" {
     #define optime(opname,repeats,codeblock) ({\
         struct timespec start, stop;\
         clock_gettime(CLOCK_REALTIME, &start);\
-        for(uint64 ___OPREP=0;___OPREP<repeats;___OPREP++)\
+        for(uint64 ___OPREP=0;___OPREP<(uint64)repeats;___OPREP++)\
             (codeblock);\
         clock_gettime(CLOCK_REALTIME, &stop);\
         double t=(double)(stop.tv_sec-start.tv_sec+(double)(stop.tv_nsec-start.tv_nsec)/1000000000)/repeats;\
@@ -23,7 +23,7 @@ extern "C" {
 #else //
     #define optime(opname,repeats,codeblock) ({\
         clock_t start=clock();\
-        for(uint64 ___OPREP=0;___OPREP<repeats;___OPREP++)\
+        for(uint64 ___OPREP=0;___OPREP<(uint64)repeats;___OPREP++)\
             (codeblock);\
         clock_t stop=clock();\
         double t=(double)(stop-start)/CLOCKS_PER_SEC/repeats;\

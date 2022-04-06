@@ -26,10 +26,6 @@ static const Maybe MaybeNull={.value.type=Null, .value.VoidPtr=NULL,.errmsg=NULL
 void Maybe_free(Maybe e);
 void printMaybe(Maybe e);
 
-#define throwNext(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
-        _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
-        return _rezult;\
-    }else 
 
 #define SUCCESS(REZLT) (Maybe){.errmsg=NULL, .value=REZLT}
 
@@ -49,6 +45,17 @@ char* __unknownErr( );
 
 #define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
 #define safethrow(E) __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
+
+
+#define try(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
+        _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
+        return _rezult;\
+    }else 
+
+#define tryLast(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
+        _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
+        __EXIT(_rezult.errmsg);\
+    }else 
 
 #if __cplusplus
 }
