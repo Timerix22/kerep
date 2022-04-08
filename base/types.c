@@ -121,7 +121,6 @@ void sprintuni(char* buf,Unitype v){
         switch (v.type) {
             case Null: sprintf_s(buf, SPRINT_BUFSIZE, "{Null}");break;
             case Float64: sprintf_s(buf, SPRINT_BUFSIZE, "{%s : %lf}", my_type_name(v.type),v.Float64);break;
-            case Char: sprintf_s(buf, SPRINT_BUFSIZE, "{%s : '%c'}", my_type_name(v.type),v.Char);break;
             case Bool:
             case UInt64: sprintf_s(buf, SPRINT_BUFSIZE, "{%s : %lu}", my_type_name(v.type),v.UInt64);break;
             case Int64: sprintf_s(buf, SPRINT_BUFSIZE, "{%s : %ld}", my_type_name(v.type),v.Int64);break;
@@ -131,7 +130,6 @@ void sprintuni(char* buf,Unitype v){
         switch (v.type) {
             case Null: sprintf(buf, "{Null}");break;
             case Float64: sprintf(buf, "{%s : %lf}", my_type_name(v.type),v.Float64);break;
-            case Char: sprintf(buf, "{%s : '%c'}", my_type_name(v.type),v.Char);break;
             case Bool:
             case UInt64: sprintf(buf, "{%s : %lu}", my_type_name(v.type),v.UInt64);break;
             case Int64: sprintf(buf, "{%s : %ld}", my_type_name(v.type),v.Int64);break;

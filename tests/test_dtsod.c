@@ -4,12 +4,11 @@
 const char text[]=
 "message: {\n"
 "    bool: false;"
-"    char: 'v';"
 "    int: -2515;"
 "    uint:#comment!\n 0u;"
 "    double: 965.557f;#another comment!\n"
 "    text: \"_$\\\"\\\\'''a ыыы000;2;=:%d;```\";\n"
-"}; ";
+"};";
 
 void print_dtsod(Hashtable* dtsod){
     printf("\e[92m");

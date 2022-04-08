@@ -10,8 +10,9 @@ Maybe ERROR_WRONGCHAR(char c, char* text){
     char errBuf[]="unexpected <c> at:\n  \""
         "00000000000000000000000000000000\"";
     errBuf[12]=c;
-    for(uint8 i=22; i<32; i++)
-        errBuf[i]=*(text - 16 + i);
+    for(uint8 i=0; i<32; i++)
+        // writes 16 chars before and 15 after the wrongchar
+        errBuf[i+22]=*(text - 16 + i);
     safethrow(cptr_copy(errBuf));
 }
 #define safethrow_wrongchar(C) return ERROR_WRONGCHAR(C, text)
@@ -53,7 +54,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
         case '{':
             safethrow_wrongchar(c);
             break;
-        case '#':
+        case '#': ;
             try(SkipComment(),_);
             if(nameStr.length!=0)
                 safethrow_wrongchar(c);
@@ -198,6 +199,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             break;
         case '=': case ':': 
         case '}': case '$':
+        case '\'':
             safethrow_wrongchar(c);
             break;
         case '#':;
@@ -211,13 +213,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             if(valueStr.length!=0) safethrow_wrongchar(c);
             try(ReadString(),maybeString)
                 value=maybeString.value;
-            break;
-        case '\'':
-            if(valueStr.length!=0) safethrow_wrongchar(c);
-            char valueChar=*++text;
-            if (*++text != '\'') safethrow("after <'> should be char");
-            value=Uni(Char,valueChar);
-            break;
+            break;        
         case '[':
             if(valueStr.length!=0) safethrow_wrongchar(c);
             try(ReadList(),maybeList)

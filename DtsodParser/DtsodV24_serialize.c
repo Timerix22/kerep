@@ -47,11 +47,6 @@ void __AppendValue(SerializeSharedData* shared, Unitype u){
                 }
                 addc('"');
                 break;
-            case Char:
-                addc('\'');
-                addc(u.Char);
-                addc('\'');
-                break;
             case Bool:
                 StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
                 break;

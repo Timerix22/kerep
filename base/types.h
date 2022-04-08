@@ -34,7 +34,6 @@ typedef struct Unitype{
         int64 Int64;
         uint64 UInt64;
         double Float64;
-        char Char;
         bool Bool;
         void* VoidPtr;
     };
