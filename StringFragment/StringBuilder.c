@@ -14,11 +14,10 @@ void StringBuilder_append_cptr(StringBuilder* b, char* s){
         Autoarr_add(b,c);
 }
 
-void StringBuilder_append_string(StringBuilder* b, string s){
-    while(s.length>0){
+void StringBuilder_append_string(StringBuilder* b, StringFragment s){
+    s.ptr+=s.offset;
+    while(s.length-->0)
         Autoarr_add(b,*s.ptr++);
-        s.length--;
-    }
 }
 
 void StringBuilder_append_int64(StringBuilder* b, int64 a){
@@ -36,7 +35,7 @@ void StringBuilder_append_int64(StringBuilder* b, int64 a){
         buf[i++]='0'+a%10;
         a/=10;
     }
-    string rev=string_reverse((string){buf,i});
+    StringFragment rev=StringFragment_reverse((StringFragment){buf,0,i});
     StringBuilder_append_string(b,rev);
     free(rev.ptr);
 }
@@ -52,8 +51,7 @@ void StringBuilder_append_uint64(StringBuilder* b, uint64 a){
         buf[i++]='0'+a%10;
         a/=10;
     }
-    string rev=string_reverse((string){buf,i});
-    printf("\e[95mrev:%s\n",string_cpToCptr(rev));
+    StringFragment rev=StringFragment_reverse((StringFragment){buf,0,i});
     StringBuilder_append_string(b,rev);
     free(rev.ptr);
 }
@@ -67,11 +65,14 @@ void StringBuilder_append_double(StringBuilder* b, double a){
     StringBuilder_append_cptr(b,buf);
 }
 
-char* StringBuilder_build(StringBuilder* b){
-    uint32 len=Autoarr_length(b);
-    char* str=malloc(len+1);
-    str[len]=0;
-    for(uint32 i=0;i<len;i++)
-        str[i]=Autoarr_get(b,i);
+StringFragment StringBuilder_build(StringBuilder* b){
+    StringFragment str={
+        .offset=0,
+        .length=Autoarr_length(b)
+    };
+    str.ptr=malloc(str.length+1);
+    for(uint32 i=0; i<str.length; i++)
+        str.ptr[i]=Autoarr_get(b,i);
+    str.ptr[str.length]='\0';
     return str;
 }

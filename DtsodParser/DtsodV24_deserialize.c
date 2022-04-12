@@ -1,24 +1,40 @@
 #include "DtsodV24.h"
-#include "../Autoarr/StringBuilder.h"
+#include "../StringFragment/StringBuilder.h"
 
 #define ARR_BC 8
 #define ARR_BL 16
 #define STRB_BC 64
 #define STRB_BL 1024
 
-Maybe ERROR_WRONGCHAR(char c, char* text){
-    char errBuf[]="unexpected <c> at:\n  \""
-        "00000000000000000000000000000000\"";
-    errBuf[12]=c;
-    for(uint8 i=0; i<32; i++)
-        // writes 16 chars before and 15 after the wrongchar
-        errBuf[i+22]=*(text - 16 + i);
-    safethrow(cptr_copy(errBuf));
+Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* srcfile, int line, const char* funcname){
+    char errBuf[33];
+    errBuf[32]='\0';
+    char* errText=text-16;
+    if(errText<text_first) errText=text_first;
+    for(uint8 i=0; i<32; i++){
+        //writes 16 chars before and 15 after the wrongchar
+        char _c=errText[i];
+        errBuf[i]=_c;
+        if(!_c) break;
+    }
+    char* errmsg=malloc(256);
+    IFWIN(
+        sprintf_s(errmsg,256, "unexpected <%c> at:\n"
+                        "  \"%s\"\n"
+                        "\\___[%s:%d] %s()", 
+                        c,errBuf, srcfile,line,funcname),
+        sprintf(errmsg, "unexpected <%c> at:\n"
+                        "  \"%s\"\n"
+                        " \\___[%s:%d] %s()", 
+                        c,errBuf, srcfile,line,funcname)
+    );
+    safethrow(cptr_copy(errmsg));
 }
-#define safethrow_wrongchar(C) return ERROR_WRONGCHAR(C, text)
+#define safethrow_wrongchar(C) return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__)
 
 
 typedef struct DeserializeSharedData{
+    const char* sh_text_first; 
     char* sh_text;
     bool sh_partOfDollarList;
     bool sh_readingList;
@@ -39,7 +55,7 @@ Maybe __SkipComment(DeserializeSharedData* shared) {
 
 Maybe __ReadName(DeserializeSharedData* shared){
     char c;
-    string nameStr={text,0};
+    StringFragment nameStr={text,0};
     text--;
     while ((c=*++text)) switch (c){
         case ' ':  case '\t':
@@ -65,7 +81,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
             if((*++text)!=';')
                 safethrow_wrongchar(c);
         case ':':
-            return SUCCESS(UniPtr(CharPtr,string_cpToCptr(nameStr)));
+            return SUCCESS(UniPtr(CharPtr,StringFragment_extract(nameStr).ptr));
         case '$':
             if(nameStr.length!=0)
                 safethrow_wrongchar(c);
@@ -100,9 +116,9 @@ Maybe __ReadString(DeserializeSharedData* shared){
                 StringBuilder_append_char(b,c);
             }
             else {
-                char* str=StringBuilder_build(b);
+                StringFragment str=StringBuilder_build(b);
                 Autoarr_clear(b);
-                return SUCCESS(UniPtr(CharPtr,str));
+                return SUCCESS(UniPtr(CharPtr,str.ptr));
             }
         } 
         else {
@@ -127,68 +143,62 @@ Maybe __ReadList(DeserializeSharedData* shared){
 };
 #define ReadList() __ReadList(shared)
 
-Maybe __ParseValue(DeserializeSharedData* shared, string str){
-    //printf("\e[94m<\e[96m%s\e[94m>\n",string_cpToCptr(str));
-    const string nullStr={"null",4};
-    const string trueStr={"true",4};
-    const string falseStr={"false",5};
-    switch(*str.ptr){
-        case 'n':
-            if(string_compare(str,nullStr))
-                return SUCCESS(UniNull);
-            else safethrow_wrongchar(*str.ptr);
-            break;
-        case 't':
-            if(string_compare(str,trueStr))
+Maybe __ParseValue(DeserializeSharedData* shared, StringFragment str){
+    //printf("\e[94m<\e[96m%s\e[94m>\n",StringFragment_extract(str));
+    const StringFragment trueStr= {"true" ,0,4};
+    const StringFragment falseStr={"false",0,5};
+    switch(str.ptr[str.length-1]){
+        //Bool
+        case 'e': {
+            if(StringFragment_compare(str,trueStr))
                 return SUCCESS(UniTrue);
-            else safethrow_wrongchar(*str.ptr);
-            break;
-        case 'f':
-            if(string_compare(str,falseStr))
+            else if(StringFragment_compare(str,falseStr))
                 return SUCCESS(UniFalse);
             else safethrow_wrongchar(*str.ptr);
-            break;
-        default: 
-            switch(str.ptr[str.length-1]){
-                case 'f': {
-                        char* _c=string_cpToCptr(str);
-                        Unitype rez=Uni(Float64,strtod(_c,NULL));
-                        free(_c);
-                        return SUCCESS(rez);
-                    }
-                case 'u': {
-                        uint64 lu=0;
-                        char* _c=string_cpToCptr(str);
-                        sscanf(_c,"%lu",&lu);
-                        free(_c);
-                        return SUCCESS(Uni(UInt64,lu));
-                    }
-                case '0': case '1': case '2': case '3': case '4':
-                case '5': case '6': case '7': case '8': case '9': {
-                        int64 li=0;
-                        char* _c=string_cpToCptr(str);
-                        if(sscanf(_c,"%li",&li)!=1){
-                            char err[64];
-                            IFWIN(
-                                sprintf_s(err,64,"can't parse to int: <%s>",_c),
-                                sprintf(err,"can't parse to int: <%s>",_c)
-                            );
-                            safethrow(err);
-                        }
-                        free(_c);
-                        return SUCCESS(Uni(Int64,li));
-                    }
-                default:
-                    safethrow_wrongchar(str.ptr[str.length-1]);
+        }
+        //Float64
+        case 'f': {
+            char* _c=StringFragment_extract(str).ptr;
+            Unitype rez=Uni(Float64,strtod(_c,NULL));
+            free(_c);
+            return SUCCESS(rez);
+        }
+        //UInt64
+        case 'u': {
+            uint64 lu=0;
+            char* _c=StringFragment_extract(str).ptr;
+            sscanf(_c,"%lu",&lu);
+            free(_c);
+            return SUCCESS(Uni(UInt64,lu));
+        }
+        //Int64
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9': {
+            int64 li=0;
+            char* _c=StringFragment_extract(str).ptr;
+            if(sscanf(_c,"%li",&li)!=1){
+                char err[64];
+                IFWIN(
+                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
+                    sprintf(err,"can't parse to int: <%s>",_c)
+                );
+                safethrow(err);
             }
+            free(_c);
+            return SUCCESS(Uni(Int64,li));
+        }
+        //unknown type
+        default:
+            safethrow_wrongchar(str.ptr[str.length-1]);
     }
+    
     safethrow(ERR_ENDOFSTR);
 };
 #define ParseValue(str) __ParseValue(shared, str)
 
 Maybe __ReadValue(DeserializeSharedData* shared){
     char c;
-    string valueStr={text+1,0};
+    StringFragment valueStr={text+1,0};
     Unitype value;
     while ((c=*++text)) switch (c){
         case ' ':  case '\t':
@@ -244,6 +254,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
 
 Maybe __deserialize(char** _text, bool _calledRecursively) {
     DeserializeSharedData _shared={
+        .sh_text_first=*_text,
         .sh_text=*_text,
         .sh_partOfDollarList=false,
         .sh_readingList=false,

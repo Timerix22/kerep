@@ -1,5 +1,5 @@
 #include "DtsodV24.h"
-#include "../Autoarr/StringBuilder.h"
+#include "../StringFragment/StringBuilder.h"
 
 //65536 max length!
 #define STRB_BC 64
@@ -51,8 +51,7 @@ void __AppendValue(SerializeSharedData* shared, Unitype u){
                 StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
                 break;
             case Null:
-                if(!u.VoidPtr) StringBuilder_append_cptr(b, "null");
-                else throw("Null-type pointer is not 0");
+                throw("Null isn't supported in DtsodV24");
                 break;
             case AutoarrUnitypePtr:
                 addc('[');
@@ -97,7 +96,7 @@ void __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
 char* DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder sb=StringBuilder_create(STRB_BC,STRB_BL);
     __serialize(&sb,0,dtsod);
-    char* str=StringBuilder_build(&sb);
+    StringFragment str=StringBuilder_build(&sb);
     Autoarr_clear((&sb));
-    return str;
+    return str.ptr;
 }
