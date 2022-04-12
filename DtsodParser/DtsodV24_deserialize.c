@@ -6,13 +6,14 @@
 #define STRB_BC 64
 #define STRB_BL 1024
 
+// special func for throwing error messages about wrong characters in deserializing text
 Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* srcfile, int line, const char* funcname){
     char errBuf[33];
     errBuf[32]='\0';
     char* errText=text-16;
     if(errText<text_first) errText=text_first;
     for(uint8 i=0; i<32; i++){
-        //writes 16 chars before and 15 after the wrongchar
+        // writes 16 chars before and 15 after the wrongchar
         char _c=errText[i];
         errBuf[i]=_c;
         if(!_c) break;
@@ -74,7 +75,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
             try(SkipComment(),_);
             if(nameStr.length!=0)
                 safethrow_wrongchar(c);
-            nameStr.ptr=text+1; //skips '\n'
+            nameStr.ptr=text+1; // skips '\n'
             break;
         case '}':
             if(!calledRecursively) safethrow_wrongchar(c);
@@ -102,7 +103,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively);
 Maybe __ReadValue(DeserializeSharedData* shared);
 #define ReadValue() __ReadValue(shared)
 
-//returns part of <text> without quotes
+// returns part of <text> without quotes
 Maybe __ReadString(DeserializeSharedData* shared){
     char c;
     bool prevIsBackslash=false;
@@ -111,7 +112,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
     while ((c=*++text)){
         if(c=='"') {
             if(prevIsBackslash) {
-                //replacing <\"> with <">
+                // replacing <\"> with <">
                 Autoarr_remove(b); 
                 StringBuilder_append_char(b,c);
             }
@@ -144,11 +145,11 @@ Maybe __ReadList(DeserializeSharedData* shared){
 #define ReadList() __ReadList(shared)
 
 Maybe __ParseValue(DeserializeSharedData* shared, StringFragment str){
-    //printf("\e[94m<\e[96m%s\e[94m>\n",StringFragment_extract(str));
+    // printf("\e[94m<\e[96m%s\e[94m>\n",StringFragment_extract(str));
     const StringFragment trueStr= {"true" ,0,4};
     const StringFragment falseStr={"false",0,5};
     switch(str.ptr[str.length-1]){
-        //Bool
+        // Bool
         case 'e': {
             if(StringFragment_compare(str,trueStr))
                 return SUCCESS(UniTrue);
@@ -156,14 +157,14 @@ Maybe __ParseValue(DeserializeSharedData* shared, StringFragment str){
                 return SUCCESS(UniFalse);
             else safethrow_wrongchar(*str.ptr);
         }
-        //Float64
+        // Float64
         case 'f': {
             char* _c=StringFragment_extract(str).ptr;
             Unitype rez=Uni(Float64,strtod(_c,NULL));
             free(_c);
             return SUCCESS(rez);
         }
-        //UInt64
+        // UInt64
         case 'u': {
             uint64 lu=0;
             char* _c=StringFragment_extract(str).ptr;
@@ -171,7 +172,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, StringFragment str){
             free(_c);
             return SUCCESS(Uni(UInt64,lu));
         }
-        //Int64
+        // Int64
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9': {
             int64 li=0;
@@ -187,7 +188,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, StringFragment str){
             free(_c);
             return SUCCESS(Uni(Int64,li));
         }
-        //unknown type
+        // unknown type
         default:
             safethrow_wrongchar(str.ptr[str.length-1]);
     }
@@ -217,7 +218,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             try(SkipComment(),_);
             if(valueStr.length!=0)
                 safethrow_wrongchar(_c);
-            valueStr.ptr=text+1; //skips '\n'
+            valueStr.ptr=text+1; // skips '\n'
             break;
         case '"':
             if(valueStr.length!=0) safethrow_wrongchar(c);
@@ -233,7 +234,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             break;
         case '{':
             if(valueStr.length!=0) safethrow_wrongchar(c);
-            ++text; //skips '{' 
+            ++text; // skips '{' 
             try(__deserialize(&text,true), val)
                 return SUCCESS(val.value);
         case ';':
@@ -267,7 +268,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
     text--;
     while((c=*++text)){
         try(ReadName(), maybeName)
-        if(!maybeName.value.VoidPtr) //end of file or '}' in recursive call 
+        if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
             goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
         try(ReadValue(), val)

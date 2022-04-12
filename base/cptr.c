@@ -1,13 +1,13 @@
 #include "base.h"
 
-//returns length of string (without \0)
+// returns length of string (without \0)
 uint32 cptr_length(char* str){
     uint32 len=0;
     while(*(str++)) len++;
     return len;
 }
 
-//allocates new char[] and copies src there
+// allocates new char[] and copies src there
 char* cptr_copy(char* src){
     uint32 len=cptr_length(src)+1;
     char* dst=malloc(len);
@@ -16,7 +16,7 @@ char* cptr_copy(char* src){
     return dst;
 }
 
-//compares two char buffers, NullPtr-friendly
+// compares two char buffers, NullPtr-friendly
 bool cptr_compare(char* key0, char* key1){
     if(!key0) return key1 ? false : true;
     if(!key1) return false;
@@ -26,7 +26,7 @@ bool cptr_compare(char* key0, char* key1){
     return true;
 }
 
-//multiplies char n times
+// multiplies char n times
 char* char_multiply(char c, uint32 n){
     char* rez=malloc(n+1);
     rez[n]=0;

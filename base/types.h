@@ -47,7 +47,7 @@ static const Unitype UniFalse={.Bool=false,.type=Bool};
 #define Uni(TYPE,VAL) (Unitype){.type=TYPE,.TYPE=VAL}
 #define UniPtr(TYPE,VAL) (Unitype){.type=TYPE,.VoidPtr=VAL}
 
-//frees VoidPtr value or does nothing if type isn't pointer
+// frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
 void printuni(Unitype v);
 void sprintuni(char* s, Unitype v);

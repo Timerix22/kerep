@@ -16,7 +16,7 @@ void StringBuilder_append_string(StringBuilder* b, StringFragment s);
 void StringBuilder_append_int64(StringBuilder* b, int64 a);
 void StringBuilder_append_uint64(StringBuilder* b, uint64 a);
 void StringBuilder_append_double(StringBuilder* b, double a);
-//returns StringFragment with '\0' at the end
+// returns StringFragment with '\0' at the end
 StringFragment StringBuilder_build(StringBuilder* b);
 
 #if __cplusplus

@@ -1,6 +1,6 @@
 #include "StringFragment.h"
 
-//copies <length> characters from <ptr+offset> to new StringFragment (adding '\0' at the end)
+// copies <length> characters from <ptr+offset> to new StringFragment (adding '\0' at the end)
 StringFragment StringFragment_extract(StringFragment str){
     if(str.length==0) return stringNull;
     StringFragment extr={
@@ -15,7 +15,7 @@ StringFragment StringFragment_extract(StringFragment str){
     return extr;
 }
 
-//compares two strings, NullPtr-friendly
+// compares two strings, NullPtr-friendly
 bool StringFragment_compare(StringFragment str0, StringFragment str1){
     if(str0.length!=str1.length) return false;
     if(!str0.ptr) return str1.ptr ? false : true;
@@ -28,7 +28,7 @@ bool StringFragment_compare(StringFragment str0, StringFragment str1){
     return true;
 }
 
-//creates new StringFragment which is reversed variant of <s>
+// creates new StringFragment which is reversed variant of <s>
 StringFragment StringFragment_reverse(StringFragment s){
     if(s.length==0) return s;
     StringFragment r={

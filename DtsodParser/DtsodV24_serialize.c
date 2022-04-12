@@ -1,7 +1,7 @@
 #include "DtsodV24.h"
 #include "../StringFragment/StringBuilder.h"
 
-//65536 max length!
+// 65536 max length!
 #define STRB_BC 64
 #define STRB_BL 1024
 
