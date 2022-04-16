@@ -14,10 +14,10 @@ typedef struct KeyValuePair{
 
 declare_Autoarr(KeyValuePair)
 
-//proper way to clear a KVP
+// proper way to clear a KVP
 void KeyValuePair_free(KeyValuePair p);
 
-//func to clear KVP array
+// func to clear KVP array
 void Autoarr_KeyValuePair_clear(Autoarr_KeyValuePair* ar);
 
 void printkvp(KeyValuePair p);

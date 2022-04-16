@@ -1,7 +1,7 @@
 #include "DtsodV24.h"
 #include "../Autoarr/StringBuilder.h"
 
-//65536 max length!
+// 65536 max length!
 #define STRB_BC 64
 #define STRB_BL 1024
 
@@ -51,8 +51,7 @@ void __AppendValue(SerializeSharedData* shared, Unitype u){
                 StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
                 break;
             case Null:
-                if(!u.VoidPtr) StringBuilder_append_cptr(b, "null");
-                else throw("Null-type pointer is not 0");
+                throw("Null isn't supported in DtsodV24");
                 break;
             case AutoarrUnitypePtr:
                 addc('[');

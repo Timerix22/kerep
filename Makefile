@@ -3,7 +3,7 @@ TESTS=$(wildcard tests/*c) $(wildcard tests/**/*.c)
 OUTDIR=bin
 CMP=gcc
 
-all: build_test
+all: clear_c build_lib
 
 clear_c:
 	clear

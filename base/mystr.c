@@ -1,13 +1,13 @@
 #include "base.h"
 
-//returns length of string (including \0)
+// returns length of string (including \0)
 uint32 cptr_length(char* str){
     uint32 len=0;
     while(*(str++)) len++;
     return ++len;
 }
 
-//allocates new char[] and copies src there
+// allocates new char[] and copies src there
 char* cptr_copy(char* src){
     uint32 len=cptr_length(src);
     char* dst=malloc(len*sizeof(char));
@@ -16,7 +16,7 @@ char* cptr_copy(char* src){
     return dst;
 }
 
-//compares two char buffers, NullPtr-friendly
+// compares two char buffers, NullPtr-friendly
 bool cptr_compare(char* key0, char* key1){
     if(!key0) return key1 ? false : true;
     if(!key1) return false;
@@ -26,7 +26,7 @@ bool cptr_compare(char* key0, char* key1){
     return true;
 }
 
-//multiplies char n times
+// multiplies char n times
 char* char_multiply(char c, uint32 n){
     char* rez=malloc(n+1);
     rez[n]=0;
@@ -35,7 +35,7 @@ char* char_multiply(char c, uint32 n){
     return rez;
 }
 
-//copies str content to new char pointer value (adding '\0' at the end)
+// copies str content to new char pointer value (adding '\0' at the end)
 char* string_cpToCptr(string str){
     if(str.length==0) return NULL;
     char* cptr=malloc(str.length*sizeof(char)+1);
@@ -45,7 +45,7 @@ char* string_cpToCptr(string str){
     return cptr;
 }
 
-//copies cptr content (excluding '\0' at the end) to new string
+// copies cptr content (excluding '\0' at the end) to new string
 string string_cpFromCharPtr(char* cptr){
     if(!cptr) return stringNull;
     string str;
@@ -56,7 +56,7 @@ string string_cpFromCharPtr(char* cptr){
     return str;
 }
 
-//compares two strings, NullPtr-friendly
+// compares two strings, NullPtr-friendly
 bool string_compare(string str0, string str1){
     if(str0.length!=str1.length) return false;
     if(!str0.ptr) return str1.ptr ? false : true;
@@ -67,7 +67,7 @@ bool string_compare(string str0, string str1){
     return true;
 }
 
-//creates new string which is reversed variant of <s>
+// creates new string which is reversed variant of <s>
 string string_reverse(string s){
     if(s.length==0) return s;
     string r={malloc(s.length), s.length};

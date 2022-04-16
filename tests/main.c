@@ -13,7 +13,7 @@ void test_all(){
 int main(){
     setlocale(LC_ALL, "en-US.Unicode");
     printf("\e[92mdtsod parser in c language!\e[97m\n");
-    optime("test_all",1,{test_all();});
+    optime("test_all",1,test_all());
     printf("\e[0m\n");
     return 0;
 }
