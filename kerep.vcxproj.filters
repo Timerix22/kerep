@@ -143,14 +143,5 @@
     <ClCompile Include="tests\test_safethrow.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="base\cptr.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="StringFragment\StringBuilder.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="StringFragment\StringFragment.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

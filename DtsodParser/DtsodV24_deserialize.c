@@ -14,6 +14,7 @@ Maybe ERROR_WRONGCHAR(char c, char* text){
         // writes 16 chars before and 15 after the wrongchar
         errBuf[i+22]=*(text - 16 + i);
     safethrow(cptr_copy(errBuf));
+}
 #define safethrow_wrongchar(C) return ERROR_WRONGCHAR(C, text)
 
 
@@ -57,7 +58,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
             try(SkipComment(),_);
             if(nameStr.length!=0)
                 safethrow_wrongchar(c);
-            nameStr.ptr=text+1; // skips '\n'
+            nameStr.ptr=text+1; //skips '\n'
             break;
         case '}':
             if(!calledRecursively) safethrow_wrongchar(c);
@@ -85,7 +86,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively);
 Maybe __ReadValue(DeserializeSharedData* shared);
 #define ReadValue() __ReadValue(shared)
 
-// returns part of <text> without quotes
+//returns part of <text> without quotes
 Maybe __ReadString(DeserializeSharedData* shared){
     char c;
     bool prevIsBackslash=false;
@@ -94,7 +95,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
     while ((c=*++text)){
         if(c=='"') {
             if(prevIsBackslash) {
-                // replacing <\"> with <">
+                //replacing <\"> with <">
                 Autoarr_remove(b); 
                 StringBuilder_append_char(b,c);
             }
@@ -126,16 +127,6 @@ Maybe __ReadList(DeserializeSharedData* shared){
 };
 #define ReadList() __ReadList(shared)
 
-<<<<<<< HEAD
-Maybe __ParseValue(DeserializeSharedData* shared, StringFragment str){
-    // printf("\e[94m<\e[96m%s\e[94m>\n",StringFragment_extract(str));
-    const StringFragment trueStr= {"true" ,0,4};
-    const StringFragment falseStr={"false",0,5};
-    switch(str.ptr[str.length-1]){
-        // Bool
-        case 'e': {
-            if(StringFragment_compare(str,trueStr))
-=======
 Maybe __ParseValue(DeserializeSharedData* shared, string str){
     //printf("\e[94m<\e[96m%s\e[94m>\n",string_cpToCptr(str));
     const string nullStr={"null",4};
@@ -149,7 +140,6 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             break;
         case 't':
             if(string_compare(str,trueStr))
->>>>>>> parent of 41f32f4 (string -> StringFragment, throw_wrongchar() fixed)
                 return SUCCESS(UniTrue);
             else safethrow_wrongchar(*str.ptr);
             break;
@@ -157,43 +147,6 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             if(string_compare(str,falseStr))
                 return SUCCESS(UniFalse);
             else safethrow_wrongchar(*str.ptr);
-<<<<<<< HEAD
-        }
-        // Float64
-        case 'f': {
-            char* _c=StringFragment_extract(str).ptr;
-            Unitype rez=Uni(Float64,strtod(_c,NULL));
-            free(_c);
-            return SUCCESS(rez);
-        }
-        // UInt64
-        case 'u': {
-            uint64 lu=0;
-            char* _c=StringFragment_extract(str).ptr;
-            sscanf(_c,"%lu",&lu);
-            free(_c);
-            return SUCCESS(Uni(UInt64,lu));
-        }
-        // Int64
-        case '0': case '1': case '2': case '3': case '4':
-        case '5': case '6': case '7': case '8': case '9': {
-            int64 li=0;
-            char* _c=StringFragment_extract(str).ptr;
-            if(sscanf(_c,"%li",&li)!=1){
-                char err[64];
-                IFWIN(
-                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
-                    sprintf(err,"can't parse to int: <%s>",_c)
-                );
-                safethrow(err);
-            }
-            free(_c);
-            return SUCCESS(Uni(Int64,li));
-        }
-        // unknown type
-        default:
-            safethrow_wrongchar(str.ptr[str.length-1]);
-=======
             break;
         default: 
             switch(str.ptr[str.length-1]){
@@ -228,7 +181,6 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
                 default:
                     safethrow_wrongchar(str.ptr[str.length-1]);
             }
->>>>>>> parent of 41f32f4 (string -> StringFragment, throw_wrongchar() fixed)
     }
     safethrow(ERR_ENDOFSTR);
 };
@@ -255,7 +207,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             try(SkipComment(),_);
             if(valueStr.length!=0)
                 safethrow_wrongchar(_c);
-            valueStr.ptr=text+1; // skips '\n'
+            valueStr.ptr=text+1; //skips '\n'
             break;
         case '"':
             if(valueStr.length!=0) safethrow_wrongchar(c);
@@ -271,7 +223,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             break;
         case '{':
             if(valueStr.length!=0) safethrow_wrongchar(c);
-            ++text; // skips '{' 
+            ++text; //skips '{' 
             try(__deserialize(&text,true), val)
                 return SUCCESS(val.value);
         case ';':
@@ -304,7 +256,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
     text--;
     while((c=*++text)){
         try(ReadName(), maybeName)
-        if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
+        if(!maybeName.value.VoidPtr) //end of file or '}' in recursive call 
             goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
         try(ReadValue(), val)
