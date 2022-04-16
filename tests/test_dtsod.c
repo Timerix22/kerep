@@ -8,6 +8,8 @@ const char text[]=
 "    uint:#comment!\n 0u;"
 "    double: 965.557f;#another comment!\n"
 "    text: \"_$\\\"\\\\'''a ыыы000;2;=:%d;```\";\n"
+"    list: [10,20,30,0,0 ];"
+"    list_of_lists: [ [\"sss\"]];"
 "};";
 
 void print_dtsod(Hashtable* dtsod){

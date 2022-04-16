@@ -6,6 +6,7 @@
 #define STRB_BC 64
 #define STRB_BL 1024
 
+
 // special func for throwing error messages about wrong characters in deserializing text
 Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* srcfile, int line, const char* funcname){
     char errBuf[33];
@@ -41,23 +42,27 @@ typedef struct DeserializeSharedData{
     bool sh_readingList;
     bool sh_calledRecursively;
 } DeserializeSharedData;
+
 #define text shared->sh_text
 #define partOfDollarList shared->sh_partOfDollarList
 #define readingList shared->sh_readingList
 #define calledRecursively shared->sh_calledRecursively
 
+
 Maybe __SkipComment(DeserializeSharedData* shared) {
     char c;
+
     while ((c=*++text) != '\n')
         if (!c) safethrow(ERR_ENDOFSTR);
+
     return MaybeNull;
 }
 #define SkipComment() __SkipComment(shared)
 
 Maybe __ReadName(DeserializeSharedData* shared){
     char c;
-    string nameStr={text,0};
-    text--;
+    string nameStr={text+1,0};
+
     while ((c=*++text)) switch (c){
         case ' ':  case '\t':
         case '\r': case '\n':
@@ -109,6 +114,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
     bool prevIsBackslash=false;
     StringBuilder _b=StringBuilder_create(STRB_BC,STRB_BL);
     StringBuilder* b=&_b;
+
     while ((c=*++text)){
         if(c=='"') {
             if(prevIsBackslash) {
@@ -127,6 +133,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
             StringBuilder_append_char(b,c);
         }
     }
+
     safethrow(ERR_ENDOFSTR);
 }
 #define ReadString() __ReadString(shared)
@@ -135,11 +142,13 @@ Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=malloc(sizeof(Autoarr(Unitype)));
     *list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     readingList=true;
+
     while (true){
         try(ReadValue(), val)
             Autoarr_add(list,val.value);
         if (!readingList) break;
     }
+
     return SUCCESS(UniPtr(AutoarrUnitypePtr,list));
 };
 #define ReadList() __ReadList(shared)
@@ -147,6 +156,7 @@ Maybe __ReadList(DeserializeSharedData* shared){
 Maybe __ParseValue(DeserializeSharedData* shared, string str){
     const string trueStr={"true",4};
     const string falseStr={"false",5};
+
     switch(str.ptr[str.length-1]){
         // Bool
         case 'e':
@@ -191,6 +201,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         default:
             safethrow_wrongchar(str.ptr[str.length-1]);
     }
+
     safethrow(ERR_ENDOFSTR);
 };
 #define ParseValue(str) __ParseValue(shared, str)
@@ -199,12 +210,14 @@ Maybe __ReadValue(DeserializeSharedData* shared){
     char c;
     string valueStr={text+1,0};
     Unitype value;
+    bool spaceAfterVal=false;
+
     while ((c=*++text)) switch (c){
         case ' ':  case '\t':
         case '\r': case '\n':
             if(valueStr.length!=0)
-                safethrow_wrongchar(c);
-            valueStr.ptr++;
+                spaceAfterVal=true;
+            else valueStr.ptr++;
             break;
         case '=': case ':': 
         case '}': case '$':
@@ -222,19 +235,19 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             if(valueStr.length!=0) safethrow_wrongchar(c);
             try(ReadString(),maybeString)
                 value=maybeString.value;
-            break;        
-        case '[':
-            if(valueStr.length!=0) safethrow_wrongchar(c);
-            try(ReadList(),maybeList)
-                value=maybeList.value;
-        case ']':
-            readingList=false;
             break;
         case '{':
             if(valueStr.length!=0) safethrow_wrongchar(c);
             ++text; // skips '{' 
             try(__deserialize(&text,true), val)
                 return SUCCESS(val.value);
+        case '[':
+            if(valueStr.length!=0) safethrow_wrongchar(c);
+            try(ReadList(),maybeList)
+                value=maybeList.value;
+            break;
+        case ']':
+            readingList=false;
         case ';':
         case ',':
             if(valueStr.length!=0){
@@ -243,6 +256,8 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             }
             return SUCCESS(value);
         default:
+            if(spaceAfterVal)
+                safethrow_wrongchar(c); 
             valueStr.length++;
             break;
     }
@@ -261,10 +276,9 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
     };
     DeserializeSharedData* shared=&_shared;
     Hashtable* dict=Hashtable_create();
-    char c;
     
     text--;
-    while((c=*++text)){
+    while(true){
         try(ReadName(), maybeName)
         if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
             goto END;
@@ -285,6 +299,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
             }
         else Hashtable_add(dict,nameCPtr,val.value);
     }
+
     END:
     *_text=text;
     return SUCCESS(UniPtr(HashtablePtr,dict));
