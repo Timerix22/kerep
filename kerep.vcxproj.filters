@@ -125,14 +125,5 @@
     <ClCompile Include="DtsodParser\DtsodV24_exported.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Autoarr\Autoarr_KVPair_exported.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Autoarr\Autoarr_Unitype_exported.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\test_safethrow.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

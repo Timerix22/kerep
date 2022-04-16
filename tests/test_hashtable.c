@@ -39,10 +39,7 @@ void printrowgraph(Hashtable* ht){
 void fill(Hashtable* ht){
     for(uint32 i=0;i<100000;i++){
         char* key=malloc(12);
-        IFWIN(
-            sprintf_s(key,12,"key_%u",i),
-            sprintf(key,"key_%u",i)
-        );
+        sprintf(key,"key__%u",i);
         Hashtable_add(ht,key,Uni(UInt64,i));
     }
 }
@@ -51,10 +48,7 @@ Unitype gett(Hashtable* ht){
     char* key=malloc(12);
     Unitype u;
     for(uint32 i=0;i<100000;i++){
-        IFWIN(
-            sprintf_s(key,12,"key_%u",i),
-            sprintf(key,"key_%u",i)
-        );
+        sprintf(key,"key__%u",i);
         u=Hashtable_get(ht,key);
     }
     free(key);

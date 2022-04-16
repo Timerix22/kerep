@@ -11,10 +11,8 @@ extern "C" {
 #include "DtsodV24.h"
 
 //parses text to binary values
-EXPORT void CALL kerep_DtsodV24_deserialize(char* text, Hashtable** output, char** errmsg){
-    Maybe r=DtsodV24_deserialize(text);
-    *errmsg= r.errmsg ? r.errmsg : NULL;
-    *output=r.value.VoidPtr;
+EXPORT void CALL kerep_DtsodV24_deserialize(char* text, Hashtable** output){
+    *output=DtsodV24_deserialize(text);
 }
 
 //creates text representation of dtsod
