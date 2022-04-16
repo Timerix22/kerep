@@ -1,7 +1,7 @@
 #include "DtsodV24.h"
 #include "../Autoarr/StringBuilder.h"
 
-// 65536 max length!
+//65536 max length!
 #define STRB_BC 64
 #define STRB_BL 1024
 
@@ -46,11 +46,6 @@ void __AppendValue(SerializeSharedData* shared, Unitype u){
                     addc(c);
                 }
                 addc('"');
-                break;
-            case Char:
-                addc('\'');
-                addc(u.Char);
-                addc('\'');
                 break;
             case Bool:
                 StringBuilder_append_cptr(b, u.Bool ? "true" : "false");

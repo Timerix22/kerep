@@ -7,7 +7,7 @@ extern "C" {
 #include "../base/base.h"
 
 typedef struct SearchTreeNode{
-    struct SearchTreeNode**** branches; // *STNode[8][8][4]
+    struct SearchTreeNode**** branches; //*STNode[8][8][4]
     Unitype value;
 } STNode;
 

@@ -4,12 +4,11 @@
 const char text[]=
 "message: {\n"
 "    bool: false;"
-"    char: 'v';"
 "    int: -2515;"
 "    uint:#comment!\n 0u;"
 "    double: 965.557f;#another comment!\n"
 "    text: \"_$\\\"\\\\'''a ыыы000;2;=:%d;```\";\n"
-"}; ";
+"};";
 
 void print_dtsod(Hashtable* dtsod){
     printf("\e[92m");
@@ -33,18 +32,21 @@ void test_dtsod(){
     optime(__func__,1,({
         printf("\e[96m-------------[test_dtsod]-------------\n");
         Hashtable* dtsod;
-        char* s=cptr_copy(text);
 
-        optime("deserialize",1,(dtsod=DtsodV24_deserialize(s)));
-        free(s);
+        optime("deserialize",1,({
+            tryLast(DtsodV24_deserialize(text),r) 
+                dtsod=r.value.VoidPtr;
+        }));
         print_dtsod(dtsod);
 
+        char* s;
         optime("serialize",1,(s=DtsodV24_serialize(dtsod)));
         Hashtable_free(dtsod);
         printf("\e[92m%s",s);
 
         optime("reserialize",10,({
-            dtsod=DtsodV24_deserialize(s);
+            tryLast(DtsodV24_deserialize(s),r) 
+                dtsod=r.value.VoidPtr;
             free(s);
             s=DtsodV24_serialize(dtsod);
             Hashtable_free(dtsod);

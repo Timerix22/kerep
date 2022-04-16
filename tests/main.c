@@ -1,10 +1,11 @@
 #include "tests.h"
 
 void test_all(){
-    test_searchtree();
     test_autoarr();
-    test_hashtable();
     test_string();
+    test_safethrow();
+    test_searchtree();
+    test_hashtable();
     test_dtsod();
     printf("\e[96m---------------------------------------\e[0m\n");
 }

@@ -1,7 +1,8 @@
 #include "std.h"
 #include "errors.h"
+#include "mystr.h"
 
-const char* errname(err_t err){
+char* errname(err_t err){
     switch(err){
         case SUCCESS: return "SUCCESS";
         case ERR_MAXLENGTH: return "ERR_MAXLENGTH";
@@ -14,14 +15,37 @@ const char* errname(err_t err){
     }
 }
 
-void _throwint(int err, const char* srcfile, int line, const char* funcname){
-    if(err){ // SUCCESS=0 is not an error
-        printf("\e[91m[%s:%d %s] throwed error: %s\e[0m\n",srcfile,line,funcname,errname(err));
-        exit(err); 
-    }
-    else printf("\e[93m[%s:%d %s] throwed SUCCESS as an error",srcfile,line,funcname);
+#define ERRMSG_MAXLENGTH 1024
+
+char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
+    size_t bufsize=ERRMSG_MAXLENGTH;
+    char* rezult=malloc(bufsize);
+    IFWIN(
+        sprintf_s(rezult,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg),
+        sprintf(rezult,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg)
+    );
+    return rezult;
 }
-void _throwstr(const char* errmesg, const char* srcfile, int line, const char* funcname){
-    printf("\e[91m[%s:%d %s] throwed error: %s\e[0m\n",srcfile,line,funcname,errmesg);
-    exit(255); 
+
+char* __extendErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
+    size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
+    char* rezult=malloc(bufsize);
+    IFWIN(
+        sprintf_s(rezult,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname),
+        sprintf(rezult,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname)
+    );
+    free(errmsg);
+    return rezult;
 }
+
+void Maybe_free(Maybe e){
+    free(e.errmsg);
+    Unitype_free(e.value);
+}
+void printMaybe(Maybe e){
+    if(e.errmsg) printf("%s\n",e.errmsg);
+    else printuni(e.value);
+}
+
+char* __doNothing(char* a) {return a;}
+char* __unknownErr() {return "UNKNOWN ERROR";}

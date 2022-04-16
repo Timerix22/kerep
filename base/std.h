@@ -10,6 +10,7 @@ extern "C" {
 #include <stdbool.h>
 #include <locale.h>
 #include <time.h>
+#include <setjmp.h>
 
 #define CHOOSE(B, Y, N) __builtin_choose_expr(B, Y, N)
 

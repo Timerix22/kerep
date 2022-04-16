@@ -64,7 +64,7 @@ void Hashtable_add(Hashtable* ht, char* key, Unitype u){
     Hashtable_add_pair(ht,KVPair(key,u));
 }
 
-// returns null or pointer to value in hashtable
+//returns null or pointer to value in hashtable
 Unitype* Hashtable_getptr(Hashtable* ht, char* key){
     Autoarr(KeyValuePair)* ar=getrow(ht,key,false);
     uint32 arlen=Autoarr_length(ar);
