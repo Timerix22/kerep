@@ -63,6 +63,15 @@
     <ClInclude Include="tests\tests.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="base\cptr.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="StringFragment\StringBuilder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="StringFragment\StringFragment.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Autoarr\Autoarr.c">
@@ -123,6 +132,15 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="DtsodParser\DtsodV24_exported.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Autoarr\Autoarr_KVPair_exported.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Autoarr\Autoarr_Unitype_exported.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\test_safethrow.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

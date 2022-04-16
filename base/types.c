@@ -45,7 +45,7 @@ const char* my_type_name(my_type t){
     }
 }
 
-//frees VoidPtr value or does nothing if type isn't pointer
+// frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u){
     switch (u.type) {
         case Null: 

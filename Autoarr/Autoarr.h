@@ -19,7 +19,7 @@ declare_Autoarr(float)
 declare_Autoarr(double)
 declare_Autoarr(Unitype)
 
-//right func to clear array of unitype values
+// right func to clear array of unitype values
 void Autoarr_Unitype_clear(Autoarr(Unitype)* ar);
 
 #define Autoarr_foreach(ar,elem,codeblock)({\

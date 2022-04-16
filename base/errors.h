@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 typedef enum err_t {
-    SUCCESS, //not an error 
+    SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR
 } err_t;
 
