@@ -1,9 +1,9 @@
 #include "Hashtable.h"
 
 // amount of rows
+static const uint16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
 #define HT_HEIN_MIN 0
-#define HT_HEIN_MAX 5
-static const uint16 HT_HEIGHTS[]={61,257,1021,4099,16381,65521};
+#define HT_HEIN_MAX 6
 
 #define ARR_BC 2
 #define ARR_BL 8
@@ -25,7 +25,7 @@ void Hashtable_free(Hashtable* ht){
     free(ht);
 }
 
-uint32 Hashtable_height(Hashtable* ht) { return HT_HEIGHTS[ht->hein]; }
+uint16 Hashtable_height(Hashtable* ht) { return HT_HEIGHTS[ht->hein]; }
 
 
 void Hashtable_expand(Hashtable* ht){

@@ -10,7 +10,7 @@ extern "C" {
 Maybe DtsodV24_deserialize(char* text);
 
 // creates text representation of dtsod
-char* DtsodV24_serialize(Hashtable* dtsod);
+Maybe DtsodV24_serialize(Hashtable* dtsod);
 
 // returns value or UniNull if key not found
 Unitype DtsodV24_get(Hashtable* dtsod, char* key);

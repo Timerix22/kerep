@@ -12,7 +12,7 @@ typedef struct SerializeSharedData{
 #define b shared->sh_builder
 #define tabs shared->sh_tabs
 
-void __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod);
+Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod);
 
 #define addc(C) StringBuilder_append_char(b,C)
 
@@ -23,59 +23,61 @@ void __AppendTabs(SerializeSharedData* shared) {
 };
 #define AppendTabs() __AppendTabs(shared)
 
-void __AppendValue(SerializeSharedData* shared, Unitype u);
+Maybe __AppendValue(SerializeSharedData* shared, Unitype u);
 #define AppendValue(UNI) __AppendValue(shared, UNI)
-void __AppendValue(SerializeSharedData* shared, Unitype u){
+Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
     switch(u.type){
-            case Int64:
-                StringBuilder_append_int64(b,u.Int64);
-                break;
-            case UInt64:
-                StringBuilder_append_uint64(b,u.UInt64);
-                addc('u');
-                break;
-            case Float64:
-                StringBuilder_append_double(b,u.Float64);
-                addc('f');
-                break;
-            case CharPtr:
-                addc('"');
-                char c;
-                while((c=*(char*)(u.VoidPtr++))){
-                    if(c=='\"') addc('\\');
-                    addc(c);
-                }
-                addc('"');
-                break;
-            case Bool:
-                StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
-                break;
-            case Null:
-                throw("Null isn't supported in DtsodV24");
-                break;
-            case AutoarrUnitypePtr:
-                addc('[');
-                Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
-                    addc(' ');
-                    AppendValue(e);
-                    addc(',');
-                }));
-                Autoarr_remove(b);
+        case Int64:
+            StringBuilder_append_int64(b,u.Int64);
+            break;
+        case UInt64:
+            StringBuilder_append_uint64(b,u.UInt64);
+            addc('u');
+            break;
+        case Float64:
+            StringBuilder_append_double(b,u.Float64);
+            addc('f');
+            break;
+        case CharPtr:
+            addc('"');
+            char c;
+            while((c=*(char*)(u.VoidPtr++))){
+                if(c=='\"') addc('\\');
+                addc(c);
+            }
+            addc('"');
+            break;
+        case Bool:
+            StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
+            break;
+        case Null:
+            safethrow("Null isn't supported in DtsodV24");
+            break;
+        case AutoarrUnitypePtr:
+            addc('[');
+            Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
                 addc(' ');
-                addc(']');
-                break;
-            case HashtablePtr:
-                addc('{');
-                addc('\n');
-                __serialize(b,tabs+1,u.VoidPtr);
-                AppendTabs();
-                addc('}');
-                break;
-            default: dbg((u.type)); throw(ERR_WRONGTYPE); 
+                try(AppendValue(e),__);
+                addc(',');
+            }));
+            Autoarr_remove(b);
+            addc(' ');
+            addc(']');
+            break;
+        case HashtablePtr:
+            addc('{');
+            addc('\n');
+            try(__serialize(b,tabs+1,u.VoidPtr),___);
+            AppendTabs();
+            addc('}');
+            break;
+        default: dbg((u.type)); safethrow(ERR_WRONGTYPE); 
     }
+
+    return MaybeNull;
 };
 
-void __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
+Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
     SerializeSharedData _shared={
         .sh_builder=_b, 
         .sh_tabs=_tabs
@@ -87,16 +89,18 @@ void __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
         StringBuilder_append_cptr(b,p.key);
         addc(':');
         addc(' ');
-        AppendValue(p.value);
+        try(AppendValue(p.value),__);
         addc(';');
         addc('\n');
     }));
+
+    return MaybeNull;
 }
 
-char* DtsodV24_serialize(Hashtable* dtsod){
+Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder sb=StringBuilder_create(STRB_BC,STRB_BL);
-    __serialize(&sb,0,dtsod);
+    try(__serialize(&sb,0,dtsod),__);
     char* str=StringBuilder_build(&sb);
     Autoarr_clear((&sb));
-    return str;
+    return SUCCESS(UniPtr(CharPtr, str));
 }

@@ -17,7 +17,7 @@ Hashtable* Hashtable_create();
 void Hashtable_free(Hashtable* ht);
 
 // amount of rows
-uint32 Hashtable_height(Hashtable* ht);
+uint16 Hashtable_height(Hashtable* ht);
 
 // adds charptr and value to new KeyValuePair
 // use cptr_copy() to create new string if needed

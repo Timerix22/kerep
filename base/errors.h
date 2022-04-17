@@ -21,6 +21,7 @@ typedef struct Maybe{
     Unitype value;
     char* errmsg;
 } Maybe;
+// return it if func doesn't return anything
 static const Maybe MaybeNull={.value.type=Null, .value.VoidPtr=NULL,.errmsg=NULL};
 
 void Maybe_free(Maybe e);

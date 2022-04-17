@@ -42,7 +42,10 @@ void test_dtsod(){
         print_dtsod(dtsod);
 
         char* s;
-        optime("serialize",1,(s=DtsodV24_serialize(dtsod)));
+        optime("serialize",1,({
+            tryLast(DtsodV24_serialize(dtsod),r)
+                s=r.value.VoidPtr;
+        }));
         Hashtable_free(dtsod);
         printf("\e[92m%s",s);
 
@@ -50,7 +53,8 @@ void test_dtsod(){
             tryLast(DtsodV24_deserialize(s),r) 
                 dtsod=r.value.VoidPtr;
             free(s);
-            s=DtsodV24_serialize(dtsod);
+            tryLast(DtsodV24_serialize(dtsod),rr)
+                s=rr.value.VoidPtr;
             Hashtable_free(dtsod);
         }));
 

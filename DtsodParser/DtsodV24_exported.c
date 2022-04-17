@@ -13,13 +13,15 @@ extern "C" {
 // parses text to binary values
 EXPORT void CALL kerep_DtsodV24_deserialize(char* text, Hashtable** output, char** errmsg){
     Maybe r=DtsodV24_deserialize(text);
-    *errmsg= r.errmsg ? r.errmsg : NULL;
+    *errmsg=r.errmsg;
     *output=r.value.VoidPtr;
 }
 
 // creates text representation of dtsod
-EXPORT void CALL kerep_DtsodV24_serialize(Hashtable* dtsod, char** output){
-    *output=DtsodV24_serialize(dtsod);
+EXPORT void CALL kerep_DtsodV24_serialize(Hashtable* dtsod, char** output, char** errmsg){
+    Maybe r=DtsodV24_serialize(dtsod);
+    *errmsg=r.errmsg;
+    *output=r.value.VoidPtr;
 }
 
 // returns value or UniNull if key not found
