@@ -54,17 +54,25 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             safethrow("Null isn't supported in DtsodV24");
             break;
         case AutoarrUnitypePtr:
+            addc('\n');
+            AppendTabs();
             addc('[');
+            tabs++;
             Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
-                addc(' ');
+                addc('\n');
+                AppendTabs();
                 try(AppendValue(e),__);
                 addc(',');
             }));
             Autoarr_remove(b);
-            addc(' ');
+            addc('\n');
+            tabs--;
+            AppendTabs();
             addc(']');
             break;
         case HashtablePtr:
+            addc('\n');
+            AppendTabs();
             addc('{');
             addc('\n');
             try(__serialize(b,tabs+1,u.VoidPtr),___);
