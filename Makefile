@@ -1,9 +1,12 @@
 SRC=$(wildcard [^tests]**/*.c)
 TESTS=$(wildcard tests/*c) $(wildcard tests/**/*.c)
+
 OUTDIR=bin
 CMP=gcc
+OPT_ARGS=-O2 -flto
+WARN_ARGS=-Wall -Wno-discarded-qualifiers
 
-all: clear_c build_lib
+all: build_lib
 
 clear_c:
 	clear
@@ -16,30 +19,29 @@ clear_bin:
 clang: CMP=clang
 clang: all
 
-TEST_FILE=$(OUTDIR)/kerep_test.com
-TEST_ARGS= -Wall -Wno-discarded-qualifiers $(SRC) $(TESTS) -o $(TEST_FILE)
-OPT_ARGS= -O1 -flto
-build_test: clear_bin
+TEST_FILE=kerep_test.com
+TEST_ARGS=$(WARN_ARGS) $(SRC) $(TESTS) -o $(OUTDIR)/$(TEST_FILE)
+build_test: clear_c clear_bin
 	@echo -e '\n\e[96m----------------[build_test]----------------\e[0m'
 	$(CMP) $(OPT_ARGS) $(TEST_ARGS)
 
-build_test_dbg: clear_bin
+build_test_dbg: clear_c clear_bin
 	@echo -e '\n\e[96m--------------[build_test_dbg]--------------\e[0m'
-	$(CMP) -O0 -g $(TEST_ARGS).dbg
+	$(CMP) -g -O0 $(TEST_ARGS).dbg 
 
-test: clear_c build_test
+test: build_test
 	@echo -e '\n\e[96m----------------[test]-----------------\e[0m'
 	$(TEST_FILE)
 
-valgrind: clear_c build_test_dbg
+valgrind: build_test_dbg
 	@echo -e '\n\e[96m--------------[valgrind]---------------\e[0m'
 	valgrind -s --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ \
 	--leak-check=full --show-leak-kinds=all $(TEST_FILE).dbg
 
 LIB_FILE=kerep.so
-LIB_ARGS= -Wall -Wno-discarded-qualifiers \
-	-O1 -fPIC -shared -Wl,-soname,$(LIB_FILE)  \
-	$(SRC) $(TESTS) -o $(OUTDIR)/$(LIB_FILE)
-build_lib: clear_bin
+LIB_ARGS=$(OPT_ARGS) $(WARN_ARGS)\
+	-fpic -shared -Wl,-soname,$(LIB_FILE)\
+	$(SRC) tests/test_marshalling.c -o $(OUTDIR)/$(LIB_FILE)
+build_lib: clear_c clear_bin
 	@echo -e '\n\e[96m-------------[build_lib]---------------\e[0m'
-	$(CMP) $(OPT_ARGS) $(LIB_ARGS)
+	$(CMP) $(LIB_ARGS)
