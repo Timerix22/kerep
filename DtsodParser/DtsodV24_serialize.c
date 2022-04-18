@@ -51,7 +51,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
             break;
         case Null:
-            safethrow("Null isn't supported in DtsodV24");
+            safethrow("Null isn't supported in DtsodV24",;);
             break;
         case AutoarrUnitypePtr:
             addc('\n');
@@ -61,7 +61,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
                 addc('\n');
                 AppendTabs();
-                try(AppendValue(e),__);
+                try(AppendValue(e),__,;);
                 addc(',');
             }));
             Autoarr_remove(b);
@@ -75,11 +75,11 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             AppendTabs();
             addc('{');
             addc('\n');
-            try(__serialize(b,tabs+1,u.VoidPtr),___);
+            try(__serialize(b,tabs+1,u.VoidPtr),___,;);
             AppendTabs();
             addc('}');
             break;
-        default: dbg((u.type)); safethrow(ERR_WRONGTYPE); 
+        default: dbg((u.type)); safethrow(ERR_WRONGTYPE,;); 
     }
 
     return MaybeNull;
@@ -97,7 +97,7 @@ Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
         StringBuilder_append_cptr(b,p.key);
         addc(':');
         addc(' ');
-        try(AppendValue(p.value),__);
+        try(AppendValue(p.value),__,;);
         addc(';');
         addc('\n');
     }));
@@ -107,7 +107,7 @@ Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
 
 Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder sb=StringBuilder_create(STRB_BC,STRB_BL);
-    try(__serialize(&sb,0,dtsod),__);
+    try(__serialize(&sb,0,dtsod),__, Autoarr_clear((&sb)));
     char* str=StringBuilder_build(&sb);
     Autoarr_clear((&sb));
     return SUCCESS(UniPtr(CharPtr, str));

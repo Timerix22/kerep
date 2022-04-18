@@ -7,14 +7,29 @@
 #define STRB_BL 1024
 
 
+typedef struct DeserializeSharedData{
+    const char* sh_text_first;
+    char* sh_text;
+    bool sh_partOfDollarList;
+    bool sh_readingList;
+    bool sh_calledRecursively;
+} DeserializeSharedData;
+
+#define text shared->sh_text
+#define partOfDollarList shared->sh_partOfDollarList
+#define readingList shared->sh_readingList
+#define calledRecursively shared->sh_calledRecursively
+
+
 // special func for throwing error messages about wrong characters in deserializing text
-Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* srcfile, int line, const char* funcname){
+Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* srcfile, int line, const char* funcname){
     char errBuf[68];
-    errBuf[67]='\0';
-    char* errText=text-32;
+    for(uint8 n=0; n<sizeof(errBuf);n++)
+        errBuf[n]='\0';
+    char* errText=_text-32;
     uint8 cplace=32;
     if(errText<text_first) {
-        cplace=errText-text_first;
+        cplace=_text-text_first;
         errText=text_first;
     }
     uint8 i=0;
@@ -32,9 +47,9 @@ Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* sr
         errBuf[i]=_c;
         if(!_c) break;
     }
-    char* errmsg=malloc(512);
+    char* errmsg=malloc(1024);
     IFWIN(
-        sprintf_s(errmsg,512, "unexpected <%c> at:\n"
+        sprintf_s(errmsg,1024, "unexpected <%c> at:\n"
                         "  \"%s\"\n"
                         "\\___[%s:%d] %s()", 
                         c,errBuf, srcfile,line,funcname),
@@ -43,30 +58,16 @@ Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* sr
                         " \\___[%s:%d] %s()", 
                         c,errBuf, srcfile,line,funcname)
     );
-    safethrow(cptr_copy(errmsg));
+    safethrow(errmsg,;);
 }
-#define safethrow_wrongchar(C) return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__)
-
-
-typedef struct DeserializeSharedData{
-    const char* sh_text_first;
-    char* sh_text;
-    bool sh_partOfDollarList;
-    bool sh_readingList;
-    bool sh_calledRecursively;
-} DeserializeSharedData;
-
-#define text shared->sh_text
-#define partOfDollarList shared->sh_partOfDollarList
-#define readingList shared->sh_readingList
-#define calledRecursively shared->sh_calledRecursively
+#define safethrow_wrongchar(C, freeMem) freeMem; return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__)
 
 
 Maybe __SkipComment(DeserializeSharedData* shared) {
     char c;
 
     while ((c=*++text) != '\n')
-        if (!c) safethrow(ERR_ENDOFSTR);
+        if (!c) safethrow(ERR_ENDOFSTR,;);
 
     return MaybeNull;
 }
@@ -80,29 +81,34 @@ Maybe __ReadName(DeserializeSharedData* shared){
         case ' ':  case '\t':
         case '\r': case '\n':
             if(nameStr.length!=0)
-                safethrow_wrongchar(c);
+                safethrow_wrongchar(c,;);
             nameStr.ptr++;
             break;
         case '=':  case ';':
         case '\'': case '"':
         case '[':  case ']':
         case '{':
-            safethrow_wrongchar(c);
+            safethrow_wrongchar(c,;);
             break;
         case '#': ;
-            try(SkipComment(),_);
-            if(nameStr.length!=0)
-                safethrow_wrongchar(c);
+            char _c=c;
+            char* _text=text;
+            try(SkipComment(),_,;);
+            if(nameStr.length!=0){
+                text=_text;
+                safethrow_wrongchar(_c,;);
+            }
             nameStr.ptr=text+1; // skips '\n'
             break;
         case '}':
-            if(!calledRecursively || nameStr.length!=0) safethrow_wrongchar(c);
+            if(!calledRecursively || nameStr.length!=0) 
+                safethrow_wrongchar(c,;);
             return SUCCESS(UniPtr(CharPtr,NULL));
         case ':':
             return SUCCESS(UniPtr(CharPtr,string_cpToCptr(nameStr)));
         case '$':
             if(nameStr.length!=0)
-                safethrow_wrongchar(c);
+                safethrow_wrongchar(c,;);
             nameStr.ptr++;
             partOfDollarList=true;
             break;
@@ -111,7 +117,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
             break;
     }
 
-    if(nameStr.length>0) safethrow(ERR_ENDOFSTR);
+    if(nameStr.length>0) safethrow(ERR_ENDOFSTR,;);
     return SUCCESS(UniPtr(CharPtr,NULL));
 }
 #define ReadName() __ReadName(shared)
@@ -146,7 +152,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
         }
     }
 
-    safethrow(ERR_ENDOFSTR);
+    safethrow(ERR_ENDOFSTR, Autoarr_clear(b));
 }
 #define ReadString() __ReadString(shared)
 
@@ -156,7 +162,10 @@ Maybe __ReadList(DeserializeSharedData* shared){
     readingList=true;
 
     while (true){
-        try(ReadValue(), val)
+        try(ReadValue(), val,{
+            Autoarr_clear(list);
+            free(list);
+        })
             Autoarr_add(list,val.value);
         if (!readingList) break;
     }
@@ -176,7 +185,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
                 return SUCCESS(UniTrue);
             else if(string_compare(str,falseStr))
                 return SUCCESS(UniFalse);
-            else safethrow_wrongchar(*str.ptr);
+            else safethrow_wrongchar(*str.ptr,;);
             break;
         // Float64
         case 'f': {
@@ -189,7 +198,14 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         case 'u': {
             uint64 lu=0;
             char* _c=string_cpToCptr(str);
-            sscanf(_c,"%lu",&lu);
+            if(sscanf(_c,"%lu",&lu)!=1){
+                char err[64];
+                IFWIN(
+                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
+                    sprintf(err,"can't parse to int: <%s>",_c)
+                );
+                safethrow(err,free(_c));
+            }
             free(_c);
             return SUCCESS(Uni(UInt64,lu));
         }
@@ -204,17 +220,17 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
                     sprintf_s(err,64,"can't parse to int: <%s>",_c),
                     sprintf(err,"can't parse to int: <%s>",_c)
                 );
-                safethrow(err);
+                safethrow(err,free(_c));
             }
             free(_c);
             return SUCCESS(Uni(Int64,li));
         }
         // wrong type
         default:
-            safethrow_wrongchar(str.ptr[str.length-1]);
+            safethrow_wrongchar(str.ptr[str.length-1],;);
     }
 
-    safethrow(ERR_ENDOFSTR);
+    safethrow(ERR_ENDOFSTR,;);
 };
 #define ParseValue(str) __ParseValue(shared, str)
 
@@ -234,29 +250,37 @@ Maybe __ReadValue(DeserializeSharedData* shared){
         case '=': case ':': 
         case '}': case '$':
         case '\'':
-            safethrow_wrongchar(c);
+            safethrow_wrongchar(c,;);
             break;
         case '#':;
             char _c=c;
-            try(SkipComment(),_);
-            if(valueStr.length!=0)
-                safethrow_wrongchar(_c);
+            char* _text=text;
+            try(SkipComment(),_,;);
+            if(valueStr.length!=0){
+                text=_text;
+                safethrow_wrongchar(_c,;);
+            }
             valueStr.ptr=text+1; // skips '\n'
             break;
         case '"':
-            if(valueStr.length!=0) { printf("length: %u valueStr: %s\n",valueStr.length, string_cpToCptr(valueStr)); safethrow_wrongchar(c);}
-            try(ReadString(),maybeString)
+            if(valueStr.length!=0) { 
+                char* vp=string_cpToCptr(valueStr);
+                printf("\nlength: %u valueStr: %s\n",valueStr.length, vp);
+                free(vp);      
+                safethrow_wrongchar(c,;);
+            }
+            try(ReadString(),maybeString,;)
                 value=maybeString.value;
             break;
         case '{':
-            if(valueStr.length!=0) safethrow_wrongchar(c);
+            if(valueStr.length!=0) safethrow_wrongchar(c,;);
             ++text; // skips '{' 
-            try(__deserialize(&text,true), val)
+            try(__deserialize(&text,true), val,;)
                 value=val.value;
             break;
         case '[':
-            if(valueStr.length!=0) safethrow_wrongchar(c);
-            try(ReadList(),maybeList)
+            if(valueStr.length!=0) safethrow_wrongchar(c,;);
+            try(ReadList(),maybeList,;)
                 value=maybeList.value;
             break;
         case ']':
@@ -264,18 +288,18 @@ Maybe __ReadValue(DeserializeSharedData* shared){
         case ';':
         case ',':
             if(valueStr.length!=0){
-                try(ParseValue(valueStr),maybeParsed)
+                try(ParseValue(valueStr),maybeParsed,;)
                     value=maybeParsed.value;
             }
             return SUCCESS(value);
         default:
             if(spaceAfterVal)
-                safethrow_wrongchar(c); 
+                safethrow_wrongchar(c,;); 
             valueStr.length++;
             break;
     }
 
-    safethrow(ERR_ENDOFSTR);
+    safethrow(ERR_ENDOFSTR,;);
 }
 
 
@@ -292,12 +316,15 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
     
     text--;
     while(true){
-        try(ReadName(), maybeName)
+        try(ReadName(), maybeName, Hashtable_free(dict))
         if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
             goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
         printf("name: %s  ", nameCPtr);
-        try(ReadValue(), val){
+        try(ReadValue(), val, {
+            Hashtable_free(dict);
+            free(nameCPtr);
+        }) {
             printuni(val.value);printf("\n");
             if(partOfDollarList){
                 Autoarr(Unitype)* list;
