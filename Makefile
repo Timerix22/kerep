@@ -31,12 +31,12 @@ build_test_dbg: clear_c clear_bin
 
 test: build_test
 	@echo -e '\n\e[96m----------------[test]-----------------\e[0m'
-	$(TEST_FILE)
+	$(OUTDIR)/$(TEST_FILE)
 
 valgrind: build_test_dbg
 	@echo -e '\n\e[96m--------------[valgrind]---------------\e[0m'
 	valgrind -s --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ \
-	--leak-check=full --show-leak-kinds=all $(TEST_FILE).dbg
+	--leak-check=full --show-leak-kinds=all $(OUTDIR)/$(TEST_FILE).dbg
 
 LIB_FILE=kerep.so
 LIB_ARGS=$(OPT_ARGS) $(WARN_ARGS)\

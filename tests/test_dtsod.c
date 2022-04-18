@@ -30,6 +30,10 @@ void print_dtsod(Hashtable* dtsod){
     }));
 }
 
+
+#include <errno.h>
+
+
 void test_dtsod(){
     optime(__func__,1,({
         printf("\e[96m-------------[test_dtsod]-------------\n");
@@ -59,5 +63,26 @@ void test_dtsod(){
         }));
 
         free(s);
+
+        FILE* f=fopen("messages.dtsod", "r");
+        printf("f: %p\n", f);
+        if(f==NULL){
+            perror("error ");
+            throw("can't open file");
+        }
+        char fbuf[65535];
+        uint32 i=0;
+        char cc;
+        while((cc=fgetc(f))!=EOF){
+            fbuf[i++]=cc;
+        }
+        fbuf[i]='\0';
+        printf("read %u chars", i);
+        Maybe rrr=DtsodV24_deserialize(fbuf);
+        if(rrr.errmsg) {
+            throw(rrr.errmsg);
+        }
+        else dtsod=rrr.value.VoidPtr;
+        Hashtable_free(dtsod);
     }));
 }

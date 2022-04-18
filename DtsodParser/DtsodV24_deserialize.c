@@ -9,19 +9,32 @@
 
 // special func for throwing error messages about wrong characters in deserializing text
 Maybe ERROR_WRONGCHAR(const char c, char* text, char* text_first, const char* srcfile, int line, const char* funcname){
-    char errBuf[33];
-    errBuf[32]='\0';
-    char* errText=text-16;
-    if(errText<text_first) errText=text_first;
-    for(uint8 i=0; i<32; i++){
-        // writes 16 chars before and 15 after the wrongchar
-        char _c=errText[i];
+    char errBuf[68];
+    errBuf[67]='\0';
+    char* errText=text-32;
+    uint8 cplace=32;
+    if(errText<text_first) {
+        cplace=errText-text_first;
+        errText=text_first;
+    }
+    uint8 i=0;
+    for(; i<cplace; i++){
+        // writes 32 chars before the wrongchar
+        errBuf[i]=errText[i];
+    }
+    //prints wrongchar in braces
+    errBuf[i++]='<';
+    errBuf[i++]=c;
+    errBuf[i++]='>';
+    for(; i<cplace+3+32; i++){
+        // writes 32 chars after the wrongchar
+        char _c=errText[i-2];
         errBuf[i]=_c;
         if(!_c) break;
     }
-    char* errmsg=malloc(256);
+    char* errmsg=malloc(512);
     IFWIN(
-        sprintf_s(errmsg,256, "unexpected <%c> at:\n"
+        sprintf_s(errmsg,512, "unexpected <%c> at:\n"
                         "  \"%s\"\n"
                         "\\___[%s:%d] %s()", 
                         c,errBuf, srcfile,line,funcname),
@@ -83,9 +96,8 @@ Maybe __ReadName(DeserializeSharedData* shared){
             nameStr.ptr=text+1; // skips '\n'
             break;
         case '}':
-            if(!calledRecursively) safethrow_wrongchar(c);
-            if((*++text)!=';')
-                safethrow_wrongchar(c);
+            if(!calledRecursively || nameStr.length!=0) safethrow_wrongchar(c);
+            return SUCCESS(UniPtr(CharPtr,NULL));
         case ':':
             return SUCCESS(UniPtr(CharPtr,string_cpToCptr(nameStr)));
         case '$':
@@ -211,7 +223,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
     string valueStr={text+1,0};
     Unitype value;
     bool spaceAfterVal=false;
-
+    
     while ((c=*++text)) switch (c){
         case ' ':  case '\t':
         case '\r': case '\n':
@@ -232,7 +244,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             valueStr.ptr=text+1; // skips '\n'
             break;
         case '"':
-            if(valueStr.length!=0) safethrow_wrongchar(c);
+            if(valueStr.length!=0) { printf("length: %u valueStr: %s\n",valueStr.length, string_cpToCptr(valueStr)); safethrow_wrongchar(c);}
             try(ReadString(),maybeString)
                 value=maybeString.value;
             break;
@@ -240,7 +252,8 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             if(valueStr.length!=0) safethrow_wrongchar(c);
             ++text; // skips '{' 
             try(__deserialize(&text,true), val)
-                return SUCCESS(val.value);
+                value=val.value;
+            break;
         case '[':
             if(valueStr.length!=0) safethrow_wrongchar(c);
             try(ReadList(),maybeList)
@@ -283,7 +296,9 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
         if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
             goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
-        try(ReadValue(), val)
+        printf("name: %s  ", nameCPtr);
+        try(ReadValue(), val){
+            printuni(val.value);printf("\n");
             if(partOfDollarList){
                 Autoarr(Unitype)* list;
                 Unitype lu;
@@ -297,7 +312,8 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                 }
                 Autoarr_add(list,val.value);
             }
-        else Hashtable_add(dict,nameCPtr,val.value);
+            else Hashtable_add(dict,nameCPtr,val.value);
+        }
     }
 
     END:

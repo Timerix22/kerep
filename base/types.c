@@ -115,7 +115,7 @@ void Unitype_free(Unitype u){
     }
 }
 
-#define SPRINT_BUFSIZE 64
+#define SPRINT_BUFSIZE 1024
 void sprintuni(char* buf,Unitype v){
     IFWIN(
         switch (v.type) {
@@ -140,8 +140,7 @@ void sprintuni(char* buf,Unitype v){
 }
 
 void printuni(Unitype v){
-    char* s=malloc(SPRINT_BUFSIZE);
+    char s[SPRINT_BUFSIZE];
     sprintuni(s,v);
     fputs(s, stdout);
-    free(s);
 }

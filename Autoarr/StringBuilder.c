@@ -53,7 +53,6 @@ void StringBuilder_append_uint64(StringBuilder* b, uint64 a){
         a/=10;
     }
     string rev=string_reverse((string){buf,i});
-    printf("\e[95mrev:%s\n",string_cpToCptr(rev));
     StringBuilder_append_string(b,rev);
     free(rev.ptr);
 }
