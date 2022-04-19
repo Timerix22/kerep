@@ -38,6 +38,7 @@ void test_dtsod(){
     optime(__func__,1,({
         printf("\e[96m-------------[test_dtsod]-------------\n");
         Hashtable* dtsod;
+        char* s;
 
         optime("deserialize",1,({
             tryLast(DtsodV24_deserialize(text),r) 
@@ -45,7 +46,6 @@ void test_dtsod(){
         }));
         print_dtsod(dtsod);
 
-        char* s;
         optime("serialize",1,({
             tryLast(DtsodV24_serialize(dtsod),r)
                 s=r.value.VoidPtr;
@@ -65,7 +65,6 @@ void test_dtsod(){
         free(s);
 
         FILE* f=fopen("messages.dtsod", "r");
-        printf("f: %p\n", f);
         if(f==NULL){
             perror("error ");
             throw("can't open file");
@@ -77,6 +76,7 @@ void test_dtsod(){
             fbuf[i++]=cc;
         }
         fbuf[i]='\0';
+        fclose(f);
         printf("read %u chars", i);
         Maybe rrr=DtsodV24_deserialize(fbuf);
         if(rrr.errmsg) {

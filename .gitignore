@@ -18,3 +18,6 @@ logs-*/
 
 #backups
 .old*/
+
+#temp
+messages.dtsod
