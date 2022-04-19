@@ -17,7 +17,7 @@ clear_bin:
 	mkdir $(OUTDIR)
 
 clang: CMP=clang
-	WARN_ARGS=-Wall -Wno-ignored-qualifiers -Wno-incompatible-pointer-types-discards-qualifiers
+clang: WARN_ARGS=-Wall -Wno-ignored-qualifiers -Wno-incompatible-pointer-types-discards-qualifiers
 clang: all
 
 TEST_FILE=kerep_test.com
