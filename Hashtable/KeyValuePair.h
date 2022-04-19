@@ -10,6 +10,7 @@ extern "C" {
 typedef struct KVPair{
     char* key;
     Unitype value;
+    uint32 khash;
 } KVPair;
 
 declare_Autoarr(KVPair)

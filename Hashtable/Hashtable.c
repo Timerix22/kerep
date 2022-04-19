@@ -52,54 +52,52 @@ void Hashtable_expand(Hashtable* ht){
     ht->rows=newrows;
 }
 
-Autoarr(KVPair)* getrow(Hashtable* ht, char* key, bool can_expand){
-    Autoarr(KVPair)* ar=ht->rows[ihash(key)%HT_HEIGHTS[ht->hein]];
-    if(can_expand && Autoarr_length(ar)==Autoarr_max_length(ar))
+Autoarr(KVPair)* getrow(Hashtable* ht, char* key, uint32 khash, bool can_expand){
+    Autoarr(KVPair)* ar=ht->rows[khash%HT_HEIGHTS[ht->hein]];
+    if(can_expand && Autoarr_length(ar)==Autoarr_max_length(ar)){
         optime("expand",1,(Hashtable_expand(ht)));
-    ar=ht->rows[ihash(key)%HT_HEIGHTS[ht->hein]];
+        ar=ht->rows[khash%HT_HEIGHTS[ht->hein]];
+    }
+    printf("%p\n",ar);
     return ar;
 }
 
-
-void Hashtable_add_pair(Hashtable* ht, KVPair p){
-    Autoarr_add(getrow(ht,p.key,true),p);
-}
 void Hashtable_add(Hashtable* ht, char* key, Unitype u){
-    Hashtable_add_pair(ht,KVPair(key,u));
+    KVPair p={
+        .key=key, 
+        .value=u, 
+        .khash=ihash(key)
+    };
+    Autoarr_add(getrow(ht,key,p.khash,true),p);
 }
 
 // returns null or pointer to value in hashtable
 Unitype* Hashtable_getptr(Hashtable* ht, char* key){
-    Autoarr(KVPair)* ar=getrow(ht,key,false);
+    uint32 kh=ihash(key);
+    Autoarr(KVPair)* ar=getrow(ht,key,kh,false);
     uint32 arlen=Autoarr_length(ar);
     for(uint32 i=0;i<arlen;i++){
         KVPair* p=Autoarr_getptr(ar,i);
-        if(cptr_compare(key,p->key)) return &p->value;
+        if(p->khash==kh && cptr_compare(key,p->key)) 
+            return &p->value;
     }
     return NULL;
 }
 
 Unitype Hashtable_get(Hashtable* ht, char* key){
-    Autoarr(KVPair)* ar=getrow(ht,key,false);
-    uint32 arlen=Autoarr_length(ar);
-    for(uint32 i=0;i<arlen;i++){
-        KVPair p=Autoarr_get(ar,i);
-        if(cptr_compare(key,p.key)) return p.value;
-    }
-    return UniNull;
+    Unitype* p=Hashtable_getptr(ht,key);
+    if(p) return *p;
+    else return UniNull;
 }
-KVPair Hashtable_get_pair(Hashtable* ht, char* key){
-    return KVPair(key,Hashtable_get(ht,key));
-}
+
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
     return u.type!=Null;
 }
 
-/* void Hashtable_set_pair(Hashtable* ht, KVPair p){
-    if(Hashtable_try_get(ht,p.key, NULL)){
-
-    }
+void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){
+    Unitype* val=Hashtable_getptr(ht, key);
+    if(val) *val=u;
+    else Hashtable_add(ht, key, u);
 }
-void Hashtable_set(Hashtable* ht, char* key, Unitype u){ Hashtable_set_pair(ht,KVPair(key,u)); } */

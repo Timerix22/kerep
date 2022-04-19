@@ -1,13 +1,16 @@
 #include "tests.h"
 
+#include "../Hashtable/KeyValuePair.h"
+
 void test_all(){
-    test_autoarr();
+    /* test_autoarr();
     test_string();
     test_safethrow();
-    test_searchtree();
+    test_searchtree(); */
     test_hashtable();
-    test_dtsod();
+    //test_dtsod();
     printf("\e[96m---------------------------------------\e[0m\n");
+    printf("Unitype: %lu  KVPair: %lu\n", sizeof(Unitype),sizeof(KVPair));
 }
 
 int main(){
