@@ -39,13 +39,11 @@ void __Autoarr_set_##type(Autoarr_##type* ar, uint32 index, type element){\
     ar->values[index/ar->max_block_length][index%ar->max_block_length]=element;\
 }\
 \
-void __Autoarr_clear_##type(Autoarr_##type* ar){\
+void __Autoarr_free_##type(Autoarr_##type* ar){\
     for(uint16 i=0; i<ar->blocks_count;i++)\
         free(ar->values[i]); \
     free(ar->values);\
-    ar->values=NULL;\
-    ar->blocks_count=0;\
-    ar->block_length=0;\
+    free(ar);\
 }\
 \
 __functions_list_t_##type __functions_list_##type={\
@@ -53,11 +51,12 @@ __functions_list_t_##type __functions_list_##type={\
     &__Autoarr_get_##type,\
     &__Autoarr_getptr_##type,\
     &__Autoarr_set_##type,\
-    &__Autoarr_clear_##type\
+    &__Autoarr_free_##type\
 };\
 \
-Autoarr_##type __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length){\
-    return (Autoarr_##type){\
+Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length){\
+    Autoarr_##type* ar=malloc(sizeof(Autoarr_##type));\
+    *ar=(Autoarr_##type){\
         .max_blocks_count=max_blocks_count,\
         .blocks_count=0,\
         .max_block_length=max_block_length,\
@@ -65,6 +64,7 @@ Autoarr_##type __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block
         .values=NULL,\
         .functions=&__functions_list_##type\
     };\
+    return ar;\
 }
 
 #if __cplusplus

@@ -20,13 +20,13 @@ declare_Autoarr(double)
 declare_Autoarr(Unitype)
 
 // right func to clear array of unitype values
-void Autoarr_Unitype_clear(Autoarr(Unitype)* ar);
+void Autoarr_free_Unitype(Autoarr(Unitype)* ar);
 
 #define Autoarr_foreach(ar,elem,codeblock)({\
     if(ar->blocks_count>0) {\
         typeof(**ar->values) elem;\
         for(uint32 blockI=0;blockI<ar->blocks_count-1;blockI++)\
-            for(uint32 elemI=0;elemI<ar->max_block_length;elemI++){dbg(5);\
+            for(uint32 elemI=0;elemI<ar->max_block_length;elemI++){\
                 elem=ar->values[blockI][elemI];\
                 (codeblock);\
             }\

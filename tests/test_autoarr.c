@@ -38,16 +38,16 @@ static void printallval(Autoarr(uint16)* ar){
 void test_autoarr(){
     optime("test_autoarr",1,({
         printf("\e[96m------------[test_autoarr]------------\n");
-        Autoarr(uint16) ar=Autoarr_create(uint16,10,16);
+        Autoarr(uint16)* ar=Autoarr_create(uint16,10,16);
         printf("\e[92mautoarr created\n");
-        fillar(&ar);
+        fillar(ar);
         printf("\e[92mautoarr filled up\n");
-        printautoarr(&ar);
-        printallval(&ar);
-        resetar(&ar);
+        printautoarr(ar);
+        printallval(ar);
+        resetar(ar);
         printf("\e[92mautoarr values reset\n");
-        printallval(&ar);
-        Autoarr_clear(((&ar)));
+        printallval(ar);
+        Autoarr_free(ar);
         printf("\e[92mautoarr cleared\n");
     }));
 }

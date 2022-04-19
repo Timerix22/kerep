@@ -1,25 +1,21 @@
 #include "KeyValuePair.h"
 
-define_Autoarr(KeyValuePair)
+define_Autoarr(KVPair)
 
 
 // proper way to clear a KVP
-void KeyValuePair_free(KeyValuePair p){
+void KVPair_free(KVPair p){
     free(p.key);
     Unitype_free(p.value);
 }
 
 // func for  KVP array clearing
-void Autoarr_KeyValuePair_clear(Autoarr_KeyValuePair* ar){
-    for(uint16 blockI=0; blockI < ar->blocks_count-1; blockI++)
-        for(uint16 elemI=0; elemI < ar->max_block_length; elemI++)
-            KeyValuePair_free(ar->values[blockI][elemI]);
-    for(uint16 elemI=0; elemI < ar->block_length; elemI++)
-        KeyValuePair_free(ar->values[ar->blocks_count-1][elemI]);
-    Autoarr_clear(ar);
+void Autoarr_free_KVPair(Autoarr_KVPair* ar){
+    Autoarr_foreach(ar,k,KVPair_free(k));
+    Autoarr_free(ar);
 }
 
-void printkvp(KeyValuePair p){
+void printkvp(KVPair p){
     printf("{\"%s\", ",p.key);
     printuni(p.value);
     printf("}");

@@ -5,13 +5,11 @@ extern "C" {
 #include "Autoarr.h"
 
 EXPORT void CALL kerep_Autoarr_Unitype_create(uint16 max_blocks_count, uint16 max_block_length, Autoarr_Unitype** output){
-    *output=malloc(sizeof(Autoarr_Unitype));
-    **output=Autoarr_create(Unitype, max_blocks_count, max_block_length);
+    *output=Autoarr_create(Unitype, max_blocks_count, max_block_length);
 }
 
 EXPORT void CALL kerep_Autoarr_Unitype_free(Autoarr_Unitype* ar){
-    Autoarr_clear(ar);
-    free(ar);
+    Autoarr_free_Unitype(ar);
 }
 
 EXPORT void CALL kerep_Autoarr_Unitype_get(Autoarr_Unitype* ar, uint32 index, Unitype* output){

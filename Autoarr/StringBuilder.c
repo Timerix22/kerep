@@ -1,7 +1,15 @@
 #include "StringBuilder.h"
 
-StringBuilder StringBuilder_create(uint16 max_blocks_count, uint16 max_block_length){
+StringBuilder* StringBuilder_create(uint16 max_blocks_count, uint16 max_block_length){
     return Autoarr_create(int8,max_blocks_count,max_block_length);
+}
+
+void StringBuilder_free(StringBuilder* b){
+    Autoarr_free(b);
+}
+
+void StringBuilder_pop(StringBuilder* b){
+    Autoarr_pop(b);
 }
 
 void StringBuilder_append_char(StringBuilder* b, char c){

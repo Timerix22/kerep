@@ -7,20 +7,20 @@ extern "C" {
 #include "../base/base.h"
 #include "../Autoarr/Autoarr.h"
 
-typedef struct KeyValuePair{
+typedef struct KVPair{
     char* key;
     Unitype value;
-} KeyValuePair;
+} KVPair;
 
-declare_Autoarr(KeyValuePair)
+declare_Autoarr(KVPair)
 
 // proper way to clear a KVP
-void KeyValuePair_free(KeyValuePair p);
+void KVPair_free(KVPair p);
 
 // func to clear KVP array
-void Autoarr_KeyValuePair_clear(Autoarr_KeyValuePair* ar);
+void Autoarr_free_KVPair(Autoarr_KVPair* ar);
 
-void printkvp(KeyValuePair p);
+void printkvp(KVPair p);
 
 #if __cplusplus
 }

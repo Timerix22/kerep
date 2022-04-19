@@ -130,20 +130,19 @@ Maybe __ReadValue(DeserializeSharedData* shared);
 Maybe __ReadString(DeserializeSharedData* shared){
     char c;
     bool prevIsBackslash=false;
-    StringBuilder _b=StringBuilder_create(STRB_BC,STRB_BL);
-    StringBuilder* b=&_b;
+    StringBuilder* b=StringBuilder_create(STRB_BC,STRB_BL);
 
     while ((c=*++text)){
         if(c=='"') {
             if(prevIsBackslash) {
                 // replacing <\"> with <">
-                Autoarr_remove(b); 
+                StringBuilder_pop(b); 
                 StringBuilder_append_char(b,c);
                 prevIsBackslash=false;
             }
             else {
                 char* str=StringBuilder_build(b);
-                Autoarr_clear(b);
+                StringBuilder_free(b);
                 return SUCCESS(UniPtr(CharPtr,str));
             }
         } 
@@ -153,18 +152,17 @@ Maybe __ReadString(DeserializeSharedData* shared){
         }
     }
 
-    safethrow(ERR_ENDOFSTR, Autoarr_clear(b));
+    safethrow(ERR_ENDOFSTR, StringBuilder_free(b));
 }
 #define ReadString() __ReadString(shared)
 
 Maybe __ReadList(DeserializeSharedData* shared){
-    Autoarr(Unitype)* list=malloc(sizeof(Autoarr(Unitype)));
-    *list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
+    Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     readingList=true;
 
     while (true){
         try(ReadValue(), val,{
-            Autoarr_clear(list);
+            Autoarr_free_Unitype(list);
             free(list);
         })
             Autoarr_add(list,val.value);
@@ -327,8 +325,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                     list=(Autoarr(Unitype)*)lu.VoidPtr;
                 }
                 else{
-                    list=malloc(sizeof(Autoarr(Unitype)));
-                    *list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
+                    list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
                     Hashtable_add(dict,nameCPtr,UniPtr(AutoarrUnitypePtr,list));
                 }
                 Autoarr_add(list,val.value);

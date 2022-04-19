@@ -64,7 +64,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
                 try(AppendValue(e),__,;);
                 addc(',');
             }));
-            Autoarr_remove(b);
+            StringBuilder_pop(b);
             addc('\n');
             tabs--;
             AppendTabs();
@@ -106,9 +106,9 @@ Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
 }
 
 Maybe DtsodV24_serialize(Hashtable* dtsod){
-    StringBuilder sb=StringBuilder_create(STRB_BC,STRB_BL);
-    try(__serialize(&sb,0,dtsod),__, Autoarr_clear((&sb)));
-    char* str=StringBuilder_build(&sb);
-    Autoarr_clear((&sb));
+    StringBuilder* sb=StringBuilder_create(STRB_BC,STRB_BL);
+    try(__serialize(sb,0,dtsod),__, StringBuilder_free((sb)));
+    char* str=StringBuilder_build(sb);
+    StringBuilder_free((sb));
     return SUCCESS(UniPtr(CharPtr, str));
 }

@@ -53,8 +53,8 @@ EXPORT void CALL kerep_DtsodV24_height(Hashtable* dtsod, uint16* heigth){
     *heigth=Hashtable_height(dtsod);
 }
 
-EXPORT void CALL kerep_DtsodV24_getrow(Hashtable* dtsod, uint16 h, Autoarr_KeyValuePair** row){
-    *row=dtsod->rows+h;
+EXPORT void CALL kerep_DtsodV24_getrow(Hashtable* dtsod, uint16 h, Autoarr_KVPair** row){
+    *row=dtsod->rows[h];
 }
 
 #if __cplusplus

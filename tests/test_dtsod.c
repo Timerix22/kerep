@@ -63,26 +63,5 @@ void test_dtsod(){
         }));
 
         free(s);
-
-        FILE* f=fopen("messages.dtsod", "r");
-        if(f==NULL){
-            perror("error ");
-            throw("can't open file");
-        }
-        char fbuf[65535];
-        uint32 i=0;
-        char cc;
-        while((cc=fgetc(f))!=EOF){
-            fbuf[i++]=cc;
-        }
-        fbuf[i]='\0';
-        fclose(f);
-        printf("read %u chars", i);
-        Maybe rrr=DtsodV24_deserialize(fbuf);
-        if(rrr.errmsg) {
-            throw(rrr.errmsg);
-        }
-        else dtsod=rrr.value.VoidPtr;
-        Hashtable_free(dtsod);
     }));
 }

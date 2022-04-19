@@ -80,36 +80,34 @@ void Unitype_free(Unitype u){
             STNode_free(u.VoidPtr);
             break;
         case AutoarrInt8Ptr: 
-            Autoarr_clear(((Autoarr(int8)*)u.VoidPtr));
+            __Autoarr_free_int8(u.VoidPtr);
             break;
-        case AutoarrUInt8Ptr:
-            Autoarr_clear(((Autoarr(uint8)*)u.VoidPtr));
+        case AutoarrUInt8Ptr: 
+            __Autoarr_free_uint8(u.VoidPtr);
             break;
         case AutoarrInt16Ptr: 
-            Autoarr_clear(((Autoarr(int16)*)u.VoidPtr));
+            __Autoarr_free_int16(u.VoidPtr);
             break;
         case AutoarrUInt16Ptr: 
-            Autoarr_clear(((Autoarr(uint16)*)u.VoidPtr));
+            __Autoarr_free_uint16(u.VoidPtr);
             break;
         case AutoarrInt32Ptr: 
-            Autoarr_clear(((Autoarr(int32)*)u.VoidPtr));
+            __Autoarr_free_int32(u.VoidPtr);
             break;
         case AutoarrUInt32Ptr: 
-            Autoarr_clear(((Autoarr(uint32)*)u.VoidPtr));
+            __Autoarr_free_uint32(u.VoidPtr);
             break;
         case AutoarrInt64Ptr: 
-            Autoarr_clear(((Autoarr(int64)*)u.VoidPtr));
+            __Autoarr_free_int64(u.VoidPtr);
             break;
         case AutoarrUInt64Ptr: 
-            Autoarr_clear(((Autoarr(uint64)*)u.VoidPtr));
+            __Autoarr_free_uint64(u.VoidPtr);
             break;
         case AutoarrUnitypePtr:
-            Autoarr_Unitype_clear(u.VoidPtr);
-            free((Autoarr(Unitype)*)u.VoidPtr);
+            Autoarr_free_Unitype(u.VoidPtr);
             break;
         case AutoarrKVPairPtr: 
-            Autoarr_KeyValuePair_clear(u.VoidPtr);
-            free((Autoarr(KeyValuePair)*)u.VoidPtr);
+            Autoarr_free_KVPair(u.VoidPtr);
             break;
         default: throw(ERR_WRONGTYPE);
     }

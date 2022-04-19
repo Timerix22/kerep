@@ -8,7 +8,9 @@ extern "C" {
 
 	typedef Autoarr(int8) StringBuilder;
 
-	StringBuilder StringBuilder_create(uint16 max_blocks_count, uint16 max_block_length);
+	StringBuilder* StringBuilder_create(uint16 max_blocks_count, uint16 max_block_length);
+	void StringBuilder_free(StringBuilder* b);
+	void StringBuilder_pop(StringBuilder* b);
 	void StringBuilder_append_char(StringBuilder* b, char c);
 	void StringBuilder_append_cptr(StringBuilder* b, char* s);
 	void StringBuilder_append_string(StringBuilder* b, string s);
