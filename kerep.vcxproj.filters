@@ -33,7 +33,7 @@
     <ClInclude Include="base\errors.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="base\mystr.h">
+    <ClInclude Include="base\cptr.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="base\std.h">

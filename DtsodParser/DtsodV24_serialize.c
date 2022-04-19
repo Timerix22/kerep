@@ -1,5 +1,5 @@
 #include "DtsodV24.h"
-#include "../Autoarr/StringBuilder.h"
+#include "../String/StringBuilder.h"
 
 // 65536 max length!
 #define STRB_BC 64
