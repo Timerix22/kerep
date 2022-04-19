@@ -1,8 +1,8 @@
 #include "DtsodV24.h"
 #include "../Autoarr/StringBuilder.h"
 
-#define ARR_BC 8
-#define ARR_BL 16
+#define ARR_BC 64
+#define ARR_BL 1024
 #define STRB_BC 64
 #define STRB_BL 1024
 
@@ -47,7 +47,7 @@ Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* s
         errBuf[i]=_c;
         if(!_c) break;
     }
-    char* errmsg=malloc(1024);
+    char errmsg[1024];
     IFWIN(
         sprintf_s(errmsg,1024, "unexpected <%c> at:\n"
                         "  \"%s\"\n"
@@ -60,7 +60,7 @@ Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* s
     );
     safethrow(errmsg,;);
 }
-#define safethrow_wrongchar(C, freeMem) freeMem; return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__)
+#define safethrow_wrongchar(C, freeMem) { freeMem; return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__); }
 
 
 Maybe __SkipComment(DeserializeSharedData* shared) {
@@ -139,6 +139,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
                 // replacing <\"> with <">
                 Autoarr_remove(b); 
                 StringBuilder_append_char(b,c);
+                prevIsBackslash=false;
             }
             else {
                 char* str=StringBuilder_build(b);
@@ -263,12 +264,7 @@ Maybe __ReadValue(DeserializeSharedData* shared){
             valueStr.ptr=text+1; // skips '\n'
             break;
         case '"':
-            if(valueStr.length!=0) { 
-                char* vp=string_cpToCptr(valueStr);
-                printf("\nlength: %u valueStr: %s\n",valueStr.length, vp);
-                free(vp);      
-                safethrow_wrongchar(c,;);
-            }
+            if(valueStr.length!=0) safethrow_wrongchar(c,;);
             try(ReadString(),maybeString,;)
                 value=maybeString.value;
             break;
@@ -317,15 +313,13 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
     text--;
     while(true){
         try(ReadName(), maybeName, Hashtable_free(dict))
-        if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
-            goto END;
+            if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
+                goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
-        printf("name: %s  ", nameCPtr);
         try(ReadValue(), val, {
             Hashtable_free(dict);
             free(nameCPtr);
         }) {
-            printuni(val.value);printf("\n");
             if(partOfDollarList){
                 Autoarr(Unitype)* list;
                 Unitype lu;
