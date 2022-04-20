@@ -2,6 +2,8 @@
 #include "../DtsodParser/DtsodV24.h"
 
 const char text[]=
+"list_of_lists: [ [\"sss\"]];"
+"blank_list: [];"
 "message: {\n"
 "    bool: false;"
 "    int: -2515;"
@@ -9,7 +11,6 @@ const char text[]=
 "    double: 965.557f;#another comment!\n"
 "    text: \"_$\\\"\\\\'''a ыыы000;2;=:%d;```\";\n"
 "    list: [10,20,30,0,0 ];"
-"    list_of_lists: [ [\"sss\"]];"
 "};";
 
 void print_dtsod(Hashtable* dtsod){

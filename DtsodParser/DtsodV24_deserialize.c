@@ -9,13 +9,11 @@ typedef struct DeserializeSharedData{
     const char* sh_text_first;
     char* sh_text;
     bool sh_partOfDollarList;
-    bool sh_readingList;
     bool sh_calledRecursively;
 } DeserializeSharedData;
 
 #define text shared->sh_text
 #define partOfDollarList shared->sh_partOfDollarList
-#define readingList shared->sh_readingList
 #define calledRecursively shared->sh_calledRecursively
 
 
@@ -121,8 +119,8 @@ Maybe __ReadName(DeserializeSharedData* shared){
 #define ReadName() __ReadName(shared)
 
 Maybe __deserialize(char** _text, bool _calledRecursively);
-Maybe __ReadValue(DeserializeSharedData* shared);
-#define ReadValue() __ReadValue(shared)
+Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList);
+#define ReadValue(rL) __ReadValue(shared, rL)
 
 // returns part of <text> without quotes
 Maybe __ReadString(DeserializeSharedData* shared){
@@ -155,15 +153,19 @@ Maybe __ReadString(DeserializeSharedData* shared){
 
 Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
-    readingList=true;
-
+    bool readingList=true;
+    printf("list:\n");
     while (true){
-        try(ReadValue(), val,{
-            Autoarr_free_Unitype(list);
-            free(list);
-        })
-            Autoarr_add(list,val.value);
-        if (!readingList) break;
+        try(ReadValue((&readingList)), val, Autoarr_free_Unitype(list))
+            Autoarr_add(list,val.value); 
+        printf("    ");printuni(val.value);printf("\n");
+        if (!readingList){
+            if(val.value.type==Null){
+                printf("null!\n");
+                Autoarr_pop(list);
+            }
+            break;
+        }
     }
 
     return SUCCESS(UniPtr(AutoarrUnitypePtr,list));
@@ -230,10 +232,10 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
 };
 #define ParseValue(str) __ParseValue(shared, str)
 
-Maybe __ReadValue(DeserializeSharedData* shared){
+Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
     char c;
     string valueStr={text+1,0};
-    Unitype value;
+    Unitype value=UniNull;
     bool spaceAfterVal=false;
     
     while ((c=*++text)) switch (c){
@@ -275,10 +277,12 @@ Maybe __ReadValue(DeserializeSharedData* shared){
                 value=maybeList.value;
             break;
         case ']':
-            readingList=false;
+            *readingList=false;
         case ';':
         case ',':
             if(valueStr.length!=0){
+                if(value.type!=Null) 
+                    safethrow_wrongchar(c,Unitype_free(value));
                 try(ParseValue(valueStr),maybeParsed,;)
                     value=maybeParsed.value;
             }
@@ -299,7 +303,6 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
         .sh_text_first=*_text,
         .sh_text=*_text,
         .sh_partOfDollarList=false,
-        .sh_readingList=false,
         .sh_calledRecursively=_calledRecursively
     };
     DeserializeSharedData* shared=&_shared;
@@ -311,7 +314,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
             if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
                 goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
-        try(ReadValue(), val, {
+        try(ReadValue(NULL), val, {
             Hashtable_free(dict);
             free(nameCPtr);
         }) {
