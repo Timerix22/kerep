@@ -30,10 +30,6 @@ void print_dtsod(Hashtable* dtsod){
     }));
 }
 
-
-#include <errno.h>
-
-
 void test_dtsod(){
     optime(__func__,1,({
         printf("\e[96m-------------[test_dtsod]-------------\n");

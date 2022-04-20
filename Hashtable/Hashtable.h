@@ -19,27 +19,18 @@ void Hashtable_free(Hashtable* ht);
 // amount of rows
 uint16 Hashtable_height(Hashtable* ht);
 
-// adds charptr and value to new KVPair
-// use cptr_copy() to create new string if needed
-#define KVPair(key,value) (KVPair){key,value}
-
-// 
 // don't add pairs with the same keys,
 // or something weird will happen
-// 
-void Hashtable_add_pair(Hashtable* ht, KVPair p);
+// if not sure, use Hashtable_addOrSet()
 void Hashtable_add(Hashtable* ht, char* key, Unitype u);
+
+void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u);
 
 // returns null or pointer to value in hashtable
 Unitype* Hashtable_getptr(Hashtable* ht, char* key);
 
 Unitype Hashtable_get(Hashtable* ht, char* key);
-KVPair Hashtable_get_pair(Hashtable* ht, char* key);
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output);
-
-// not implemented yet
-void Hashtable_set_pair(Hashtable* ht, KVPair p);
-void Hashtable_set(Hashtable* ht, char* key, Unitype u);
 
 #define Hashtable_foreach(HT, EL, codeblock)({\
     uint16 hmax=Hashtable_height(HT);\

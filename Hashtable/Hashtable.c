@@ -53,19 +53,17 @@ void Hashtable_expand(Hashtable* ht){
 }
 
 Autoarr(KVPair)* getrow(Hashtable* ht, char* key, bool can_expand){
-    Autoarr(KVPair)* ar=ht->rows[ihash(key)%HT_HEIGHTS[ht->hein]];
+    uint32 hash=ihash(key);
+    Autoarr(KVPair)* ar=ht->rows[hash%HT_HEIGHTS[ht->hein]];
     if(can_expand && Autoarr_length(ar)==Autoarr_max_length(ar))
         optime("expand",1,(Hashtable_expand(ht)));
-    ar=ht->rows[ihash(key)%HT_HEIGHTS[ht->hein]];
+    ar=ht->rows[hash%HT_HEIGHTS[ht->hein]];
     return ar;
 }
 
-
-void Hashtable_add_pair(Hashtable* ht, KVPair p){
-    Autoarr_add(getrow(ht,p.key,true),p);
-}
 void Hashtable_add(Hashtable* ht, char* key, Unitype u){
-    Hashtable_add_pair(ht,KVPair(key,u));
+    KVPair p={ .key=key, .value=u };
+    Autoarr_add(getrow(ht,key,true),p);
 }
 
 // returns null or pointer to value in hashtable
@@ -88,18 +86,15 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
     }
     return UniNull;
 }
-KVPair Hashtable_get_pair(Hashtable* ht, char* key){
-    return KVPair(key,Hashtable_get(ht,key));
-}
+
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
     return u.type!=Null;
 }
 
-/* void Hashtable_set_pair(Hashtable* ht, KVPair p){
-    if(Hashtable_try_get(ht,p.key, NULL)){
-
-    }
+void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){
+    Unitype* val=Hashtable_getptr(ht, key);
+    if(val) *val=u;
+    else Hashtable_add(ht, key, u);
 }
-void Hashtable_set(Hashtable* ht, char* key, Unitype u){ Hashtable_set_pair(ht,KVPair(key,u)); } */

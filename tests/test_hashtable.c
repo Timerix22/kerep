@@ -36,28 +36,27 @@ void printrowgraph(Hashtable* ht){
         }
 }
 
+char* genkey(uint32 i){
+    char* key=malloc(12);
+    IFWIN(
+        sprintf_s(key,12,"key_%u",i),
+        sprintf(key,"key_%u",i)
+    );
+    return key;
+}
+
 void fill(Hashtable* ht){
-    for(uint32 i=0;i<100000;i++){
-        char* key=malloc(12);
-        IFWIN(
-            sprintf_s(key,12,"key_%u",i),
-            sprintf(key,"key_%u",i)
-        );
-        Hashtable_add(ht,key,Uni(UInt64,i));
-    }
+    for(uint32 i=0;i<100000;i++)
+        Hashtable_add(ht,genkey(i),Uni(UInt64,i));
 }
 
 Unitype gett(Hashtable* ht){
-    char* key=malloc(12);
     Unitype u;
     for(uint32 i=0;i<100000;i++){
-        IFWIN(
-            sprintf_s(key,12,"key_%u",i),
-            sprintf(key,"key_%u",i)
-        );
+        char* key=genkey(i);
         u=Hashtable_get(ht,key);
+        free(key);
     }
-    free(key);
     return u;
 }
 

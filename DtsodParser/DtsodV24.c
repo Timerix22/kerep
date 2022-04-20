@@ -7,9 +7,7 @@ Unitype DtsodV24_get(Hashtable* dtsod, char* key){
 
 // adds or sets value
 void DtsodV24_addOrSet(Hashtable* dtsod, char* key, Unitype value){
-    Unitype* val=Hashtable_getptr(dtsod, key);
-    if(val) *val=value;
-    else Hashtable_add(dtsod, key, value);
+    Hashtable_addOrSet(dtsod,key,value);
 }
 
 // checks for dtsod contains value or dont
