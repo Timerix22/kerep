@@ -1,12 +1,6 @@
 # Build results
 bin/
-bin-*/
-.bin/
 obj/
-obj-*/
-log/
-logs/
-logs-*/
 
 # IDE files
 .vs/
@@ -18,6 +12,3 @@ logs-*/
 
 #backups
 .old*/
-
-#temp
-messages.dtsod
