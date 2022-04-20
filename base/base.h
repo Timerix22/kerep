@@ -7,7 +7,7 @@ extern "C" {
 #include "std.h"
 #include "types.h"
 #include "errors.h"
-#include "mystr.h"
+#include "cptr.h"
 
 // executes codeblock and prints execution time
 #ifdef CLOCK_REALTIME // non-standard high-precision clock

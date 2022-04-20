@@ -1,9 +1,6 @@
 #include "DtsodV24.h"
-#include "../Autoarr/StringBuilder.h"
+#include "../String/StringBuilder.h"
 
-// 65536 max length!
-#define STRB_BC 64
-#define STRB_BL 1024
 
 typedef struct SerializeSharedData{
     StringBuilder* sh_builder; 
@@ -35,7 +32,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             addc('u');
             break;
         case Float64:
-            StringBuilder_append_double(b,u.Float64);
+            StringBuilder_append_float64(b,u.Float64);
             addc('f');
             break;
         case CharPtr:
@@ -64,7 +61,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
                 try(AppendValue(e),__,;);
                 addc(',');
             }));
-            StringBuilder_pop(b);
+            StringBuilder_rmchar(b);
             addc('\n');
             tabs--;
             AppendTabs();
@@ -106,9 +103,8 @@ Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
 }
 
 Maybe DtsodV24_serialize(Hashtable* dtsod){
-    StringBuilder* sb=StringBuilder_create(STRB_BC,STRB_BL);
-    try(__serialize(sb,0,dtsod),__, StringBuilder_free((sb)));
-    char* str=StringBuilder_build(sb);
-    StringBuilder_free((sb));
+    StringBuilder* sb=StringBuilder_create();
+    try(__serialize(sb,0,dtsod),__, StringBuilder_free(sb));
+    char* str=StringBuilder_build(sb).ptr;
     return SUCCESS(UniPtr(CharPtr, str));
 }

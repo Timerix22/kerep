@@ -1,6 +1,6 @@
 #include "std.h"
 #include "errors.h"
-#include "mystr.h"
+#include "cptr.h"
 
 char* errname(err_t err){
     switch(err){

@@ -207,7 +207,7 @@
     <ClInclude Include="Autoarr\StringBuilder.h" />
     <ClInclude Include="base\base.h" />
     <ClInclude Include="base\errors.h" />
-    <ClInclude Include="base\mystr.h" />
+    <ClInclude Include="base\cptr.h" />
     <ClInclude Include="base\std.h" />
     <ClInclude Include="base\types.h" />
     <ClInclude Include="DtsodParser\DtsodV24.h" />
