@@ -1,7 +1,7 @@
 #include "../String/string.h"
 
 // copies str content to new char pointer value (adding '\0' at the end)
-char* string_cpToCptr(string str){
+char* string_extract(string str){
     if(str.length==0) return NULL;
     char* cptr=malloc(str.length*sizeof(char)+1);
     cptr[str.length]=0;
@@ -10,15 +10,15 @@ char* string_cpToCptr(string str){
     return cptr;
 }
 
-// copies cptr content (excluding '\0' at the end) to new string
-string string_cpFromCharPtr(char* cptr){
-    if(!cptr) return stringNull;
-    string str;
-    str.length=cptr_length(cptr)-1;
-    str.ptr=malloc(str.length);
-    for(uint32 i=0;i<str.length;i++)
-        str.ptr[i]=cptr[i];
-    return str;
+// copies src.ptr content to new string
+string string_copy(string src){
+    if(!src.ptr) return src;
+    string nstr;
+    nstr.length=src.length;
+    nstr.ptr=malloc(nstr.length);
+    for(uint32 i=0;i<nstr.length;i++)
+        nstr.ptr[i]=src.ptr[i];
+    return nstr;
 }
 
 // compares two strings, NullPtr-friendly

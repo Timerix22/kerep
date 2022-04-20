@@ -3,8 +3,6 @@
 
 #define ARR_BC 64
 #define ARR_BL 1024
-#define STRB_BC 64
-#define STRB_BL 1024
 
 
 typedef struct DeserializeSharedData{
@@ -105,7 +103,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
                 safethrow_wrongchar(c,;);
             return SUCCESS(UniPtr(CharPtr,NULL));
         case ':':
-            return SUCCESS(UniPtr(CharPtr,string_cpToCptr(nameStr)));
+            return SUCCESS(UniPtr(CharPtr,string_extract(nameStr)));
         case '$':
             if(nameStr.length!=0)
                 safethrow_wrongchar(c,;);
@@ -130,19 +128,18 @@ Maybe __ReadValue(DeserializeSharedData* shared);
 Maybe __ReadString(DeserializeSharedData* shared){
     char c;
     bool prevIsBackslash=false;
-    StringBuilder* b=StringBuilder_create(STRB_BC,STRB_BL);
+    StringBuilder* b=StringBuilder_create();
 
     while ((c=*++text)){
         if(c=='"') {
             if(prevIsBackslash) {
                 // replacing <\"> with <">
-                StringBuilder_pop(b); 
+                StringBuilder_rmchar(b); 
                 StringBuilder_append_char(b,c);
                 prevIsBackslash=false;
             }
             else {
-                char* str=StringBuilder_build(b);
-                StringBuilder_free(b);
+                char* str=StringBuilder_build(b).ptr;
                 return SUCCESS(UniPtr(CharPtr,str));
             }
         } 
@@ -188,7 +185,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             break;
         // Float64
         case 'f': {
-            char* _c=string_cpToCptr(str);
+            char* _c=string_extract(str);
             Unitype rez=Uni(Float64,strtod(_c,NULL));
             free(_c);
             return SUCCESS(rez);
@@ -196,7 +193,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         // UInt64
         case 'u': {
             uint64 lu=0;
-            char* _c=string_cpToCptr(str);
+            char* _c=string_extract(str);
             if(sscanf(_c,"%lu",&lu)!=1){
                 char err[64];
                 IFWIN(
@@ -212,7 +209,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9': {
             int64 li=0;
-            char* _c=string_cpToCptr(str);
+            char* _c=string_extract(str);
             if(sscanf(_c,"%li",&li)!=1){
                 char err[64];
                 IFWIN(

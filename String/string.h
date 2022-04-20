@@ -16,10 +16,10 @@ typedef struct string{
 static const string stringNull={NULL,0};
 
 // copies str content to new char pointer value (adding '\0' at the end)
-char* string_cpToCptr(string str);
+char* string_extract(string str);
 
-// copies cptr content (excluding '\0' at the end) to new string
-string string_cpFromCharPtr(char* cptr);
+// copies src.ptr content to new string
+string string_copy(string src);
 
 // compares two strings, NullPtr-friendly
 bool string_compare(string str0, string str1);

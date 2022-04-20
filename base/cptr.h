@@ -6,7 +6,7 @@ extern "C" {
 
 #include "types.h"
 
-// returns length of string (including \0)
+// returns length of char buffer (without \0)
 uint32 cptr_length(char* str);
 
 // allocates new char[] and copies src there

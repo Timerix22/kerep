@@ -1,16 +1,16 @@
 #include "base.h"
 
-// returns length of string (including \0)
+// returns length of char buffer (without \0)
 uint32 cptr_length(char* str){
     uint32 len=0;
     while(*(str++)) len++;
-    return ++len;
+    return len;
 }
 
 // allocates new char[] and copies src there
 char* cptr_copy(char* src){
     uint32 len=cptr_length(src);
-    char* dst=malloc(len*sizeof(char));
+    char* dst=malloc(len+1);
     while(len-->0)
         dst[len]=src[len];
     return dst;
