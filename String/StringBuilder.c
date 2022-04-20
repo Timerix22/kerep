@@ -140,6 +140,5 @@ void StringBuilder_append_float64(StringBuilder* b, double a){
         sprintf_s(buf,32,"%lf",a),
         sprintf(buf,"%lf",a)
     );
-    StringBuilder_append_cptr(b,buf);
     curr_buf_add_string(b, (string){.ptr=buf, .length=cptr_length(buf)});
 }
