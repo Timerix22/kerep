@@ -248,7 +248,7 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
         case '=': case ':': 
         case '}': case '$':
         case '\'':
-            safethrow_wrongchar(c,;);
+            safethrow_wrongchar(c,Unitype_free(value));
             break;
         case '#':;
             char _c=c;
@@ -256,27 +256,28 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
             try(SkipComment(),_,;);
             if(valueStr.length!=0){
                 text=_text;
-                safethrow_wrongchar(_c,;);
+                safethrow_wrongchar(_c,Unitype_free(value));
             }
             valueStr.ptr=text+1; // skips '\n'
             break;
         case '"':
-            if(valueStr.length!=0) safethrow_wrongchar(c,;);
+            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_free(value));
             try(ReadString(),maybeString,;)
                 value=maybeString.value;
             break;
         case '{':
-            if(valueStr.length!=0) safethrow_wrongchar(c,;);
+            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_free(value));
             ++text; // skips '{' 
-            try(__deserialize(&text,true), val,;)
+            try(__deserialize(&text,true), val,Unitype_free(value))
                 value=val.value;
             break;
         case '[':
-            if(valueStr.length!=0) safethrow_wrongchar(c,;);
-            try(ReadList(),maybeList,;)
+            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_free(value));
+            try(ReadList(),maybeList,Unitype_free(value))
                 value=maybeList.value;
             break;
         case ']':
+            if(!readingList) safethrow_wrongchar(c,Unitype_free(value));
             *readingList=false;
         case ';':
         case ',':
@@ -289,7 +290,7 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
             return SUCCESS(value);
         default:
             if(spaceAfterVal)
-                safethrow_wrongchar(c,;); 
+                safethrow_wrongchar(c,Unitype_free(value)); 
             valueStr.length++;
             break;
     }
