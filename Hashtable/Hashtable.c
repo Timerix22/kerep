@@ -30,7 +30,7 @@ uint16 Hashtable_height(Hashtable* ht) { return HT_HEIGHTS[ht->hein]; }
 void Hashtable_expand(Hashtable* ht){
     if(ht->hein>=HT_HEIN_MAX) throw(ERR_MAXLENGTH);
 
-    Autoarr(KVPair)** newrows=malloc(HT_HEIGHTS[++ht->hein]*sizeof(Autoarr(KVPair)));
+    Autoarr(KVPair)** newrows=malloc(HT_HEIGHTS[++ht->hein]*sizeof(Autoarr(KVPair)*));
     for(uint16 i=0;i<HT_HEIGHTS[ht->hein];i++)
         newrows[i]=Autoarr_create(KVPair,ARR_BC,ARR_BL);
 

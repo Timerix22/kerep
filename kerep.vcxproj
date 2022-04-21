@@ -204,7 +204,6 @@
     <ClInclude Include="Autoarr\Autoarr.h" />
     <ClInclude Include="Autoarr\Autoarr_declare.h" />
     <ClInclude Include="Autoarr\Autoarr_define.h" />
-    <ClInclude Include="Autoarr\StringBuilder.h" />
     <ClInclude Include="base\base.h" />
     <ClInclude Include="base\errors.h" />
     <ClInclude Include="base\cptr.h" />
@@ -215,6 +214,8 @@
     <ClInclude Include="Hashtable\Hashtable.h" />
     <ClInclude Include="Hashtable\KeyValuePair.h" />
     <ClInclude Include="SearchTree\SearchTree.h" />
+    <ClInclude Include="String\string.h" />
+    <ClInclude Include="String\StringBuilder.h" />
     <ClInclude Include="tests\tests.h" />
     <ClInclude Include="tests\test_marshalling.h" />
   </ItemGroup>
@@ -222,9 +223,8 @@
     <ClCompile Include="Autoarr\Autoarr.c" />
     <ClCompile Include="Autoarr\Autoarr_KVPair_exported.c" />
     <ClCompile Include="Autoarr\Autoarr_Unitype_exported.c" />
-    <ClCompile Include="Autoarr\StringBuilder.c" />
+    <ClCompile Include="base\cptr.c" />
     <ClCompile Include="base\errors.c" />
-    <ClCompile Include="base\mystr.c" />
     <ClCompile Include="base\types.c" />
     <ClCompile Include="DtsodParser\DtsodV24.c" />
     <ClCompile Include="DtsodParser\DtsodV24_deserialize.c" />
@@ -234,6 +234,8 @@
     <ClCompile Include="Hashtable\Hashtable.c" />
     <ClCompile Include="Hashtable\KeyValuePair.c" />
     <ClCompile Include="SearchTree\SearchTree.c" />
+    <ClCompile Include="String\string.c" />
+    <ClCompile Include="String\StringBuilder.c" />
     <ClCompile Include="tests\main.c" />
     <ClCompile Include="tests\test_autoarr.c" />
     <ClCompile Include="tests\test_dtsod.c" />

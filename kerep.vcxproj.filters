@@ -63,6 +63,12 @@
     <ClInclude Include="tests\tests.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="String\string.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="String\StringBuilder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Autoarr\Autoarr.c">
@@ -132,6 +138,15 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="tests\test_safethrow.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="base\cptr.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="String\string.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="String\StringBuilder.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

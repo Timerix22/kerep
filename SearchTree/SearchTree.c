@@ -51,12 +51,12 @@ void ST_push(STNode* node_first, const char* key, Unitype value){
     while(*key){
         indexes3 i3=splitindex((uint8)*key);
         if(!node_last->branches){
-            node_last->branches=(STNode****)malloc(8*sizeof(STNode*));
+            node_last->branches=(STNode****)malloc(8*sizeof(STNode***));
             for(uint8 i=0;i<8;i++)
                 node_last->branches[i]=(STNode***)NULL;
         }
         if(!node_last->branches[i3.n32]){
-            node_last->branches[i3.n32]=(STNode***)malloc(8*sizeof(STNode*));
+            node_last->branches[i3.n32]=(STNode***)malloc(8*sizeof(STNode**));
             for(uint8 i=0;i<8;i++)
                 node_last->branches[i3.n32][i]=(STNode**)NULL;
         }
