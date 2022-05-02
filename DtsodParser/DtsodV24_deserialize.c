@@ -320,6 +320,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
             free(nameCPtr);
         }) {
             if(partOfDollarList){
+                partOfDollarList=false;
                 Autoarr(Unitype)* list;
                 Unitype lu;
                 if(Hashtable_try_get(dict,nameCPtr, &lu)){
