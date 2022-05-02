@@ -154,16 +154,12 @@ Maybe __ReadString(DeserializeSharedData* shared){
 Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     bool readingList=true;
-    printf("list:\n");
     while (true){
         try(ReadValue((&readingList)), val, Autoarr_free_Unitype(list))
             Autoarr_add(list,val.value); 
-        printf("    ");printuni(val.value);printf("\n");
         if (!readingList){
-            if(val.value.type==Null){
-                printf("null!\n");
+            if(val.value.type==Null)
                 Autoarr_pop(list);
-            }
             break;
         }
     }
