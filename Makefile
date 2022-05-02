@@ -6,7 +6,7 @@ CMP=gcc
 OPT_ARGS=-O2 -flto
 WARN_ARGS=-Wall -Wno-discarded-qualifiers
 
-all: build_test
+all: clear_c clear_bin build_test build_test_dbg build_lib build_dll
 
 clear_c:
 	clear
@@ -20,31 +20,39 @@ clang: CMP=clang
 clang: WARN_ARGS=-Wall -Wno-ignored-qualifiers -Wno-incompatible-pointer-types-discards-qualifiers
 clang: all
 
+######################################
+######       Build tasks       #######
+######################################
 TEST_FILE=kerep_test.com
 TEST_ARGS=$(WARN_ARGS) $(SRC) $(TESTS) -o $(OUTDIR)/$(TEST_FILE)
-build_test: clear_c clear_bin
+
+build_test:  
 	@echo -e '\n\e[96m-------------[build_test]-------------\e[0m'
 	$(CMP) $(OPT_ARGS) $(TEST_ARGS)
 
-build_test_dbg: clear_c clear_bin
+build_test_dbg:  
 	@echo -e '\n\e[96m-----------[build_test_dbg]-----------\e[0m'
 	$(CMP) -g -O0 $(TEST_ARGS).dbg 
 
-test: build_test
+LIB_ARGS=$(OPT_ARGS) $(WARN_ARGS)\
+	-fpic -shared -Wl,-soname,$(LIB_FILE)\
+	$(SRC) tests/test_marshalling.c 
+LIB_FILE=kerep.so
+
+build_lib:  
+	@echo -e '\n\e[96m-------------[build_lib]--------------\e[0m'
+	$(CMP) $(LIB_ARGS) -o $(OUTDIR)/$(LIB_FILE)
+
+######################################
+######        Run tasks        #######
+######################################
+test: clear_c build_test
 	@echo -e '\n\e[96m-------------[build_test]-------------\e[0m'
 	tabs 4
 	$(OUTDIR)/$(TEST_FILE)
 
-valgrind: build_test_dbg
+valgrind: clear_c build_test_dbg
 	@echo -e '\n\e[96m--------------[valgrind]--------------\e[0m'
 	tabs 4
 	valgrind -s --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ \
 	--leak-check=full --show-leak-kinds=all $(OUTDIR)/$(TEST_FILE).dbg
-
-LIB_FILE=kerep.so
-LIB_ARGS=$(OPT_ARGS) $(WARN_ARGS)\
-	-fpic -shared -Wl,-soname,$(LIB_FILE)\
-	$(SRC) tests/test_marshalling.c -o $(OUTDIR)/$(LIB_FILE)
-build_lib: clear_c clear_bin
-	@echo -e '\n\e[96m-------------[build_lib]--------------\e[0m'
-	$(CMP) $(LIB_ARGS)
