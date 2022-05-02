@@ -11,7 +11,8 @@ const char text[]=
 "    double: 965.557f;#another comment!\n"
 "    text: \"_$\\\"\\\\'''a ыыы000;2;=:%d;```\";\n"
 "    list: [10,20,30,0,0 ];"
-"};";
+"};"
+"h: { };";
 
 void print_dtsod(Hashtable* dtsod){
     printf("\e[92m");
@@ -47,7 +48,7 @@ void test_dtsod(){
             tryLast(DtsodV24_serialize(dtsod),r)
                 s=r.value.VoidPtr;
         }));
-        Hashtable_free(dtsod);
+        DtsodV24_free(dtsod);
         printf("\e[92m%s",s);
 
         optime("reserialize",10,({
@@ -56,7 +57,7 @@ void test_dtsod(){
             free(s);
             tryLast(DtsodV24_serialize(dtsod),rr)
                 s=rr.value.VoidPtr;
-            Hashtable_free(dtsod);
+            DtsodV24_free(dtsod);
         }));
 
         free(s);

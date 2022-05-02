@@ -74,6 +74,20 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             }
             break;
         case HashtablePtr:
+            // check hashtable is blank
+            Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
+                goto hashtableNotBlank;
+                if(__.key); // weird way to disable warning
+            }));
+                
+
+            // blank hashtable
+            addc('{');
+            addc('}');
+            break;
+
+            // not blank hashtable
+            hashtableNotBlank:
             addc('\n');
             AppendTabs();
             addc('{');
@@ -94,7 +108,7 @@ Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
         .sh_tabs=_tabs
     };
     SerializeSharedData* shared=&_shared;
-
+    
     Hashtable_foreach(dtsod, p, ({
         AppendTabs();
         StringBuilder_append_cptr(b,p.key);
