@@ -42,10 +42,12 @@ void Maybe_free(Maybe e){
     free(e.errmsg);
     Unitype_free(e.value);
 }
+
 void printMaybe(Maybe e){
     if(e.errmsg) printf("%s\n",e.errmsg);
     else printuni(e.value);
 }
 
 char* __doNothing(char* a) {return a;}
+
 char* __unknownErr() {return "UNKNOWN ERROR";}

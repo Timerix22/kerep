@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "../Hashtable/Hashtable.h"
+#include "../src/Hashtable/Hashtable.h"
 
 void print_hashtable(Hashtable* ht){
     printf("\e[94mHashtable: "

@@ -1,4 +1,4 @@
-#include "../String/string.h"
+#include "string.h"
 
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str){

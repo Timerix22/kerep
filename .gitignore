@@ -6,7 +6,6 @@ obj/
 .vs/
 .vscode/
 .vshistory/
-.idea/
 .editorconfig
 *.user
 

@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #include "../Autoarr/Autoarr.h"
-#include "../String/string.h"
+#include "string.h"
 
 declare_Autoarr(string)
 
