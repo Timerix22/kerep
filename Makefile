@@ -4,9 +4,9 @@ TESTS=$(wildcard tests/*c) $(wildcard tests/**/*.c)
 OUTDIR=bin
 CMP=gcc
 OPT_ARGS=-O2 -flto
-WARN_ARGS=-Wall -Wno-discarded-qualifiers
+WARN_ARGS=-Wall -Wno-discarded-qualifiers -std=c17
 
-all: clear_c clear_bin build_test build_test_dbg build_lib build_dll
+all: clear_c clear_bin build_test build_lib
 
 clear_c:
 	clear
@@ -17,7 +17,7 @@ clear_bin:
 	mkdir $(OUTDIR)
 
 clang: CMP=clang
-clang: WARN_ARGS=-Wall -Wno-ignored-qualifiers -Wno-incompatible-pointer-types-discards-qualifiers
+clang: WARN_ARGS=-Wall -Wno-ignored-qualifiers -Wno-incompatible-pointer-types-discards-qualifiers -std=c17
 clang: all
 
 ######################################

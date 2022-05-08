@@ -31,6 +31,9 @@ extern "C" {
     #else
         #define CALL
     #endif
+    #ifndef typeof
+        #define typeof __typeof__
+    #endif
 #else
     #pragma GCC error "unknown compiler"
 #endif
