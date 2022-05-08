@@ -40,8 +40,13 @@ extern "C" {
 
 #ifdef _MSC_VER
     #define IFWIN(YES, NO) YES
+    #define IFMSC(YES, NO) NO
+#elif defined(_WIN64) || defined(_WIN32)
+    #define IFWIN(YES, NO) YES
+    #define IFMSC(YES, NO) NO
 #elif defined(__GNUC__)
     #define IFWIN(YES, NO) NO
+    #define IFMSC(YES, NO) NO
 #else
     #pragma GCC error "unknown compiler"
 #endif

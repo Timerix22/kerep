@@ -49,7 +49,6 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             break;
         case Null:
             safethrow("Null isn't supported in DtsodV24",;);
-            break;
         case AutoarrUnitypePtr:
             if(Autoarr_length(((Autoarr_Unitype*)(u.VoidPtr)))){
                 addc('\n');
@@ -79,7 +78,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
                 goto hashtableNotBlank;
                 if(__.key); // weird way to disable warning
             }));
-                
+
 
             // blank hashtable
             addc('{');
@@ -96,7 +95,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             AppendTabs();
             addc('}');
             break;
-        default: dbg((u.type)); safethrow(ERR_WRONGTYPE,;); 
+        default: dbg((u.type)); safethrow(ERR_WRONGTYPE,;);
     }
 
     return MaybeNull;
@@ -104,11 +103,11 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
 
 Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
     SerializeSharedData _shared={
-        .sh_builder=_b, 
+        .sh_builder=_b,
         .sh_tabs=_tabs
     };
     SerializeSharedData* shared=&_shared;
-    
+
     Hashtable_foreach(dtsod, p, ({
         AppendTabs();
         StringBuilder_append_cptr(b,p.key);

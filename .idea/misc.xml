@@ -7,7 +7,6 @@
     </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/.vscode" />
-      <file path="$PROJECT_DIR$/bin" />
     </excludeRoots>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

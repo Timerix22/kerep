@@ -3,10 +3,10 @@ TESTS=$(wildcard tests/*c) $(wildcard tests/**/*.c)
 
 OUTDIR=bin
 CMP=gcc
-OPT_ARGS=-O2 -std=c17
+OPT_ARGS=-O2 -flto -std=c17
 WARN_ARGS=-Wall -Wno-discarded-qualifiers
 
-all: clear_c clear_bin build_test build_lib
+all: clear_c clear_bin build_test_dbg
 
 clear_c:
 	clear
@@ -42,6 +42,16 @@ LIB_FILE=kerep.so
 build_lib:
 	@echo -e '\n\e[96m-------------[build_lib]--------------\e[0m'
 	$(CMP) $(LIB_ARGS) -o $(OUTDIR)/$(LIB_FILE)
+
+DLL_ARGS=$(OPT_ARGS) $(WARN_ARGS)\
+	-shared -fpic -static-libgcc -static-libstdc++\
+	$(SRC) tests/test_marshalling.c
+DLL_FILE=kerep.dll
+
+build_dll:
+	gcc --version
+	@echo -e '\n\e[96m-------------[build_dll]--------------\e[0m'
+	$(CMP) $(DLL_ARGS) -o $(OUTDIR)/$(DLL_FILE)
 
 ######################################
 ######        Run tasks        #######

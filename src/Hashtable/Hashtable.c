@@ -37,7 +37,7 @@ void Hashtable_expand(Hashtable* ht){
     for(uint16 i=0;i<HT_HEIGHTS[ht->hein-1];i++){
         Autoarr(KVPair)* ar=ht->rows[i];
         uint32 arlen=Autoarr_length(ar);
-        for(uint16 k=0;k<arlen;k++){
+        for(uint32 k=0;k<arlen;k++){
             KVPair p=Autoarr_get(ar,k);
             uint16 newrown=ihash(p.key)%HT_HEIGHTS[ht->hein];
             Autoarr(KVPair)* newar=newrows[newrown];

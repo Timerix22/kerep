@@ -44,7 +44,7 @@ Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* s
         if(!_c) break;
     }
     char errmsg[1024];
-    IFWIN(
+    IFMSC(
         sprintf_s(errmsg,1024, "unexpected <%c> at:\n"
                         "  \"%s\"\n"
                         "\\___[%s:%d] %s()", 
@@ -85,7 +85,6 @@ Maybe __ReadName(DeserializeSharedData* shared){
         case '[':  case ']':
         case '{':
             safethrow_wrongchar(c,;);
-            break;
         case '#': ;
             char _c=c;
             char* _text=text;
@@ -180,7 +179,6 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             else if(string_compare(str,falseStr))
                 return SUCCESS(UniFalse);
             else safethrow_wrongchar(*str.ptr,;);
-            break;
         // Float64
         case 'f': {
             char* _c=string_extract(str);
@@ -192,9 +190,9 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         case 'u': {
             uint64 lu=0;
             char* _c=string_extract(str);
-            if(sscanf(_c,"%lu",&lu)!=1){
+            if(sscanf(_c, IFWIN("%llu", "%lu"), &lu)!=1){
                 char err[64];
-                IFWIN(
+                IFMSC(
                     sprintf_s(err,64,"can't parse to int: <%s>",_c),
                     sprintf(err,"can't parse to int: <%s>",_c)
                 );
@@ -208,9 +206,9 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         case '5': case '6': case '7': case '8': case '9': {
             int64 li=0;
             char* _c=string_extract(str);
-            if(sscanf(_c,"%li",&li)!=1){
+            if(sscanf(_c, IFWIN("%lli", "%li"), &li)!=1){
                 char err[64];
-                IFWIN(
+                IFMSC(
                     sprintf_s(err,64,"can't parse to int: <%s>",_c),
                     sprintf(err,"can't parse to int: <%s>",_c)
                 );
@@ -245,7 +243,6 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
         case '}': case '$':
         case '\'':
             safethrow_wrongchar(c,Unitype_free(value));
-            break;
         case '#':;
             char _c=c;
             char* _text=text;

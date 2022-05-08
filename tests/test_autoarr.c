@@ -20,17 +20,17 @@ static void printautoarr(Autoarr(uint16)* ar){
 }
 
 static void fillar(Autoarr(uint16)* ar){
-    for (uint16 i=0;i<Autoarr_max_length(ar);i++)
+    for (uint32 i=0;i<Autoarr_max_length(ar);i++)
         Autoarr_add(ar,i);
 }
 static void resetar(Autoarr(uint16)* ar){
-    for (uint16 i=0;i<Autoarr_max_length(ar);i++)
+    for (uint32 i=0;i<Autoarr_max_length(ar);i++)
         Autoarr_set(ar,i,Autoarr_max_length(ar)-i-1);
 }
 
 static void printallval(Autoarr(uint16)* ar){
     printf("\e[90m");
-    for (uint16 i=0;i<Autoarr_length(ar);i++)
+    for (uint32 i=0;i<Autoarr_length(ar);i++)
         printf("%u ",Autoarr_get(ar,i));
     printf("\n");
 }

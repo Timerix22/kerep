@@ -116,7 +116,7 @@ void Unitype_free(Unitype u){
 #define BUFSIZE 64
 char* sprintuni(Unitype v){
     char* buf=malloc(BUFSIZE);
-    IFWIN(
+    IFMSC(
         switch (v.type) {
             case Null: sprintf_s(buf, BUFSIZE, "{Null}");break;
             case Float64: sprintf_s(buf, BUFSIZE, "{%s : %lf}", my_type_name(v.type),v.Float64);break;
@@ -131,17 +131,17 @@ char* sprintuni(Unitype v){
             default: sprintf_s(buf, BUFSIZE, "{%s : %p}", my_type_name(v.type),v.VoidPtr);break;
         },
         switch (v.type) {
-            case Null: sprintf(buf, "{Null}");break;
-            case Float64: sprintf(buf, "{%s : %lf}", my_type_name(v.type),v.Float64);break;
+            case Null:    sprintf(buf, "{Null}"); break;
+            case Float64: sprintf(buf, "{%s : %lf}", my_type_name(v.type),v.Float64); break;
             case Bool:
-            case UInt64: sprintf(buf, "{%s : %lu}", my_type_name(v.type),v.UInt64);break;
-            case Int64: sprintf(buf, "{%s : %ld}", my_type_name(v.type),v.Int64);break;
+            case UInt64:  sprintf(buf, "{%s : " IFWIN("%llu", "%lu") "}", my_type_name(v.type),v.UInt64); break;
+            case Int64:   sprintf(buf, "{%s : " IFWIN("%lld", "%ld") "}", my_type_name(v.type),v.Int64); break;
             case CharPtr: ;
                 size_t newBUFSIZE=cptr_length(v.VoidPtr) + BUFSIZE/2;
                 buf=realloc(buf, newBUFSIZE);
                 sprintf(buf, "{%s : \"%s\"}", my_type_name(v.type),(char*)v.VoidPtr);
                 break;
-            default: sprintf(buf, "{%s : %p}", my_type_name(v.type),v.VoidPtr);break;
+            default:      sprintf(buf, "{%s : %p}", my_type_name(v.type),v.VoidPtr);break;
         }
     );
     return buf;

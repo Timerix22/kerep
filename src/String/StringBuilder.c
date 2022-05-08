@@ -2,7 +2,6 @@
 
 define_Autoarr(string)
 
-#define MAXLENGTH 32768
 #define BL_C 32
 #define BL_L 1024
 
@@ -136,7 +135,7 @@ void StringBuilder_append_uint64(StringBuilder* b, uint64 a){
 void StringBuilder_append_float64(StringBuilder* b, double a){
     try_complete_buf(b);
     char buf[32];
-    IFWIN(
+    IFMSC(
         sprintf_s(buf,32,"%lf",a),
         sprintf(buf,"%lf",a)
     );
