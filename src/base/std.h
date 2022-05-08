@@ -40,7 +40,7 @@ extern "C" {
 
 #ifdef _MSC_VER
     #define IFWIN(YES, NO) YES
-    #define IFMSC(YES, NO) NO
+    #define IFMSC(YES, NO) YES
 #elif defined(_WIN64) || defined(_WIN32)
     #define IFWIN(YES, NO) YES
     #define IFMSC(YES, NO) NO
