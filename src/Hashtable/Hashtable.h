@@ -4,7 +4,6 @@
 extern "C" {
 #endif
 
-#include "../base/base.h"
 #include "hash.h"
 #include "KeyValuePair.h"
 

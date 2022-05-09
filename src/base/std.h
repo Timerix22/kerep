@@ -51,7 +51,9 @@ extern "C" {
     #pragma GCC error "unknown compiler"
 #endif
 
-
+#ifndef NULL
+    #define NULL ((void*)0)
+#endif
 
 #if __cplusplus
 }
