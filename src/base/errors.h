@@ -7,12 +7,12 @@ extern "C" {
 #include "std.h"
 #include "types.h"
 
-typedef enum err_t {
+typedef enum ErrorId {
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR
-} err_t;
+} ErrorId;
 
-char* errname(err_t err);
+char* errname(ErrorId err);
 
 char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname);
 char* __extendErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname);
@@ -21,8 +21,10 @@ typedef struct Maybe{
     Unitype value;
     char* errmsg;
 } Maybe;
+
 // return it if func doesn't return anything
-static const Maybe MaybeNull={.value.type=Null, .value.VoidPtr=NULL,.errmsg=NULL};
+//                            .value  .errmsg
+static const Maybe MaybeNull={UniNull, NULL};
 
 void Maybe_free(Maybe e);
 void printMaybe(Maybe e);

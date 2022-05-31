@@ -48,6 +48,12 @@ function link {
     print "${BLUE}outfile: ${GRAY}$outfile\n"
     local objects="$(find $OBJDIR -name *.o)"
     print "${BLUE}objects: ${GRAY}$objects\n"
-    $CMP_C $args -o $outfile $(echo $objects | tr '\n' ' ')
-    print "${GREEN}file $CYAN$outfile ${GREEN}created\n"
+    if $CMP_C $args -o $outfile $(echo $objects | tr '\n' ' ')
+    then 
+        print "${GREEN}file $CYAN$outfile ${GREEN}created\n"
+        rm -rf $OBJDIR
+    else
+        print "${RED}some error happened\n"
+        exit
+    fi
 }

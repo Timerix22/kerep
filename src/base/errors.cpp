@@ -1,9 +1,9 @@
 #include "errors.hpp"
 
-void throwcpp(err_t eid){
-    throwcpp(errname(eid));
+void throwcpp_id(ErrorId eid){
+    throwcpp_msg(errname(eid));
 }
 
-void throwcpp(char* emsg){
+void throwcpp_msg(char* emsg){
     __EXIT(emsg);
 }

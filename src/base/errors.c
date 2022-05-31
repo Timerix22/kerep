@@ -2,7 +2,7 @@
 #include "errors.h"
 #include "cptr.h"
 
-char* errname(err_t err){
+char* errname(ErrorId err){
     switch(err){
         case SUCCESS: return "SUCCESS";
         case ERR_MAXLENGTH: return "ERR_MAXLENGTH";

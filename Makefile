@@ -1,4 +1,4 @@
-######       Build tasks       #######
+######      Building tasks     #######
 build_test: 
 	@build_scripts/build_test.sh
 
@@ -12,4 +12,4 @@ test:
 test_valgrind: 
 	@build_scripts/test_valgrind.sh
 
-all: build_test test
+all: build_test

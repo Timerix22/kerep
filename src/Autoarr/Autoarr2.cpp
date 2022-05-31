@@ -1,10 +1,10 @@
-#include "Autoarr2.hpp"
 //
 //
 //
 
+#include "Autoarr2.hpp"
+
 #define MAX_BLOCK_LENGTH_DEFAULT 64
-#define ALLOC_N_BLOCKS 1
 
 template<typename T>
 Autoarr2<T>::Autoarr2() {
@@ -21,7 +21,7 @@ Autoarr2<T>::Autoarr2(uint16 _max_block_length) : Autoarr2() {
 
 template<typename T>
 T *Autoarr2<T>::GetPtr(uint32 index) {
-    if(index>=Length) throwcpp(ERR_WRONGINDEX);
+    if(index>=Length) throwcpp_id(ERR_WRONGINDEX);
     return values[index/max_block_length]+index%max_block_length;
 }
 
@@ -38,15 +38,15 @@ void Autoarr2<T>::Set(uint32 index, T value) {
 template<typename T>
 void Autoarr2<T>::Add(T value) {
     if(!values){
-        values=malloc(ALLOC_N_BLOCKS*sizeof(T*));
+        values=malloc(sizeof(T*));
         goto create_block;
     }
     else if(block_length==max_block_length){
         block_length=0;
 create_block:
-        values=realloc((blocks_count+ALLOC_N_BLOCKS)*sizeof(T*));
-        blocks_count+=ALLOC_N_BLOCKS;
+        values=realloc(values,(blocks_count+1)*sizeof(T*));
         values[blocks_count]=malloc(max_block_length*sizeof(T));
+        blocks_count++;
     }
 
     values[blocks_count-1][block_length]=value;
