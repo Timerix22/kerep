@@ -9,6 +9,10 @@ extern "C" {
 #include "errors.h"
 #include "cptr.h"
 
+#if __cplusplus
+#include "errors.hpp"
+#endif
+
 // executes codeblock and prints execution time
 #ifdef CLOCK_REALTIME // non-standard high-precision clock
     #define optime(opname,repeats,codeblock) ({\
