@@ -21,9 +21,15 @@ function compile {
     print "${BLUE}args: ${GRAY}$args\n"
     local sources=$5
     print "${BLUE}sources: ${GRAY}$sources\n"
-	for SRCFILE in $sources
+	for srcfile in $sources
     do
-        $cmp -std=$std $warn $args -c -o "$OBJDIR/$(basename $SRCFILE).o" $SRCFILE
+        local object="$OBJDIR/$(basename $srcfile).o"
+        #print "$BLUE$object\n"
+        if ! $($cmp -std=$std $warn $args -c -o $object $srcfile) 
+        then
+            print "${RED}some error happened\n"
+            exit 1
+        fi
     done
 }
 
@@ -54,6 +60,6 @@ function link {
         rm -rf $OBJDIR
     else
         print "${RED}some error happened\n"
-        exit
+        exit 1
     fi
 }
