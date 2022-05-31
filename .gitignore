@@ -2,12 +2,11 @@
 bin/
 obj/
 
-# IDE files
+# user files
+.old*/
 .vs/
 .vscode/
 .vshistory/
 .editorconfig
 *.user
-
-#backups
-.old*/
+.config
