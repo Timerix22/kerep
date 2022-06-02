@@ -38,14 +38,18 @@ template<typename T>
 void Autoarr2<T>::add(T value) {
     if(!values){
         //values=(T**)malloc(sizeof(T*));
-        values=new[sizeof(T*)];
+        values=new T*[1];
         goto create_block;
     }
     else if(block_length==max_block_length){
         block_length=0;
 create_block:
-        values=(T**)realloc(values,(blocks_count+1)*sizeof(T*));
-        values[blocks_count]=new[](max_block_length*sizeof(T));
+        T** new_values=new T*[blocks_count+1];
+        for(uint32 i=0;i<blocks_count;i++)
+            new_values[i]=values[i];
+        delete[] values;
+        values=new_values;
+        values[blocks_count]=new T[max_block_length];
         blocks_count++;
     }
 
