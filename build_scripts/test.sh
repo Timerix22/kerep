@@ -3,6 +3,6 @@
 source build_scripts/init.sh
 
 print "${CYAN}================[test]================\n"
-cd $OUTDIR; 
+cd $OUTDIR
 ./$TEST_FILE
 cd ..
