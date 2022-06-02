@@ -21,6 +21,7 @@ function compile {
     print "${BLUE}args: ${GRAY}$args\n"
     local sources=$5
     print "${BLUE}sources: ${GRAY}$sources\n"
+    local error=0
 	for srcfile in $sources
     do
         local object="$OBJDIR/$(basename $srcfile).o"
@@ -28,9 +29,14 @@ function compile {
         if ! $($cmp -std=$std $warn $args -c -o $object $srcfile) 
         then
             print "${RED}some error happened\n"
-            exit 1
+            error=1
         fi
     done
+
+    if [ $error != 0 ]
+    then
+        exit 1
+    fi
 }
 
 # (args, sources)
@@ -54,7 +60,7 @@ function link {
     print "${BLUE}outfile: ${GRAY}$outfile\n"
     local objects="$(find $OBJDIR -name *.o)"
     print "${BLUE}objects: ${GRAY}$objects\n"
-    if $CMP_C $args -o $outfile $(echo $objects | tr '\n' ' ')
+    if $CMP_CPP $args -o $outfile $(echo $objects | tr '\n' ' ')
     then 
         print "${GREEN}file $CYAN$outfile ${GREEN}created\n"
         rm -rf $OBJDIR
