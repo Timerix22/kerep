@@ -1,9 +1,5 @@
 #include "Hashtable2.hpp"
 
-//
-//
-//
-
 template<typename TKey, typename TValue>
 Hashtable2<TKey, TValue>::Hashtable2() {
 

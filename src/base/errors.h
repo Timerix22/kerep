@@ -24,7 +24,7 @@ typedef struct Maybe{
 
 // return it if func doesn't return anything
 //                            .value  .errmsg
-static const Maybe MaybeNull={UniNull, NULL};
+#define MaybeNull (Maybe){UniNull, NULL}
 
 void Maybe_free(Maybe e);
 void printMaybe(Maybe e);
@@ -46,6 +46,10 @@ char* __unknownErr( );
     default: __unknownErr\
 )(E)
 
+#if __cplusplus
+    #define throw_id(E) __EXIT(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)))
+    #define throw_msg(E) __EXIT(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)))
+#endif
 #define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
 #define safethrow(E, FREEMEM) { FREEMEM; __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); }
 

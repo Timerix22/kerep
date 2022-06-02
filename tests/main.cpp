@@ -7,6 +7,7 @@ void test_all(){
     test_searchtree();
     test_hashtable();
     test_dtsod();
+    test_autoarr2();
     printf("\e[96m---------------------------------------\e[0m\n");
 }
 

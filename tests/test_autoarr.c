@@ -20,17 +20,17 @@ static void printautoarr(Autoarr(uint16)* ar){
 }
 
 static void fillar(Autoarr(uint16)* ar){
-    for (uint32 i=0;i<Autoarr_max_length(ar);i++)
+    for (uint16 i=0;i<Autoarr_max_length(ar);i++)
         Autoarr_add(ar,i);
 }
 static void resetar(Autoarr(uint16)* ar){
-    for (uint32 i=0;i<Autoarr_max_length(ar);i++)
+    for (uint16 i=0;i<Autoarr_max_length(ar);i++)
         Autoarr_set(ar,i,Autoarr_max_length(ar)-i-1);
 }
 
 static void printallval(Autoarr(uint16)* ar){
     printf("\e[90m");
-    for (uint32 i=0;i<Autoarr_length(ar);i++)
+    for (uint16 i=0;i<Autoarr_length(ar);i++)
         printf("%u ",Autoarr_get(ar,i));
     printf("\n");
 }
@@ -48,6 +48,6 @@ void test_autoarr(){
         printf("\e[92mautoarr values reset\n");
         printallval(ar);
         Autoarr_free(ar);
-        printf("\e[92mautoarr cleared\n");
+        printf("\e[92mautoarr deleted\n");
     }));
 }
