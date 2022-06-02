@@ -9,4 +9,5 @@ obj/
 .vshistory/
 .editorconfig
 *.user
+*.vcxproj.filters
 .config
