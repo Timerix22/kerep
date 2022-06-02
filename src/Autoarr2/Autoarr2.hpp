@@ -1,15 +1,11 @@
-//
-//
-//
-
 #pragma once
 
 #include "../base/base.h"
 
 template <typename T>
 class Autoarr2 {
-public:
     T** values;
+public:
     uint16 blocks_count;
     uint16 block_length;
     uint16 max_block_length;
