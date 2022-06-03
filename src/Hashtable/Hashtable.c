@@ -39,7 +39,7 @@ void Hashtable_expand(Hashtable* ht){
         uint32 arlen=Autoarr_length(ar);
         for(uint32 k=0;k<arlen;k++){
             KVPair p=Autoarr_get(ar,k);
-            uint16 newrown=ihash(p.key)%HT_HEIGHTS[ht->hein];
+            uint16 newrown=hashs_sdbm32(p.key)%HT_HEIGHTS[ht->hein];
             Autoarr(KVPair)* newar=newrows[newrown];
             Autoarr_add(newar,p);
         }
@@ -53,7 +53,7 @@ void Hashtable_expand(Hashtable* ht){
 }
 
 Autoarr(KVPair)* getrow(Hashtable* ht, char* key, bool can_expand){
-    uint32 hash=ihash(key);
+    uint32 hash=hashs_sdbm32(key);
     Autoarr(KVPair)* ar=ht->rows[hash%HT_HEIGHTS[ht->hein]];
     if(can_expand && Autoarr_length(ar)==Autoarr_max_length(ar))
         optime("expand",1,(Hashtable_expand(ht)));
