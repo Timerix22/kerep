@@ -1,14 +1,14 @@
 #include "tests.h"
 
 void test_all(){
-    // test_autoarr();
-    // test_string();
-    // test_safethrow();
-    // test_searchtree();
-    // test_hashtable();
-    // test_dtsod();
-    // test_autoarr2();
-    test_hash_collisions();
+    test_autoarr();
+    test_string();
+    test_safethrow();
+    test_searchtree();
+    test_hashtable();
+    test_dtsod();
+    test_autoarr2();
+    test_hash_functions();
     printf("\e[96m---------------------------------------\e[0m\n");
 }
 

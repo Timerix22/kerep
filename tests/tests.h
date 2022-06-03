@@ -12,7 +12,7 @@ void test_string();
 void test_dtsod();
 void test_safethrow();
 void test_autoarr2();
-void test_hash_collisions();
+void test_hash_functions();
 #if __cplusplus
 }
 #endif
