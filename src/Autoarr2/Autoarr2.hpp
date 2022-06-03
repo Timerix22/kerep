@@ -2,21 +2,30 @@
 
 #include "../base/base.h"
 
+#define Autoarr2_NO_REZULT -1
+
 template <typename T>
 class Autoarr2 {
     T** values;
+
 public:
     uint16 blocks_count;
     uint16 block_length;
     uint16 max_block_length;
     uint32 length;
+
     Autoarr2();
     explicit Autoarr2(uint16 _max_block_length);
+    virtual ~Autoarr2();
+
     T* getptr(uint32 index);
     T get(uint32 index);
     void set(uint32 index, T value);
     void add(T value);
-    virtual ~Autoarr2();
+    // returns index of the first <value> inclusion
+    uint32 search(T& value);
+    uint32 search(T& value, uint32 fromIndex);
+    uint32 search(T& value, uint32 fromIndex, uint32 toIndex);
 };
 
 
@@ -35,6 +44,14 @@ template<typename T>
 Autoarr2<T>::Autoarr2(uint16 _max_block_length) : Autoarr2() {
     max_block_length=_max_block_length;
 }
+
+template<typename T>
+Autoarr2<T>::~Autoarr2() {
+    for (uint16 i=0;i<blocks_count;i++)
+        delete[] values[i];
+    delete[] values;
+}
+
 
 template<typename T>
 T *Autoarr2<T>::getptr(uint32 index) {
@@ -76,9 +93,22 @@ create_block:
     length++;
 }
 
+
 template<typename T>
-Autoarr2<T>::~Autoarr2() {
-    for (uint16 i=0;i<blocks_count;i++)
-        delete[] values[i];
-    delete[] values;
+uint32 Autoarr2<T>::search(T& value, uint32 fromIndex, uint32 toIndex){
+    uint32 index=fromIndex;
+    for(; index<toIndex; index++)
+        if(value==get(index))
+            return index;
+    return Autoarr2_NO_REZULT;
+}
+
+template<typename T>
+uint32 Autoarr2<T>::search(T& value, uint32 fromIndex){
+    return search(value, fromIndex, length);
+}
+
+template<typename T>
+uint32 Autoarr2<T>::search(T& value){
+    return search(value, 0, length);
 }
