@@ -5,6 +5,17 @@
 #define maxlength 160
 
 void printautoarr2(Autoarr2<uint16>* ar){
+    printf("\e[94mAutoarr2<uint16>: "
+        IFWIN("%llu", "%lu")
+        "\n  blocks_count: %u\n"
+        "  max_block_length: %u\n"
+        "  block_length: %u\n"
+        "  length: %u\n",
+        sizeof(Autoarr2<uint16>),
+        ar->blocks_count,
+        ar->max_block_length,
+        ar->block_length,
+        ar->length);
 }
 
 void fillar2(Autoarr2<uint16>* ar){

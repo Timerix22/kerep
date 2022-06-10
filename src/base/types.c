@@ -41,7 +41,7 @@ const char* my_type_name(my_type t){
         case AutoarrUInt64Ptr: return "AutoarrUInt64Ptr";
         case AutoarrUnitypePtr: return "AutoarrUnitypePtr";
         case AutoarrKVPairPtr: return "AutoarrKVPairPtr";
-        default: throw(ERR_WRONGTYPE); return "ERROR";
+        default: throw(ERR_WRONGTYPE);
     }
 }
 
