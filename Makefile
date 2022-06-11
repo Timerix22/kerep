@@ -9,10 +9,10 @@ build_lib:
 	@build_scripts/build_lib.sh
 
 ######      Testing tasks      #######
-test: 
+test: build_test
 	@build_scripts/test.sh
 
-test_valgrind: 
+test_valgrind: build_test_dbg
 	@build_scripts/test_valgrind.sh
 
 all: build_test
