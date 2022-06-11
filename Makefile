@@ -2,6 +2,9 @@
 build_test: 
 	@build_scripts/build_test.sh
 
+build_test_dbg: 
+	@build_scripts/build_test_dbg.sh
+
 build_lib: 
 	@build_scripts/build_lib.sh
 
