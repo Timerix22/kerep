@@ -21,19 +21,20 @@ function compile {
     print "${BLUE}args: ${GRAY}$args\n"
     local sources=$5
     print "${BLUE}sources: ${GRAY}$sources\n"
-    local error=0
+    local compilation_error=0
+
 	for srcfile in $sources
-    do
+    do (
         local object="$OBJDIR/$(basename $srcfile).o"
-        #print "$BLUE$object\n"
         if ! $($cmp -std=$std $warn $args -c -o $object $srcfile) 
         then
             print "${RED}some error happened\n"
-            error=1
+            compilation_error=1
         fi
-    done
+    ) & done
+    wait
 
-    if [ $error != 0 ]
+    if [ $compilation_error != 0 ]
     then
         exit 1
     fi
@@ -42,7 +43,7 @@ function compile {
 # (args, sources)
 function compile_c {
 	print "${CYAN}-------------[compile_c]--------------\n"
-    compile $CMP_C $STD_C "$WARN_C " "$1" "$2"
+    compile $CMP_C $STD_C "$WARN_C" "$1" "$2"
 }
 
 # (args, sources)
