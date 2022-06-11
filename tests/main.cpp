@@ -9,7 +9,7 @@ void test_all(){
     test_dtsod();
     test_autoarr2();
     test_hash_functions();
-    printf("\e[96m---------------------------------------\e[0m\n");
+    printf("\e[96m--------------------------------------\e[0m\n");
 }
 
 int main(){

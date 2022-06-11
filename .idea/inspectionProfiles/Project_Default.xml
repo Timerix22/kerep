@@ -17,8 +17,8 @@
       <option name="myMisraCPPChecks" value="clion-misra-cpp2008-*,-clion-misra-cpp2008-11-0-1" />
     </inspection_tool>
     <inspection_tool class="OCUnusedGlobalDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="ShellCheck" enabled="true" level="ERROR" enabled_by_default="true">
-      <shellcheck_settings value="SC2034,SC2035,SC2061" />
+    <inspection_tool class="ShellCheck" enabled="false" level="ERROR" enabled_by_default="false">
+      <shellcheck_settings value="SC2034,SC2035,SC2059,SC2061,SC2091,SC2155" />
     </inspection_tool>
     <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
       <option name="processCode" value="true" />

@@ -2,9 +2,9 @@
 
 uint32 hash_sdbm32(uint32 oldhash, void* buf, uint32 len){
     uint8* ubuf=(uint8*)buf;
-    uint32 hash=oldhash;
+    register uint32 hash=oldhash;
     for (; len ; len--, ubuf++)
-        hash=*ubuf+(hash<<6)+(hash<<16)-hash;
+        hash=(hash<<6)+(hash<<16)-hash+*ubuf;
     return hash;
 }
 
@@ -79,9 +79,10 @@ uint32 hash_crc32(uint32 oldhash, void* buf, uint32 len){
     uint8* ubuf=(uint8*)buf;
     register uint32 crc=oldhash;
     for (; len; --len, ++ubuf)
-        crc = crc_32_tab[(crc^(*ubuf)) & 0xff] ^ (crc>>8);
+        crc=crc_32_tab[(crc^(*ubuf)) & 0xff] ^ (crc>>8);
     return ~crc;
 }
+
 
 // bool hashf_crc32c(char *name, uint32 *crc, long *charcnt) {
 //     register FILE *fin;

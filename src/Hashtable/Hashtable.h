@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "hash.h"
+#include "../HashFunctions/hash.h"
 #include "KeyValuePair.h"
 
 typedef struct Hashtable{

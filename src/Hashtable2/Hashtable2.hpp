@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Hashtable/hash.h"
+#include "../HashFunctions/hash.h"
 #include "../Autoarr2/Autoarr2.hpp"
 
 // amount of rows
@@ -129,6 +129,7 @@ bool Hashtable2<TKey, TVal>::remove(TKey){
 
 template<typename TKey, typename TVal>
 Hashtable2<TKey, TVal>::~Hashtable2(){
+    delete[] hashes;
     delete[] keys;
     delete[] values;
 }

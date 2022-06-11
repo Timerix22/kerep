@@ -11,6 +11,8 @@ extern "C" {
 
 uint32 hash_sdbm32(uint32 oldhash, void* buf, uint32 len);
 uint32 hash_crc32(uint32 oldhash, void* buf, uint32 len);
+uint32 hash_xxh32(uint32 oldhash, void* buf, uint32 len);
+uint64 hash_xxh3_64(uint32 oldhash, void* buf, uint32 len);
 
 #if __cplusplus
 }
