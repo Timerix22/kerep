@@ -41,7 +41,5 @@ void test_hash_functions(){
         printf("\e[96m--------[test_hash_functions]---------\n");
         test_hashfunc(uint32, hash_crc32);
         test_hashfunc(uint32, hash_sdbm32);
-        test_hashfunc(uint32, hash_xxh32);
-        test_hashfunc(uint64, hash_xxh3_64);
     }));
 }
