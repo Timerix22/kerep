@@ -1,13 +1,11 @@
 #pragma once
 
-#include "../base/base.h"
-
 #define Autoarr2_NO_REZULT -1
 
-template <typename T>
+
+template<typename T>
 class Autoarr2 {
     T** values;
-
 public:
     uint16 blocks_count;
     uint16 block_length;
@@ -22,10 +20,13 @@ public:
     T get(uint32 index);
     void set(uint32 index, T value);
     void add(T value);
+
     // returns index of the first <value> inclusion
-    uint32 search(T& value);
-    uint32 search(T& value, uint32 fromIndex);
-    uint32 search(T& value, uint32 fromIndex, uint32 toIndex);
+    // using <cmpf> to compare values
+    using cmp_func_t=bool (*)(T, T);
+    uint32 search(T& value, cmp_func_t cmpf, uint32 fromIndex, uint32 toIndex);
+    uint32 search(T& value, cmp_func_t cmpf, uint32 fromIndex);
+    uint32 search(T& value, cmp_func_t cmpf);
 };
 
 
@@ -93,22 +94,21 @@ create_block:
     length++;
 }
 
-
 template<typename T>
-uint32 Autoarr2<T>::search(T& value, uint32 fromIndex, uint32 toIndex){
+uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf, uint32 fromIndex, uint32 toIndex){
     uint32 index=fromIndex;
     for(; index<toIndex; index++)
-        if(value==get(index))
+        if(cmpf(value,get(index)))
             return index;
     return Autoarr2_NO_REZULT;
 }
 
 template<typename T>
-uint32 Autoarr2<T>::search(T& value, uint32 fromIndex){
-    return search(value, fromIndex, length);
+uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf, uint32 fromIndex){
+    return search(value, cmpf, fromIndex, length);
 }
 
 template<typename T>
-uint32 Autoarr2<T>::search(T& value){
-    return search(value, 0, length);
+uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf){
+    return search(value, cmpf, 0, length);
 }
