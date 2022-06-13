@@ -3,7 +3,7 @@
 #include "../src/Autoarr/Autoarr.h"
 
 
-#define SPEED_TESTS 10000
+#define SPEED_TESTS 100000
 #define COLLISION_TESTS 16000
 
 char data[]="iojihiojopijiugbjmoihftytryfdrh";
