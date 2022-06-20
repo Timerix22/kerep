@@ -8,11 +8,11 @@ STD_C=c11
 STD_CPP=c++17
 WARN_C="-Wall -Wno-discarded-qualifiers" #-Wextra
 WARN_CPP="-Wall -Wno-unused-variable -Wno-return-type" #-Wextra
-SRC_C="$(    find src -name *.c)"
-SRC_CPP="$(  find src -name *.cpp)"
-TESTS_C="$(  find tests -name *.c)"
-TESTS_CPP="$(find tests -name *.cpp)"
-VALGRIND_ARGS="-s --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ --leak-check=full --show-leak-kinds=all"
+SRC_C="$(    find src -name '*.c')"
+SRC_CPP="$(  find src -name '*.cpp')"
+TESTS_C="$(  find tests -name '*.c')"
+TESTS_CPP="$(find tests -name '*.cpp')"
+VALGRIND_ARGS="-s --log-file=valgrind.log --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ --leak-check=full --show-leak-kinds=all"
 
 # build_lib
 LIB_FILE=kerep.so
