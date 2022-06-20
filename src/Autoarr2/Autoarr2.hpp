@@ -1,6 +1,6 @@
 #pragma once
 
-#define Autoarr2_NO_REZULT -1
+#define Autoarr2_NO_REZULT (uint32)-1
 
 
 template<typename T>
@@ -20,13 +20,16 @@ public:
     T get(uint32 index);
     void set(uint32 index, T value);
     void add(T value);
+    void remove(uint32 index);
 
     // returns index of the first <value> inclusion
     // using <cmpf> to compare values
-    using cmp_func_t=bool (*)(T, T);
-    uint32 search(T& value, cmp_func_t cmpf, uint32 fromIndex, uint32 toIndex);
-    uint32 search(T& value, cmp_func_t cmpf, uint32 fromIndex);
-    uint32 search(T& value, cmp_func_t cmpf);
+    template<class cmp_func_lambda>
+    uint32 search(T& value, cmp_func_lambda cmpf, uint32 fromIndex, uint32 toIndex);
+    template<class cmp_func_lambda>
+    uint32 search(T& value, cmp_func_lambda cmpf, uint32 fromIndex);
+    template<class cmp_func_lambda>
+    uint32 search(T& value, cmp_func_lambda cmpf);
 };
 
 
@@ -49,7 +52,7 @@ Autoarr2<T>::Autoarr2(uint16 _max_block_length) : Autoarr2() {
 template<typename T>
 Autoarr2<T>::~Autoarr2() {
     for (uint16 i=0;i<blocks_count;i++)
-        delete[] values[i];
+         delete[] values[i];
     delete[] values;
 }
 
@@ -73,7 +76,6 @@ void Autoarr2<T>::set(uint32 index, T value) {
 template<typename T>
 void Autoarr2<T>::add(T value) {
     if(!values){
-        //values=(T**)malloc(sizeof(T*));
         values=new T*[1];
         goto create_block;
     }
@@ -83,9 +85,9 @@ create_block:
         T** new_values=new T*[blocks_count+1];
         for(uint32 i=0;i<blocks_count;i++)
             new_values[i]=values[i];
+        new_values[blocks_count]=new T[max_block_length];
         delete[] values;
         values=new_values;
-        values[blocks_count]=new T[max_block_length];
         blocks_count++;
     }
 
@@ -95,7 +97,8 @@ create_block:
 }
 
 template<typename T>
-uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf, uint32 fromIndex, uint32 toIndex){
+template<class cmp_func_lambda>
+uint32 Autoarr2<T>::search(T& value, cmp_func_lambda cmpf, uint32 fromIndex, uint32 toIndex){
     uint32 index=fromIndex;
     for(; index<toIndex; index++)
         if(cmpf(value,get(index)))
@@ -104,11 +107,18 @@ uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf, uint32 fromIndex, uint32 t
 }
 
 template<typename T>
-uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf, uint32 fromIndex){
+template<class cmp_func_lambda>
+uint32 Autoarr2<T>::search(T& value, cmp_func_lambda cmpf, uint32 fromIndex){
     return search(value, cmpf, fromIndex, length);
 }
 
 template<typename T>
-uint32 Autoarr2<T>::search(T& value, cmp_func_t cmpf){
+template<class cmp_func_lambda>
+uint32 Autoarr2<T>::search(T& value, cmp_func_lambda cmpf){
     return search(value, cmpf, 0, length);
+}
+
+template<typename T>
+void Autoarr2<T>::remove(uint32 index){
+    throw_id(ERR_NOTIMPLEMENTED);
 }

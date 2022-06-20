@@ -11,7 +11,7 @@ typedef enum ErrorId {
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, 
     ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR, 
-    ERR_DESYNC
+    ERR_KEYNOTFOUND
 } ErrorId;
 
 char* errname(ErrorId err);
@@ -51,10 +51,10 @@ char* __unknownErr( );
 #if __cplusplus
     #define throw_id(E) __EXIT(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)))
     #define throw_msg(E) __EXIT(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)))
+#else
+    #define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
+    #define safethrow(E, FREEMEM) { FREEMEM; __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); }
 #endif
-#define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
-#define safethrow(E, FREEMEM) { FREEMEM; __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); }
-
 
 #define try(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
         freeMem;\

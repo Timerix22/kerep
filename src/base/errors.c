@@ -11,7 +11,7 @@ char* errname(ErrorId err){
         case ERR_NOTIMPLEMENTED: return "ERR_NOTIMPLEMENTED";
         case ERR_NULLPTR: return "ERR_NULLPTR";
         case ERR_ENDOFSTR: return "ERR_ENDOFSTR";
-        case ERR_DESYNC: return "ERR_DESYNC";
+        case ERR_KEYNOTFOUND: return "ERR_KEYNOTFOUND";
         default: return "UNKNOWN_ERROR";
     }
 }
