@@ -7,17 +7,17 @@ extern "C" {
 #include "Autoarr_declare.h"
 #include "Autoarr_define.h"
 
-declare_Autoarr(uint8)
-declare_Autoarr(int8)
-declare_Autoarr(uint16)
-declare_Autoarr(int16)
-declare_Autoarr(uint32)
-declare_Autoarr(int32)
-declare_Autoarr(uint64)
-declare_Autoarr(int64)
-declare_Autoarr(float)
-declare_Autoarr(double)
-declare_Autoarr(Unitype)
+Autoarr_declare(uint8)
+Autoarr_declare(int8)
+Autoarr_declare(uint16)
+Autoarr_declare(int16)
+Autoarr_declare(uint32)
+Autoarr_declare(int32)
+Autoarr_declare(uint64)
+Autoarr_declare(int64)
+Autoarr_declare(float)
+Autoarr_declare(double)
+Autoarr_declare(Unitype)
 
 // right func to clear array of unitype values
 void Autoarr_free_Unitype(Autoarr(Unitype)* ar);

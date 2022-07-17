@@ -7,7 +7,7 @@ extern "C" {
 #include "../Autoarr/Autoarr.h"
 #include "string.h"
 
-declare_Autoarr(string)
+Autoarr_declare(string)
 
 typedef struct StringBuilder{
 	Autoarr(string)* compl_bufs;

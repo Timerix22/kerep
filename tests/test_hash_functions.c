@@ -33,6 +33,7 @@ char data[]="iojihiojopijiugbjmoihftytryfdrh";
         }\
         printf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS);\
     }));\
+    Autoarr_free(hashes);\
     printf("\e[96m--------------------------------------\n");\
 })
 

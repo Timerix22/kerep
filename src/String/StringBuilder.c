@@ -1,6 +1,6 @@
 #include "StringBuilder.h"
 
-define_Autoarr(string)
+Autoarr_define(string)
 
 #define BL_C 32
 #define BL_L 1024

@@ -6,7 +6,7 @@ extern "C" {
 
 #include "../base/base.h"
 
-#define declare_Autoarr(type)\
+#define Autoarr_declare(type)\
 \
 struct Autoarr_##type;\
 \

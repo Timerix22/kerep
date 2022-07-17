@@ -12,7 +12,7 @@ typedef struct KVPair{
     Unitype value;
 } KVPair;
 
-declare_Autoarr(KVPair)
+Autoarr_declare(KVPair)
 
 // proper way to clear a KVP
 void KVPair_free(KVPair p);

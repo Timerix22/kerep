@@ -6,7 +6,7 @@ extern "C" {
 
 #include "../base/base.h"
 
-#define define_Autoarr(type)\
+#define Autoarr_define(type)\
 \
 void __Autoarr_add_##type(Autoarr_##type* ar, type element){\
     if(!ar->values){\

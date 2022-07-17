@@ -1,6 +1,6 @@
 #include "KeyValuePair.h"
 
-define_Autoarr(KVPair)
+Autoarr_define(KVPair)
 
 
 // proper way to clear a KVP
