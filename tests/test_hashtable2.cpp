@@ -26,7 +26,7 @@ std::shared_ptr<char> genkey(uint32 i){
 }
 
 void fill(HT_TYPE* ht){
-    for(uint32 i=0;i<251;i++)
+    for(uint32 i=0;i<260;i++)
         ht->add(genkey(i), 555666);
     print_hashtable(ht);
 }
@@ -49,8 +49,8 @@ void test_hashtable2(){
             [](TKey k) { return hashs(hash_sdbm32,k.get()); });
 #else
         HT_TYPE* ht=new HT_TYPE(
-            [](TKey k) { return hashs(hash_sdbm32,k.get()); }, 
-            [](TKey k0, TKey k1) { return cptr_compare(k0.get(), k1.get()); });
+            [](TKey k) -> HT_HASH_T { return hashs(hash_sdbm32,k.get()); },
+            [](TKey k0, TKey k1) -> bool { return cptr_compare(k0.get(), k1.get()); });
 #endif
         printf("\e[92mhashtable created\n");
         print_hashtable(ht);

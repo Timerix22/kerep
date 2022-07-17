@@ -54,7 +54,6 @@ char* __unknownErr( );
 #else
     #define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
     #define safethrow(E, FREEMEM) { FREEMEM; __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); }
-#endif
 
 #define try(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
         freeMem;\
@@ -66,6 +65,8 @@ char* __unknownErr( );
         _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
         __EXIT(_rezult.errmsg);\
     }else
+    
+#endif
 
 #if __cplusplus
 }

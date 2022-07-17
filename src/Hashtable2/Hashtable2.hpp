@@ -143,7 +143,8 @@ bool Hashtable2<TKey, TVal>::tryGet(TKey key, TVal* output){
 }
 
 template<typename TKey, typename TVal>
-void Hashtable2<TKey, TVal>::expand(){ printf("expand\n"); fflush(stdout);
+void Hashtable2<TKey, TVal>::expand(){ 
+    printf("expand\n"); fflush(stdout);
     if(hein>=_HT_HEIN_MAX) 
         throw_id(ERR_MAXLENGTH);
 
@@ -169,7 +170,8 @@ void Hashtable2<TKey, TVal>::expand(){ printf("expand\n"); fflush(stdout);
 }
 
 template<typename TKey, typename TVal>
-void Hashtable2<TKey, TVal>::add(TKey& key, TVal& value, HT_HASH_T keyHash, HT_HEIGHT_T rowN){ printf("add\n"); fflush(stdout);
+void Hashtable2<TKey, TVal>::add(TKey& key, TVal& value, HT_HASH_T keyHash, HT_HEIGHT_T rowN){ 
+    printf("add\n"); fflush(stdout);
     Autoarr2<KeyValue>* row=rows[rowN];
     if(row->length == _HT_ARR_BC*_HT_ARR_BL)
         expand();

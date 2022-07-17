@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../base/base.h"
+
+#define __AUTOARR2_MAX_BLOCK_LENGTH_DEFAULT 64
 #define Autoarr2_NO_REZULT (uint32)-1
 
 
@@ -32,22 +35,17 @@ public:
     uint32 search(T& value, cmp_func_lambda cmpf);
 };
 
-
-#define __AUTOARR2_MAX_BLOCK_LENGTH_DEFAULT 64
-
 template<typename T>
-Autoarr2<T>::Autoarr2() {
-    values=NULL;
-    block_length=0;
-    blocks_count=0;
-    length=0;
-    max_block_length=__AUTOARR2_MAX_BLOCK_LENGTH_DEFAULT;
-}
-
-template<typename T>
-Autoarr2<T>::Autoarr2(uint16 _max_block_length) : Autoarr2() {
+Autoarr2<T>::Autoarr2(uint16 _max_block_length)  {
+    values = NULL;
+    block_length = 0;
+    blocks_count = 0;
+    length = 0;
     max_block_length=_max_block_length;
 }
+
+template<typename T>
+Autoarr2<T>::Autoarr2() : Autoarr2(__AUTOARR2_MAX_BLOCK_LENGTH_DEFAULT) {}
 
 template<typename T>
 Autoarr2<T>::~Autoarr2() {
