@@ -47,7 +47,7 @@ void test_searchtree(){
         printuni(u);
         ST_push(node,"message_id", u);
         printf(" -> message_id\n  ");
-        u=(Unitype){.type=Int8Ptr,.VoidPtr=malloc(1)};
+        u=(Unitype){.type=CharPtr,.VoidPtr=cptr_copy("some text UwU")};
         printuni(u);
         ST_push(node,"text", u);
         printf(" -> text\n");

@@ -2,6 +2,7 @@
 
 #include "../HashFunctions/hash.h"
 #include "../Autoarr2/Autoarr2.hpp"
+#include <functional>
 
 // amount of rows
 typedef uint32 HT_HEIGHT_T;
@@ -27,8 +28,9 @@ class Hashtable2{
         HT_HASH_T hash;
 #endif
     };
-    using HashKeyFunc_t=HT_HASH_T (*)(TKey);
-    using KeyCmpFunc_t=bool (*)(TKey, TKey);
+    //using HashKeyFunc_t=HT_HASH_T (*)(TKey);
+    using HashKeyFunc_t=std::function<HT_HASH_T(TKey)>;
+    using KeyCmpFunc_t=std::function<bool(TKey, TKey)>;
 
 // fields
     Autoarr2<KeyValue>** rows;
