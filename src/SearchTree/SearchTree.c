@@ -45,11 +45,16 @@ indexes3 splitindex(uint8 i){
     };
 }
 
-void ST_push(STNode* node_first, const char* key, Unitype value){
+void ST_push(STNode* node_first, char* key, Unitype value){
+    string keyString={key, cptr_length(key)};
+    ST_pushString(node_first, keyString, value);
+}
+
+void ST_pushString(STNode* node_first, string key, Unitype value){
     if (!node_first) throw(ERR_NULLPTR);
     STNode* node_last=node_first;
-    while(*key){
-        indexes3 i3=splitindex((uint8)*key);
+    while(key.length--){
+        indexes3 i3=splitindex((uint8)*key.ptr);
         if(!node_last->branches){
             node_last->branches=(STNode****)malloc(8*sizeof(STNode***));
             for(uint8 i=0;i<8;i++)
@@ -68,16 +73,21 @@ void ST_push(STNode* node_first, const char* key, Unitype value){
         if(!node_last->branches[i3.n32][i3.n4][i3.rem])
             node_last->branches[i3.n32][i3.n4][i3.rem]=STNode_create();
         node_last=node_last->branches[i3.n32][i3.n4][i3.rem];
-        key++;
+        key.ptr++;
     }
     node_last->value=value;
 }
 
-Unitype ST_pull(STNode* node_first, const char* key){
+Unitype ST_pull(STNode* node_first, char* key){
+    string keyString={key, cptr_length(key)};
+    return ST_pullString(node_first, keyString);
+}
+
+Unitype ST_pullString(STNode* node_first, string key){
     if (!node_first) throw(ERR_NULLPTR);
     STNode* node_last=node_first;
-    while (*key){
-        indexes3 i3=splitindex((uint8)*key);
+    while (key.length--){
+        indexes3 i3=splitindex((uint8)*key.ptr);
         if(!node_last->branches) return UniNull;
         STNode*** ptrn32=(STNode***)node_last->branches[i3.n32];
         if(!ptrn32) return UniNull;
@@ -85,7 +95,7 @@ Unitype ST_pull(STNode* node_first, const char* key){
         if(!ptrn4) return UniNull;
         node_last=ptrn4[i3.rem];
         if(!node_last) return UniNull;
-        key++;
+        key.ptr++;
     }
     return node_last->value;
 }
