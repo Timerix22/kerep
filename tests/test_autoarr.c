@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "../Autoarr/Autoarr.h"
+#include "../src/Autoarr/Autoarr.h"
 
 static void printautoarr(Autoarr(uint16)* ar){
     printf("\e[94mAutoarr(uint16): "
@@ -48,6 +48,6 @@ void test_autoarr(){
         printf("\e[92mautoarr values reset\n");
         printallval(ar);
         Autoarr_free(ar);
-        printf("\e[92mautoarr cleared\n");
+        printf("\e[92mautoarr deleted\n");
     }));
 }

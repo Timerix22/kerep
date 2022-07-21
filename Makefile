@@ -1,58 +1,18 @@
-SRC=$(wildcard [^tests]**/*.c)
-TESTS=$(wildcard tests/*c) $(wildcard tests/**/*.c)
+######      Building tasks     #######
+build_test: 
+	@build_scripts/build_test.sh
 
-OUTDIR=bin
-CMP=gcc
-OPT_ARGS=-O2 -flto
-WARN_ARGS=-Wall -Wno-discarded-qualifiers -std=c17
+build_test_dbg: 
+	@build_scripts/build_test_dbg.sh
 
-all: clear_c clear_bin build_test build_lib
+build_lib: 
+	@build_scripts/build_lib.sh
 
-clear_c:
-	clear
+######      Testing tasks      #######
+test: build_test
+	@build_scripts/test.sh
 
-clear_bin:
-	@echo -e '\n\e[96m-------------[clear_bin]--------------\e[0m'
-	rm -rf $(OUTDIR)
-	mkdir $(OUTDIR)
+test_valgrind: build_test_dbg
+	@build_scripts/test_valgrind.sh
 
-clang: CMP=clang
-clang: WARN_ARGS=-Wall -Wno-ignored-qualifiers -Wno-incompatible-pointer-types-discards-qualifiers -std=c17
-clang: all
-
-######################################
-######       Build tasks       #######
-######################################
-TEST_FILE=kerep_test.com
-TEST_ARGS=$(WARN_ARGS) $(SRC) $(TESTS) -o $(OUTDIR)/$(TEST_FILE)
-
-build_test:  
-	@echo -e '\n\e[96m-------------[build_test]-------------\e[0m'
-	$(CMP) $(OPT_ARGS) $(TEST_ARGS)
-
-build_test_dbg:  
-	@echo -e '\n\e[96m-----------[build_test_dbg]-----------\e[0m'
-	$(CMP) -g -O0 $(TEST_ARGS).dbg 
-
-LIB_ARGS=$(OPT_ARGS) $(WARN_ARGS)\
-	-fpic -shared -Wl,-soname,$(LIB_FILE)\
-	$(SRC) tests/test_marshalling.c 
-LIB_FILE=kerep.so
-
-build_lib:  
-	@echo -e '\n\e[96m-------------[build_lib]--------------\e[0m'
-	$(CMP) $(LIB_ARGS) -o $(OUTDIR)/$(LIB_FILE)
-
-######################################
-######        Run tasks        #######
-######################################
-test: clear_c build_test
-	@echo -e '\n\e[96m-------------[build_test]-------------\e[0m'
-	tabs 4
-	$(OUTDIR)/$(TEST_FILE)
-
-valgrind: clear_c build_test_dbg
-	@echo -e '\n\e[96m--------------[valgrind]--------------\e[0m'
-	tabs 4
-	valgrind -s --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ \
-	--leak-check=full --show-leak-kinds=all $(OUTDIR)/$(TEST_FILE).dbg
+all: build_test

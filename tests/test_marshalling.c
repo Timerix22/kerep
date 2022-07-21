@@ -1,4 +1,4 @@
-#include "../Hashtable/KeyValuePair.h"
+#include "../src/Hashtable/KeyValuePair.h"
 
 EXPORT void CALL test_marshalling(char* text, KVPair** kptr){
     KVPair* k=malloc(sizeof(KVPair));

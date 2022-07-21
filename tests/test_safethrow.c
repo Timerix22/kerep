@@ -21,7 +21,6 @@ Maybe test_maybe(){
     try(throw_error(),rez1,;)
         printMaybe(rez1);
     throw("test_maybe failed");
-    return MaybeNull;
 }
 
 

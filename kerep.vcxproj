@@ -18,6 +18,58 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Autoarr\Autoarr.c" />
+    <ClCompile Include="src\Autoarr\Autoarr_KVPair_exported.c" />
+    <ClCompile Include="src\Autoarr\Autoarr_Unitype_exported.c" />
+    <ClCompile Include="src\base\cptr.c" />
+    <ClCompile Include="src\base\errors.c" />
+    <ClCompile Include="src\base\types.c" />
+    <ClCompile Include="src\DtsodParser\DtsodV24.c" />
+    <ClCompile Include="src\DtsodParser\DtsodV24_deserialize.c" />
+    <ClCompile Include="src\DtsodParser\DtsodV24_exported.c" />
+    <ClCompile Include="src\DtsodParser\DtsodV24_serialize.c" />
+    <ClCompile Include="src\HashFunctions\hash.c" />
+    <ClCompile Include="src\Hashtable\Hashtable.c" />
+    <ClCompile Include="src\Hashtable\KeyValuePair.c" />
+    <ClCompile Include="src\Network\knSocket.c" />
+    <ClCompile Include="src\SearchTree\SearchTree.c" />
+    <ClCompile Include="src\String\string.c" />
+    <ClCompile Include="src\String\StringBuilder.c" />
+    <ClCompile Include="tests\main.cpp" />
+    <ClCompile Include="tests\test_autoarr.c" />
+    <ClCompile Include="tests\test_autoarr2.cpp" />
+    <ClCompile Include="tests\test_dtsod.c" />
+    <ClCompile Include="tests\test_hashtable.c" />
+    <ClCompile Include="tests\test_hashtable2.cpp" />
+    <ClCompile Include="tests\test_hash_functions.c" />
+    <ClCompile Include="tests\test_marshalling.c" />
+    <ClCompile Include="tests\test_safethrow.c" />
+    <ClCompile Include="tests\test_searchtree.c" />
+    <ClCompile Include="tests\test_string.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Autoarr2\Autoarr2.hpp" />
+    <ClInclude Include="src\Autoarr\Autoarr.h" />
+    <ClInclude Include="src\Autoarr\Autoarr_declare.h" />
+    <ClInclude Include="src\Autoarr\Autoarr_define.h" />
+    <ClInclude Include="src\base\base.h" />
+    <ClInclude Include="src\base\cptr.h" />
+    <ClInclude Include="src\base\errors.h" />
+    <ClInclude Include="src\base\optime.h" />
+    <ClInclude Include="src\base\std.h" />
+    <ClInclude Include="src\base\types.h" />
+    <ClInclude Include="src\DtsodParser\DtsodV24.h" />
+    <ClInclude Include="src\HashFunctions\hash.h" />
+    <ClInclude Include="src\Hashtable2\Hashtable2.hpp" />
+    <ClInclude Include="src\Hashtable\Hashtable.h" />
+    <ClInclude Include="src\Hashtable\KeyValuePair.h" />
+    <ClInclude Include="src\Network\network.h" />
+    <ClInclude Include="src\SearchTree\SearchTree.h" />
+    <ClInclude Include="src\String\string.h" />
+    <ClInclude Include="src\String\StringBuilder.h" />
+    <ClInclude Include="tests\tests.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -112,7 +164,7 @@
       <PrecompiledHeaderOutputFile />
       <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -139,7 +191,7 @@
       <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -164,7 +216,7 @@
       <PrecompiledHeaderOutputFile />
       <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -184,13 +236,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeaderOutputFile />
       <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -201,51 +253,6 @@
       <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Autoarr\Autoarr.h" />
-    <ClInclude Include="Autoarr\Autoarr_declare.h" />
-    <ClInclude Include="Autoarr\Autoarr_define.h" />
-    <ClInclude Include="base\base.h" />
-    <ClInclude Include="base\errors.h" />
-    <ClInclude Include="base\cptr.h" />
-    <ClInclude Include="base\std.h" />
-    <ClInclude Include="base\types.h" />
-    <ClInclude Include="DtsodParser\DtsodV24.h" />
-    <ClInclude Include="Hashtable\hash.h" />
-    <ClInclude Include="Hashtable\Hashtable.h" />
-    <ClInclude Include="Hashtable\KeyValuePair.h" />
-    <ClInclude Include="SearchTree\SearchTree.h" />
-    <ClInclude Include="String\string.h" />
-    <ClInclude Include="String\StringBuilder.h" />
-    <ClInclude Include="tests\tests.h" />
-    <ClInclude Include="tests\test_marshalling.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Autoarr\Autoarr.c" />
-    <ClCompile Include="Autoarr\Autoarr_KVPair_exported.c" />
-    <ClCompile Include="Autoarr\Autoarr_Unitype_exported.c" />
-    <ClCompile Include="base\cptr.c" />
-    <ClCompile Include="base\errors.c" />
-    <ClCompile Include="base\types.c" />
-    <ClCompile Include="DtsodParser\DtsodV24.c" />
-    <ClCompile Include="DtsodParser\DtsodV24_deserialize.c" />
-    <ClCompile Include="DtsodParser\DtsodV24_exported.c" />
-    <ClCompile Include="DtsodParser\DtsodV24_serialize.c" />
-    <ClCompile Include="Hashtable\hash.c" />
-    <ClCompile Include="Hashtable\Hashtable.c" />
-    <ClCompile Include="Hashtable\KeyValuePair.c" />
-    <ClCompile Include="SearchTree\SearchTree.c" />
-    <ClCompile Include="String\string.c" />
-    <ClCompile Include="String\StringBuilder.c" />
-    <ClCompile Include="tests\main.c" />
-    <ClCompile Include="tests\test_autoarr.c" />
-    <ClCompile Include="tests\test_dtsod.c" />
-    <ClCompile Include="tests\test_hashtable.c" />
-    <ClCompile Include="tests\test_marshalling.c" />
-    <ClCompile Include="tests\test_safethrow.c" />
-    <ClCompile Include="tests\test_searchtree.c" />
-    <ClCompile Include="tests\test_string.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
