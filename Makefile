@@ -5,8 +5,11 @@ build_test:
 build_test_dbg: 
 	@build_scripts/build_configurations/build_test_dbg.sh
 
-build_lib: 
-	@build_scripts/build_configurations/build_lib.sh
+build_shared_lib: 
+	@build_scripts/build_configurations/build_shared_lib.sh
+
+build_static_lib: 
+	@build_scripts/build_configurations/build_static_lib.sh
 
 ######      Testing tasks      #######
 test: build_test

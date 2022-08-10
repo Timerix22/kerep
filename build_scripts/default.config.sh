@@ -14,12 +14,6 @@ TESTS_C="$(  find tests -name '*.c')"
 TESTS_CPP="$(find tests -name '*.cpp')"
 VALGRIND_ARGS="-s --log-file=valgrind.log --read-var-info=yes --track-origins=yes --fullpath-after=kerep/ --leak-check=full --show-leak-kinds=all"
 
-# build_lib
-LIB_FILE=kerep.so
-BUILD_LIB_C_ARGS="-O2 -fpic -flto -shared"
-BUILD_LIB_CPP_ARGS="$BUILD_LIB_C_ARGS"
-BUILD_LIB_LINKER_ARGS="-Wl,-soname,$LIB_FILE"
-
 # build_test
 TEST_FILE=kerep.com
 BUILD_TEST_C_ARGS="-O2"
@@ -31,3 +25,15 @@ TEST_DBG_FILE=$TEST_FILE
 BUILD_TEST_DBG_C_ARGS="-O0 -g"
 BUILD_TEST_DBG_CPP_ARGS="$BUILD_TEST_DBG_C_ARGS"
 BUILD_TEST_DBG_LINKER_ARGS=""
+
+# build_shared_lib
+SHARED_LIB_FILE=kerep.so
+BUILD_SHARED_LIB_C_ARGS="-O2 -fpic -flto -shared"
+BUILD_SHARED_LIB_CPP_ARGS="$BUILD_SHARED_LIB_C_ARGS"
+BUILD_SHARED_LIB_LINKER_ARGS="-Wl,-soname,$SHARED_LIB_FILE"
+
+
+# build_STATIC_LIB
+STATIC_LIB_FILE=kerep.a
+BUILD_STATIC_LIB_C_ARGS="-O2 -fpic"
+BUILD_STATIC_LIB_CPP_ARGS="$BUILD_STATIC_LIB_C_ARGS"

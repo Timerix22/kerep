@@ -70,3 +70,20 @@ function link {
         exit 1
     fi
 }
+
+# (outfile)
+function pack_static_lib {
+	print "${CYAN}----------------[link]----------------\n"
+    local outfile=$OUTDIR/$1
+    print "${BLUE}outfile: ${GRAY}$outfile\n"
+    local objects="$(find $OBJDIR -name *.o)"
+    print "${BLUE}objects: ${GRAY}$objects\n"
+    if ar rcs $outfile $(echo $objects | tr '\n' ' ')
+    then 
+        print "${GREEN}file $CYAN$outfile ${GREEN}created\n"
+        rm -rf $OBJDIR
+    else
+        print "${RED}some error happened\n"
+        exit 1
+    fi
+}
