@@ -8,6 +8,7 @@ void test_all(){
     test_hash_functions();
     test_hashtable();
     test_dtsod();
+    test_network();
     printf("\e[96m--------------------------------------\e[0m\n");
 }
 

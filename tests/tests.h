@@ -13,6 +13,7 @@ void test_autoarr();
 void test_hash_functions();
 void test_hashtable();
 void test_dtsod();
+void test_network();
 
 #if __cplusplus
 }
