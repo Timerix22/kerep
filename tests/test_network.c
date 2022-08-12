@@ -22,8 +22,16 @@ void test_network(){
         printf("\e[96m------------[test_network]------------\n");
         if(sizeof(knIPV4Endpoint)!=sizeof(knPort)+sizeof(knIPV4Address))
             throw(ERR_WRONGTYPE);
+
         test_knIPV4Address_fromStr(127,0,0,1);
         test_knIPV4Address_fromStr(34,255,45,0);
         test_knIPV4Address_fromStr(3,3,3,128);
+
+        knSocket* s;
+        tryLast(knSocket_open(knSockType_TCP), maybeS)
+            s=maybeS.value.VoidPtr;
+        printf("\e[92mTCP socket created\n");
+        tryLast(knSocket_close(s);,_);
+        printf("\e[92mTCP socket closed\n");
     }));
 }

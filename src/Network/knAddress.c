@@ -1,4 +1,4 @@
-#include "network.h"
+#include "knAddress.h"
 
 Maybe knIPV4Address_fromStr(char* addrStr){
     char* addrStr_src=addrStr;
@@ -31,7 +31,7 @@ Maybe knIPV4Address_fromStr(char* addrStr){
             default:
                 uint32 errmsgL=cptr_length(addrStr) + 80;
                 char* errmsg=malloc(errmsgL);
-                IFWIN(sprintf_s(errmsg, errmsgL, "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra), 
+                IFMSC(sprintf_s(errmsg, errmsgL, "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra), 
                       sprintf(  errmsg,          "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra));
                 safethrow(errmsg,;);
                 break;

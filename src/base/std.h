@@ -11,6 +11,7 @@ extern "C" {
 #include <locale.h>
 #include <time.h>
 #include <setjmp.h>
+#include <unistd.h>
 
 
 #define dbg(N) printf("\e[95m%d\n",N)
