@@ -63,7 +63,7 @@ Unitype gett(Hashtable* ht){
 
 void test_hashtable(){
     optime("test_hashtable",1,({
-        printf("\e[96m-----------[test_hashtable]------------\n");
+        printf("\e[96m-----------[test_hashtable]-----------\n");
         Hashtable* ht=Hashtable_create();
         printf("\e[92mhashtable created\n");
         print_hashtable(ht);

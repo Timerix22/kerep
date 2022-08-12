@@ -23,7 +23,7 @@ void printstnode(STNode* node){
 
 void test_searchtree(){
     optime("test_searchtree",1,({
-        printf("\e[96m-----------[test_searchtree]-----------\n");
+        printf("\e[96m-----------[test_searchtree]----------\n");
         STNode* node=STNode_create();
         printf("\e[92mnode created\n");
         printf("push:\e[94m\n  ");

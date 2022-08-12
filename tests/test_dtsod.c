@@ -33,7 +33,7 @@ void print_dtsod(Hashtable* dtsod){
 }
 
 void test_dtsod(){
-    //optime(__func__,1,({
+    optime(__func__,1,({
         printf("\e[96m-------------[test_dtsod]-------------\n");
         Hashtable* dtsod;
         char* s;
@@ -61,5 +61,5 @@ void test_dtsod(){
         }));
 
         free(s);
-    //}));
+    }));
 }
