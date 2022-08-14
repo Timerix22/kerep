@@ -50,8 +50,6 @@ extern "C" {
 #endif
 
 
-#define PACK(...) __VA_ARGS__ __attribute__((__packed__))
-
 #if __cplusplus
 }
 #endif

@@ -10,9 +10,9 @@ extern "C" {
 #define KNPAC_MAX_DATA_SIZE (65535-sizeof(knPackage)+sizeof(uint8*))
 
 
-typedef enum knPacVersion PACK({
+typedef enum __attribute__((__packed__)) knPacVersion {
     knPac_V1
-}) knPacVersion;
+} knPacVersion;
 
 static const char knPacHeader[5]={'k','n','p','a','c'};
 

@@ -16,7 +16,7 @@ typedef int64_t int64;
 typedef uint64_t uint64;
 typedef float float32;
 typedef double float64;
-typedef enum my_type PACK({
+typedef enum __attribute__((__packed__)) my_type {
     Null, Float32, Float64, Char, Bool,
     UInt8, Int8, UInt16, Int16, UInt32, Int32, UInt64, Int64, 
     UInt8Ptr, Int8Ptr, UInt16Ptr, Int16Ptr, UInt32Ptr, Int32Ptr, UInt64Ptr, Int64Ptr,
@@ -25,7 +25,7 @@ typedef enum my_type PACK({
     AutoarrInt8Ptr, AutoarrUInt8Ptr, AutoarrInt16Ptr, AutoarrUInt16Ptr, 
     AutoarrInt32Ptr, AutoarrUInt32Ptr, AutoarrInt64Ptr, AutoarrUInt64Ptr,
     AutoarrUnitypePtr, AutoarrKVPairPtr, knSocketPtr
-}) my_type;
+} my_type;
 #define my_type_last knSocketPtr
 
 const char* my_type_name(my_type t);

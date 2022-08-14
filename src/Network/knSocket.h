@@ -9,9 +9,9 @@ extern "C" {
 #include "knPackage.h"
 
 
-typedef enum knSocketType PACK({
+typedef enum __attribute__((__packed__)) knSocketType {
     knSocketType_TCP, knSocketType_UDP 
-}) knSocketType;
+} knSocketType;
 
 typedef struct knSocket {
     knSocketType type;
