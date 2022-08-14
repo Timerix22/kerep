@@ -40,10 +40,8 @@
     <ClCompile Include="src\String\StringBuilder.c" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="tests\test_autoarr.c" />
-    <ClCompile Include="tests\test_autoarr2.cpp" />
     <ClCompile Include="tests\test_dtsod.c" />
     <ClCompile Include="tests\test_hashtable.c" />
-    <ClCompile Include="tests\test_hashtable2.cpp" />
     <ClCompile Include="tests\test_hash_functions.c" />
     <ClCompile Include="tests\test_marshalling.c" />
     <ClCompile Include="tests\test_network.c" />
@@ -52,7 +50,6 @@
     <ClCompile Include="tests\test_string.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Autoarr2\Autoarr2.hpp" />
     <ClInclude Include="src\Autoarr\Autoarr.h" />
     <ClInclude Include="src\Autoarr\Autoarr_declare.h" />
     <ClInclude Include="src\Autoarr\Autoarr_define.h" />
@@ -64,7 +61,6 @@
     <ClInclude Include="src\base\types.h" />
     <ClInclude Include="src\DtsodParser\DtsodV24.h" />
     <ClInclude Include="src\HashFunctions\hash.h" />
-    <ClInclude Include="src\Hashtable2\Hashtable2.hpp" />
     <ClInclude Include="src\Hashtable\Hashtable.h" />
     <ClInclude Include="src\Hashtable\KeyValuePair.h" />
     <ClInclude Include="src\Network\knAddress.h" />
@@ -169,9 +165,9 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeaderOutputFile />
-      <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:twoPhase- /MP -fms-compatibility-version=14 %(AdditionalOptions)</AdditionalOptions>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -195,10 +191,10 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeaderOutputFile />
-      <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:twoPhase- /MP -fms-compatibility-version=14 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -221,9 +217,9 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeaderOutputFile />
-      <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:twoPhase- /MP -fms-compatibility-version=14 %(AdditionalOptions)</AdditionalOptions>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
@@ -248,10 +244,10 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeaderOutputFile />
-      <AdditionalOptions>/Zc:twoPhase- /MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:twoPhase- /MP -fms-compatibility-version=14 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
