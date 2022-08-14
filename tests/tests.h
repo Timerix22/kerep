@@ -15,6 +15,8 @@ void test_hashtable();
 void test_dtsod();
 void test_network();
 
+#define PRINT_SIZEOF(T) printf("\e[94m" #T " size: \e[96m" IFWIN("%llu", "%lu") "\n", sizeof(T))
+
 #if __cplusplus
 }
 #endif

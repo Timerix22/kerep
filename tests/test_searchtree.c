@@ -7,7 +7,7 @@ void printstnode(STNode* node){
     "\n  address: %p\n  value: ",sizeof(STNode),node);
     printuni(node->value);
     // prints pointers to all existing branches
-    printf("\n  branches: %p\n", node->branches);
+    /* printf("\n  branches: %p\n", node->branches);
     if(node->branches) for(uint8 i=0;i<8;i++){
         printf("    \e[90m[%u]=%p\n",i,node->branches[i]);
         if(node->branches[i]) 
@@ -18,7 +18,7 @@ void printstnode(STNode* node){
                         printf("          \e[90m[%u]=%p\n",iii,node->branches[i][ii][iii]);
             }
         
-    }
+    } */
 }
 
 void test_searchtree(){

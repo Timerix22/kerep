@@ -20,15 +20,20 @@ void __test_knIPV4Address_fromStr(char* addrStr, uint8 a, uint8 b, uint8 c, uint
 void test_network(){
     optime(__func__,1,({
         printf("\e[96m------------[test_network]------------\n");
-        if(sizeof(knIPV4Endpoint)!=sizeof(knPort)+sizeof(knIPV4Address))
-            throw(ERR_WRONGTYPE);
+        
+        PRINT_SIZEOF(knIPV4Address);
+        PRINT_SIZEOF(knPort);
+        PRINT_SIZEOF(knIPV4Endpoint);
+        PRINT_SIZEOF(knPackage);
+        PRINT_SIZEOF(knChannel);
+        PRINT_SIZEOF(knSocket);
 
         test_knIPV4Address_fromStr(127,0,0,1);
         test_knIPV4Address_fromStr(34,255,45,0);
         test_knIPV4Address_fromStr(3,3,3,128);
 
         knSocket* s;
-        tryLast(knSocket_open(knSockType_TCP), maybeS)
+        tryLast(knSocket_open(knSocketType_TCP), maybeS)
             s=maybeS.value.VoidPtr;
         printf("\e[92mTCP socket created\n");
         tryLast(knSocket_close(s);,_);

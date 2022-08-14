@@ -11,7 +11,6 @@ extern "C" {
 #include <locale.h>
 #include <time.h>
 #include <setjmp.h>
-#include <unistd.h>
 
 
 #define dbg(N) printf("\e[95m%d\n",N)
@@ -36,6 +35,7 @@ extern "C" {
     #pragma GCC error "unknown compiler"
 #endif
 
+
 #ifdef _MSC_VER
     #define IFWIN(YES, NO) YES
     #define IFMSC(YES, NO) YES
@@ -52,6 +52,15 @@ extern "C" {
 #ifndef NULL
     #define NULL ((void*)0)
 #endif
+
+
+#ifdef __GNUC__
+    #define PACK(...) __VA_ARGS__ __attribute__((__packed__))
+#elif defined(_MSC_VER)
+    #define PACK(...) __pragma(pack(push, 1)) __VA_ARGS__ __pragma(pack(pop))
+#endif
+
+
 
 #if __cplusplus
 }

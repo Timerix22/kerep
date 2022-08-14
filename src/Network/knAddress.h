@@ -19,7 +19,7 @@ typedef union knIPV4Address {
 ///@return Maybe<uint64> as Maybe<knIPV4Address>
 Maybe knIPV4Address_fromStr(char* addrStr);
 
-typedef struct __attribute__((__packed__)) knIPV4Endpoint {
+typedef struct knIPV4Endpoint {
     knIPV4Address address;
     knPort port;
 } knIPV4Endpoint;
