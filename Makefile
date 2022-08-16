@@ -10,6 +10,9 @@ build_shared_lib:
 
 build_static_lib: 
 	@build_scripts/build_configurations/build_static_lib.sh
+	
+build_static_lib_dbg: 
+	@build_scripts/build_configurations/build_static_lib_dbg.sh
 
 ######      Testing tasks      #######
 test: build_test
