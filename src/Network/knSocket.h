@@ -16,7 +16,7 @@ typedef enum __attribute__((__packed__)) knSocketType {
 typedef struct knSocket {
     knSocketType type;
     uint16 channelsAmount;
-    knChannel* channels;
+    knChannel** channels;
     int64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;

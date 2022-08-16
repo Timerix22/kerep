@@ -40,3 +40,52 @@ Maybe knSocket_close(knSocket* knsocket){
     }
     else return SUCCESS(UniNull);
 }
+
+knChannel* __createChannel(){
+    knChannel* ch=malloc(sizeof(knChannel));
+    ch->queueStart=NULL;
+    return ch;
+}
+
+Maybe knSocket_createChannel(knSocket* sock){
+    if(sock->channelsAmount == 65535) 
+        safethrow("max amount of channels",;);
+    uint16 channelsAmountPrev=sock->channelsAmount;
+    sock->channelsAmount++;
+    if(channelsAmountPrev==0) 
+        sock->channels=malloc(sizeof(knChannel*));
+    else 
+        sock->channels=realloc(sock->channels, sock->channelsAmount*sizeof(knChannel*));
+    sock->channels[channelsAmountPrev]=__createChannel();
+    return SUCCESS(Uni(UInt64, channelsAmountPrev));
+}
+
+/*Maybe knSocket_bind(knSocket* sock, knIPV4Endpoint localEndp){
+    if(sock->localEndpoint.address.address!=0)
+        safethrow("socket is bound already",;);
+    struct sockaddr_in addr;
+    addr.sin_family=
+    bind(sock->socketfd);
+    sock->localEndpoint=localEndp;
+    return SUCCESS(UniNull);
+}
+
+Maybe knSocket_connect(knSocket* sock, knIPV4Endpoint remoteEndp){
+    if(sock->remoteEndpoint.address.address!=0)
+        safethrow("socket is connected already",;);
+    
+    sock->remoteEndpoint=remoteEndp;
+    return SUCCESS(UniNull);
+}
+
+Maybe knSocket_accept(knSocket* sock){
+
+}
+
+Maybe knSocket_send(knSocket* sock, uint16 destinationIndex, uint8* data, uint32 dataLength){
+
+}
+
+Maybe knSocket_recieve(knSocket* sock, uint16 destinationIndex, uint8* buffer, uint32 bufferLength){
+
+}*/
