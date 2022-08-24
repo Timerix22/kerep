@@ -17,10 +17,14 @@ Hashtable* Hashtable_create(){
     return ht;
 }
 
-void Hashtable_free(Hashtable* ht){
+void __Hashtable_free(void* _ht){
+    Hashtable* ht=_ht;
     for(uint16 i=0;i<HT_HEIGHTS[ht->hein];i++)
-        Autoarr_free_KVPair(ht->rows[i]);
+        Autoarr_free(ht->rows[i], true);
     free(ht->rows);
+}
+void Hashtable_free(Hashtable* ht){
+    __Hashtable_free(ht);
     free(ht);
 }
 
@@ -43,7 +47,7 @@ void Hashtable_expand(Hashtable* ht){
             Autoarr(KVPair)* newar=newrows[newrown];
             Autoarr_add(newar,p);
         }
-        Autoarr_free(ar);
+        Autoarr_free(ar, true);
     }
 
     free(ht->rows);

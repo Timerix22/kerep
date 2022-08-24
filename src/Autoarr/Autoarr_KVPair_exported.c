@@ -10,7 +10,7 @@ EXPORT void CALL kerep_Autoarr_KVPair_create(uint16 max_blocks_count, uint16 max
 }
 
 EXPORT void CALL kerep_Autoarr_KVPair_free(Autoarr_KVPair* ar){
-    Autoarr_free_KVPair(ar);
+    Autoarr_free(ar, true);
 }
 
 EXPORT void CALL kerep_Autoarr_KVPair_get(Autoarr_KVPair* ar, uint32 index, KVPair* output){

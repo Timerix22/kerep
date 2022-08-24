@@ -39,11 +39,14 @@ void __Autoarr_set_##type(Autoarr_##type* ar, uint32 index, type element){\
     ar->values[index/ar->max_block_length][index%ar->max_block_length]=element;\
 }\
 \
-void __Autoarr_free_##type(Autoarr_##type* ar){\
+void __Autoarr_free_##type(Autoarr_##type* ar, bool freePtr){\
     for(uint16 i=0; i<ar->blocks_count;i++)\
         free(ar->values[i]); \
     free(ar->values);\
-    free(ar);\
+    if(freePtr) free(ar);\
+}\
+void ____Autoarr_free_##type(void* ar){\
+    __Autoarr_free_##type((Autoarr_##type*)ar, false);\
 }\
 \
 type* __Autoarr_toArray_##type(Autoarr_##type* ar){\

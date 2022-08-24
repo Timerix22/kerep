@@ -16,6 +16,7 @@ kerepType_declare(HashtablePtr);
 
 Hashtable* Hashtable_create();
 void Hashtable_free(Hashtable* ht);
+void __Hashtable_free(void* ht);
 
 // amount of rows
 uint16 Hashtable_height(Hashtable* ht);

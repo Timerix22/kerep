@@ -11,14 +11,20 @@ typedef struct KVPair{
     char* key;
     Unitype value;
 } KVPair;
+kerepType_declare(KVPair);
+kerepType_declare(KVPairPtr);
 
 Autoarr_declare(KVPair)
+kerepType_declare(AutoarrKVPair);
+kerepType_declare(AutoarrKVPairPtr);
 
 // proper way to clear a KVP
 void KVPair_free(KVPair p);
+void __KVPair_free(void* p);
 
 // func to clear KVP array
-void Autoarr_free_KVPair(Autoarr_KVPair* ar);
+void __Autoarr_free_KVPair_(Autoarr_KVPair* ar, bool freePtr);
+void ____Autoarr_free_KVPair_(void* ar);
 
 void printkvp(KVPair p);
 

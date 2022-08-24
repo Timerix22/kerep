@@ -44,7 +44,6 @@ typedef double float64;
     #pragma GCC error "unknown compiler"
 #endif
 
-
 #ifdef _MSC_VER
     #define IFWIN(YES, NO) YES
     #define IFMSC(YES, NO) YES
@@ -58,6 +57,9 @@ typedef double float64;
     #pragma GCC error "unknown compiler"
 #endif
 
+#ifndef sprintf_s
+    #define sprintf_s(BUF, BUFSIZE, FORMAT, ...) sprintf(BUF, FORMAT, ## __VA_ARGS__)
+#endif
 
 #if __cplusplus
 }

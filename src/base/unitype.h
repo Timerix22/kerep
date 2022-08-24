@@ -23,7 +23,7 @@ kerepType_declare(UnitypePtr);
 
 
 #define __Uni(TYPE,VAL) (Unitype){\
-    .TYPE_NAME=VAL, .type=kerepTypeId_##TYPE, .allocatedInHeap=false}
+    .TYPE_NAME=VAL, .typeId=kerepTypeId_##TYPE, .allocatedInHeap=false}
 
 #define UniInt64(VAL) __Uni(Int64, VAL)
 #define UniUInt64(VAL) __Uni(UInt64, VAL)
@@ -41,7 +41,7 @@ kerepType_declare(UnitypePtr);
 
 // frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
-void __UnitypePtr_free(Unitype* u);
+void __UnitypePtr_free(void* u);
 void printuni(Unitype v);
 char* sprintuni(Unitype v);
 

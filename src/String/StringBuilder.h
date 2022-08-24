@@ -13,9 +13,12 @@ typedef struct StringBuilder{
 	Autoarr(string)* compl_bufs;
 	Autoarr(int8)* curr_buf;
 } StringBuilder;
+kerepType_declare(StringBuilder);
+kerepType_declare(StringBuilderPtr);
 
 StringBuilder* StringBuilder_create(void);
 void StringBuilder_free(StringBuilder* b);
+void __StringBuilder_free(void* b);
 // Joins all strings from compl_bufs.
 // Returns zero-terminated string.
 // No need to call string_extract()!

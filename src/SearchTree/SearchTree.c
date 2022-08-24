@@ -8,7 +8,8 @@ STNode* STNode_create(){
     return node;
 }
 
-void STNode_free(STNode* node){
+void __STNode_free(void* _node){
+    STNode* node=_node;
     if (!node) throw(ERR_NULLPTR);
     if(node->branches){
         for(uint8 n32 = 0;n32<8;n32++){
@@ -32,6 +33,10 @@ void STNode_free(STNode* node){
     }
     if(node->value.VoidPtr) 
         Unitype_free(node->value);
+    free(node);
+}
+void STNode_free(STNode* node){
+    __STNode_free(node);
     free(node);
 }
 

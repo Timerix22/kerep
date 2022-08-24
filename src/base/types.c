@@ -22,7 +22,7 @@ void kerepTypeDescriptors_beginInit(){
 
 void kerepTypeDescriptors_endInit(){
     typeDescriptors=Autoarr_toArray(__kerepTypeDescriptors);
-    Autoarr_free(__kerepTypeDescriptors);
+    Autoarr_free(__kerepTypeDescriptors,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);
 }
 void __kerepType_register(char* name, int16 size, void (*free_members)(void*)){
@@ -35,6 +35,6 @@ void __kerepType_register(char* name, int16 size, void (*free_members)(void*)){
     Autoarr_add(__kerepTypeDescriptors, typeDesc);
 }
 
-kerepTypeDescriptor typeDescriptor_get(kerepTypeId id){
+kerepTypeDescriptor kerepTypeDescriptor_get(kerepTypeId id){
     return typeDescriptors[id];
 }

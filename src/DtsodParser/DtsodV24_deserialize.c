@@ -154,7 +154,7 @@ Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     bool readingList=true;
     while (true){
-        try(ReadValue((&readingList)), val, Autoarr_free_Unitype(list))
+        try(ReadValue((&readingList)), val, Autoarr_free(list, true))
             Autoarr_add(list,val.value); 
         if (!readingList){
             if(val.value.type==Null)

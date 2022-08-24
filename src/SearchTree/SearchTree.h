@@ -16,6 +16,7 @@ kerepType_declare(STNodePtr);
 
 STNode* STNode_create();
 void STNode_free(STNode* node);
+void __STNode_free(void* node);
 
 void ST_push(STNode* node, char* key, Unitype value);
 void ST_pushString(STNode* node, string key, Unitype value);

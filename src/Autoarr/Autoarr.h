@@ -7,6 +7,8 @@ extern "C" {
 #include "Autoarr_declare.h"
 #include "Autoarr_define.h"
 
+Autoarr_declare(char)
+Autoarr_declare(bool)
 Autoarr_declare(float32)
 Autoarr_declare(float64)
 Autoarr_declare(int8)
@@ -17,7 +19,6 @@ Autoarr_declare(int32)
 Autoarr_declare(uint32)
 Autoarr_declare(int64)
 Autoarr_declare(uint64)
-Autoarr_declare(Unitype)
 
 kerepType_declare(AutoarrChar);
 kerepType_declare(AutoarrBool);
@@ -45,8 +46,13 @@ kerepType_declare(AutoarrUInt32Ptr);
 kerepType_declare(AutoarrInt64Ptr);
 kerepType_declare(AutoarrUInt64Ptr);
 
-// right func to clear array of unitype values
-void Autoarr_free_Unitype(Autoarr(Unitype)* ar);
+Autoarr_declare(Unitype)
+kerepType_declare(AutoarrUnitype);
+kerepType_declare(AutoarrUnitypePtr);
+
+// this function is injected in kerep_init()
+void __Autoarr_free_Unitype_(Autoarr(Unitype)* ar, bool freePtr);
+void ____Autoarr_free_Unitype_(void* ar);
 
 #define Autoarr_foreach(ar,elem,codeblock)({\
     if(ar->blocks_count>0) {\

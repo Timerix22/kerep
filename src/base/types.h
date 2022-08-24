@@ -7,6 +7,7 @@ extern "C" {
 #include "std.h"
 
 typedef uint16 kerepTypeId;
+
 typedef struct kerepTypeDescriptor{
     void (*free_members)(void*); // NULL or function which frees all struct members
     char* name;
@@ -26,7 +27,7 @@ void __kerepType_register(char* name, int16 size, void (*free_members)(void*));
 
 void kerepTypeDescriptors_beginInit();
 void kerepTypeDescriptors_endInit();
-kerepTypeDescriptor typeDescriptor_get(kerepTypeId id);
+kerepTypeDescriptor kerepTypeDescriptor_get(kerepTypeId id);
 
 kerepType_declare(Null);
 
