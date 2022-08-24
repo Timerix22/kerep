@@ -32,9 +32,6 @@
     <ClCompile Include="src\HashFunctions\hash.c" />
     <ClCompile Include="src\Hashtable\Hashtable.c" />
     <ClCompile Include="src\Hashtable\KeyValuePair.c" />
-    <ClCompile Include="src\Network\knAddress.c" />
-    <ClCompile Include="src\Network\knPackage.c" />
-    <ClCompile Include="src\Network\knSocket.c" />
     <ClCompile Include="src\SearchTree\SearchTree.c" />
     <ClCompile Include="src\String\string.c" />
     <ClCompile Include="src\String\StringBuilder.c" />
@@ -44,7 +41,6 @@
     <ClCompile Include="tests\test_hashtable.c" />
     <ClCompile Include="tests\test_hash_functions.c" />
     <ClCompile Include="tests\test_marshalling.c" />
-    <ClCompile Include="tests\test_network.c" />
     <ClCompile Include="tests\test_safethrow.c" />
     <ClCompile Include="tests\test_searchtree.c" />
     <ClCompile Include="tests\test_string.c" />
@@ -63,11 +59,6 @@
     <ClInclude Include="src\HashFunctions\hash.h" />
     <ClInclude Include="src\Hashtable\Hashtable.h" />
     <ClInclude Include="src\Hashtable\KeyValuePair.h" />
-    <ClInclude Include="src\Network\knAddress.h" />
-    <ClInclude Include="src\Network\knPackage.h" />
-    <ClInclude Include="src\Network\knSocket.h" />
-    <ClInclude Include="src\Network\network.h" />
-    <ClInclude Include="src\Network\stdSocketHeaders.h" />
     <ClInclude Include="src\SearchTree\SearchTree.h" />
     <ClInclude Include="src\String\string.h" />
     <ClInclude Include="src\String\StringBuilder.h" />
