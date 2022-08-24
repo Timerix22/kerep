@@ -2,7 +2,7 @@
 
 source build_scripts/init.sh
 
-print "${CYAN}==========[build_shared_lib]==========\n"
+print "${CYAN}==========[build_static_lib]==========\n"
 clear_dir "$OUTDIR"
 clear_dir "$OBJDIR"
 compile_c "$BUILD_STATIC_LIB_C_ARGS" "$SRC_C tests/test_marshalling.c"

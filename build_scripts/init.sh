@@ -1,6 +1,5 @@
 #!/bin/bash
 
-reset
 tabs 4
 
 source build_scripts/colors.sh
