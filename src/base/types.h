@@ -24,9 +24,9 @@ typedef enum __attribute__((__packed__)) my_type {
     UniversalType,
     AutoarrInt8Ptr, AutoarrUInt8Ptr, AutoarrInt16Ptr, AutoarrUInt16Ptr, 
     AutoarrInt32Ptr, AutoarrUInt32Ptr, AutoarrInt64Ptr, AutoarrUInt64Ptr,
-    AutoarrUnitypePtr, AutoarrKVPairPtr
+    AutoarrUnitypePtr, AutoarrKVPairPtr, knSocketPtr
 } my_type;
-#define my_type_last AutoarrKVPairPtr
+#define my_type_last knSocketPtr
 
 const char* my_type_name(my_type t);
 

@@ -35,6 +35,7 @@ extern "C" {
     #pragma GCC error "unknown compiler"
 #endif
 
+
 #ifdef _MSC_VER
     #define IFWIN(YES, NO) YES
     #define IFMSC(YES, NO) YES
@@ -48,9 +49,6 @@ extern "C" {
     #pragma GCC error "unknown compiler"
 #endif
 
-#ifndef NULL
-    #define NULL ((void*)0)
-#endif
 
 #if __cplusplus
 }
