@@ -5,10 +5,12 @@ extern "C" {
 #endif
 
 #include "std.h"
-#include "types.h"
 #include "errors.h"
 #include "cptr.h"
 #include "optime.h"
+#include "types.h"
+#include "unitype.h"
+#include "init.h"
 
 #if __cplusplus
 }

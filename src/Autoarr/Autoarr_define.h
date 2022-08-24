@@ -46,12 +46,21 @@ void __Autoarr_free_##type(Autoarr_##type* ar){\
     free(ar);\
 }\
 \
+type* __Autoarr_toArray_##type(Autoarr_##type* ar){\
+    uint32 length=Autoarr_length(ar);\
+    type* array=malloc(length * sizeof(type));\
+    for(uint32 i=0; i<length; i++)\
+        array[i]=__Autoarr_get_##type(ar, i);\
+    return array;\
+}\
+\
 __functions_list_t_##type __functions_list_##type={\
     &__Autoarr_add_##type,\
     &__Autoarr_get_##type,\
     &__Autoarr_getptr_##type,\
     &__Autoarr_set_##type,\
-    &__Autoarr_free_##type\
+    &__Autoarr_free_##type,\
+    &__Autoarr_toArray_##type\
 };\
 \
 Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length){\

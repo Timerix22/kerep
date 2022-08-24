@@ -7,17 +7,43 @@ extern "C" {
 #include "Autoarr_declare.h"
 #include "Autoarr_define.h"
 
-Autoarr_declare(uint8)
+Autoarr_declare(float32)
+Autoarr_declare(float64)
 Autoarr_declare(int8)
-Autoarr_declare(uint16)
+Autoarr_declare(uint8)
 Autoarr_declare(int16)
-Autoarr_declare(uint32)
+Autoarr_declare(uint16)
 Autoarr_declare(int32)
-Autoarr_declare(uint64)
+Autoarr_declare(uint32)
 Autoarr_declare(int64)
-Autoarr_declare(float)
-Autoarr_declare(double)
+Autoarr_declare(uint64)
 Autoarr_declare(Unitype)
+
+kerepType_declare(AutoarrChar);
+kerepType_declare(AutoarrBool);
+kerepType_declare(AutoarrFloat32);
+kerepType_declare(AutoarrFloat64);
+kerepType_declare(AutoarrInt8);
+kerepType_declare(AutoarrUInt8);
+kerepType_declare(AutoarrInt16);
+kerepType_declare(AutoarrUInt16);
+kerepType_declare(AutoarrInt32);
+kerepType_declare(AutoarrUInt32);
+kerepType_declare(AutoarrInt64);
+kerepType_declare(AutoarrUInt64);
+
+kerepType_declare(AutoarrCharPtr);
+kerepType_declare(AutoarrBoolPtr);
+kerepType_declare(AutoarrFloat32Ptr);
+kerepType_declare(AutoarrFloat64Ptr);
+kerepType_declare(AutoarrInt8Ptr);
+kerepType_declare(AutoarrUInt8Ptr);
+kerepType_declare(AutoarrInt16Ptr);
+kerepType_declare(AutoarrUInt16Ptr);
+kerepType_declare(AutoarrInt32Ptr);
+kerepType_declare(AutoarrUInt32Ptr);
+kerepType_declare(AutoarrInt64Ptr);
+kerepType_declare(AutoarrUInt64Ptr);
 
 // right func to clear array of unitype values
 void Autoarr_free_Unitype(Autoarr(Unitype)* ar);
