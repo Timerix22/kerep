@@ -8,6 +8,8 @@ extern "C" {
 #include "string.h"
 
 Autoarr_declare(string)
+kerepTypeId_declare(kerepTypeId_AutoarrString);
+kerepTypeId_declare(kerepTypeId_AutoarrStringPtr);
 
 typedef struct StringBuilder{
 	Autoarr(string)* compl_bufs;

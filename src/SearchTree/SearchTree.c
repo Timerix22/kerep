@@ -1,5 +1,8 @@
 #include "SearchTree.h"
 
+kerepTypeId_define(kerepTypeId_STNode);
+kerepTypeId_define(kerepTypeId_STNodePtr);
+
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));
     node->branches=NULL;

@@ -1,5 +1,8 @@
 #include "Hashtable.h"
 
+kerepTypeId_define(kerepTypeId_Hashtable);
+kerepTypeId_define(kerepTypeId_HashtablePtr);
+
 // amount of rows
 static const uint16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
 #define HT_HEIN_MIN 0

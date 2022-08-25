@@ -1,5 +1,8 @@
 #include "base.h"
 
+kerepTypeId_define(kerepTypeId_Unitype);
+kerepTypeId_define(kerepTypeId_UnitypePtr);
+
 void Unitype_free(Unitype u){
     kerepTypeDescriptor type=kerepTypeDescriptor_get(u.typeId);
     if(type.free_members)

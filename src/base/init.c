@@ -90,6 +90,8 @@ void kerepTypeDescriptors_initKerepTypes(){
     kerepType_register(Hashtable*, kerepTypeId_HashtablePtr, __Hashtable_free);
 
     // StringBuilder
+    kerepType_register(Autoarr_string,  kerepTypeId_AutoarrString,    ____Autoarr_free_string);
+    kerepType_register(Autoarr_string*, kerepTypeId_AutoarrStringPtr, ____Autoarr_free_string);
     kerepType_register(StringBuilder,  kerepTypeId_StringBuilder,    __StringBuilder_free);
     kerepType_register(StringBuilder*, kerepTypeId_StringBuilderPtr, __StringBuilder_free);
 }

@@ -4,6 +4,34 @@
 Autoarr_declare(kerepTypeDescriptor)
 Autoarr_define(kerepTypeDescriptor)
 
+kerepTypeId_define(kerepTypeId_Null);
+
+kerepTypeId_define(kerepTypeId_Char);
+kerepTypeId_define(kerepTypeId_Bool);
+kerepTypeId_define(kerepTypeId_Float32);
+kerepTypeId_define(kerepTypeId_Float64);
+kerepTypeId_define(kerepTypeId_Int8);
+kerepTypeId_define(kerepTypeId_UInt8);
+kerepTypeId_define(kerepTypeId_Int16);
+kerepTypeId_define(kerepTypeId_UInt16);
+kerepTypeId_define(kerepTypeId_Int32);
+kerepTypeId_define(kerepTypeId_UInt32);
+kerepTypeId_define(kerepTypeId_Int64);
+kerepTypeId_define(kerepTypeId_UInt64);
+
+kerepTypeId_define(kerepTypeId_CharPtr);
+kerepTypeId_define(kerepTypeId_BoolPtr);
+kerepTypeId_define(kerepTypeId_Float32Ptr);
+kerepTypeId_define(kerepTypeId_Float64Ptr);
+kerepTypeId_define(kerepTypeId_Int8Ptr);
+kerepTypeId_define(kerepTypeId_UInt8Ptr);
+kerepTypeId_define(kerepTypeId_Int16Ptr);
+kerepTypeId_define(kerepTypeId_UInt16Ptr);
+kerepTypeId_define(kerepTypeId_Int32Ptr);
+kerepTypeId_define(kerepTypeId_UInt32Ptr);
+kerepTypeId_define(kerepTypeId_Int64Ptr);
+kerepTypeId_define(kerepTypeId_UInt64Ptr);
+
 // type descriptors are stored here during initialization 
 Autoarr(kerepTypeDescriptor)* __kerepTypeDescriptors=NULL;
 // here type descriptors are stored when initialization is complited
@@ -31,7 +59,7 @@ void __kerepType_register(char* name, int16 size, void (*free_members)(void*)){
         .size=size,
         .free_members=free_members,
         .id=++kerepTypeId_last
-    };
+    }; dbg(kerepTypeId_last);
     Autoarr_add(__kerepTypeDescriptors, typeDesc);
 }
 
