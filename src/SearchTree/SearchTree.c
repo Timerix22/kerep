@@ -3,7 +3,7 @@
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));
     node->branches=NULL;
-    node->value.type=Null;
+    node->value.typeId=kerepTypeId_Null;
     node->value.UInt64=0;
     return node;
 }

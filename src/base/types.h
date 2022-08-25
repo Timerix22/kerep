@@ -15,47 +15,49 @@ typedef struct kerepTypeDescriptor{
     uint16 size;
 } kerepTypeDescriptor;
 
-#define kerepType_declare(NAME)\
-    extern kerepTypeId kerepTypeId_##NAME
+#define kerepTypeId_declare(ID_VAR_NAME)\
+    extern kerepTypeId ID_VAR_NAME
+#define kerepTypeId_define(ID_VAR_NAME)\
+    kerepTypeId ID_VAR_NAME=-1
 
 extern kerepTypeId kerepTypeId_last;
 void __kerepType_register(char* name, int16 size, void (*free_members)(void*));
 
-#define kerepType_register(TYPE, NAME, FREE_MEMBERS_FUNC)\
-    __kerepType_register(#NAME, sizeof(TYPE), FREE_MEMBERS_FUNC);\
-    kerepTypeId_##NAME=kerepTypeId_last;
+#define kerepType_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC)\
+    __kerepType_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC);\
+    ID_VAR_NAME=kerepTypeId_last;
 
 void kerepTypeDescriptors_beginInit();
 void kerepTypeDescriptors_endInit();
 kerepTypeDescriptor kerepTypeDescriptor_get(kerepTypeId id);
 
-kerepType_declare(Null);
+kerepTypeId_declare(kerepTypeId_Null);
 
-kerepType_declare(Char);
-kerepType_declare(Bool);
-kerepType_declare(Float32);
-kerepType_declare(Float64);
-kerepType_declare(Int8);
-kerepType_declare(UInt8);
-kerepType_declare(Int16);
-kerepType_declare(UInt16);
-kerepType_declare(Int32);
-kerepType_declare(UInt32);
-kerepType_declare(Int64);
-kerepType_declare(UInt64);
+kerepTypeId_declare(kerepTypeId_Char);
+kerepTypeId_declare(kerepTypeId_Bool);
+kerepTypeId_declare(kerepTypeId_Float32);
+kerepTypeId_declare(kerepTypeId_Float64);
+kerepTypeId_declare(kerepTypeId_Int8);
+kerepTypeId_declare(kerepTypeId_UInt8);
+kerepTypeId_declare(kerepTypeId_Int16);
+kerepTypeId_declare(kerepTypeId_UInt16);
+kerepTypeId_declare(kerepTypeId_Int32);
+kerepTypeId_declare(kerepTypeId_UInt32);
+kerepTypeId_declare(kerepTypeId_Int64);
+kerepTypeId_declare(kerepTypeId_UInt64);
 
-kerepType_declare(CharPtr);
-kerepType_declare(BoolPtr);
-kerepType_declare(Float32Ptr);
-kerepType_declare(Float64Ptr);
-kerepType_declare(Int8Ptr);
-kerepType_declare(UInt8Ptr);
-kerepType_declare(Int16Ptr);
-kerepType_declare(UInt16Ptr);
-kerepType_declare(Int32Ptr);
-kerepType_declare(UInt32Ptr);
-kerepType_declare(Int64Ptr);
-kerepType_declare(UInt64Ptr);
+kerepTypeId_declare(kerepTypeId_CharPtr);
+kerepTypeId_declare(kerepTypeId_BoolPtr);
+kerepTypeId_declare(kerepTypeId_Float32Ptr);
+kerepTypeId_declare(kerepTypeId_Float64Ptr);
+kerepTypeId_declare(kerepTypeId_Int8Ptr);
+kerepTypeId_declare(kerepTypeId_UInt8Ptr);
+kerepTypeId_declare(kerepTypeId_Int16Ptr);
+kerepTypeId_declare(kerepTypeId_UInt16Ptr);
+kerepTypeId_declare(kerepTypeId_Int32Ptr);
+kerepTypeId_declare(kerepTypeId_UInt32Ptr);
+kerepTypeId_declare(kerepTypeId_Int64Ptr);
+kerepTypeId_declare(kerepTypeId_UInt64Ptr);
 
 #if __cplusplus
 }

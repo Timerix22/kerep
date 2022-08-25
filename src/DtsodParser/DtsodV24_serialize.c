@@ -23,81 +23,78 @@ void __AppendTabs(SerializeSharedData* shared) {
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u);
 #define AppendValue(UNI) __AppendValue(shared, UNI)
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
-    switch(u.type){
-        case Int64:
-            StringBuilder_append_int64(b,u.Int64);
-            break;
-        case UInt64:
-            StringBuilder_append_uint64(b,u.UInt64);
-            addc('u');
-            break;
-        case Float64:
-            StringBuilder_append_float64(b,u.Float64);
-            addc('f');
-            break;
-        case CharPtr:
-            addc('"');
-            char c;
-            while((c=*(char*)(u.VoidPtr++))){
-                if(c=='\"') addc('\\');
-                addc(c);
-            }
-            addc('"');
-            break;
-        case Bool:
-            StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
-            break;
-        case Null:
-            safethrow("Null isn't supported in DtsodV24",;);
-        case AutoarrUnitypePtr:
-            if(Autoarr_length(((Autoarr_Unitype*)(u.VoidPtr)))){
-                addc('\n');
-                AppendTabs();
-                addc('[');
-                tabs++;
-                Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
-                    addc('\n');
-                    AppendTabs();
-                    try(AppendValue(e),__,;);
-                    addc(',');
-                }));
-                StringBuilder_rmchar(b);
-                addc('\n');
-                tabs--;
-                AppendTabs();
-                addc(']');
-            }
-            else {
-                addc('[');
-                addc(']');
-            }
-            break;
-        case HashtablePtr:
-            // check hashtable is blank
-            Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
-                goto hashtableNotBlank;
-                if(__.key); // weird way to disable warning
-            }));
-
-
-            // blank hashtable
-            addc('{');
-            addc('}');
-            break;
-
-            // not blank hashtable
-            hashtableNotBlank:
-            addc('\n');
-            AppendTabs();
-            addc('{');
-            addc('\n');
-            try(__serialize(b,tabs+1,u.VoidPtr),___,;);
-            AppendTabs();
-            addc('}');
-            break;
-        default: dbg((u.type)); safethrow(ERR_WRONGTYPE,;);
+    if(u.typeId==kerepTypeId_Int64){
+        StringBuilder_append_int64(b,u.Int64);
     }
-
+    else if(u.typeId==kerepTypeId_UInt64){
+        StringBuilder_append_uint64(b,u.UInt64);
+        addc('u');
+    }
+    else if(u.typeId==kerepTypeId_Float64){
+        StringBuilder_append_float64(b,u.Float64);
+        addc('f');
+    }
+    else if(u.typeId==kerepTypeId_CharPtr){
+        addc('"');
+        char c;
+        while((c=*(char*)(u.VoidPtr++))){
+            if(c=='\"') addc('\\');
+            addc(c);
+        }
+        addc('"');
+    }
+    else if(u.typeId==kerepTypeId_Bool){
+        StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
+    }
+    else if(u.typeId==kerepTypeId_Null){
+        safethrow("Null isn't supported in DtsodV24",;);
+    }
+    else if(u.typeId==kerepTypeId_AutoarrUnitypePtr){
+        if(Autoarr_length(((Autoarr_Unitype*)(u.VoidPtr)))){
+            addc('\n');
+            AppendTabs();
+            addc('[');
+            tabs++;
+            Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
+                addc('\n');
+                AppendTabs();
+                try(AppendValue(e),__,;);
+                addc(',');
+            }));
+            StringBuilder_rmchar(b);
+            addc('\n');
+            tabs--;
+            AppendTabs();
+            addc(']');
+        }
+        else {
+            addc('[');
+            addc(']');
+        }
+    }
+    else if(u.typeId==kerepTypeId_HashtablePtr){
+        // check hashtable is blank
+        Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
+            goto hashtableNotBlank;
+            if(__.key); // weird way to disable warning
+        }));
+        // blank hashtable
+        addc('{');
+        addc('}');
+        // not blank hashtable
+        hashtableNotBlank:
+        addc('\n');
+        AppendTabs();
+        addc('{');
+        addc('\n');
+        try(__serialize(b,tabs+1,u.VoidPtr),___,;);
+        AppendTabs();
+        addc('}');
+    }
+    else {
+        dbg((u.typeId)); 
+        safethrow(ERR_WRONGTYPE,;);
+    }
     return MaybeNull;
 };
 
@@ -125,5 +122,5 @@ Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder* sb=StringBuilder_create();
     try(__serialize(sb,0,dtsod),__, StringBuilder_free(sb));
     char* str=StringBuilder_build(sb).ptr;
-    return SUCCESS(UniPtr(CharPtr, str));
+    return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr, str));
 }

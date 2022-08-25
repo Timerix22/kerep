@@ -20,35 +20,35 @@ Autoarr_declare(uint32)
 Autoarr_declare(int64)
 Autoarr_declare(uint64)
 
-kerepType_declare(AutoarrChar);
-kerepType_declare(AutoarrBool);
-kerepType_declare(AutoarrFloat32);
-kerepType_declare(AutoarrFloat64);
-kerepType_declare(AutoarrInt8);
-kerepType_declare(AutoarrUInt8);
-kerepType_declare(AutoarrInt16);
-kerepType_declare(AutoarrUInt16);
-kerepType_declare(AutoarrInt32);
-kerepType_declare(AutoarrUInt32);
-kerepType_declare(AutoarrInt64);
-kerepType_declare(AutoarrUInt64);
+kerepTypeId_declare(kerepTypeId_AutoarrChar);
+kerepTypeId_declare(kerepTypeId_AutoarrBool);
+kerepTypeId_declare(kerepTypeId_AutoarrFloat32);
+kerepTypeId_declare(kerepTypeId_AutoarrFloat64);
+kerepTypeId_declare(kerepTypeId_AutoarrInt8);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt8);
+kerepTypeId_declare(kerepTypeId_AutoarrInt16);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt16);
+kerepTypeId_declare(kerepTypeId_AutoarrInt32);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt32);
+kerepTypeId_declare(kerepTypeId_AutoarrInt64);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt64);
 
-kerepType_declare(AutoarrCharPtr);
-kerepType_declare(AutoarrBoolPtr);
-kerepType_declare(AutoarrFloat32Ptr);
-kerepType_declare(AutoarrFloat64Ptr);
-kerepType_declare(AutoarrInt8Ptr);
-kerepType_declare(AutoarrUInt8Ptr);
-kerepType_declare(AutoarrInt16Ptr);
-kerepType_declare(AutoarrUInt16Ptr);
-kerepType_declare(AutoarrInt32Ptr);
-kerepType_declare(AutoarrUInt32Ptr);
-kerepType_declare(AutoarrInt64Ptr);
-kerepType_declare(AutoarrUInt64Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrCharPtr);
+kerepTypeId_declare(kerepTypeId_AutoarrBoolPtr);
+kerepTypeId_declare(kerepTypeId_AutoarrFloat32Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrFloat64Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrInt8Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt8Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrInt16Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt16Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrInt32Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt32Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrInt64Ptr);
+kerepTypeId_declare(kerepTypeId_AutoarrUInt64Ptr);
 
 Autoarr_declare(Unitype)
-kerepType_declare(AutoarrUnitype);
-kerepType_declare(AutoarrUnitypePtr);
+kerepTypeId_declare(kerepTypeId_AutoarrUnitype);
+kerepTypeId_declare(kerepTypeId_AutoarrUnitypePtr);
 
 // this function is injected in kerep_init()
 void __Autoarr_free_Unitype_(Autoarr(Unitype)* ar, bool freePtr);

@@ -1,0 +1,3 @@
+- add toString() to type descriptor
+- find better way to check typeId without hundreds of if() statements
+- update autoarr to use type descriptor

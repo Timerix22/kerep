@@ -18,24 +18,24 @@ typedef struct Unitype{
     kerepTypeId typeId;
     bool allocatedInHeap; // should Unitype_free call free() to VoidPtr*
 } Unitype;
-kerepType_declare(Unitype);
-kerepType_declare(UnitypePtr);
+kerepTypeId_declare(kerepTypeId_Unitype);
+kerepTypeId_declare(kerepTypeId_UnitypePtr);
 
 
-#define __Uni(TYPE,VAL) (Unitype){\
-    .TYPE_NAME=VAL, .typeId=kerepTypeId_##TYPE, .allocatedInHeap=false}
+#define Uni(TYPE, VAL) (Unitype){\
+    .TYPE=VAL, .typeId=kerepTypeId_##TYPE, .allocatedInHeap=false}
 
-#define UniInt64(VAL) __Uni(Int64, VAL)
-#define UniUInt64(VAL) __Uni(UInt64, VAL)
-#define UniFloat64(VAL) __Uni(Float64, VAL)
-#define UniBool(VAL) __Uni(Bool, VAL)
+#define UniInt64(VAL)   Uni(Int64,   VAL)
+#define UniUInt64(VAL)  Uni(UInt64,  VAL)
+#define UniFloat64(VAL) Uni(Float64, VAL)
+#define UniBool(VAL)    Uni(Bool,    VAL)
 
-#define UniPtrStack(TYPE_NAME,VAL) (Unitype){\
-    .VoidPtr=VAL, .typeId=kerepTypeId_##TYPE_NAME, .allocatedInHeap=false}
-#define UniPtrHeap (TYPE_NAME,VAL) (Unitype){\
-    .VoidPtr=VAL, .typeId=kerepTypeId_##TYPE_NAME, .allocatedInHeap=true}
+#define UniPtrStack(ID_VAR_NAME, VAL) (Unitype){\
+    .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=false}
+#define UniPtrHeap(ID_VAR_NAME, VAL) (Unitype){\
+    .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=true}
 
-#define UniNull  UniPtrStack(Null, NULL)
+#define UniNull  UniPtrStack(kerepTypeId_Null, NULL)
 #define UniTrue  UniBool(true)
 #define UniFalse UniBool(false)
 

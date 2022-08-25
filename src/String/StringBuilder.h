@@ -13,8 +13,8 @@ typedef struct StringBuilder{
 	Autoarr(string)* compl_bufs;
 	Autoarr(int8)* curr_buf;
 } StringBuilder;
-kerepType_declare(StringBuilder);
-kerepType_declare(StringBuilderPtr);
+kerepTypeId_declare(kerepTypeId_StringBuilder);
+kerepTypeId_declare(kerepTypeId_StringBuilderPtr);
 
 StringBuilder* StringBuilder_create(void);
 void StringBuilder_free(StringBuilder* b);

@@ -1,0 +1,71 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H [0;96m=============[build_test]=============
+[0;37m[0;94mclearing bin
+[0;37m[0;94mclearing obj
+[0;37m[0;96m-------------[compile_c]--------------
+[0;37m[0;94mcompiler: [0;37mgcc
+[0;37m[0;94mstandard: [0;37mc11
+[0;37m[0;94mwarnings: [0;37m-Wall -Wno-discarded-qualifiers
+[0;37m[0;94margs: [0;37m-O2
+[0;37m[0;94msources: [0;37msrc/Autoarr/Autoarr.c
+src/Autoarr/Autoarr_KVPair_exported.c
+src/Autoarr/Autoarr_Unitype_exported.c
+src/base/cptr.c
+src/base/errors.c
+src/base/init.c
+src/base/types.c
+src/base/unitype.c
+src/DtsodParser/DtsodV24.c
+src/DtsodParser/DtsodV24_deserialize.c
+src/DtsodParser/DtsodV24_exported.c
+src/DtsodParser/DtsodV24_serialize.c
+src/HashFunctions/hash.c
+src/Hashtable/Hashtable.c
+src/Hashtable/KeyValuePair.c
+src/SearchTree/SearchTree.c
+src/String/string.c
+src/String/StringBuilder.c tests/test_autoarr.c
+tests/test_dtsod.c
+tests/test_hashtable.c
+tests/test_hash_functions.c
+tests/test_marshalling.c
+tests/test_safethrow.c
+tests/test_searchtree.c
+tests/test_string.c
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;91msome error happened
+[0;37m[0;96m------------[compile_cpp]-------------
+[0;37m[0;94mcompiler: [0;37mg++
+[0;37m[0;94mstandard: [0;37mc++17
+[0;37m[0;94mwarnings: [0;37m-Wall -Wno-unused-variable -Wno-return-type
+[0;37m[0;94margs: [0;37m-O2
+[0;37m[0;94msources: [0;37m tests/main.cpp
+[0;37m[0;96m----------------[link]----------------
+[0;37m[0;94margs: [0;37m-O2 
+[0;37m[0;94moutfile: [0;37mbin/kerep.com
+[0;37m[0;94mobjects: [0;37mobj/Autoarr.c.o
+obj/Autoarr_KVPair_exported.c.o
+obj/Autoarr_Unitype_exported.c.o
+obj/cptr.c.o
+obj/DtsodV24_exported.c.o
+obj/errors.c.o
+obj/hash.c.o
+obj/init.c.o
+obj/KeyValuePair.c.o
+obj/main.cpp.o
+obj/string.c.o
+obj/StringBuilder.c.o
+obj/test_autoarr.c.o
+obj/test_dtsod.c.o
+obj/test_hash_functions.c.o
+obj/test_string.c.o
+obj/types.c.o
+obj/unitype.c.o
+[0;37m[0;91msome error happened
+[0;37m

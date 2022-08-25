@@ -92,7 +92,7 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
-    return u.type!=Null;
+    return u.typeId!=kerepTypeId_Null;
 }
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){

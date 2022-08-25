@@ -47,7 +47,7 @@ void test_autoarr(){
         resetar(ar);
         printf("\e[92mautoarr values reset\n");
         printallval(ar);
-        Autoarr_free(ar);
+        Autoarr_free(ar, true);
         printf("\e[92mautoarr deleted\n");
     }));
 }
