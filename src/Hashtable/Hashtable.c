@@ -50,7 +50,8 @@ void Hashtable_expand(Hashtable* ht){
             Autoarr(KVPair)* newar=newrows[newrown];
             Autoarr_add(newar,p);
         }
-        Autoarr_free(ar, true);
+        // there is no need to free array values, because they are copied into new array
+        __Autoarr_free_KVPair(ar, true);
     }
 
     free(ht->rows);

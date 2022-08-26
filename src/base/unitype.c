@@ -19,17 +19,17 @@ char* sprintuni(Unitype v){
     if(v.typeId==kerepTypeId_Null)
         sprintf_s(buf, BUFSIZE, "{Null}");
     else if(v.typeId==kerepTypeId_Float64)
-        sprintf_s(buf, BUFSIZE, "{%s ) %lf}", type.name,v.Float64);
+        sprintf_s(buf, BUFSIZE, "{%s : %lf}", type.name,v.Float64);
     else if(v.typeId==kerepTypeId_Bool || v.typeId==kerepTypeId_UInt64)
-        sprintf_s(buf, BUFSIZE, "{%s ) " IFWIN("%llu", "%lu") "}", type.name,v.UInt64);
+        sprintf_s(buf, BUFSIZE, "{%s : " IFWIN("%llu", "%lu") "}", type.name,v.UInt64);
     else if(v.typeId==kerepTypeId_Int64)
-        sprintf_s(buf, BUFSIZE, "{%s ) " IFWIN("%lld", "%ld") "}", type.name,v.Int64);
+        sprintf_s(buf, BUFSIZE, "{%s : " IFWIN("%lld", "%ld") "}", type.name,v.Int64);
     else if(v.typeId==kerepTypeId_CharPtr){
         size_t newBUFSIZE=cptr_length(v.VoidPtr) + BUFSIZE/2;
         buf=realloc(buf, newBUFSIZE);
-        sprintf_s(buf, BUFSIZE, "{%s ) \"%s\"}", type.name,(char*)v.VoidPtr);
+        sprintf_s(buf, BUFSIZE, "{%s : \"%s\"}", type.name,(char*)v.VoidPtr);
     }
-    else sprintf_s(buf, BUFSIZE, "{%s ) %p}", type.name,v.VoidPtr);
+    else sprintf_s(buf, BUFSIZE, "{%s : %p}", type.name,v.VoidPtr);
     return buf;
 }
 

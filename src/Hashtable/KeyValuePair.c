@@ -17,7 +17,7 @@ void __KVPair_free(void* p){ KVPair_free(*(KVPair*)p); }
 // func for  KVP array clearing
 void __Autoarr_free_KVPair_(Autoarr_KVPair* ar, bool freePtr){
     Autoarr_foreach(ar,k,KVPair_free(k));
-    Autoarr_free(ar, freePtr);
+    __Autoarr_free_KVPair(ar, freePtr);
 }
 void ____Autoarr_free_KVPair_(void* ar){
     __Autoarr_free_KVPair_((Autoarr_KVPair*)ar, false);

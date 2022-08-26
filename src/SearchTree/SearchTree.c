@@ -36,7 +36,6 @@ void __STNode_free(void* _node){
     }
     if(node->value.VoidPtr) 
         Unitype_free(node->value);
-    free(node);
 }
 void STNode_free(STNode* node){
     __STNode_free(node);

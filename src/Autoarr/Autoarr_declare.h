@@ -29,6 +29,7 @@ typedef struct Autoarr_##type{\
 } Autoarr_##type;\
 \
 Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length);\
+void __Autoarr_free_##type(Autoarr_##type* ar, bool freePtr);\
 void ____Autoarr_free_##type(void* ar);
 
 #define Autoarr(type) Autoarr_##type
