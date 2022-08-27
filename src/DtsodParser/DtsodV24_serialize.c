@@ -74,22 +74,26 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
     }
     else if(u.typeId==kerepTypeId_HashtablePtr){
         // check hashtable is blank
+        bool hashtableNotBlank=false;
         Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
-            goto hashtableNotBlank;
+            hashtableNotBlank=true;
             if(__.key); // weird way to disable warning
+            break;
         }));
-        // blank hashtable
-        addc('{');
-        addc('}');
-        // not blank hashtable
-        hashtableNotBlank:
-        addc('\n');
-        AppendTabs();
-        addc('{');
-        addc('\n');
-        try(__serialize(b,tabs+1,u.VoidPtr),___,;);
-        AppendTabs();
-        addc('}');
+        
+        if(hashtableNotBlank){
+            addc('\n');
+            AppendTabs();
+            addc('{');
+            addc('\n');
+            try(__serialize(b,tabs+1,u.VoidPtr),___,;);
+            AppendTabs();
+            addc('}');
+        }
+        else {
+            addc('{');
+            addc('}');
+        }
     }
     else {
         dbg((u.typeId)); 
