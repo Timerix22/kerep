@@ -38,7 +38,7 @@ typedef double float64;
         #define CALL
     #endif
     #ifndef typeof
-        #define typeof __typeof__
+        #define typeof(X) __typeof__(X)
     #endif
 #else
     #pragma GCC error "unknown compiler"
