@@ -18,6 +18,10 @@ bool cptr_compare(char* key0, char* key1);
 // multiplies char n times
 char* char_multiply(char c, uint32 n);
 
+bool cptr_startsWith(char* ptr, char* fragment);
+
+bool cptr_endsWith(char* ptr, char* fragment);
+
 #if __cplusplus
 }
 #endif
