@@ -49,7 +49,7 @@ typedef enum kprint_dataFormat{
 } kprint_dataFmt;
 
 
-uint16 kprint_isFmtSet = 0x2000;
+static const uint16 kprint_isFmtSet = 0x2000;
 
 
 typedef struct {

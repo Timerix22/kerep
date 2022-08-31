@@ -2,7 +2,7 @@
 
 
 
-Maybe __ksprint(uint8 n, uint16 sizes[32], ...){
+/* Maybe __ksprint(uint8 n, uint16 sizes[32], ...){
     for(uint8 i=0; i<n; i++)
 
 }
@@ -19,4 +19,4 @@ void __kprint(uint8 n, uint16 sizes[32], ...){
     va_start(args, sizes);
 
     va_end(args);
-}
+} */
