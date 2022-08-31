@@ -6,8 +6,9 @@ void printstnode(STNode* node){
     IFWIN("%llu", "%lu")
     "\n  address: %p\n  value: ",sizeof(STNode),node);
     printuni(node->value);
+    printf("\n");
     // prints pointers to all existing branches
-    /* printf("\n  branches: %p\n", node->branches);
+    /* printf("  branches: %p\n", node->branches);
     if(node->branches) for(uint8 i=0;i<8;i++){
         printf("    \e[90m[%u]=%p\n",i,node->branches[i]);
         if(node->branches[i]) 

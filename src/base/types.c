@@ -44,6 +44,7 @@ typedef enum{
 kerepTypeDescriptorsState initState=NotInitialized;
 
 void kerepTypeDescriptors_beginInit(){
+    printf("\e[94mtype descriptors initializing...\n");
     __kerepTypeDescriptors=Autoarr_create(kerepTypeDescriptor, 256, 256);
     if(__kerepTypeDescriptors==NULL) throw(ERR_NULLPTR);
 }
@@ -52,14 +53,16 @@ void kerepTypeDescriptors_endInit(){
     typeDescriptors=Autoarr_toArray(__kerepTypeDescriptors);
     Autoarr_free(__kerepTypeDescriptors,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);
+    printf("\e[92minitialized %u type descriptors\n", kerepTypeId_last);
 }
+
 void __kerepType_register(char* name, int16 size, void (*free_members)(void*)){
     kerepTypeDescriptor typeDesc={
         .name=name,
         .size=size,
         .free_members=free_members,
         .id=++kerepTypeId_last
-    }; dbg(kerepTypeId_last);
+    };
     Autoarr_add(__kerepTypeDescriptors, typeDesc);
 }
 

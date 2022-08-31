@@ -16,7 +16,7 @@ int main(){
     kerepTypeDescriptors_beginInit();
     kerepTypeDescriptors_initKerepTypes();
     kerepTypeDescriptors_endInit();
-    printf("\e[92mkerep tests are starting!\e[97m\n");
+    printf("\e[97mkerep tests are starting!\n");
     optime("test_all",1,test_all());
     printf("\e[0m\n");
     return 0;
