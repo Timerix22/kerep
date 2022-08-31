@@ -11,6 +11,7 @@ extern "C" {
 #include "types.h"
 #include "unitype.h"
 #include "init.h"
+#include "kprint/kprint.h"
 
 #if __cplusplus
 }

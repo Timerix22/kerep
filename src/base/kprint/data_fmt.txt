@@ -1,0 +1,13 @@
+[data types]
+int                                     0x2000  00100000 00000000
+uint    + withPostfix + uppercase       0x2001  00100000 00000001
+hex     + withPrefix  + uppercase       0x2002  00100000 00000010
+bin     + withPrefix                    0x2003  00100000 00000011
+float   + withPostfix + uppercase       0x3000  00110000 00000000
+char                                    0x3001  00110000 00000001
+string                                  0x3002  00110000 00000010
+???                                     0x3003  00110000 00000011
+
+[optional flags]
+withPrefix = withPostfix                0x0004  00000000 00000100
+upperase                                0x0008  00000000 00001000
