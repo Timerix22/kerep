@@ -6,52 +6,58 @@ extern "C" {
 
 #include "std.h"
 
-typedef int8_t int8;
-typedef uint8_t uint8;
-typedef int16_t int16;
-typedef uint16_t uint16;
-typedef int32_t int32;
-typedef uint32_t uint32;
-typedef int64_t int64;
-typedef uint64_t uint64;
-typedef float float32;
-typedef double float64;
-typedef enum __attribute__((__packed__)) my_type {
-    Null, Float32, Float64, Char, Bool,
-    UInt8, Int8, UInt16, Int16, UInt32, Int32, UInt64, Int64, 
-    UInt8Ptr, Int8Ptr, UInt16Ptr, Int16Ptr, UInt32Ptr, Int32Ptr, UInt64Ptr, Int64Ptr,
-    CharPtr, STNodePtr, HashtablePtr,
-    UniversalType,
-    AutoarrInt8Ptr, AutoarrUInt8Ptr, AutoarrInt16Ptr, AutoarrUInt16Ptr, 
-    AutoarrInt32Ptr, AutoarrUInt32Ptr, AutoarrInt64Ptr, AutoarrUInt64Ptr,
-    AutoarrUnitypePtr, AutoarrKVPairPtr, knSocketPtr
-} my_type;
-#define my_type_last knSocketPtr
+typedef uint16 kerepTypeId;
 
-const char* my_type_name(my_type t);
+typedef struct kerepTypeDescriptor{
+    void (*free_members)(void*); // NULL or function which frees all struct members
+    char* name;
+    kerepTypeId id;
+    uint16 size;
+} kerepTypeDescriptor;
 
-typedef struct Unitype{
-    union {
-        int64 Int64;
-        uint64 UInt64;
-        double Float64;
-        bool Bool;
-        void* VoidPtr;
-    };
-    my_type type; 
-} Unitype;
+#define kerepTypeId_declare(ID_VAR_NAME)\
+    extern kerepTypeId ID_VAR_NAME
+#define kerepTypeId_define(ID_VAR_NAME)\
+    kerepTypeId ID_VAR_NAME=-1
 
-static const Unitype UniNull={.VoidPtr=NULL,.type=Null};
-static const Unitype UniTrue={.Bool=true,.type=Bool};
-static const Unitype UniFalse={.Bool=false,.type=Bool};
+extern kerepTypeId kerepTypeId_last;
+void __kerepType_register(char* name, int16 size, void (*free_members)(void*));
 
-#define Uni(TYPE,VAL) (Unitype){.type=TYPE,.TYPE=VAL}
-#define UniPtr(TYPE,VAL) (Unitype){.type=TYPE,.VoidPtr=VAL}
+#define kerepType_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC)\
+    __kerepType_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC);\
+    ID_VAR_NAME=kerepTypeId_last;
 
-// frees VoidPtr value or does nothing if type isn't pointer
-void Unitype_free(Unitype u);
-void printuni(Unitype v);
-char* sprintuni(Unitype v);
+void kerepTypeDescriptors_beginInit();
+void kerepTypeDescriptors_endInit();
+kerepTypeDescriptor kerepTypeDescriptor_get(kerepTypeId id);
+
+kerepTypeId_declare(kerepTypeId_Null);
+
+kerepTypeId_declare(kerepTypeId_Char);
+kerepTypeId_declare(kerepTypeId_Bool);
+kerepTypeId_declare(kerepTypeId_Float32);
+kerepTypeId_declare(kerepTypeId_Float64);
+kerepTypeId_declare(kerepTypeId_Int8);
+kerepTypeId_declare(kerepTypeId_UInt8);
+kerepTypeId_declare(kerepTypeId_Int16);
+kerepTypeId_declare(kerepTypeId_UInt16);
+kerepTypeId_declare(kerepTypeId_Int32);
+kerepTypeId_declare(kerepTypeId_UInt32);
+kerepTypeId_declare(kerepTypeId_Int64);
+kerepTypeId_declare(kerepTypeId_UInt64);
+
+kerepTypeId_declare(kerepTypeId_CharPtr);
+kerepTypeId_declare(kerepTypeId_BoolPtr);
+kerepTypeId_declare(kerepTypeId_Float32Ptr);
+kerepTypeId_declare(kerepTypeId_Float64Ptr);
+kerepTypeId_declare(kerepTypeId_Int8Ptr);
+kerepTypeId_declare(kerepTypeId_UInt8Ptr);
+kerepTypeId_declare(kerepTypeId_Int16Ptr);
+kerepTypeId_declare(kerepTypeId_UInt16Ptr);
+kerepTypeId_declare(kerepTypeId_Int32Ptr);
+kerepTypeId_declare(kerepTypeId_UInt32Ptr);
+kerepTypeId_declare(kerepTypeId_Int64Ptr);
+kerepTypeId_declare(kerepTypeId_UInt64Ptr);
 
 #if __cplusplus
 }

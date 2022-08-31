@@ -39,11 +39,22 @@ void __Autoarr_set_##type(Autoarr_##type* ar, uint32 index, type element){\
     ar->values[index/ar->max_block_length][index%ar->max_block_length]=element;\
 }\
 \
-void __Autoarr_free_##type(Autoarr_##type* ar){\
+void __Autoarr_free_##type(Autoarr_##type* ar, bool freePtr){\
     for(uint16 i=0; i<ar->blocks_count;i++)\
         free(ar->values[i]); \
     free(ar->values);\
-    free(ar);\
+    if(freePtr) free(ar);\
+}\
+void ____Autoarr_free_##type(void* ar){\
+    __Autoarr_free_##type((Autoarr_##type*)ar, false);\
+}\
+\
+type* __Autoarr_toArray_##type(Autoarr_##type* ar){\
+    uint32 length=Autoarr_length(ar);\
+    type* array=malloc(length * sizeof(type));\
+    for(uint32 i=0; i<length; i++)\
+        array[i]=__Autoarr_get_##type(ar, i);\
+    return array;\
 }\
 \
 __functions_list_t_##type __functions_list_##type={\
@@ -51,7 +62,8 @@ __functions_list_t_##type __functions_list_##type={\
     &__Autoarr_get_##type,\
     &__Autoarr_getptr_##type,\
     &__Autoarr_set_##type,\
-    &__Autoarr_free_##type\
+    &__Autoarr_free_##type,\
+    &__Autoarr_toArray_##type\
 };\
 \
 Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length){\

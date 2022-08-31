@@ -6,8 +6,9 @@ void printstnode(STNode* node){
     IFWIN("%llu", "%lu")
     "\n  address: %p\n  value: ",sizeof(STNode),node);
     printuni(node->value);
+    printf("\n");
     // prints pointers to all existing branches
-    /* printf("\n  branches: %p\n", node->branches);
+    /* printf("  branches: %p\n", node->branches);
     if(node->branches) for(uint8 i=0;i<8;i++){
         printf("    \e[90m[%u]=%p\n",i,node->branches[i]);
         if(node->branches[i]) 
@@ -27,27 +28,27 @@ void test_searchtree(){
         STNode* node=STNode_create();
         printf("\e[92mnode created\n");
         printf("push:\e[94m\n  ");
-        Unitype u={.type=Int64,.Int64=-3};
+        Unitype u=UniInt64(-3);
         printuni(u);
         ST_push(node,"type", u);
         printf(" -> type\n  ");
-        u=(Unitype){.type=Int64,.Int64=25};
+        u=UniInt64(25);
         printuni(u);
         ST_push(node,"time", u);
         printf(" -> time\n  ");
-        u=(Unitype){.type=Float64,.Float64=-542.00600};
+        u=UniFloat64(-542.00600);
         printuni(u);
         ST_push(node,"author_id", u);
         printf(" -> author_id\n  ");
-        u=(Unitype){.type=Int64,.Int64=-31255};
+        u=UniInt64(-31255);
         printuni(u);
         ST_push(node,"channel_id", u);
         printf(" -> channel_id\n  ");
-        u=(Unitype){.type=Float64,.Float64=32.2004};
+        u=UniPtrHeap(kerepTypeId_CharPtr, cptr_copy("32.2004"));
         printuni(u);
         ST_push(node,"message_id", u);
         printf(" -> message_id\n  ");
-        u=(Unitype){.type=CharPtr,.VoidPtr=cptr_copy("some text UwU")};
+        u=UniPtrStack(kerepTypeId_CharPtr,"some text UwU");
         printuni(u);
         ST_push(node,"text", u);
         printf(" -> text\n");

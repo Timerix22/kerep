@@ -1,5 +1,8 @@
 #include "Hashtable.h"
 
+kerepTypeId_define(kerepTypeId_Hashtable);
+kerepTypeId_define(kerepTypeId_HashtablePtr);
+
 // amount of rows
 static const uint16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
 #define HT_HEIN_MIN 0
@@ -17,10 +20,14 @@ Hashtable* Hashtable_create(){
     return ht;
 }
 
-void Hashtable_free(Hashtable* ht){
+void __Hashtable_free(void* _ht){
+    Hashtable* ht=_ht;
     for(uint16 i=0;i<HT_HEIGHTS[ht->hein];i++)
-        Autoarr_free_KVPair(ht->rows[i]);
+        Autoarr_free(ht->rows[i], true);
     free(ht->rows);
+}
+void Hashtable_free(Hashtable* ht){
+    __Hashtable_free(ht);
     free(ht);
 }
 
@@ -43,7 +50,8 @@ void Hashtable_expand(Hashtable* ht){
             Autoarr(KVPair)* newar=newrows[newrown];
             Autoarr_add(newar,p);
         }
-        Autoarr_free(ar);
+        // there is no need to free array values, because they are copied into new array
+        __Autoarr_free_KVPair(ar, true);
     }
 
     free(ht->rows);
@@ -88,7 +96,7 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
-    return u.type!=Null;
+    return u.typeId!=kerepTypeId_Null;
 }
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){

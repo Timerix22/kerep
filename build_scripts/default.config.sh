@@ -6,8 +6,8 @@ CMP_C=gcc
 CMP_CPP=g++
 STD_C=c11
 STD_CPP=c++17
-WARN_C="-Wall -Wno-discarded-qualifiers" #-Wextra
-WARN_CPP="-Wall -Wno-unused-variable -Wno-return-type" #-Wextra
+WARN_C="-Wall -Wno-discarded-qualifiers"
+WARN_CPP="-Wall"
 SRC_C="$(    find src -name '*.c')"
 SRC_CPP="$(  find src -name '*.cpp')"
 TESTS_C="$(  find tests -name '*.c')"
@@ -21,7 +21,7 @@ BUILD_TEST_CPP_ARGS="$BUILD_TEST_C_ARGS"
 BUILD_TEST_LINKER_ARGS=""
 
 # build_test_dbg
-TEST_DBG_FILE=$TEST_FILE
+TEST_DBG_FILE=$TEST_FILE.dbg
 BUILD_TEST_DBG_C_ARGS="-O0 -g"
 BUILD_TEST_DBG_CPP_ARGS="$BUILD_TEST_DBG_C_ARGS"
 BUILD_TEST_DBG_LINKER_ARGS=""

@@ -15,7 +15,8 @@ typedef struct {\
     type (*get)(struct Autoarr_##type* ar, uint32 index);\
     type* (*getptr)(struct Autoarr_##type* ar, uint32 index);\
     void (*set)(struct Autoarr_##type* ar, uint32 index, type element);\
-    void (*_free)(struct Autoarr_##type* ar);\
+    void (*freear)(struct Autoarr_##type* ar, bool freePtr);\
+    type* (*toArray)(struct Autoarr_##type* ar);\
 } __functions_list_t_##type;\
 \
 typedef struct Autoarr_##type{\
@@ -27,15 +28,14 @@ typedef struct Autoarr_##type{\
     __functions_list_t_##type* functions;\
 } Autoarr_##type;\
 \
-void __Autoarr_add_##type(Autoarr_##type* ar, type element);\
-type __Autoarr_get_##type(Autoarr_##type* ar, uint32 index);\
-type* __Autoarr_getptr_##type(Autoarr_##type* ar, uint32 index);\
-void __Autoarr_set_##type(Autoarr_##type* ar, uint32 index, type element);\
-void __Autoarr_free_##type(Autoarr_##type* ar);\
-Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length);
+Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length);\
+void __Autoarr_free_##type(Autoarr_##type* ar, bool freePtr);\
+void ____Autoarr_free_##type(void* ar);
 
 #define Autoarr(type) Autoarr_##type
 
+#define Autoarr_create(type, max_blocks_count, max_block_length)\
+    __Autoarr_create_##type(max_blocks_count, max_block_length)
 #define Autoarr_add(autoarr, element)\
     autoarr->functions->add(autoarr, element)
 #define Autoarr_get(autoarr, index)\
@@ -44,10 +44,10 @@ Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_bloc
     autoarr->functions->getptr(autoarr,index)
 #define Autoarr_set(autoarr, index, element)\
     autoarr->functions->set(autoarr, index, element)
-#define Autoarr_free(autoarr)\
-    autoarr->functions->_free(autoarr)
-#define Autoarr_create(type, max_blocks_count, max_block_length)\
-    __Autoarr_create_##type(max_blocks_count, max_block_length)
+#define Autoarr_free(autoarr, freePtr)\
+    autoarr->functions->freear(autoarr, freePtr)
+#define Autoarr_toArray(autoarr)\
+    autoarr->functions->toArray(autoarr)
 
 #define Autoarr_length(autoarr) \
     (uint32)(!autoarr->blocks_count ? 0 : \

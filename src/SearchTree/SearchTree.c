@@ -1,14 +1,18 @@
 #include "SearchTree.h"
 
+kerepTypeId_define(kerepTypeId_STNode);
+kerepTypeId_define(kerepTypeId_STNodePtr);
+
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));
     node->branches=NULL;
-    node->value.type=Null;
+    node->value.typeId=kerepTypeId_Null;
     node->value.UInt64=0;
     return node;
 }
 
-void STNode_free(STNode* node){
+void __STNode_free(void* _node){
+    STNode* node=_node;
     if (!node) throw(ERR_NULLPTR);
     if(node->branches){
         for(uint8 n32 = 0;n32<8;n32++){
@@ -32,6 +36,9 @@ void STNode_free(STNode* node){
     }
     if(node->value.VoidPtr) 
         Unitype_free(node->value);
+}
+void STNode_free(STNode* node){
+    __STNode_free(node);
     free(node);
 }
 

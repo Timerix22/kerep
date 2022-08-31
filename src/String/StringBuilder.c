@@ -1,6 +1,11 @@
 #include "StringBuilder.h"
 
 Autoarr_define(string)
+kerepTypeId_define(kerepTypeId_AutoarrString);
+kerepTypeId_define(kerepTypeId_AutoarrStringPtr);
+
+kerepTypeId_define(kerepTypeId_StringBuilder);
+kerepTypeId_define(kerepTypeId_StringBuilderPtr);
 
 #define BL_C 32
 #define BL_L 1024
@@ -17,7 +22,7 @@ void complete_buf(StringBuilder* b){
         str.ptr[i++]=c;
     }));
     Autoarr_add(b->compl_bufs,str);
-    Autoarr_free(b->curr_buf);
+    Autoarr_free(b->curr_buf, true);
     b->curr_buf=Autoarr_create(int8,BL_C,BL_L);
 }
 
@@ -34,9 +39,13 @@ StringBuilder* StringBuilder_create(){
     return b;
 }
 
+void __StringBuilder_free(void* _b){
+    StringBuilder* b=_b;
+    if(b->compl_bufs) Autoarr_free(b->compl_bufs, true);
+    Autoarr_free(b->curr_buf, true);
+}
 void StringBuilder_free(StringBuilder* b){
-    if(b->compl_bufs) Autoarr_free(b->compl_bufs);
-    Autoarr_free(b->curr_buf);
+    __StringBuilder_free(b);
     free(b);
 }
 

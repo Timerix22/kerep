@@ -11,9 +11,12 @@ typedef struct Hashtable{
     uint8 hein;  // height=HT_HEIGHTS[hein] 
     Autoarr(KVPair)** rows; // Autoarr[height]
 } Hashtable;
+kerepTypeId_declare(kerepTypeId_Hashtable);
+kerepTypeId_declare(kerepTypeId_HashtablePtr);
 
 Hashtable* Hashtable_create();
 void Hashtable_free(Hashtable* ht);
+void __Hashtable_free(void* ht);
 
 // amount of rows
 uint16 Hashtable_height(Hashtable* ht);

@@ -98,9 +98,9 @@ Maybe __ReadName(DeserializeSharedData* shared){
         case '}':
             if(!calledRecursively || nameStr.length!=0) 
                 safethrow_wrongchar(c,;);
-            return SUCCESS(UniPtr(CharPtr,NULL));
+            return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,NULL));
         case ':':
-            return SUCCESS(UniPtr(CharPtr,string_extract(nameStr)));
+            return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,string_extract(nameStr)));
         case '$':
             if(nameStr.length!=0)
                 safethrow_wrongchar(c,;);
@@ -113,7 +113,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
     }
 
     if(nameStr.length>0) safethrow(ERR_ENDOFSTR,;);
-    return SUCCESS(UniPtr(CharPtr,NULL));
+    return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,NULL));
 }
 #define ReadName() __ReadName(shared)
 
@@ -137,7 +137,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
             }
             else {
                 char* str=StringBuilder_build(b).ptr;
-                return SUCCESS(UniPtr(CharPtr,str));
+                return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,str));
             }
         } 
         else {
@@ -154,16 +154,16 @@ Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     bool readingList=true;
     while (true){
-        try(ReadValue((&readingList)), val, Autoarr_free_Unitype(list))
+        try(ReadValue((&readingList)), val, Autoarr_free(list, true))
             Autoarr_add(list,val.value); 
         if (!readingList){
-            if(val.value.type==Null)
+            if(val.value.typeId==kerepTypeId_Null)
                 Autoarr_pop(list);
             break;
         }
     }
 
-    return SUCCESS(UniPtr(AutoarrUnitypePtr,list));
+    return SUCCESS(UniPtrHeap(kerepTypeId_AutoarrUnitypePtr,list));
 };
 #define ReadList() __ReadList(shared)
 
@@ -275,7 +275,7 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
         case ';':
         case ',':
             if(valueStr.length!=0){
-                if(value.type!=Null) 
+                if(value.typeId!=kerepTypeId_Null) 
                     safethrow_wrongchar(c,Unitype_free(value));
                 try(ParseValue(valueStr),maybeParsed,;)
                     value=maybeParsed.value;
@@ -321,7 +321,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                 }
                 else{
                     list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
-                    Hashtable_add(dict,nameCPtr,UniPtr(AutoarrUnitypePtr,list));
+                    Hashtable_add(dict,nameCPtr,UniPtrHeap(kerepTypeId_AutoarrUnitypePtr,list));
                 }
                 Autoarr_add(list,val.value);
             }
@@ -331,7 +331,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
 
     END:
     *_text=text;
-    return SUCCESS(UniPtr(HashtablePtr,dict));
+    return SUCCESS(UniPtrHeap(kerepTypeId_HashtablePtr,dict));
 }
 
 Maybe DtsodV24_deserialize(char* _text) {
