@@ -98,9 +98,9 @@ Maybe __ReadName(DeserializeSharedData* shared){
         case '}':
             if(!calledRecursively || nameStr.length!=0) 
                 safethrow_wrongchar(c,;);
-            return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,NULL));
+            return SUCCESS(UniHeap(kerepTypeId_CharPtr,NULL));
         case ':':
-            return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,string_extract(nameStr)));
+            return SUCCESS(UniHeap(kerepTypeId_CharPtr,string_extract(nameStr)));
         case '$':
             if(nameStr.length!=0)
                 safethrow_wrongchar(c,;);
@@ -113,7 +113,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
     }
 
     if(nameStr.length>0) safethrow(ERR_ENDOFSTR,;);
-    return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,NULL));
+    return SUCCESS(UniHeap(kerepTypeId_CharPtr,NULL));
 }
 #define ReadName() __ReadName(shared)
 
@@ -137,7 +137,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
             }
             else {
                 char* str=StringBuilder_build(b).ptr;
-                return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr,str));
+                return SUCCESS(UniHeap(kerepTypeId_CharPtr,str));
             }
         } 
         else {
@@ -163,7 +163,7 @@ Maybe __ReadList(DeserializeSharedData* shared){
         }
     }
 
-    return SUCCESS(UniPtrHeap(kerepTypeId_AutoarrUnitypePtr,list));
+    return SUCCESS(UniHeap(kerepTypeId_AutoarrUnitypePtr,list));
 };
 #define ReadList() __ReadList(shared)
 
@@ -321,7 +321,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                 }
                 else{
                     list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
-                    Hashtable_add(dict,nameCPtr,UniPtrHeap(kerepTypeId_AutoarrUnitypePtr,list));
+                    Hashtable_add(dict,nameCPtr,UniHeap(kerepTypeId_AutoarrUnitypePtr,list));
                 }
                 Autoarr_add(list,val.value);
             }
@@ -331,7 +331,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
 
     END:
     *_text=text;
-    return SUCCESS(UniPtrHeap(kerepTypeId_HashtablePtr,dict));
+    return SUCCESS(UniHeap(kerepTypeId_HashtablePtr,dict));
 }
 
 Maybe DtsodV24_deserialize(char* _text) {

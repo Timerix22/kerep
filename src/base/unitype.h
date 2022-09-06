@@ -22,20 +22,20 @@ kerepTypeId_declare(kerepTypeId_Unitype);
 kerepTypeId_declare(kerepTypeId_UnitypePtr);
 
 
-#define Uni(TYPE, VAL) (Unitype){\
+#define __UniDef(TYPE, VAL) (Unitype){\
     .TYPE=VAL, .typeId=kerepTypeId_##TYPE, .allocatedInHeap=false}
 
-#define UniInt64(VAL)   Uni(Int64,   VAL)
-#define UniUInt64(VAL)  Uni(UInt64,  VAL)
-#define UniFloat64(VAL) Uni(Float64, VAL)
-#define UniBool(VAL)    Uni(Bool,    VAL)
+#define UniInt64(VAL)   __UniDef(Int64,   VAL)
+#define UniUInt64(VAL)  __UniDef(UInt64,  VAL)
+#define UniFloat64(VAL) __UniDef(Float64, VAL)
+#define UniBool(VAL)    __UniDef(Bool,    VAL)
 
-#define UniPtrStack(ID_VAR_NAME, VAL) (Unitype){\
+#define UniStack(ID_VAR_NAME, VAL) (Unitype){\
     .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=false}
-#define UniPtrHeap(ID_VAR_NAME, VAL) (Unitype){\
+#define UniHeap(ID_VAR_NAME, VAL) (Unitype){\
     .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=true}
 
-#define UniNull  UniPtrStack(kerepTypeId_Null, NULL)
+#define UniNull  UniStack(kerepTypeId_Null, NULL)
 #define UniTrue  UniBool(true)
 #define UniFalse UniBool(false)
 

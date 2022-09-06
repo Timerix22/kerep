@@ -1,5 +1,8 @@
 #include "string.h"
 
+kerepTypeId_define(kerepTypeId_string);
+kerepTypeId_define(kerepTypeId_stringPtr);
+
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str){
     if(str.length==0) return NULL;

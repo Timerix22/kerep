@@ -44,11 +44,11 @@ void test_searchtree(){
         printuni(u);
         ST_push(node,"channel_id", u);
         printf(" -> channel_id\n  ");
-        u=UniPtrHeap(kerepTypeId_CharPtr, cptr_copy("32.2004"));
+        u=UniHeap(kerepTypeId_CharPtr, cptr_copy("32.2004"));
         printuni(u);
         ST_push(node,"message_id", u);
         printf(" -> message_id\n  ");
-        u=UniPtrStack(kerepTypeId_CharPtr,"some text UwU");
+        u=UniStack(kerepTypeId_CharPtr,"some text UwU");
         printuni(u);
         ST_push(node,"text", u);
         printf(" -> text\n");

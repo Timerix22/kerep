@@ -5,8 +5,8 @@ kerepTypeId_define(kerepTypeId_UnitypePtr);
 
 void Unitype_free(Unitype u){
     kerepTypeDescriptor type=kerepTypeDescriptor_get(u.typeId);
-    if(type.free_members)
-        type.free_members(u.VoidPtr);
+    if(type.freeMembers)
+        type.freeMembers(u.VoidPtr);
     if(u.allocatedInHeap)
         free(u.VoidPtr);
 }

@@ -9,10 +9,12 @@ extern "C" {
 typedef uint16 kerepTypeId;
 
 typedef struct kerepTypeDescriptor{
-    void (*free_members)(void*); // NULL or function which frees all struct members
     char* name;
     kerepTypeId id;
     uint16 size;
+    void (*freeMembers)(void*); // NULL or function which frees all struct members
+    ///@return Maybe<char*>
+    Maybe (*toString)(void*, int32); // NULL or function which generates string representaion of object
 } kerepTypeDescriptor;
 
 #define kerepTypeId_declare(ID_VAR_NAME)\
@@ -21,15 +23,17 @@ typedef struct kerepTypeDescriptor{
     kerepTypeId ID_VAR_NAME=-1
 
 extern kerepTypeId kerepTypeId_last;
-void __kerepType_register(char* name, int16 size, void (*free_members)(void*));
+void __kerepType_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32));
 
-#define kerepType_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC)\
-    __kerepType_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC);\
+#define kerepType_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
+    __kerepType_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
     ID_VAR_NAME=kerepTypeId_last;
 
 void kerepTypeDescriptors_beginInit();
 void kerepTypeDescriptors_endInit();
-kerepTypeDescriptor kerepTypeDescriptor_get(kerepTypeId id);
+/// @param id id of registered type 
+/// @return Maybe<kerepTypeDescriptor*>
+Maybe kerepTypeDescriptor_get(kerepTypeId id);
 
 kerepTypeId_declare(kerepTypeId_Null);
 
@@ -58,6 +62,9 @@ kerepTypeId_declare(kerepTypeId_Int32Ptr);
 kerepTypeId_declare(kerepTypeId_UInt32Ptr);
 kerepTypeId_declare(kerepTypeId_Int64Ptr);
 kerepTypeId_declare(kerepTypeId_UInt64Ptr);
+
+kerepTypeId_declare(kerepTypeId_kerepTypeDescriptor);
+kerepTypeId_declare(kerepTypeId_kerepTypeDescriptorPtr);
 
 #if __cplusplus
 }

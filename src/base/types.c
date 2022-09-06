@@ -32,6 +32,9 @@ kerepTypeId_define(kerepTypeId_UInt32Ptr);
 kerepTypeId_define(kerepTypeId_Int64Ptr);
 kerepTypeId_define(kerepTypeId_UInt64Ptr);
 
+kerepTypeId_define(kerepTypeId_kerepTypeDescriptor);
+kerepTypeId_define(kerepTypeId_kerepTypeDescriptorPtr);
+
 // type descriptors are stored here during initialization 
 Autoarr(kerepTypeDescriptor)* __kerepTypeDescriptors=NULL;
 // here type descriptors are stored when initialization is complited
@@ -56,16 +59,18 @@ void kerepTypeDescriptors_endInit(){
     printf("\e[92minitialized %u type descriptors\n", kerepTypeId_last);
 }
 
-void __kerepType_register(char* name, int16 size, void (*free_members)(void*)){
+void __kerepType_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32)){
     kerepTypeDescriptor typeDesc={
         .name=name,
         .size=size,
-        .free_members=free_members,
-        .id=++kerepTypeId_last
+        .id=++kerepTypeId_last,
+        .freeMembers=freeMembers,
+        .toString=toString
     };
     Autoarr_add(__kerepTypeDescriptors, typeDesc);
 }
 
-kerepTypeDescriptor kerepTypeDescriptor_get(kerepTypeId id){
-    return typeDescriptors[id];
+Maybe kerepTypeDescriptor_get(kerepTypeId id){
+    if(id>kerepTypeId_last) safethrow("invalid type id",;);
+    return SUCCESS(UniStack(kerepTypeId_kerepTypeDescriptorPtr, &typeDescriptors[id]));
 }

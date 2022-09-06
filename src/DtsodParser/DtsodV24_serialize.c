@@ -126,5 +126,5 @@ Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder* sb=StringBuilder_create();
     try(__serialize(sb,0,dtsod),__, StringBuilder_free(sb));
     char* str=StringBuilder_build(sb).ptr;
-    return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr, str));
+    return SUCCESS(UniHeap(kerepTypeId_CharPtr, str));
 }
