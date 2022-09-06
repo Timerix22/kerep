@@ -49,9 +49,6 @@ typedef enum kprint_dataFormat{
 } kprint_dataFmt;
 
 
-static const uint16 kprint_isFmtSet = 0x2000;
-
-
 typedef struct {
     unsigned char fgColorChanged : 1;
     unsigned char bgColorChanged : 1;
