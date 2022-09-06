@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "std.h"
 
 // returns length of char buffer (without \0)
 uint32 cptr_length(char* str);

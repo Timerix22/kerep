@@ -1,10 +1,11 @@
-#include "base.h"
+#include "../base.h"
 
 kerepTypeId_define(kerepTypeId_Unitype);
 kerepTypeId_define(kerepTypeId_UnitypePtr);
 
 void Unitype_free(Unitype u){
-    kerepTypeDescriptor type=kerepTypeDescriptor_get(u.typeId);
+    tryLast(kerepTypeDescriptor_get(u.typeId), mType);
+    kerepTypeDescriptor type=*(kerepTypeDescriptor*)mType.value.VoidPtr;
     if(type.freeMembers)
         type.freeMembers(u.VoidPtr);
     if(u.allocatedInHeap)
@@ -15,7 +16,8 @@ void __UnitypePtr_free(void* u) { Unitype_free(*(Unitype*)u); }
 #define BUFSIZE 64
 char* sprintuni(Unitype v){
     char* buf=malloc(BUFSIZE);
-    kerepTypeDescriptor type=kerepTypeDescriptor_get(v.typeId);
+    tryLast(kerepTypeDescriptor_get(v.typeId), mType);
+    kerepTypeDescriptor type=*(kerepTypeDescriptor*)mType.value.VoidPtr;
     if(v.typeId==kerepTypeId_Null)
         sprintf_s(buf, BUFSIZE, "{Null}");
     else if(v.typeId==kerepTypeId_Float64)

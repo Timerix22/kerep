@@ -70,6 +70,9 @@ Maybe __kfprint(FILE* fd, uint8 n, kprint_format* formats, void** objects);
 void __kprint(uint8 n, kprint_format* formats, void** objects);
 #define kprint(ARGS...) __kprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS))
 
+// can take (bgColor | fgColor) 
+void kprint_setColor(kprint_format f);
+
 #if __cplusplus
 }
 #endif

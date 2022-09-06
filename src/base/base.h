@@ -8,8 +8,8 @@ extern "C" {
 #include "errors.h"
 #include "cptr.h"
 #include "optime.h"
-#include "types.h"
-#include "unitype.h"
+#include "type_system/types.h"
+#include "type_system/unitype.h"
 #include "init.h"
 #include "kprint/kprint.h"
 

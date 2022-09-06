@@ -182,7 +182,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         // Float64
         case 'f': {
             char* _c=string_extract(str);
-            Unitype rez=Uni(Float64,strtod(_c,NULL));
+            Unitype rez=UniFloat64(strtod(_c,NULL));
             free(_c);
             return SUCCESS(rez);
         }
@@ -199,7 +199,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
                 safethrow(err,free(_c));
             }
             free(_c);
-            return SUCCESS(Uni(UInt64,lu));
+            return SUCCESS(UniUInt64(lu));
         }
         // Int64
         case '0': case '1': case '2': case '3': case '4':
@@ -215,7 +215,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
                 safethrow(err,free(_c));
             }
             free(_c);
-            return SUCCESS(Uni(Int64,li));
+            return SUCCESS(UniInt64(li));
         }
         // wrong type
         default:

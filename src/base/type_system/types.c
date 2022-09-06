@@ -1,5 +1,5 @@
-#include "../Autoarr/Autoarr.h"
-#include "unitype.h"
+#include "../../Autoarr/Autoarr.h"
+#include "types.h"
 
 Autoarr_declare(kerepTypeDescriptor)
 Autoarr_define(kerepTypeDescriptor)
@@ -59,7 +59,7 @@ void kerepTypeDescriptors_endInit(){
     printf("\e[92minitialized %u type descriptors\n", kerepTypeId_last);
 }
 
-void __kerepType_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32)){
+void __kerepType_register(char* name, int16 size, void (*freeMembers)(void*), Maybe (*toString)(void*, int32)){
     kerepTypeDescriptor typeDesc={
         .name=name,
         .size=size,

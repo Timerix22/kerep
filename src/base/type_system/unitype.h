@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "kerepTypeId.h"
 
 typedef struct Unitype{
     union {

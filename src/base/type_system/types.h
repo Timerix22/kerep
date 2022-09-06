@@ -4,26 +4,13 @@
 extern "C" {
 #endif
 
-#include "std.h"
+#include "../std.h"
+#include "kerepTypeId.h"
+#include "kerepTypeDescriptor.h"
 
-typedef uint16 kerepTypeId;
-
-typedef struct kerepTypeDescriptor{
-    char* name;
-    kerepTypeId id;
-    uint16 size;
-    void (*freeMembers)(void*); // NULL or function which frees all struct members
-    ///@return Maybe<char*>
-    Maybe (*toString)(void*, int32); // NULL or function which generates string representaion of object
-} kerepTypeDescriptor;
-
-#define kerepTypeId_declare(ID_VAR_NAME)\
-    extern kerepTypeId ID_VAR_NAME
-#define kerepTypeId_define(ID_VAR_NAME)\
-    kerepTypeId ID_VAR_NAME=-1
 
 extern kerepTypeId kerepTypeId_last;
-void __kerepType_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32));
+void __kerepType_register(char* name, int16 size, void (*freeMembers)(void*), Maybe (*toString)(void*, int32));
 
 #define kerepType_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
     __kerepType_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
@@ -34,6 +21,7 @@ void kerepTypeDescriptors_endInit();
 /// @param id id of registered type 
 /// @return Maybe<kerepTypeDescriptor*>
 Maybe kerepTypeDescriptor_get(kerepTypeId id);
+
 
 kerepTypeId_declare(kerepTypeId_Null);
 

@@ -47,7 +47,7 @@ char* genkey(uint32 i){
 
 void fill(Hashtable* ht){
     for(uint32 i=0;i<100000;i++)
-        Hashtable_add(ht,genkey(i),Uni(UInt64,i));
+        Hashtable_add(ht,genkey(i),UniUInt64(i));
 }
 
 Unitype gett(Hashtable* ht){
