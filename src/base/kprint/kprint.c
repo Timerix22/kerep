@@ -7,20 +7,20 @@ Maybe __next_toString(kprint_format format, void* object){
         case kprint_fmtInt:
         case kprint_fmtHex:
         case kprint_fmtBin: 
-            format.typeId=kerepTypeId_Int64; break;
+            format.typeId=ktId_Int64; break;
         case kprint_fmtUInt:
-            format.typeId=kerepTypeId_UInt64; break;
+            format.typeId=ktId_UInt64; break;
         case kprint_fmtFloat:
-            format.typeId=kerepTypeId_Float64; break;
+            format.typeId=ktId_Float64; break;
         case kprint_fmtChar:
-            format.typeId=kerepTypeId_Char; break;
+            format.typeId=ktId_Char; break;
         case kprint_fmtString:
-            format.typeId=kerepTypeId_CharPtr; break;
+            format.typeId=ktId_CharPtr; break;
         default: 
             safethrow("typeId is not set, can't autodetect type",;);
     }
-    try(kerepTypeDescriptor_get(format.typeId),mtd,;);
-    kerepTypeDescriptor typeDesc=*(kerepTypeDescriptor*)mtd.value.VoidPtr;
+    try(ktDescriptor_get(format.typeId),mtd,;);
+    ktDescriptor typeDesc=*(ktDescriptor*)mtd.value.VoidPtr;
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);
     try(typeDesc.toString(object, &format), mStr,;);
@@ -34,7 +34,7 @@ Maybe __ksprint(uint8 n, kprint_format* formats, void** objects){
         StringBuilder_append_cptr(strb, mStr.value.VoidPtr);
     }
     char* rezult=StringBuilder_build(strb).ptr;
-    return SUCCESS(UniHeap(kerepTypeId_CharPtr, rezult));
+    return SUCCESS(UniHeap(ktId_CharPtr, rezult));
 }
 
 Maybe __kfprint(FILE* file, uint8 n, kprint_format* formats, void** objects){
@@ -68,9 +68,9 @@ void kprint_setColor(kprint_format f){
 
 
 
-Maybe ksprint_ar(uint32 count, kprint_format format, kerepTypeId typeId, void* array){
-    try(kerepTypeDescriptor_get(format.typeId),mtd,;);
-    kerepTypeDescriptor typeDesc=*(kerepTypeDescriptor*)mtd.value.VoidPtr;
+Maybe ksprint_ar(uint32 count, kprint_format format, ktId typeId, void* array){
+    try(ktDescriptor_get(format.typeId),mtd,;);
+    ktDescriptor typeDesc=*(ktDescriptor*)mtd.value.VoidPtr;
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);
     StringBuilder* strb=StringBuilder_create();

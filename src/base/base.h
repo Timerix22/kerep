@@ -8,9 +8,7 @@ extern "C" {
 #include "errors.h"
 #include "cptr.h"
 #include "optime.h"
-#include "type_system/types.h"
-#include "type_system/unitype.h"
-#include "init.h"
+#include "type_system/type_system.h"
 #include "kprint/kprint.h"
 
 #if __cplusplus

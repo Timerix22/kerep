@@ -1,12 +1,12 @@
 #include "SearchTree.h"
 
-kerepTypeId_define(kerepTypeId_STNode);
-kerepTypeId_define(kerepTypeId_STNodePtr);
+ktId_define(ktId_STNode);
+ktId_define(ktId_STNodePtr);
 
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));
     node->branches=NULL;
-    node->value.typeId=kerepTypeId_Null;
+    node->value.typeId=ktId_Null;
     node->value.UInt64=0;
     return node;
 }

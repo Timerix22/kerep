@@ -1,11 +1,11 @@
 #include "StringBuilder.h"
 
 Autoarr_define(string)
-kerepTypeId_define(kerepTypeId_AutoarrString);
-kerepTypeId_define(kerepTypeId_AutoarrStringPtr);
+ktId_define(ktId_AutoarrString);
+ktId_define(ktId_AutoarrStringPtr);
 
-kerepTypeId_define(kerepTypeId_StringBuilder);
-kerepTypeId_define(kerepTypeId_StringBuilderPtr);
+ktId_define(ktId_StringBuilder);
+ktId_define(ktId_StringBuilderPtr);
 
 #define BL_C 32
 #define BL_L 1024

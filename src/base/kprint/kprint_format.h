@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "../type_system/kerepTypeId.h"
+#include "../type_system/ktId.h"
 
 typedef enum kprint_dataFormat{
     // 00000000 00000000  00000000 00000000
@@ -39,7 +39,7 @@ typedef struct {
     unsigned char fgColor : 4;
     unsigned char bgColor : 4;
     unsigned char dataFmt : 4;
-    kerepTypeId typeId;
+    ktId typeId;
 } kprint_format;
 
 #if __cplusplus

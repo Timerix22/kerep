@@ -4,7 +4,7 @@ EXPORT void CALL test_marshalling(char* text, KVPair** kptr){
     KVPair* k=malloc(sizeof(KVPair));
     k->key="message";
     char* tc=cptr_copy(text);
-    Unitype u=UniHeap(kerepTypeId_CharPtr,tc);
+    Unitype u=UniHeap(ktId_CharPtr,tc);
     k->value=u;
     *kptr=k;
 }

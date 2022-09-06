@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "kerepTypeId.h"
+#include "ktId.h"
 
 typedef struct Unitype{
     union {
@@ -15,15 +15,15 @@ typedef struct Unitype{
         void* VoidPtr;
         char Bytes[8];
     };
-    kerepTypeId typeId;
+    ktId typeId;
     bool allocatedInHeap; // should Unitype_free call free() to VoidPtr*
 } Unitype;
-kerepTypeId_declare(kerepTypeId_Unitype);
-kerepTypeId_declare(kerepTypeId_UnitypePtr);
+ktId_declare(ktId_Unitype);
+ktId_declare(ktId_UnitypePtr);
 
 
 #define __UniDef(TYPE, VAL) (Unitype){\
-    .TYPE=VAL, .typeId=kerepTypeId_##TYPE, .allocatedInHeap=false}
+    .TYPE=VAL, .typeId=ktId_##TYPE, .allocatedInHeap=false}
 
 #define UniInt64(VAL)   __UniDef(Int64,   VAL)
 #define UniUInt64(VAL)  __UniDef(UInt64,  VAL)
@@ -35,7 +35,7 @@ kerepTypeId_declare(kerepTypeId_UnitypePtr);
 #define UniHeap(ID_VAR_NAME, VAL) (Unitype){\
     .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=true}
 
-#define UniNull  UniStack(kerepTypeId_Null, NULL)
+#define UniNull  UniStack(ktId_Null, NULL)
 #define UniTrue  UniBool(true)
 #define UniFalse UniBool(false)
 
