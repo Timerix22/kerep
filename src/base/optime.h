@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.h"
+#include "std.h"
 
 // executes codeblock and prints execution time
 #ifdef CLOCK_REALTIME // non-standard high-precision clock

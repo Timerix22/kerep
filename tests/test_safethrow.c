@@ -1,7 +1,7 @@
 #include "tests.h"
 
 Maybe dont_throw(){
-    return SUCCESS(Uni(UInt64, 9/2));
+    return SUCCESS(UniUInt64(9/2));
 }
 
 Maybe throw_error(){

@@ -34,3 +34,16 @@ char* char_multiply(char c, uint32 n){
         rez[n]=c;
     return rez;
 }
+
+bool cptr_startsWith(char* ptr, char* fragment){
+    for(char cs=*ptr, cf=*fragment; cf; cs=*++ptr, cf=*++fragment)
+        if(cs!=cf) return false;
+    return true;
+}
+
+bool cptr_endsWith(char* ptr, char* fragment){
+    ptr+=cptr_length(ptr)-cptr_length(fragment);
+    for(char cs=*ptr, cf=*fragment; cf; cs=*++ptr, cf=*++fragment)
+        if(cs!=cf) return false;
+    return true;
+}

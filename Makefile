@@ -1,24 +1,24 @@
-######      Building tasks     #######
-build_test: 
-	@build_scripts/build_configurations/build_test.sh
-
-build_test_dbg: 
-	@build_scripts/build_configurations/build_test_dbg.sh
+######      Build cbuild/default_tasks     #######
+build_exec: 
+	@cbuild/call_task.sh build_exec
+build_exec_dbg: 
+	@cbuild/call_task.sh build_exec_dbg
 
 build_shared_lib: 
-	@build_scripts/build_configurations/build_shared_lib.sh
+	@cbuild/call_task.sh build_shared_lib
+build_shared_lib_dbg: 
+	@cbuild/call_task.sh build_shared_lib_dbg
 
 build_static_lib: 
-	@build_scripts/build_configurations/build_static_lib.sh
-	
+	@cbuild/call_task.sh build_static_lib
 build_static_lib_dbg: 
-	@build_scripts/build_configurations/build_static_lib_dbg.sh
+	@cbuild/call_task.sh build_static_lib_dbg
 
-######      Testing tasks      #######
-test: build_test
-	@build_scripts/build_configurations/test.sh
+######      Launch cbuild/default_tasks      #######
+exec: build_exec
+	@cbuild/call_task.sh exec
 
-test_valgrind: build_test_dbg
-	@build_scripts/build_configurations/test_valgrind.sh
+valgrind: build_exec_dbg
+	@cbuild/call_task.sh valgrind
 
-all: build_test
+all: build_exec

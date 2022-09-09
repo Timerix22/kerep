@@ -12,6 +12,8 @@ typedef struct string{
     char* ptr;      // char pointer
     uint32 length;  // amount of chars in ptr value
 } string;
+ktId_declare(ktId_string);
+ktId_declare(ktId_stringPtr);
 
 static const string stringNull={NULL,0};
 

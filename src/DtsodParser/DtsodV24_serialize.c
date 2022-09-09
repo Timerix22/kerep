@@ -23,18 +23,18 @@ void __AppendTabs(SerializeSharedData* shared) {
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u);
 #define AppendValue(UNI) __AppendValue(shared, UNI)
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
-    if(u.typeId==kerepTypeId_Int64){
+    if(u.typeId==ktId_Int64){
         StringBuilder_append_int64(b,u.Int64);
     }
-    else if(u.typeId==kerepTypeId_UInt64){
+    else if(u.typeId==ktId_UInt64){
         StringBuilder_append_uint64(b,u.UInt64);
         addc('u');
     }
-    else if(u.typeId==kerepTypeId_Float64){
+    else if(u.typeId==ktId_Float64){
         StringBuilder_append_float64(b,u.Float64);
         addc('f');
     }
-    else if(u.typeId==kerepTypeId_CharPtr){
+    else if(u.typeId==ktId_CharPtr){
         addc('"');
         char c;
         while((c=*(char*)(u.VoidPtr++))){
@@ -43,13 +43,13 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
         }
         addc('"');
     }
-    else if(u.typeId==kerepTypeId_Bool){
+    else if(u.typeId==ktId_Bool){
         StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
     }
-    else if(u.typeId==kerepTypeId_Null){
+    else if(u.typeId==ktId_Null){
         safethrow("Null isn't supported in DtsodV24",;);
     }
-    else if(u.typeId==kerepTypeId_AutoarrUnitypePtr){
+    else if(u.typeId==ktId_AutoarrUnitypePtr){
         if(Autoarr_length(((Autoarr_Unitype*)(u.VoidPtr)))){
             addc('\n');
             AppendTabs();
@@ -72,7 +72,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             addc(']');
         }
     }
-    else if(u.typeId==kerepTypeId_HashtablePtr){
+    else if(u.typeId==ktId_HashtablePtr){
         // check hashtable is blank
         bool hashtableNotBlank=false;
         Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
@@ -126,5 +126,5 @@ Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder* sb=StringBuilder_create();
     try(__serialize(sb,0,dtsod),__, StringBuilder_free(sb));
     char* str=StringBuilder_build(sb).ptr;
-    return SUCCESS(UniPtrHeap(kerepTypeId_CharPtr, str));
+    return SUCCESS(UniHeap(ktId_CharPtr, str));
 }

@@ -18,7 +18,7 @@ void print_dtsod(Hashtable* dtsod){
     printf("\e[92m");
     Hashtable_foreach(dtsod, p,({
         printkvp(p);
-        if(p.value.typeId==kerepTypeId_HashtablePtr){
+        if(p.value.typeId==ktId_HashtablePtr){
             printf(": {\n");
             Hashtable* sub=p.value.VoidPtr;
             Hashtable_foreach(sub, _p,({

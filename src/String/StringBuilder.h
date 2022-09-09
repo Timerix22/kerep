@@ -8,15 +8,15 @@ extern "C" {
 #include "string.h"
 
 Autoarr_declare(string)
-kerepTypeId_declare(kerepTypeId_AutoarrString);
-kerepTypeId_declare(kerepTypeId_AutoarrStringPtr);
+ktId_declare(ktId_AutoarrString);
+ktId_declare(ktId_AutoarrStringPtr);
 
 typedef struct StringBuilder{
 	Autoarr(string)* compl_bufs;
 	Autoarr(int8)* curr_buf;
 } StringBuilder;
-kerepTypeId_declare(kerepTypeId_StringBuilder);
-kerepTypeId_declare(kerepTypeId_StringBuilderPtr);
+ktId_declare(ktId_StringBuilder);
+ktId_declare(ktId_StringBuilderPtr);
 
 StringBuilder* StringBuilder_create(void);
 void StringBuilder_free(StringBuilder* b);

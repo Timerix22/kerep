@@ -1,0 +1,3 @@
+[submodule "cbuild"]
+	path = cbuild
+	url = https://github.com/Timerix22/cbuild.git

@@ -1,7 +1,7 @@
 #include "Hashtable.h"
 
-kerepTypeId_define(kerepTypeId_Hashtable);
-kerepTypeId_define(kerepTypeId_HashtablePtr);
+ktId_define(ktId_Hashtable);
+ktId_define(ktId_HashtablePtr);
 
 // amount of rows
 static const uint16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
@@ -96,7 +96,7 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
-    return u.typeId!=kerepTypeId_Null;
+    return u.typeId!=ktId_Null;
 }
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){
