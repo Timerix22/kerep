@@ -7,10 +7,10 @@ extern "C" {
 #include "../std.h"
 typedef uint16 ktId;
 
-#define ktId_declare(ID_VAR_NAME)\
-    extern ktId ID_VAR_NAME
-#define ktId_define(ID_VAR_NAME)\
-    ktId ID_VAR_NAME=-1
+#define ktId_declare(TYPE_NAME)\
+    extern ktId ktId_##TYPE_NAME
+#define ktId_define(TYPE_NAME)\
+    ktId ktId_##TYPE_NAME=-1
 
 #if __cplusplus
 }

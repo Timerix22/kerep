@@ -1,7 +1,7 @@
 #include "../base.h"
 
-ktId_define(ktId_Unitype);
-ktId_define(ktId_UnitypePtr);
+ktId_define(Unitype);
+ktId_define(UnitypePtr);
 
 void Unitype_free(Unitype u){
     tryLast(ktDescriptor_get(u.typeId), mType);

@@ -11,12 +11,12 @@ typedef struct KVPair{
     char* key;
     Unitype value;
 } KVPair;
-ktId_declare(ktId_KVPair);
-ktId_declare(ktId_KVPairPtr);
+ktId_declare(KVPair);
+ktId_declare(KVPairPtr);
 
 Autoarr_declare(KVPair)
-ktId_declare(ktId_AutoarrKVPair);
-ktId_declare(ktId_AutoarrKVPairPtr);
+ktId_declare(AutoarrKVPair);
+ktId_declare(AutoarrKVPairPtr);
 
 // proper way to clear a KVP
 void KVPair_free(KVPair p);

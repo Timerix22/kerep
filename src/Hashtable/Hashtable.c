@@ -1,7 +1,7 @@
 #include "Hashtable.h"
 
-ktId_define(ktId_Hashtable);
-ktId_define(ktId_HashtablePtr);
+ktId_define(Hashtable);
+ktId_define(HashtablePtr);
 
 // amount of rows
 static const uint16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};

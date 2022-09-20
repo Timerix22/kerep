@@ -9,13 +9,13 @@ Example:
 ```c
 //someStruct.h
 typedef struct { } someStruct;
-ktId_declare(ktId_someStruct);
-ktId_declare(ktId_someStructPtr); // pointer to type is another type
+ktId_declare(someStruct);
+ktId_declare(someStructPtr); // pointer to type is another type
 ```
 ```c
 //someStruct.c
-ktId_define(ktId_someStruct);
-ktId_define(ktId_someStructPtr);
+ktId_define(someStruct);
+ktId_define(someStructPtr);
 ```
 
 ## type descriptors

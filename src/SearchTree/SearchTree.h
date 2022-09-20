@@ -11,8 +11,8 @@ typedef struct SearchTreeNode{
     struct SearchTreeNode**** branches; // *STNode[8][8][4]
     Unitype value;
 } STNode;
-ktId_declare(ktId_STNode);
-ktId_declare(ktId_STNodePtr);
+ktId_declare(STNode);
+ktId_declare(STNodePtr);
 
 STNode* STNode_create();
 void STNode_free(STNode* node);

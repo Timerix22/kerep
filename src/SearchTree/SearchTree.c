@@ -1,7 +1,7 @@
 #include "SearchTree.h"
 
-ktId_define(ktId_STNode);
-ktId_define(ktId_STNodePtr);
+ktId_define(STNode);
+ktId_define(STNodePtr);
 
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));

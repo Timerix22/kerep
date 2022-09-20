@@ -18,8 +18,8 @@ typedef struct Unitype{
     ktId typeId;
     bool allocatedInHeap; // should Unitype_free call free() to VoidPtr*
 } Unitype;
-ktId_declare(ktId_Unitype);
-ktId_declare(ktId_UnitypePtr);
+ktId_declare(Unitype);
+ktId_declare(UnitypePtr);
 
 
 #define __UniDef(TYPE, VAL) (Unitype){\

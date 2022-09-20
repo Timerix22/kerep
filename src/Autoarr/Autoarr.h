@@ -20,35 +20,35 @@ Autoarr_declare(uint32)
 Autoarr_declare(int64)
 Autoarr_declare(uint64)
 
-ktId_declare(ktId_AutoarrChar);
-ktId_declare(ktId_AutoarrBool);
-ktId_declare(ktId_AutoarrFloat32);
-ktId_declare(ktId_AutoarrFloat64);
-ktId_declare(ktId_AutoarrInt8);
-ktId_declare(ktId_AutoarrUInt8);
-ktId_declare(ktId_AutoarrInt16);
-ktId_declare(ktId_AutoarrUInt16);
-ktId_declare(ktId_AutoarrInt32);
-ktId_declare(ktId_AutoarrUInt32);
-ktId_declare(ktId_AutoarrInt64);
-ktId_declare(ktId_AutoarrUInt64);
+ktId_declare(AutoarrChar);
+ktId_declare(AutoarrBool);
+ktId_declare(AutoarrFloat32);
+ktId_declare(AutoarrFloat64);
+ktId_declare(AutoarrInt8);
+ktId_declare(AutoarrUInt8);
+ktId_declare(AutoarrInt16);
+ktId_declare(AutoarrUInt16);
+ktId_declare(AutoarrInt32);
+ktId_declare(AutoarrUInt32);
+ktId_declare(AutoarrInt64);
+ktId_declare(AutoarrUInt64);
 
-ktId_declare(ktId_AutoarrCharPtr);
-ktId_declare(ktId_AutoarrBoolPtr);
-ktId_declare(ktId_AutoarrFloat32Ptr);
-ktId_declare(ktId_AutoarrFloat64Ptr);
-ktId_declare(ktId_AutoarrInt8Ptr);
-ktId_declare(ktId_AutoarrUInt8Ptr);
-ktId_declare(ktId_AutoarrInt16Ptr);
-ktId_declare(ktId_AutoarrUInt16Ptr);
-ktId_declare(ktId_AutoarrInt32Ptr);
-ktId_declare(ktId_AutoarrUInt32Ptr);
-ktId_declare(ktId_AutoarrInt64Ptr);
-ktId_declare(ktId_AutoarrUInt64Ptr);
+ktId_declare(AutoarrCharPtr);
+ktId_declare(AutoarrBoolPtr);
+ktId_declare(AutoarrFloat32Ptr);
+ktId_declare(AutoarrFloat64Ptr);
+ktId_declare(AutoarrInt8Ptr);
+ktId_declare(AutoarrUInt8Ptr);
+ktId_declare(AutoarrInt16Ptr);
+ktId_declare(AutoarrUInt16Ptr);
+ktId_declare(AutoarrInt32Ptr);
+ktId_declare(AutoarrUInt32Ptr);
+ktId_declare(AutoarrInt64Ptr);
+ktId_declare(AutoarrUInt64Ptr);
 
 Autoarr_declare(Unitype)
-ktId_declare(ktId_AutoarrUnitype);
-ktId_declare(ktId_AutoarrUnitypePtr);
+ktId_declare(AutoarrUnitype);
+ktId_declare(AutoarrUnitypePtr);
 
 // this function is injected in kerep_init()
 void __Autoarr_free_Unitype_(Autoarr(Unitype)* ar, bool freePtr);

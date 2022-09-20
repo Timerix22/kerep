@@ -1,11 +1,11 @@
 #include "StringBuilder.h"
 
 Autoarr_define(string)
-ktId_define(ktId_AutoarrString);
-ktId_define(ktId_AutoarrStringPtr);
+ktId_define(AutoarrString);
+ktId_define(AutoarrStringPtr);
 
-ktId_define(ktId_StringBuilder);
-ktId_define(ktId_StringBuilderPtr);
+ktId_define(StringBuilder);
+ktId_define(StringBuilderPtr);
 
 #define BL_C 32
 #define BL_L 1024

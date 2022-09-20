@@ -1,11 +1,11 @@
 #include "KeyValuePair.h"
 
-ktId_define(ktId_KVPair);
-ktId_define(ktId_KVPairPtr);
+ktId_define(KVPair);
+ktId_define(KVPairPtr);
 
 Autoarr_define(KVPair)
-ktId_define(ktId_AutoarrKVPair);
-ktId_define(ktId_AutoarrKVPairPtr);
+ktId_define(AutoarrKVPair);
+ktId_define(AutoarrKVPairPtr);
 
 // proper way to clear a KVP
 void KVPair_free(KVPair p){
