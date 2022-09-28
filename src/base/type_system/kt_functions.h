@@ -10,7 +10,7 @@ extern "C" {
 
 
 extern ktId ktId_last;
-void __kt_register(char* name, int16 size, void (*freeMembers)(void*), Maybe (*toString)(void*, int32));
+void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32));
 
 #define kt_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
     __kt_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
@@ -18,9 +18,9 @@ void __kt_register(char* name, int16 size, void (*freeMembers)(void*), Maybe (*t
 
 void ktDescriptors_beginInit();
 void ktDescriptors_endInit();
-/// @param id id of registered type 
-/// @return Maybe<ktDescriptor*>
-Maybe ktDescriptor_get(ktId id);
+
+/// @param id id of registered type
+ktDescriptor ktDescriptor_get(ktId id);
 
 
 ktId_declare(Null);

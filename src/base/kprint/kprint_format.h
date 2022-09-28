@@ -4,6 +4,7 @@
 extern "C" {
 #endif
 
+#include "../std.h"
 #include "../type_system/ktId.h"
 
 typedef enum kprint_dataFormat{
@@ -30,16 +31,18 @@ typedef enum kprint_dataFormat{
     kprint_fmtUppercase=0x10000000
 } kprint_dataFormat;
 
-
-typedef struct {
-    unsigned char fgColorChanged : 1;
-    unsigned char bgColorChanged : 1;
-    unsigned char withPrefix : 1;
-    unsigned char uppercase : 1;
-    unsigned char fgColor : 4;
-    unsigned char bgColor : 4;
-    unsigned char dataFmt : 4;
-    ktId typeId;
+typedef union {
+    int32 i32;
+    struct { 
+        unsigned char fgColorChanged : 1;
+        unsigned char bgColorChanged : 1;
+        unsigned char withPrefix : 1;
+        unsigned char uppercase : 1;
+        unsigned char fgColor : 4;
+        unsigned char bgColor : 4;
+        unsigned char dataFmt : 4;
+        ktId typeId;
+    };
 } kprint_format;
 
 #if __cplusplus

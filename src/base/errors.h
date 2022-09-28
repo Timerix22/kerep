@@ -11,7 +11,7 @@ typedef enum ErrorId {
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, 
     ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR, 
-    ERR_KEYNOTFOUND
+    ERR_KEYNOTFOUND, ERR_FORMAT
 } ErrorId;
 
 char* errname(ErrorId err);

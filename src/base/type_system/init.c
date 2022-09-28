@@ -3,6 +3,7 @@
 #include "../../SearchTree/SearchTree.h"
 #include "../../Hashtable/Hashtable.h"
 #include "../../String/StringBuilder.h"
+#include "base_toString.h"
 
 void ktDescriptors_initKerepTypes(){
     // null

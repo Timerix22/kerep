@@ -22,6 +22,11 @@ bool cptr_startsWith(char* ptr, char* fragment);
 
 bool cptr_endsWith(char* ptr, char* fragment);
 
+void memcopy(void* from, void* to, uint32 size);
+
+char* __cptr_concat(uint16 n, ...);
+#define cptr_concat(STR...) __cptr_concat(count_args(STR), STR)
+
 #if __cplusplus
 }
 #endif

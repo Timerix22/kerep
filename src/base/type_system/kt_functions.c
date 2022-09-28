@@ -58,7 +58,7 @@ void ktDescriptors_endInit(){
     printf("\e[92minitialized %u type descriptors\n", ktId_last);
 }
 
-void __kt_register(char* name, int16 size, void (*freeMembers)(void*), Maybe (*toString)(void*, int32)){
+void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32)){
     ktDescriptor typeDesc={
         .name=name,
         .size=size,
@@ -69,7 +69,10 @@ void __kt_register(char* name, int16 size, void (*freeMembers)(void*), Maybe (*t
     Autoarr_add(__ktDescriptors, typeDesc);
 }
 
-Maybe ktDescriptor_get(ktId id){
-    if(id>ktId_last) safethrow("invalid type id",;);
-    return SUCCESS(UniStack(ktId_ktDescriptorPtr, &typeDescriptors[id]));
+ktDescriptor ktDescriptor_get(ktId id){
+    if(id>ktId_last) {
+        printf("\n%u\n",id);
+        throw("invalid type id");
+    }
+    return typeDescriptors[id];
 }

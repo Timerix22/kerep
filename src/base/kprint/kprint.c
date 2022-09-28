@@ -19,8 +19,7 @@ Maybe __next_toString(kprint_format format, void* object){
         default: 
             safethrow("typeId is not set, can't autodetect type",;);
     }
-    try(ktDescriptor_get(format.typeId),mtd,;);
-    ktDescriptor typeDesc=*(ktDescriptor*)mtd.value.VoidPtr;
+    ktDescriptor typeDesc=ktDescriptor_get(format.typeId);
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);
     try(typeDesc.toString(object, &format), mStr,;);
@@ -69,8 +68,7 @@ void kprint_setColor(kprint_format f){
 
 
 Maybe ksprint_ar(uint32 count, kprint_format format, ktId typeId, void* array){
-    try(ktDescriptor_get(format.typeId),mtd,;);
-    ktDescriptor typeDesc=*(ktDescriptor*)mtd.value.VoidPtr;
+    ktDescriptor typeDesc=ktDescriptor_get(format.typeId);
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);
     StringBuilder* strb=StringBuilder_create();

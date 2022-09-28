@@ -4,8 +4,7 @@ ktId_define(Unitype);
 ktId_define(UnitypePtr);
 
 void Unitype_free(Unitype u){
-    tryLast(ktDescriptor_get(u.typeId), mType);
-    ktDescriptor type=*(ktDescriptor*)mType.value.VoidPtr;
+    ktDescriptor type=ktDescriptor_get(u.typeId);
     if(type.freeMembers)
         type.freeMembers(u.VoidPtr);
     if(u.allocatedInHeap)
@@ -13,11 +12,23 @@ void Unitype_free(Unitype u){
 }
 void __UnitypePtr_free(void* u) { Unitype_free(*(Unitype*)u); }
 
+char* toString_Unitype(void* _u, int32 fmt){
+    Unitype* u=_u;
+    ktDescriptor type=ktDescriptor_get(u->typeId);
+    char* valuestr=type.toString(_u, fmt);
+    char* rezult=cptr_concat("{ type: ", type.name,
+        ", allocated on heap: ", (u->allocatedInHeap ? "true" : "false"),
+        ", value:", valuestr, " }");
+    free(valuestr);
+    return rezult;
+}
+
+
+
 #define BUFSIZE 64
 char* sprintuni(Unitype v){
     char* buf=malloc(BUFSIZE);
-    tryLast(ktDescriptor_get(v.typeId), mType);
-    ktDescriptor type=*(ktDescriptor*)mType.value.VoidPtr;
+    ktDescriptor type=ktDescriptor_get(v.typeId);
     if(v.typeId==ktId_Null)
         sprintf_s(buf, BUFSIZE, "{Null}");
     else if(v.typeId==ktId_Float64)
