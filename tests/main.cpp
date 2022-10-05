@@ -5,6 +5,7 @@ void test_all(){
     test_safethrow();
     test_searchtree();
     test_autoarr();
+    test_autoarrVsVector();
     test_hash_functions();
     test_hashtable();
     test_dtsod();

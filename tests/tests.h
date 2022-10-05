@@ -13,6 +13,8 @@ void test_autoarr();
 void test_hash_functions();
 void test_hashtable();
 void test_dtsod();
+void test_kprint_colors();
+void test_autoarrVsVector();
 
 #define PRINT_SIZEOF(T) printf("\e[94m" #T " size: \e[96m" IFWIN("%llu", "%lu") "\n", sizeof(T))
 
