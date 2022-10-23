@@ -9,7 +9,6 @@ extern "C" {
 #include "cptr.h"
 #include "optime.h"
 #include "type_system/type_system.h"
-#include "kprint/kprint.h"
 
 #if __cplusplus
 }

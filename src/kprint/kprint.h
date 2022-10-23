@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "../errors.h"
+#include "../base/errors.h"
 #include "kprint_colors.h"
 #include "kprint_format.h"
 

@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#include "../std.h"
-#include "../type_system/ktId.h"
+#include "../base/std.h"
+#include "../base/type_system/ktId.h"
 
 typedef enum kprint_dataFormat{
     // 00000000 00000000  00000000 00000000

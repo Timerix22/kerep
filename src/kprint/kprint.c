@@ -1,5 +1,5 @@
-#include "../base.h"
-#include "../../String/StringBuilder.h"
+#include "../String/StringBuilder.h"
+#include "kprint.h"
 
 ktId __typeFromFormat(kprint_format f){
     ktId typeId=kprint_format_ktId(f);
