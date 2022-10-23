@@ -4,7 +4,7 @@
 
 #define test_alg(ALG, VALUE_SIZE, EXPECTED_FROM_ZERO){\
     printf("\e[94mrng algorithm: \e[96m" #ALG "\n");\
-    ALG##_state s= ALG##_init(0);\
+    void* s= ALG##_init(0);\
     uint##VALUE_SIZE r=ALG##_next(s);\
     printf("\e[97m  next from zero seed:");\
     if(r!=EXPECTED_FROM_ZERO){\

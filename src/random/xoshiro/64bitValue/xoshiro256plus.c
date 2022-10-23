@@ -6,7 +6,7 @@ worldwide. This software is distributed without any warranty.
 
 See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
-#include "../../krandom.h"
+#include "xoshiro256.h"
 
 /* This is xoshiro256+ 1.0, our best and fastest generator for floating-point
    numbers. We suggest to use its upper bits for floating-point
@@ -28,12 +28,8 @@ static inline uint64 rotl(const uint64 x, int k) {
     return (x << k) | (x >> (64 - k));
 }
 
-typedef union {
-    uint64 s[4];
-} _state_t;
-
 uint64 xoshiro256plus_next(void* _state){    
-    _state_t* state=_state;
+    xoshiro256_state* state=_state;
     const uint64 result = state->s[0] + state->s[3];
 
     const uint64 t = state->s[1] << 17;
@@ -50,9 +46,9 @@ uint64 xoshiro256plus_next(void* _state){
     return result;
 }
 
-void* xoshiro256plus_init(uint64 seed){
-    _state_t* state=malloc(sizeof(_state_t));
-    splitmix64_state splitmix=splitmix64_init(seed);
+void* xoshiro256_init(uint64 seed){
+    xoshiro256_state* state=malloc(sizeof(xoshiro256_state));
+    splitmix64_state* splitmix=splitmix64_init(seed);
     state->s[0]=splitmix64_next(splitmix);
     state->s[1]=splitmix64_next(splitmix);
     state->s[2]=splitmix64_next(splitmix);

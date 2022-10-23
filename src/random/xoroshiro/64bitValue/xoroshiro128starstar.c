@@ -6,7 +6,7 @@ worldwide. This software is distributed without any warranty.
 
 See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
-#include "../../krandom.h"
+#include "xoroshiro128.h"
 
 /* This is xoroshiro128** 1.0, one of our all-purpose, rock-solid,
    small-state generators. It is extremely (sub-ns) fast and it passes all
@@ -25,12 +25,8 @@ static inline uint64 rotl(const uint64 x, int k) {
     return (x << k) | (x >> (64 - k));
 }
 
-typedef union {
-  uint32 s[2];
-} _state_t;
-
 uint64 xoroshiro128starstar_next(void* _state){    
-    _state_t* state=_state;
+    xoroshiro128_state* state=_state;
     const uint64 s0 = state->s[0];
     uint64 s1 = state->s[1];
     const uint64 result = rotl(s0 * 5, 7) * 9;
@@ -40,12 +36,4 @@ uint64 xoroshiro128starstar_next(void* _state){
     state->s[1] = rotl(s1, 37); // c
 
     return result;
-}
-
-void* xoroshiro128starstar_init(uint64 seed){
-    _state_t* state=malloc(sizeof(_state_t));
-    splitmix64_state splitmix=splitmix64_init(seed);
-    state->s[0]=splitmix64_next(splitmix);
-    state->s[1]=splitmix64_next(splitmix);
-    return state;
 }

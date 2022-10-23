@@ -1,4 +1,4 @@
-#include "krandom.h"
+#include "splitmix64.h"
 
 /* 
 This is a fixed-increment version of Java 8's SplittableRandom generator
@@ -12,16 +12,15 @@ generator.
 */
 
 // The state can be seeded with any (upto) 64 bit integer value.
-typedef uint64 _state_t;
 
 void* splitmix64_init(uint64 seed){
-    _state_t* state=malloc(sizeof(_state_t));
+    splitmix64_state* state=malloc(sizeof(splitmix64_state));
     *state=seed;
     return state;
 }
 
 uint64 splitmix64_next(void* _state) {
-    _state_t* state=_state;
+    splitmix64_state* state=_state;
     // increment the state variable
     *state += 0x9e3779b97f4a7c15;
     // copy the state to a working variable

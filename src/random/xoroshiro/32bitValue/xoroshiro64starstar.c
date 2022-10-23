@@ -6,7 +6,7 @@ worldwide. This software is distributed without any warranty.
 
 See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
-#include "../../krandom.h"
+#include "xoroshiro64.h"
 
 /* This is xoroshiro64** 1.0, our 32-bit all-purpose, rock-solid,
    small-state generator. It is extremely fast and it passes all tests we
@@ -23,13 +23,8 @@ static inline uint32 rotl(const uint32 x, int k) {
     return (x << k) | (x >> (32 - k));
 }
 
-typedef union {
-    uint64 merged;
-    uint32 s[2];
-} _state_t;
-
 uint32 xoroshiro64starstar_next(void* _state) {
-    _state_t* state=_state;
+    xoroshiro64_state* state=_state;
     const uint32 s0 = state->s[0];
     uint32 s1 = state->s[1];
     const uint32 result = rotl(s0 * 0x9E3779BB, 5) * 5;
@@ -39,11 +34,4 @@ uint32 xoroshiro64starstar_next(void* _state) {
     state->s[1] = rotl(s1, 13); // c
 
     return result;
-}
-
-void* xoroshiro64starstar_init(uint64 seed){
-    _state_t* state=malloc(sizeof(_state_t));
-    splitmix64_state splitmix=splitmix64_init(seed);
-    state->merged=splitmix64_next(splitmix);
-    return state;
 }

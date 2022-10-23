@@ -6,7 +6,7 @@ worldwide. This software is distributed without any warranty.
 
 See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
-#include "../../krandom.h"
+#include "xoshiro256.h"
 
 /* This is xoshiro256++ 1.0, one of our all-purpose, rock-solid generators.
    It has excellent (sub-ns) speed, a state (256 bits) that is large
@@ -23,12 +23,8 @@ static inline uint64 rotl(const uint64 x, int k) {
     return (x << k) | (x>>(64 - k));
 }
 
-typedef union {
-    uint64 s[4];
-} _state_t;
-
 uint64 xoshiro256plusplus_next(void* _state) {
-    _state_t* state=_state;
+    xoshiro256_state* state=_state;
     const uint64 result=rotl(state->s[0] + state->s[3], 23) + state->s[0];
     const uint64 t=state->s[1] << 17;
     state->s[2] ^= state->s[0];
@@ -38,14 +34,4 @@ uint64 xoshiro256plusplus_next(void* _state) {
     state->s[2] ^= t;
     state->s[3]=rotl(state->s[3], 45);
     return result;
-}
-
-void* xoshiro256plusplus_init(uint64 seed){
-    _state_t* state=malloc(sizeof(_state_t));
-    splitmix64_state splitmix=splitmix64_init(seed);
-    state->s[0]=splitmix64_next(splitmix);
-    state->s[1]=splitmix64_next(splitmix);
-    state->s[2]=splitmix64_next(splitmix);
-    state->s[3]=splitmix64_next(splitmix);
-    return state;
 }
