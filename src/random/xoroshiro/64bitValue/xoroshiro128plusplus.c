@@ -1,0 +1,51 @@
+/*  Written in 2019 by David Blackman and Sebastiano Vigna (vigna@acm.org)
+
+To the extent possible under law, the author has dedicated all copyright
+and related and neighboring rights to this software to the public domain
+worldwide. This software is distributed without any warranty.
+
+See <http://creativecommons.org/publicdomain/zero/1.0/>. */
+
+#include "../../krandom.h"
+
+/* This is xoroshiro128++ 1.0, one of our all-purpose, rock-solid,
+   small-state generators. It is extremely (sub-ns) fast and it passes all
+   tests we are aware of, but its state space is large enough only for
+   mild parallelism.
+
+   For generating just floating-point numbers, xoroshiro128+ is even
+   faster (but it has a very mild bias, see notes in the comments).
+
+   The state must be seeded so that it is not everywhere zero. If you have
+   a 64-bit seed, we suggest to seed a splitmix64 generator and use its
+   output to fill s. */
+
+
+static inline uint64 rotl(const uint64 x, int k) {
+    return (x << k) | (x >> (64 - k));
+}
+
+typedef union {
+  uint32 s[2];
+} _state_t;
+
+uint64 xoroshiro128plusplus_next(void* _state){    
+    _state_t* state=_state;
+    const uint64 s0 = state->s[0];
+    uint64 s1 = state->s[1];
+    const uint64 result = rotl(s0 + s1, 17) + s0;
+
+    s1 ^= s0;
+    state->s[0] = rotl(s0, 49) ^ s1 ^ (s1 << 21); // a, b
+    state->s[1] = rotl(s1, 28); // c
+
+    return result;
+}
+
+void* xoroshiro128plusplus_init(uint64 seed){
+    _state_t* state=malloc(sizeof(_state_t));
+    splitmix64_state splitmix=splitmix64_init(seed);
+    state->s[0]=splitmix64_next(splitmix);
+    state->s[1]=splitmix64_next(splitmix);
+    return state;
+}

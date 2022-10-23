@@ -13,6 +13,7 @@ char* errname(ErrorId err){
         case ERR_ENDOFSTR: return "ERR_ENDOFSTR";
         case ERR_KEYNOTFOUND: return "ERR_KEYNOTFOUND";
         case ERR_FORMAT: return "ERR_FORMAT";
+        case ERR_UNEXPECTEDVAL: return "ERR_UNEXPECTEDVAL";
         default: return "UNKNOWN_ERROR";
     }
 }
