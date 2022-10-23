@@ -48,13 +48,13 @@ extern "C" {
     __kprint_argsToObjects32(ARGS))
 
 
-Maybe __ksprint(uint8 n, int32* formats, void** objects);
+Maybe __ksprint(uint8 n, kprint_format* formats, void** objects);
 #define ksprint(ARGS...) __ksprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
 
-Maybe __kfprint(FILE* fd, uint8 n, int32* formats, void** objects);
+Maybe __kfprint(FILE* fd, uint8 n, kprint_format* formats, void** objects);
 #define kfprint(FD, ARGS...) __kfprint(FD, count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
 
-void __kprint(uint8 n, int32* formats, void** objects);
+void __kprint(uint8 n, kprint_format* formats, void** objects);
 #define kprint(ARGS...) __kprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
 
 // can take (bgColor | fgColor) 

@@ -58,7 +58,7 @@ void ktDescriptors_endInit(){
     printf("\e[92minitialized %u type descriptors\n", ktId_last);
 }
 
-void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32)){
+void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, uint32)){
     ktDescriptor typeDesc={
         .name=name,
         .size=size,

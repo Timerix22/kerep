@@ -8,9 +8,8 @@ extern "C" {
 #include "ktId.h"
 #include "ktDescriptor.h"
 
-
 extern ktId ktId_last;
-void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, int32));
+void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, uint32));
 
 #define kt_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
     __kt_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\

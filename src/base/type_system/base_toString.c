@@ -52,7 +52,7 @@ char* toString_float(float64 n, bool withPostfix, bool uppercase){
 }
 
 char* toString_bin(char* bytes, uint32 size, bool withPrefix){
-    char* str=malloc(size*8+1);
+    char* str=malloc(size*8 + (withPrefix?2:0) +1);
     uint32 cn=0;
     if(withPrefix){
         str[cn++]='0';
@@ -80,7 +80,7 @@ char _4bitsHex(uint8 u, bool uppercase){
 }
 
 char* toString_hex(char* bytes, uint32 size, bool withPrefix, bool uppercase){
-    char* str=malloc(size*2);
+    char* str=malloc(size*2 + (withPrefix?2:0) + 1);
     uint32 cn=0;
     if(withPrefix){
         str[cn++]='0';
@@ -96,18 +96,17 @@ char* toString_hex(char* bytes, uint32 size, bool withPrefix, bool uppercase){
 }
 
 
-#define __toString_int_def(BITS) char* __toString_int##BITS(void* _n, int32 _f){\
-    kprint_format f=*(kprint_format*)&_f;\
-    switch(f.dataFmt | (uint32)0){\
-        case kprint_fmtInt:\
+#define __toString_int_def(BITS) char* __toString_int##BITS(void* _n, uint32 f){\
+    switch(kprint_format_dataFormat(f)){\
+        case kprint_fmtInt: ;\
             int##BITS n=*(int##BITS*)_n;\
             return toString_int(n);\
         case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, f.withPrefix);\
+            return toString_bin(_n, BITS/8, kprint_format_withPrefix(f));\
         case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, f.withPrefix, f.uppercase);\
+            return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
         default:\
-            printf("\n%u\n", f.dataFmt);\
+            printf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\
@@ -117,18 +116,17 @@ __toString_int_def(16)
 __toString_int_def(32)
 __toString_int_def(64)
 
-#define __toString_uint_def(BITS) char* __toString_uint##BITS(void* _n, int32 _f){\
-    kprint_format f=*(kprint_format*)&_f;\
-    switch(f.dataFmt | (uint32)0){\
-        case kprint_fmtUInt:\
+#define __toString_uint_def(BITS) char* __toString_uint##BITS(void* _n, uint32 f){\
+    switch(kprint_format_dataFormat(f)){\
+        case kprint_fmtUInt: ;\
             uint##BITS n=*(uint##BITS*)_n;\
-            return toString_uint(n, f.withPrefix, f.uppercase);\
+            return toString_uint(n, kprint_format_withPostfix(f), kprint_format_uppercase(f));\
         case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, f.withPrefix);\
+            return toString_bin(_n, BITS/8, kprint_format_withPrefix(f));\
         case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, f.withPrefix, f.uppercase);\
+            return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
         default:\
-            printf("\n%u\n", f.dataFmt);\
+            printf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\
@@ -138,18 +136,17 @@ __toString_uint_def(16)
 __toString_uint_def(32)
 __toString_uint_def(64)
 
-#define __toString_float_def(BITS) char* __toString_float##BITS(void* _n, int32 _f){\
-    kprint_format f=*(kprint_format*)&_f;\
-    switch(f.dataFmt | (uint32)0){\
-        case kprint_fmtFloat:\
+#define __toString_float_def(BITS) char* __toString_float##BITS(void* _n, uint32 f){\
+    switch(kprint_format_dataFormat(f)){\
+        case kprint_fmtFloat: ;\
             float##BITS n=*(float##BITS*)_n;\
-            return toString_float(n, f.withPrefix, f.uppercase);\
+            return toString_float(n, kprint_format_withPostfix(f), kprint_format_uppercase(f));\
         case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, f.withPrefix);\
+            return toString_bin(_n, BITS/8, kprint_format_withPrefix(f));\
         case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, f.withPrefix, f.uppercase);\
+            return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
         default:\
-            printf("\n%u\n", f.dataFmt);\
+            printf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\

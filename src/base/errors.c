@@ -12,6 +12,7 @@ char* errname(ErrorId err){
         case ERR_NULLPTR: return "ERR_NULLPTR";
         case ERR_ENDOFSTR: return "ERR_ENDOFSTR";
         case ERR_KEYNOTFOUND: return "ERR_KEYNOTFOUND";
+        case ERR_FORMAT: return "ERR_FORMAT";
         default: return "UNKNOWN_ERROR";
     }
 }

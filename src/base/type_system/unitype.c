@@ -12,7 +12,7 @@ void Unitype_free(Unitype u){
 }
 void __UnitypePtr_free(void* u) { Unitype_free(*(Unitype*)u); }
 
-char* toString_Unitype(void* _u, int32 fmt){
+char* toString_Unitype(void* _u, uint32 fmt){
     Unitype* u=_u;
     ktDescriptor type=ktDescriptor_get(u->typeId);
     char* valuestr=type.toString(_u, fmt);

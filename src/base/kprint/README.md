@@ -10,7 +10,7 @@ I don't really like printf function (and its variants), so i made safer and more
 ## how to use it:
 + **format construction:**  
     ```
-    kprint_format fmt= kprint_fgColor | kprint_fbgColor | kprint_fdataFmt | flags | ktId;
+    kprint_format fmt= kprint_fgColor | kprint_bgColor | kprint_fdataFmt | flags | ktId;
     ```
     [more about `kprint_format`](kprint_format.md)
     + fgColor and bgColor can be set to change console output color

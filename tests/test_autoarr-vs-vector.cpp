@@ -4,7 +4,7 @@
 
 int64 _autoarrVsVector(uint16 blockCount, uint16 blockLength){
     uint32 count=blockLength*blockCount;
-    printf("\e[94mblock count: %u block length: %u count: %llu\n", blockCount, blockLength, (uint64)count);
+    printf("\e[94mblock count: %u block length: %u count: " IFWIN("%llu", "%lu") "\n", blockCount, blockLength, (uint64)count);
     Autoarr_int64* ar=Autoarr_create(int64, blockCount, blockLength);
     std::vector<int64> vec=std::vector<int64>();
     optime("Autoarr_add", 1, ({
@@ -15,7 +15,7 @@ int64 _autoarrVsVector(uint16 blockCount, uint16 blockLength){
         for(uint32 i=0; i< count; i++)
             vec.push_back(i);
     }));
-    int64 t;
+    int64 t=0;
     optime("Autoarr_get", 1, ({
         for(uint32 i=0; i< count; i++)
             t=Autoarr_get(ar, i);
