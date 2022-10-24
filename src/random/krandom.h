@@ -62,7 +62,10 @@ static inline float64 krand_nextFloat64(krand_statePtr state) {return KRAND_ALG6
 
 
 ///@param chance (0-1.0) is probability of success
-bool fate(float chance);
+static inline bool fate(krand_statePtr state,float chance){
+    int limit=1/chance + 0.01f;
+    return KRAND_ALG32_next(state)%limit == 0;
+}
 
 #if __cplusplus
 }
