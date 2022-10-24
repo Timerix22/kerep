@@ -7,16 +7,19 @@ extern "C" {
 #include "../errors.h"
 
 // functions for base types
+char* __toString_char(void* c, uint32 fmt);
+char* __toString_bool(void* c, uint32 fmt);
+
 char* toString_int(int64 n);
 char* __toString_int8(void* n, uint32 fmt);
 char* __toString_int16(void* n, uint32 fmt);
-char* __toString_uint32(void* n, uint32 fmt);
+char* __toString_int32(void* n, uint32 fmt);
 char* __toString_int64(void* n, uint32 fmt);
 
 char* toString_uint(uint64 n, bool withPostfix, bool uppercase);
 char* __toString_uint8(void* n, uint32 fmt);
 char* __toString_uint16(void* n, uint32 fmt);
-char* __toString_uuint32(void* n, uint32 fmt);
+char* __toString_uint32(void* n, uint32 fmt);
 char* __toString_uint64(void* n, uint32 fmt);
 
 char* toString_float(float64 n, bool withPostfix, bool uppercase); // very bad implimentation

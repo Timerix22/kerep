@@ -2,6 +2,26 @@
 #include "../cptr.h"
 #include "../../kprint/kprint_format.h"
 
+char* __toString_char(void* c, uint32 fmt) {
+    char* cc=malloc(2); 
+    cc[0]=*(char*)c;
+    cc[1]=0;
+    return cc;
+}
+
+char* __toString_bool(void* c, uint32 fmt) {
+    static const char _strbool[4][6]={ "false", "true\0", "False", "True\0" };
+    uint8 strind=*(bool*)c==1 + kprint_format_uppercase(fmt)*2;
+    char* rez=malloc(6);
+    rez[0]=_strbool[strind][0];
+    rez[1]=_strbool[strind][1];
+    rez[2]=_strbool[strind][2];
+    rez[3]=_strbool[strind][3];
+    rez[4]=_strbool[strind][4];
+    rez[5]=0;
+    return rez;
+}
+
 char* toString_int(int64 n){
     int64 d=n;
     char str[32];
@@ -151,3 +171,6 @@ __toString_uint_def(64)
             return NULL;\
     }\
 }
+
+__toString_float_def(32)
+__toString_float_def(64)

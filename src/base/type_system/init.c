@@ -9,31 +9,32 @@ void ktDescriptors_initKerepTypes(){
     // null
     kt_register(NULL, ktId_Null, NULL, NULL);
     // base types
-    kt_register(char,    ktId_Char,    NULL, NULL);
-    kt_register(bool,    ktId_Bool,    NULL, NULL);
-    kt_register(float32, ktId_Float32, NULL, NULL);
-    kt_register(float64, ktId_Float64, NULL, NULL);
-    kt_register(int8,    ktId_Int8,    NULL, NULL);
-    kt_register(uint8,   ktId_UInt8,   NULL, NULL);
-    kt_register(int16,   ktId_Int16,   NULL, NULL);
-    kt_register(uint16,  ktId_UInt16,  NULL, NULL);
-    kt_register(int32,   ktId_Int32,   NULL, NULL);
-    kt_register(uint32,  ktId_UInt32,  NULL, NULL);
-    kt_register(int64,   ktId_Int64,   NULL, NULL);
-    kt_register(uint64,  ktId_UInt64,  NULL, NULL);
+    kt_register(char,    ktId_Char,    NULL, __toString_char);
+    kt_register(bool,    ktId_Bool,    NULL, __toString_bool);
+    kt_register(float32, ktId_Float32, NULL, __toString_float32);
+    kt_register(float64, ktId_Float64, NULL, __toString_float64);
+    kt_register(int8,    ktId_Int8,    NULL, __toString_int8);
+    kt_register(uint8,   ktId_UInt8,   NULL, __toString_uint8);
+    kt_register(int16,   ktId_Int16,   NULL, __toString_int16);
+    kt_register(uint16,  ktId_UInt16,  NULL, __toString_uint16);
+    kt_register(int32,   ktId_Int32,   NULL, __toString_int32);
+    kt_register(uint32,  ktId_UInt32,  NULL, __toString_uint32);
+    kt_register(int64,   ktId_Int64,   NULL, __toString_int64);
+    kt_register(uint64,  ktId_UInt64,  NULL, __toString_uint64);
     // base type pointers
-    kt_register(char*,    ktId_CharPtr,    NULL, NULL);
-    kt_register(bool*,    ktId_BoolPtr,    NULL, NULL);
-    kt_register(float32*, ktId_Float32Ptr, NULL, NULL);
-    kt_register(float64*, ktId_Float64Ptr, NULL, NULL);
-    kt_register(int8*,    ktId_Int8Ptr,    NULL, NULL);
-    kt_register(uint8*,   ktId_UInt8Ptr,   NULL, NULL);
-    kt_register(int16*,   ktId_Int16Ptr,   NULL, NULL);
-    kt_register(uint16*,  ktId_UInt16Ptr,  NULL, NULL);
-    kt_register(int32*,   ktId_Int32Ptr,   NULL, NULL);
-    kt_register(uint32*,  ktId_UInt32Ptr,  NULL, NULL);
-    kt_register(int64*,   ktId_Int64Ptr,   NULL, NULL);
-    kt_register(uint64*,  ktId_UInt64Ptr,  NULL, NULL);
+    kt_register(char*,    ktId_CharPtr,    NULL, __toString_char);
+    kt_register(bool*,    ktId_BoolPtr,    NULL, __toString_bool);
+    kt_register(float32*, ktId_Float32Ptr, NULL, __toString_float32);
+    kt_register(float64*, ktId_Float64Ptr, NULL, __toString_float64);
+    kt_register(int8*,    ktId_Int8Ptr,    NULL, __toString_int8);
+    kt_register(uint8*,   ktId_UInt8Ptr,   NULL, __toString_uint8);
+    kt_register(int16*,   ktId_Int16Ptr,   NULL, __toString_int16);
+    kt_register(uint16*,  ktId_UInt16Ptr,  NULL, __toString_uint16);
+    kt_register(int32*,   ktId_Int32Ptr,   NULL, __toString_int32);
+    kt_register(uint32*,  ktId_UInt32Ptr,  NULL, __toString_uint32);
+    kt_register(int64*,   ktId_Int64Ptr,   NULL, __toString_int64);
+    kt_register(uint64*,  ktId_UInt64Ptr,  NULL, __toString_uint64);
+    
     // ktDescriptor
     kt_register(ktDescriptor,  ktId_ktDescriptor,  NULL, NULL);
     kt_register(ktDescriptor*,  ktId_ktDescriptorPtr,  NULL, NULL);

@@ -76,3 +76,7 @@ ktDescriptor ktDescriptor_get(ktId id){
     }
     return typeDescriptors[id];
 }
+
+void ktDescriptors_free(){
+    free(typeDescriptors);
+}

@@ -22,6 +22,7 @@ int main(){
     // optime("test_all",1,test_all());
     // test_kprint_colors();
     test_rng_algorithms();
+    ktDescriptors_free();
     printf("\e[0m\n");
     return 0;
 }
