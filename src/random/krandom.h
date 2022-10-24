@@ -12,11 +12,13 @@ extern "C" {
 /*
 You can choose any algorithm that has required functions:
 
-    some_alg32_state some_alg32_init(uint32 seed);
-    uint32 some_alg32_next(some_alg32_state);
+    some_alg32_statePtr some_alg32_init(uint32 seed);
+    uint32 some_alg32_next(some_alg32_statePtr);
+    void some_alg32_free(some_alg32_statePtr);
 
-    #define KRAND_ALG32_next some_alg32_next
     #define KRAND_ALG32_init some_alg32_init
+    #define KRAND_ALG32_next some_alg32_next
+    #define KRAND_ALG32_free some_alg32_free
     #include "kerep/random/krandom.h"
 
 The same way it works for 64-bit RNGs
@@ -29,11 +31,17 @@ The same way it works for 64-bit RNGs
 #ifndef KRAND_ALG32_init
 #define KRAND_ALG32_init xoshiro128plus##_init
 #endif
+#ifndef KRAND_ALG32_free
+#define KRAND_ALG32_free xoshiro128plus##_free
+#endif
 #ifndef KRAND_ALG64_next
 #define KRAND_ALG64_next xoshiro256plus##_next
 #endif
 #ifndef KRAND_ALG64_init
 #define KRAND_ALG64_init xoshiro256plus##_init
+#endif
+#ifndef KRAND_ALG64_free
+#define KRAND_ALG64_free xoshiro256plus##_free
 #endif
 
 typedef void* krand_statePtr;

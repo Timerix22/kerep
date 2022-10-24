@@ -24,6 +24,12 @@ static inline xoroshiro64_statePtr xoroshiro64_initFromTime(void) { return xoros
 uint32 xoroshiro64star_next(xoroshiro64_statePtr);
 uint32 xoroshiro64starstar_next(xoroshiro64_statePtr);
 
+static inline void xoroshiro64_free(xoroshiro64_statePtr state) {
+    free(state); 
+}
+#define xoroshiro64star_free xoroshiro64_free
+#define xoroshiro64starstar_free xoroshiro64_free
+
 #if __cplusplus
 }
 #endif

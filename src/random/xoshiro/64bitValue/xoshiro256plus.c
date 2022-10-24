@@ -53,5 +53,6 @@ void* xoshiro256_init(uint64 seed){
     state->s[1]=splitmix64_next(splitmix);
     state->s[2]=splitmix64_next(splitmix);
     state->s[3]=splitmix64_next(splitmix);
+    splitmix64_free(splitmix);
     return state;
 }

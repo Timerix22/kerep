@@ -8,13 +8,15 @@
     uint##VALUE_SIZE r=ALG##_next(s);\
     printf("\e[97m  next from zero seed:");\
     if(r!=EXPECTED_FROM_ZERO){\
-        printf("\e[91m %llu\n", (uint64)r);\
+        printf("\e[91m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
         throw(ERR_UNEXPECTEDVAL);\
     }\
-    printf("\e[92m %llu\n", (uint64)r);\
+    printf("\e[92m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
+    ALG##_free(s);\
     s= ALG##_initFromTime();\
     r=ALG##_next(s);\
-    printf("\e[97m  next from time seed:\e[92m %llu\n", (uint64)r);\
+    ALG##_free(s);\
+    printf("\e[97m  next from time seed:\e[92m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
 }
 
 void test_rng_algorithms(){

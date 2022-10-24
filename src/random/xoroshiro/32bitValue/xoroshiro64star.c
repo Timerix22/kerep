@@ -44,5 +44,6 @@ void* xoroshiro64_init(uint64 seed){
     xoroshiro64_state* state=malloc(sizeof(xoroshiro64_state));
     splitmix64_state* splitmix=splitmix64_init(seed);
     state->merged=splitmix64_next(splitmix);
+    splitmix64_free(splitmix);
     return state;
 }

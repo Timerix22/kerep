@@ -13,6 +13,9 @@ splitmix64_statePtr splitmix64_init(uint64 seed);
 static inline splitmix64_statePtr splitmix64_initFromTime(void) { return splitmix64_init(time(NULL)); }
 
 uint64 splitmix64_next(splitmix64_statePtr);
+static inline void splitmix64_free(splitmix64_statePtr state) {
+    free(state); 
+}
 
 #if __cplusplus
 }

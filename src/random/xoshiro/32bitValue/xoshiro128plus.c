@@ -49,5 +49,6 @@ void* xoshiro128_init(uint64 seed){
     splitmix64_state* splitmix=splitmix64_init(seed);
     state->merged[0]=splitmix64_next(splitmix);
     state->merged[1]=splitmix64_next(splitmix);
+    splitmix64_free(splitmix);
     return state;
 }

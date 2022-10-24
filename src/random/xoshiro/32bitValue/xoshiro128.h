@@ -28,6 +28,13 @@ uint32 xoshiro128plus_next(xoshiro128_statePtr);
 uint32 xoshiro128plusplus_next(xoshiro128_statePtr);
 uint32 xoshiro128starstar_next(xoshiro128_statePtr);
 
+static inline void xoshiro128_free(xoshiro128_statePtr state) {
+    free(state); 
+}
+#define xoshiro128plus_free xoshiro128_free
+#define xoshiro128plusplus_free xoshiro128_free
+#define xoshiro128starstar_free xoshiro128_free
+
 #if __cplusplus
 }
 #endif

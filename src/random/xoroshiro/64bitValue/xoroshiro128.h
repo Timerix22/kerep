@@ -27,6 +27,13 @@ uint64 xoroshiro128plus_next(xoroshiro128_statePtr);
 uint64 xoroshiro128plusplus_next(xoroshiro128_statePtr);
 uint64 xoroshiro128starstar_next(xoroshiro128_statePtr);
 
+static inline void xoroshiro128_free(xoroshiro128_statePtr state) {
+    free(state); 
+}
+#define xoroshiro128plus_free xoroshiro128_free
+#define xoroshiro128plusplus_free xoroshiro128_free
+#define xoroshiro128starstar_free xoroshiro128_free
+
 #if __cplusplus
 }
 #endif

@@ -27,6 +27,13 @@ uint64 xoshiro256plus_next(xoshiro256_statePtr);
 uint64 xoshiro256plusplus_next(xoshiro256_statePtr);
 uint64 xoshiro256starstar_next(xoshiro256_statePtr);
 
+static inline void xoshiro256_free(xoshiro256_statePtr state) {
+    free(state); 
+}
+#define xoshiro256plus_free xoshiro256_free
+#define xoshiro256plusplus_free xoshiro256_free
+#define xoshiro256starstar_free xoshiro256_free
+
 #if __cplusplus
 }
 #endif
