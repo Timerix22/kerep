@@ -19,9 +19,7 @@ int main(){
     ktDescriptors_initKerepTypes();
     ktDescriptors_endInit();
     kprintf("\e[97mkerep tests are starting!\n");
-    // optime("test_all",1,test_all());
-    test_rng_algorithms();
-    test_kprint_colors();
+    optime("test_all",1,test_all());
     ktDescriptors_free();
     kprintf("\e[0m\n");
     return 0;

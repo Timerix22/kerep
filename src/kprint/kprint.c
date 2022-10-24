@@ -139,13 +139,13 @@ void kprint_setColor(kprint_format f){
         uint8 fg=(f&0x0f000000)>>24;
         if(fg<8) fg+=30;
         else fg+=90-8;
-        kprintf("\e[%um", fg);
+        printf("\e[%um", fg);
     }
     if(kprint_format_bgColorChanged(f)){
         uint8 bg=(f&0x00f00000)>>20;
         if(bg<8) bg+=40;
         else bg+=100-8;
-        kprintf("\e[%um", bg);
+        printf("\e[%um", bg);
     }
 }
 #endif

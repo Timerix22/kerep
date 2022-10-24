@@ -2,11 +2,56 @@
 #include "../base/base.h"
 #include "../base/type_system/base_toString.h"
 
+#if defined(_WIN64) || defined(_WIN32)
+#include <windows.h>
+
+DWORD unixColorToWin(uint8 c){
+    switch(c){
+        //foreground
+        case 30: return 0;
+        case 31: return FOREGROUND_RED;
+        case 32: return FOREGROUND_GREEN;
+        case 33: return FOREGROUND_GREEN | FOREGROUND_RED;
+        case 34: return FOREGROUND_BLUE;
+        case 35: return FOREGROUND_RED | FOREGROUND_BLUE;
+        case 36: return FOREGROUND_BLUE | FOREGROUND_GREEN;
+        case 37: return FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+        case 90: return FOREGROUND_INTENSITY;
+        case 91: return FOREGROUND_RED | FOREGROUND_INTENSITY;
+        case 92: return FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+        case 93: return FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
+        case 94: return FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+        case 95: return FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY;
+        case 96: return FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+        case 97: return FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+        //background
+        case 40: return 0;
+        case 41: return BACKGROUND_RED;
+        case 42: return BACKGROUND_GREEN;
+        case 43: return BACKGROUND_GREEN | BACKGROUND_RED;
+        case 44: return BACKGROUND_BLUE;
+        case 45: return BACKGROUND_RED | BACKGROUND_BLUE;
+        case 46: return BACKGROUND_BLUE | BACKGROUND_GREEN;
+        case 47: return BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED;
+        case 100: return BACKGROUND_INTENSITY;
+        case 101: return BACKGROUND_RED | BACKGROUND_INTENSITY;
+        case 102: return BACKGROUND_GREEN | BACKGROUND_INTENSITY;
+        case 103: return BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
+        case 104: return BACKGROUND_BLUE | BACKGROUND_INTENSITY;
+        case 105: return BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY;
+        case 106: return BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
+        case 107: return BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
+        default: return 0;
+    }
+}
+#endif
+
 void kprintf(const char* format, ...){
     va_list vl;
     va_start(vl, format);
     char c;
     while((c=*format++)){
+        iteration_start:
         if(c=='%'){
             char* argstr=NULL;
             c=*format++;
@@ -48,7 +93,7 @@ void kprintf(const char* format, ...){
                     break;
                 case 'c':
                     argstr=malloc(2);
-                    argstr[0]=va_arg(vl,char);
+                    argstr[0]=(char)va_arg(vl,int);
                     argstr[1]=0;
                     break;
                 default:
@@ -61,10 +106,29 @@ void kprintf(const char* format, ...){
         } else if(c=='\e'){
             IFWIN(
                 ({
-
+                    if((c=*format++)=='['){
+                        uint16 colorUnix=0;
+                        for(int8 i=0; i<6 && c!=0; i++){
+                            c=*format++;
+                            switch (c){
+                                case '0': case '1': case '2': case '3': case '4':
+                                case '5': case '6': case '7': case '8': case '9':
+                                    colorUnix=colorUnix*10+c-'0';
+                                    break;
+                                case 'm':
+                                    DWORD colorWin=unixColorToWin(colorUnix);
+                                    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+                                    SetConsoleTextAttribute(hConsole, colorWin);
+                                    c=*format++;
+                                    goto iteration_start;
+                                default:
+                                    goto iteration_start;
+                            }
+                        }
+                    }
                 }),
                 putc(c,stdout);
-            )
+            );
         } else {
             putc(c,stdout);
         }
