@@ -46,7 +46,7 @@ typedef enum{
 ktDescriptorsState initState=NotInitialized;
 
 void ktDescriptors_beginInit(){
-    printf("\e[94mtype descriptors initializing...\n");
+    kprintf("\e[94mtype descriptors initializing...\n");
     __ktDescriptors=Autoarr_create(ktDescriptor, 256, 256);
     if(__ktDescriptors==NULL) throw(ERR_NULLPTR);
 }
@@ -55,7 +55,7 @@ void ktDescriptors_endInit(){
     typeDescriptors=Autoarr_toArray(__ktDescriptors);
     Autoarr_free(__ktDescriptors,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);
-    printf("\e[92minitialized %u type descriptors\n", ktId_last);
+    kprintf("\e[92minitialized %u type descriptors\n", ktId_last);
 }
 
 void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, uint32)){
@@ -71,7 +71,7 @@ void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*t
 
 ktDescriptor ktDescriptor_get(ktId id){
     if(id>ktId_last) {
-        printf("\ntype id: %u\n",id);
+        kprintf("\ntype id: %u\n",id);
         throw("invalid type id");
     }
     return typeDescriptors[id];

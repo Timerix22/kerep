@@ -6,11 +6,11 @@
 
 #define testColor(COLOR) \
     kprint_setColor(kprint_bgBlack | kprint_fg##COLOR);\
-    printf(#COLOR " ");\
+    kprintf(#COLOR " ");\
     kprint_setColor(kprint_bg##COLOR | kprint_fgGray);\
-    printf(#COLOR);\
+    kprintf(#COLOR);\
     kprint_setColor(kprint_bgBlack | kprint_fgBlack);\
-    printf("\n");
+    kprintf("\n");
 
 void test_kprint_colors(){
     /* IFWIN(
@@ -18,15 +18,15 @@ void test_kprint_colors(){
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             for(uint8 col=0; col<255; col++){
                 SetConsoleTextAttribute(hConsole, col);
-                printf("%u ",col);
+                kprintf("%u ",col);
             }
         }),
         ({
             for(uint8 col=0; col<255; col++)
-                printf("\e[%um%u ", col, col);
+                kprintf("\e[%um%u ", col, col);
         })
     ); 
-    printf("\n"); */
+    kprintf("\n"); */
     
     testColor(Black);
     testColor(DarkRed);

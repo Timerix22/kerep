@@ -1,6 +1,5 @@
 #include "../String/StringBuilder.h"
 #include "kprint.h"
-#include "../base/type_system/base_toString.h"
 
 ktId __typeFromFormat(kprint_format f){
     ktId typeId=kprint_format_ktId(f);
@@ -78,7 +77,7 @@ void __kprint(uint8 n, kprint_format* formats, __kprint_value_union* objects){
 #define FOREGROUND_YELLOW FOREGROUND_GREEN | FOREGROUND_RED
 
 DWORD kprint_fgColor_toWin(kprint_fgColor f){ 
-    //printf("fg: %x\n", f);
+    //kprintf("fg: %x\n", f);
     switch(f){
         case kprint_fgBlack: return 0;
         case kprint_fgDarkRed: return FOREGROUND_RED;
@@ -101,7 +100,7 @@ DWORD kprint_fgColor_toWin(kprint_fgColor f){
 }
 
 DWORD kprint_bgColor_toWin(kprint_bgColor f){ 
-    //printf("bg: %x\n", f);
+    //kprintf("bg: %x\n", f);
     switch(f){
         case kprint_bgBlack: return 0;
         case kprint_bgDarkRed: return BACKGROUND_RED;
@@ -140,13 +139,13 @@ void kprint_setColor(kprint_format f){
         uint8 fg=(f&0x0f000000)>>24;
         if(fg<8) fg+=30;
         else fg+=90-8;
-        printf("\e[%um", fg);
+        kprintf("\e[%um", fg);
     }
     if(kprint_format_bgColorChanged(f)){
         uint8 bg=(f&0x00f00000)>>20;
         if(bg<8) bg+=40;
         else bg+=100-8;
-        printf("\e[%um", bg);
+        kprintf("\e[%um", bg);
     }
 }
 #endif
@@ -167,59 +166,3 @@ void kprint_setColor(kprint_format f){
     StringBuilder_append_char(strb, ' ');
     StringBuilder_append_char(strb, ']');
 } */
-
-void kprintf(char* format, ...){
-    va_list vl;
-    va_start(vl, format);
-    char c;
-    while((c=*format++)){
-        if(c=='%'){
-            c=*format++;
-            switch (c) {
-                case 'u':
-                    toString_uint(va_arg(vl, uint64),0,0);
-                    break;
-                case 'i':
-                    toString_int(va_arg(vl, uint64));
-                    break;
-                case 'f':
-                    toString_float(va_arg(vl, float64),0,0);
-                    break;
-               /*  case 'l':
-                    c=*format++;
-                    switch (c) {
-                        case 'u':
-                            toString_uint(va_arg(vl, uint64),0,0);
-                            break;
-                        case 'i':
-                            toString_int(va_arg(vl, uint64));
-                            break;
-                        case 'f':
-                            toString_float(va_arg(vl, float64),0,0);
-                            break;
-                        default:
-                            throw(ERR_FORMAT);
-                    }
-                    break; */
-                case 'p':
-                case 'x':
-                    uint64 px=va_arg(vl, uint64);
-                    toString_hex(&px,sizeof(px),1,0);
-                    break;
-
-                default:
-                    throw(ERR_FORMAT);
-            }
-        } else if(c=='\e'){
-            IFWIN(
-                ({
-
-                }),
-                putc(c,stdout);
-            )
-        } else {
-            putc(c,stdout);
-        }
-    }
-    va_end(vl);
-}

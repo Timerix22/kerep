@@ -1,6 +1,7 @@
 #include "std.h"
 #include "errors.h"
 #include "cptr.h"
+#include "../kprint/kprintf.h"
 
 char* errname(ErrorId err){
     switch(err){
@@ -47,7 +48,7 @@ void Maybe_free(Maybe e){
 }
 
 void printMaybe(Maybe e){
-    if(e.errmsg) printf("%s\n",e.errmsg);
+    if(e.errmsg) kprintf("%s\n",e.errmsg);
     else printuni(e.value);
 }
 

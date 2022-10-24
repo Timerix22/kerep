@@ -3,25 +3,25 @@
 
 
 #define test_alg(ALG, VALUE_SIZE, EXPECTED_FROM_ZERO){\
-    printf("\e[94mrng algorithm: \e[96m" #ALG "\n");\
+    kprintf("\e[94mrng algorithm: \e[96m" #ALG "\n");\
     void* s= ALG##_init(0);\
     uint##VALUE_SIZE r=ALG##_next(s);\
-    printf("\e[97m  next from zero seed:");\
+    kprintf("\e[97m  next from zero seed:");\
     if(r!=EXPECTED_FROM_ZERO){\
-        printf("\e[91m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
+        kprintf("\e[91m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
         throw(ERR_UNEXPECTEDVAL);\
     }\
-    printf("\e[92m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
+    kprintf("\e[92m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
     ALG##_free(s);\
     s= ALG##_initFromTime();\
     r=ALG##_next(s);\
     ALG##_free(s);\
-    printf("\e[97m  next from time seed:\e[92m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
+    kprintf("\e[97m  next from time seed:\e[92m " IFWIN("%llu\n","%lu\n"), (uint64)r);\
 }
 
 void test_rng_algorithms(){
     optime("test_rng_algorithms",1,({
-        printf("\e[96m--------[test_rng_algorithms]---------\n");  
+        kprintf("\e[96m--------[test_rng_algorithms]---------\n");  
         // for ALG32      
             // xoroshiro64
         test_alg(xoroshiro64star, 32, 932574677ULL)

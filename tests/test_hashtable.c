@@ -2,7 +2,7 @@
 #include "../src/Hashtable/Hashtable.h"
 
 void print_hashtable(Hashtable* ht){
-    printf("\e[94mHashtable: "
+    kprintf("\e[94mHashtable: "
         IFWIN("%llu", "%lu")
         "\n  hein: %u\n"
         "  height: %u\n"
@@ -14,7 +14,7 @@ void print_hashtable(Hashtable* ht){
 }
 
 void printrowgraph(Hashtable* ht){
-    printf("\e[94mrow length graph:\n");
+    kprintf("\e[94mrow length graph:\n");
     uint16 lgs_l=1000;
     uint32 lgs[lgs_l];
      for(uint32 i=0; i<lgs_l; i++)
@@ -29,7 +29,7 @@ void printrowgraph(Hashtable* ht){
             char* str0=char_multiply(' ',i>=100?0:(i>=10?1:2));
             char* str1=char_multiply(' ',lgs[i]>=100?0:(lgs[i]>=10?1:2));
             char* str2=char_multiply('#',lgs[i]/100);
-            printf("\e[94m  length: \e[96m%u %s \e[94mfrequency: \e[96m%u %s \e[90m%s\n",i,str0,lgs[i],str1,str2);
+            kprintf("\e[94m  length: \e[96m%u %s \e[94mfrequency: \e[96m%u %s \e[90m%s\n",i,str0,lgs[i],str1,str2);
             free(str0);
             free(str1);
             free(str2);
@@ -63,15 +63,15 @@ Unitype gett(Hashtable* ht){
 
 void test_hashtable(){
     optime("test_hashtable",1,({
-        printf("\e[96m-----------[test_hashtable]-----------\n");
+        kprintf("\e[96m-----------[test_hashtable]-----------\n");
         Hashtable* ht=Hashtable_create();
-        printf("\e[92mhashtable created\n");
+        kprintf("\e[92mhashtable created\n");
         print_hashtable(ht);
         optime("fill",1,fill(ht));
         optime("get",1,gett(ht));
         printrowgraph(ht);
         print_hashtable(ht);
         Hashtable_free(ht);
-        printf("\e[92mhashtable freed\n");
+        kprintf("\e[92mhashtable freed\n");
     }));
 }

@@ -17,7 +17,7 @@ void test_kprint_colors();
 void test_autoarrVsVector();
 void test_rng_algorithms();
 
-#define PRINT_SIZEOF(T) printf("\e[94m" #T " size: \e[96m" IFWIN("%llu", "%lu") "\n", sizeof(T))
+#define PRINT_SIZEOF(T) kprintf("\e[94m" #T " size: \e[96m" IFWIN("%llu", "%lu") "\n", sizeof(T))
 
 #if __cplusplus
 }

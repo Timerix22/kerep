@@ -36,7 +36,7 @@ void printMaybe(Maybe e);
 
 #define __RETURN_EXCEPTION(ERRMSG) return (Maybe){.errmsg=ERRMSG, .value=UniNull}
 
-#define __EXIT(ERRMSG) ({ printf("\e[91m%s\e[0m \n", ERRMSG); free(ERRMSG); exit(128); })
+#define __EXIT(ERRMSG) ({ kprintf("\e[91m%s\e[0m \n", ERRMSG); free(ERRMSG); exit(128); })
 
 char* __doNothing(char* a);
 char* __unknownErr( );

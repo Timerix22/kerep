@@ -1,5 +1,5 @@
 #include "base_toString.h"
-#include "../cptr.h"
+#include "../base.h"
 #include "../../kprint/kprint_format.h"
 
 char* __toString_char(void* c, uint32 fmt) {
@@ -133,7 +133,7 @@ char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
         case kprint_fmtHex:\
             return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
         default:\
-            printf("\n%u\n", kprint_format_dataFormat(f));\
+            kprintf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\
@@ -153,7 +153,7 @@ __toString_int_def(64)
         case kprint_fmtHex:\
             return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
         default:\
-            printf("\n%u\n", kprint_format_dataFormat(f));\
+            kprintf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\
@@ -173,7 +173,7 @@ __toString_uint_def(64)
         case kprint_fmtHex:\
             return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
         default:\
-            printf("\n%u\n", kprint_format_dataFormat(f));\
+            kprintf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\

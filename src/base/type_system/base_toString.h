@@ -28,8 +28,8 @@ char* __toString_float32(void* n, uint32 fmt);
 char* __toString_float64(void* n, uint32 fmt);
 
 // universal functions
-char* toString_bin(char* bytes, uint32 size, bool withPrefix);
-char* toString_hex(char* bytes, uint32 size, bool withPrefix, bool uppercase);
+char* toString_bin(void* bytes, uint32 size, bool withPrefix);
+char* toString_hex(void* bytes, uint32 size, bool withPrefix, bool uppercase);
 
 #if __cplusplus
 }

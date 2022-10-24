@@ -24,7 +24,7 @@ typedef uint64_t uint64;
 typedef float float32;
 typedef double float64;
 
-#define dbg(N) printf("\e[95m%d\n",N)
+#define dbg(N) kprintf("\e[95m%d\n",N)
 
 #ifdef _MSC_VER
     #pragma comment(lib, "mincore_downlevel.lib") // Support OS older than SDK

@@ -10,5 +10,5 @@ EXPORT void CALL test_marshalling(char* text, KVPair** kptr){
 }
 
 EXPORT void CALL pinvoke_print(char* msg) {
-    printf("printed from unmanaged code: %s\n", msg);
+    kprintf("printed from unmanaged code: %s\n", msg);
 }

@@ -24,7 +24,7 @@ void ____Autoarr_free_KVPair_(void* ar){
 }
 
 void printkvp(KVPair p){
-    printf("{\"%s\", ",p.key);
+    kprintf("{\"%s\", ",p.key);
     printuni(p.value);
-    printf("}");
+    kprintf("}");
 }

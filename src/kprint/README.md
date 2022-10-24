@@ -1,3 +1,6 @@
+# kprintf
+It is just my variant of printf.
+
 # kprint
 I don't really like printf function (and its variants), so i made safer and more convinient replacement.
 
