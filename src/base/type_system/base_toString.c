@@ -9,6 +9,10 @@ char* __toString_char(void* c, uint32 fmt) {
     return cc;
 }
 
+char* __toString_charPtr(void* c, uint32 fmt){
+    return cptr_copy(*(char**)c);
+}
+
 char* __toString_bool(void* c, uint32 fmt) {
     static const char _strbool[4][6]={ "false", "true\0", "False", "True\0" };
     uint8 strind=*(bool*)c==1 + kprint_format_uppercase(fmt)*2;
@@ -51,24 +55,25 @@ char* toString_uint(uint64 n, bool withPostfix, bool uppercase){
 }
 
 char* toString_float(float64 n, bool withPostfix, bool uppercase){
-    int64 d=n;
-    float64 r=n-d;
-    char* strint=toString_int(d);
-    char strfract[32];
-    uint8 i=0;
-    strfract[i++]='.';
-    while(r!=0){
-        r*=10.0;
-        char fc=r;
-        strfract[i++]=fc;
-        r-=fc;
-    }
-    if(withPostfix)
-        strfract[i++]= uppercase ? 'F' : 'f';
-    strfract[i]=0;
-    char* str=cptr_concat(strint, strfract);
-    free(strint);
-    return str;
+    // int64 d=n;
+    // float64 r=n-d;
+    // char* strint=toString_int(d);
+    // char strfract[32];
+    // uint8 i=0;
+    // strfract[i++]='.';
+    // while(r!=0){
+    //     r*=10.0;
+    //     char fc=r;
+    //     strfract[i++]=fc;
+    //     r-=fc;
+    // }
+    // if(withPostfix)
+    //     strfract[i++]= uppercase ? 'F' : 'f';
+    // strfract[i]=0;
+    // char* str==cptr_concat(strint, strfract);
+    // free(strint);
+    // return str;
+    return cptr_copy("<float>");
 }
 
 char* toString_bin(char* bytes, uint32 size, bool withPrefix){

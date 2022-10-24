@@ -8,6 +8,7 @@ extern "C" {
 
 // functions for base types
 char* __toString_char(void* c, uint32 fmt);
+char* __toString_charPtr(void* c, uint32 fmt);
 char* __toString_bool(void* c, uint32 fmt);
 
 char* toString_int(int64 n);

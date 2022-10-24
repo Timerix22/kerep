@@ -9,8 +9,8 @@ void test_all(){
     test_hash_functions();
     test_hashtable();
     test_dtsod();
-    test_kprint_colors();
     test_rng_algorithms();
+    test_kprint_colors();
     printf("\e[96m--------------------------------------\e[0m\n");
 }
 int main(){
@@ -20,8 +20,8 @@ int main(){
     ktDescriptors_endInit();
     printf("\e[97mkerep tests are starting!\n");
     // optime("test_all",1,test_all());
-    // test_kprint_colors();
     test_rng_algorithms();
+    test_kprint_colors();
     ktDescriptors_free();
     printf("\e[0m\n");
     return 0;

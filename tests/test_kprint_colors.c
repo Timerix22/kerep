@@ -45,4 +45,6 @@ void test_kprint_colors(){
     testColor(Cyan);
     testColor(White);
     kprint_setColor(kprint_bgBlack | kprint_fgGray);
+
+    kprint(kprint_fmtInt | kprint_fgCyan, 8888, kprint_fmtString | kprint_fgYellow, "  ooo  ", kprint_fmtFloat | kprint_bgDarkGreen | kprint_fgRed, 4.01, kprint_fmtString | kprint_fgWhite, "\ngg\n");
 }

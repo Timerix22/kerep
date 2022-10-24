@@ -52,7 +52,7 @@ void memcopy(void* from, void* to, uint32 size){
     if(from==NULL || to==NULL)
         throw(ERR_NULLPTR);
     for(uint32 i=0; i<size; i++)
-        ((char*)to)[i]=*(char*)from+i;
+        ((char*)to)[i]=((char*)from)[i];
 }
 
 char* __cptr_concat(uint16 n, ...){

@@ -71,7 +71,7 @@ void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*t
 
 ktDescriptor ktDescriptor_get(ktId id){
     if(id>ktId_last) {
-        printf("\n%u\n",id);
+        printf("\ntype id: %u\n",id);
         throw("invalid type id");
     }
     return typeDescriptors[id];

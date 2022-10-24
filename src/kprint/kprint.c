@@ -23,7 +23,7 @@ ktId __typeFromFormat(kprint_format f){
     }
 }
 
-Maybe __next_toString(kprint_format f, void* object){
+Maybe __next_toString(kprint_format f, __kprint_value_union* object){
     // detecting type
     ktId typeId=__typeFromFormat(f);
     if(typeId==-1)
@@ -34,19 +34,22 @@ Maybe __next_toString(kprint_format f, void* object){
     return SUCCESS(UniHeap(ktId_CharPtr, typeDesc.toString(object, f)));
 }
 
-Maybe __ksprint(uint8 n, kprint_format* formats, void** objects){
+Maybe __ksprint(uint8 n, kprint_format* formats, __kprint_value_union* objects){
+    n/=2;
     StringBuilder* strb=StringBuilder_create();
     for(uint8 i=0; i<n; i++){
-        try(__next_toString(formats[i], objects[i]),mStr,;);
+        try(__next_toString(formats[i], &objects[i]),mStr,;);
         StringBuilder_append_cptr(strb, mStr.value.VoidPtr);
+        Unitype_free(mStr.value);
     }
     char* rezult=StringBuilder_build(strb).ptr;
     return SUCCESS(UniHeap(ktId_CharPtr, rezult));
 }
 
-Maybe __kfprint(FILE* file, uint8 n, kprint_format* formats, void** objects){
+Maybe __kfprint(FILE* file, uint8 n, kprint_format* formats, __kprint_value_union* objects){
+    n/=2;
     for(uint8 i=0; i<n; i++){
-        try(__next_toString(formats[i], objects[i]),maybeStr,;);
+        try(__next_toString(formats[i], &objects[i]),maybeStr,;);
         if(fputs(maybeStr.value.VoidPtr, file)==EOF)
             safethrow("can't write string to file", Unitype_free(maybeStr.value));
         Unitype_free(maybeStr.value);
@@ -55,11 +58,12 @@ Maybe __kfprint(FILE* file, uint8 n, kprint_format* formats, void** objects){
     return MaybeNull;
 }
 
-void __kprint(uint8 n, kprint_format* formats, void** objects){
+void __kprint(uint8 n, kprint_format* formats, __kprint_value_union* objects){
+    n/=2;
     for(uint8 i=0; i<n; i++){
         kprint_format fmt=formats[i];
         kprint_setColor(fmt);
-        tryLast(__next_toString(fmt, objects[i]),maybeStr);
+        tryLast(__next_toString(fmt, &objects[i]),maybeStr);
         if(fputs(maybeStr.value.VoidPtr, stdout)==EOF)\
             throw("can't write string to stdout");
             //, Unitype_free(maybeStr.value)
