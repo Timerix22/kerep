@@ -76,7 +76,8 @@ char* toString_float(float64 n, bool withPostfix, bool uppercase){
     return cptr_copy("<float>");
 }
 
-char* toString_bin(char* bytes, uint32 size, bool withPrefix){
+char* toString_bin(void* _bytes, uint32 size, bool withPrefix){
+    char* bytes=_bytes;
     char* str=malloc(size*8 + (withPrefix?2:0) +1);
     uint32 cn=0;
     if(withPrefix){
@@ -104,7 +105,8 @@ char _4bitsHex(uint8 u, bool uppercase){
     }
 }
 
-char* toString_hex(char* bytes, uint32 size, bool withPrefix, bool uppercase){
+char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
+    char* bytes=_bytes;
     char* str=malloc(size*2 + (withPrefix?2:0) + 1);
     uint32 cn=0;
     if(withPrefix){

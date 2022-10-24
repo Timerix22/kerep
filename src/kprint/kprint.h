@@ -65,6 +65,9 @@ Maybe __kfprint(FILE* fd, uint8 n, kprint_format* formats, __kprint_value_union*
 void __kprint(uint8 n, kprint_format* formats, __kprint_value_union* objects);
 #define kprint(ARGS...) __kprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
 
+// cross-platform printf analog
+void kprintf(char* format, ...);
+
 // can take (bgColor | fgColor) 
 void kprint_setColor(kprint_format f);
 

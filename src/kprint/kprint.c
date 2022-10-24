@@ -1,5 +1,6 @@
 #include "../String/StringBuilder.h"
 #include "kprint.h"
+#include "../base/type_system/base_toString.h"
 
 ktId __typeFromFormat(kprint_format f){
     ktId typeId=kprint_format_ktId(f);
@@ -166,3 +167,59 @@ void kprint_setColor(kprint_format f){
     StringBuilder_append_char(strb, ' ');
     StringBuilder_append_char(strb, ']');
 } */
+
+void kprintf(char* format, ...){
+    va_list vl;
+    va_start(vl, format);
+    char c;
+    while((c=*format++)){
+        if(c=='%'){
+            c=*format++;
+            switch (c) {
+                case 'u':
+                    toString_uint(va_arg(vl, uint64),0,0);
+                    break;
+                case 'i':
+                    toString_int(va_arg(vl, uint64));
+                    break;
+                case 'f':
+                    toString_float(va_arg(vl, float64),0,0);
+                    break;
+               /*  case 'l':
+                    c=*format++;
+                    switch (c) {
+                        case 'u':
+                            toString_uint(va_arg(vl, uint64),0,0);
+                            break;
+                        case 'i':
+                            toString_int(va_arg(vl, uint64));
+                            break;
+                        case 'f':
+                            toString_float(va_arg(vl, float64),0,0);
+                            break;
+                        default:
+                            throw(ERR_FORMAT);
+                    }
+                    break; */
+                case 'p':
+                case 'x':
+                    uint64 px=va_arg(vl, uint64);
+                    toString_hex(&px,sizeof(px),1,0);
+                    break;
+
+                default:
+                    throw(ERR_FORMAT);
+            }
+        } else if(c=='\e'){
+            IFWIN(
+                ({
+
+                }),
+                putc(c,stdout);
+            )
+        } else {
+            putc(c,stdout);
+        }
+    }
+    va_end(vl);
+}

@@ -13,7 +13,7 @@
     printf("\n");
 
 void test_kprint_colors(){
-    IFWIN(
+    /* IFWIN(
         ({
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             for(uint8 col=0; col<255; col++){
@@ -26,7 +26,7 @@ void test_kprint_colors(){
                 printf("\e[%um%u ", col, col);
         })
     ); 
-    printf("\n");
+    printf("\n"); */
     
     testColor(Black);
     testColor(DarkRed);
