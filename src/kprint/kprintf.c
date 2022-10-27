@@ -5,7 +5,7 @@
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
 
-DWORD unixColorToWin(uint8 c){
+WORD unixColorToWin(uint8 c){
     switch(c){
         //foreground
         case 30: return 0;
@@ -49,12 +49,11 @@ DWORD unixColorToWin(uint8 c){
 void kprintf(const char* format, ...){
     va_list vl;
     va_start(vl, format);
-    char c;
-    while((c=*format++)){
-        iteration_start:
+    uint32 i=0;
+    for(char c=format[i++]; c!=0; c=format[i++]){
         if(c=='%'){
             char* argstr=NULL;
-            c=*format++;
+            c=format[i++];
             format_escape_seq:
             switch (c) {
                 case 'u':
@@ -67,8 +66,9 @@ void kprintf(const char* format, ...){
                     argstr=toString_float(va_arg(vl, float64),0,0);
                     break;
                case 'l':
-                    c=*format++;
-                    goto format_escape_seq;
+                    if((c=format[i++]))
+                        goto format_escape_seq;
+                    break;
                     // switch (c) {
                     //     case 'u':
                     //         argstr=toString_uint(va_arg(vl, uint64),0,0);
@@ -89,7 +89,11 @@ void kprintf(const char* format, ...){
                     argstr=toString_hex(&px,sizeof(px),1,0);
                     break;
                 case 's':
-                    fputs(va_arg(vl,char*), stdout);
+                    char* cptr=va_arg(vl,char*);
+                    if(!cptr)
+                        cptr="<nullstr>";
+                    if(*cptr)
+                        fputs(cptr, stdout);
                     break;
                 case 'c':
                     argstr=malloc(2);
@@ -106,23 +110,22 @@ void kprintf(const char* format, ...){
         } else if(c=='\e'){
             IFWIN(
                 ({
-                    if((c=*format++)=='['){
-                        uint16 colorUnix=0;
-                        for(int8 i=0; i<6 && c!=0; i++){
-                            c=*format++;
+                    if((c=format[i++])=='['){
+                        uint8 colorUnix=0;
+                        for(int8 n=0; n<6 && c!=0; n++){
+                            c=format[i++];
                             switch (c){
                                 case '0': case '1': case '2': case '3': case '4':
                                 case '5': case '6': case '7': case '8': case '9':
                                     colorUnix=colorUnix*10+c-'0';
                                     break;
                                 case 'm':
-                                    DWORD colorWin=unixColorToWin(colorUnix);
+                                    WORD colorWin=unixColorToWin(colorUnix);
                                     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
                                     SetConsoleTextAttribute(hConsole, colorWin);
-                                    c=*format++;
-                                    goto iteration_start;
+                                    goto end_iteration;
                                 default:
-                                    goto iteration_start;
+                                    goto end_iteration;
                             }
                         }
                     }
@@ -132,6 +135,9 @@ void kprintf(const char* format, ...){
         } else {
             putc(c,stdout);
         }
+        #if defined(_WIN64) || defined(_WIN32)
+        end_iteration:
+        #endif
     }
     va_end(vl);
 }
