@@ -59,7 +59,7 @@ void kprintf(const char* format, ...){
                 case 'u':
                     argstr=toString_uint(va_arg(vl, uint64),0,0);
                     break;
-                case 'i':
+                case 'i': case 'd':
                     argstr=toString_int(va_arg(vl, uint64));
                     break;
                 case 'f':
@@ -101,6 +101,10 @@ void kprintf(const char* format, ...){
                     argstr[1]=0;
                     break;
                 default:
+                    putc('\n',stdout);
+                    putc('<',stdout);
+                    putc(c,stdout);
+                    putc('>',stdout);
                     throw(ERR_FORMAT);
             }
             if(argstr){

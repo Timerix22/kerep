@@ -85,7 +85,7 @@ char* toString_bin(void* _bytes, uint32 size, bool withPrefix){
         str[cn++]='b';
     }
     for(uint32 bn=0; bn<size; bn++){
-        char byte=bytes[bn];
+        unsigned char byte=bytes[bn];
         for(uint8 i=0; i<8; i++)
             str[cn++]='0' + (byte & (char)128>>i);
     }
@@ -100,8 +100,11 @@ char _4bitsHex(uint8 u, bool uppercase){
             return '0'+u;
         case 0xA: case 0xB: case 0xC: 
         case 0xD: case 0xE: case 0xF:
-            return (uppercase ? 'A'-10 : 'a'-10) + u;
-        default: return 219;
+            return (uppercase ? 'A' : 'a') + u -10;
+        default: 
+            dbg(u);
+            throw("incorrect number");
+            return 219;
     }
 }
 
@@ -114,7 +117,7 @@ char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
         str[cn++]='x';
     }
     for(uint32 bn=0; bn<size; bn++){
-        char byte=bytes[bn];
+        unsigned char byte=bytes[bn];
         str[cn++]=_4bitsHex(byte%16, uppercase);
         str[cn++]=_4bitsHex(byte/16, uppercase);
     }
