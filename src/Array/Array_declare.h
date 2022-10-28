@@ -16,13 +16,13 @@ typedef struct Array_##type{\
 \
 static inline Array_##type Array_##type##_allocValues(uint32 length){\
     return (Array_##type) {\
-        .values=malloc(sizeof(type)*length),\
+        .values=(type##*)malloc(sizeof(type)*length),\
         .length=length,\
         .allocatedOnHeap=true\
     };\
 }\
 \
-static inline Array_##type Array_##type##_fromBuffer(buffer, bufferLength, allocatedOnHeap){\
+static inline Array_##type Array_##type##_fromBuffer(type##* buffer, uint32 bufferLength, bool allocatedOnHeap){\
     return (Array_##type) {\
         .values=buffer,\
         .length=bufferLength,\
