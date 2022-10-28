@@ -56,8 +56,8 @@ void memcopy(void* from, void* to, uint32 size){
 }
 
 char* __cptr_concat(uint16 n, ...){
-    char** strs=(char**)malloc(n*8);
-    uint32* lengths=malloc(n*4);
+    char** strs=(char**)malloc(n*sizeof(char*));
+    uint32* lengths=malloc(n*sizeof(uint32));
     uint32 totalLength=0;
 
     // reading args from va_list
@@ -83,5 +83,7 @@ char* __cptr_concat(uint16 n, ...){
         totality+=lengths[k];
     }
     
+    free(strs);
+    free(lengths);
     return output;
 }
