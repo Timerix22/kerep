@@ -42,31 +42,31 @@ void ktDescriptors_initKerepTypes(){
 
 
     // base type arrays
-    kt_register(Array_char,    ktId_ArrayChar,    Array_char_freeValues, NULL);
-    kt_register(Array_bool,    ktId_ArrayBool,    Array_bool_freeValues, NULL);
-    kt_register(Array_float32, ktId_ArrayFloat32, Array_float32_freeValues, NULL);
-    kt_register(Array_float64, ktId_ArrayFloat64, Array_float64_freeValues, NULL);
-    kt_register(Array_int8,    ktId_ArrayInt8,    Array_int8_freeValues, NULL);
-    kt_register(Array_uint8,   ktId_ArrayUInt8,   Array_uint8_freeValues, NULL);
-    kt_register(Array_int16,   ktId_ArrayInt16,   Array_int16_freeValues, NULL);
-    kt_register(Array_uint16,  ktId_ArrayUInt16,  Array_uint16_freeValues, NULL);
-    kt_register(Array_int32,   ktId_ArrayInt32,   Array_int32_freeValues, NULL);
-    kt_register(Array_uint32,  ktId_ArrayUInt32,  Array_uint32_freeValues, NULL);
-    kt_register(Array_int64,   ktId_ArrayInt64,   Array_int64_freeValues, NULL);
-    kt_register(Array_uint64,  ktId_ArrayUInt64,  Array_uint64_freeValues, NULL);
+    kt_register(Array_char,    ktId_ArrayChar,    (freeMembers_t)Array_char_freeValues, NULL);
+    kt_register(Array_bool,    ktId_ArrayBool,    (freeMembers_t)Array_bool_freeValues, NULL);
+    kt_register(Array_float32, ktId_ArrayFloat32, (freeMembers_t)Array_float32_freeValues, NULL);
+    kt_register(Array_float64, ktId_ArrayFloat64, (freeMembers_t)Array_float64_freeValues, NULL);
+    kt_register(Array_int8,    ktId_ArrayInt8,    (freeMembers_t)Array_int8_freeValues, NULL);
+    kt_register(Array_uint8,   ktId_ArrayUInt8,   (freeMembers_t)Array_uint8_freeValues, NULL);
+    kt_register(Array_int16,   ktId_ArrayInt16,   (freeMembers_t)Array_int16_freeValues, NULL);
+    kt_register(Array_uint16,  ktId_ArrayUInt16,  (freeMembers_t)Array_uint16_freeValues, NULL);
+    kt_register(Array_int32,   ktId_ArrayInt32,   (freeMembers_t)Array_int32_freeValues, NULL);
+    kt_register(Array_uint32,  ktId_ArrayUInt32,  (freeMembers_t)Array_uint32_freeValues, NULL);
+    kt_register(Array_int64,   ktId_ArrayInt64,   (freeMembers_t)Array_int64_freeValues, NULL);
+    kt_register(Array_uint64,  ktId_ArrayUInt64,  (freeMembers_t)Array_uint64_freeValues, NULL);
     // base type array pointers
-    kt_register(Array_char*,    ktId_ArrayCharPtr,    Array_char_freeValues, NULL);
-    kt_register(Array_bool*,    ktId_ArrayBoolPtr,    Array_bool_freeValues, NULL);
-    kt_register(Array_float32*, ktId_ArrayFloat32Ptr, Array_float32_freeValues, NULL);
-    kt_register(Array_float64*, ktId_ArrayFloat64Ptr, Array_float64_freeValues, NULL);
-    kt_register(Array_int8*,    ktId_ArrayInt8Ptr,    Array_int8_freeValues, NULL);
-    kt_register(Array_uint8*,   ktId_ArrayUInt8Ptr,   Array_uint8_freeValues, NULL);
-    kt_register(Array_int16*,   ktId_ArrayInt16Ptr,   Array_int16_freeValues, NULL);
-    kt_register(Array_uint16*,  ktId_ArrayUInt16Ptr,  Array_uint16_freeValues, NULL);
-    kt_register(Array_int32*,   ktId_ArrayInt32Ptr,   Array_int32_freeValues, NULL);
-    kt_register(Array_uint32*,  ktId_ArrayUInt32Ptr,  Array_uint32_freeValues, NULL);
-    kt_register(Array_int64*,   ktId_ArrayInt64Ptr,   Array_int64_freeValues, NULL);
-    kt_register(Array_uint64*,  ktId_ArrayUInt64Ptr,  Array_uint64_freeValues, NULL);
+    kt_register(Array_char*,    ktId_ArrayCharPtr,    (freeMembers_t)Array_char_freeValues, NULL);
+    kt_register(Array_bool*,    ktId_ArrayBoolPtr,    (freeMembers_t)Array_bool_freeValues, NULL);
+    kt_register(Array_float32*, ktId_ArrayFloat32Ptr, (freeMembers_t)Array_float32_freeValues, NULL);
+    kt_register(Array_float64*, ktId_ArrayFloat64Ptr, (freeMembers_t)Array_float64_freeValues, NULL);
+    kt_register(Array_int8*,    ktId_ArrayInt8Ptr,    (freeMembers_t)Array_int8_freeValues, NULL);
+    kt_register(Array_uint8*,   ktId_ArrayUInt8Ptr,   (freeMembers_t)Array_uint8_freeValues, NULL);
+    kt_register(Array_int16*,   ktId_ArrayInt16Ptr,   (freeMembers_t)Array_int16_freeValues, NULL);
+    kt_register(Array_uint16*,  ktId_ArrayUInt16Ptr,  (freeMembers_t)Array_uint16_freeValues, NULL);
+    kt_register(Array_int32*,   ktId_ArrayInt32Ptr,   (freeMembers_t)Array_int32_freeValues, NULL);
+    kt_register(Array_uint32*,  ktId_ArrayUInt32Ptr,  (freeMembers_t)Array_uint32_freeValues, NULL);
+    kt_register(Array_int64*,   ktId_ArrayInt64Ptr,   (freeMembers_t)Array_int64_freeValues, NULL);
+    kt_register(Array_uint64*,  ktId_ArrayUInt64Ptr,  (freeMembers_t)Array_uint64_freeValues, NULL);
 
     // base type autoarrs
     kt_register(Autoarr_char,    ktId_AutoarrChar,    ____Autoarr_free_char, NULL);
