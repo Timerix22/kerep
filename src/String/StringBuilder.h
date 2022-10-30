@@ -8,14 +8,19 @@ extern "C" {
 #include "string.h"
 
 Autoarr_declare(string)
+ktId_declare(AutoarrString);
+ktId_declare(AutoarrStringPtr);
 
 typedef struct StringBuilder{
 	Autoarr(string)* compl_bufs;
 	Autoarr(int8)* curr_buf;
 } StringBuilder;
+ktId_declare(StringBuilder);
+ktId_declare(StringBuilderPtr);
 
 StringBuilder* StringBuilder_create(void);
 void StringBuilder_free(StringBuilder* b);
+void __StringBuilder_free(void* b);
 // Joins all strings from compl_bufs.
 // Returns zero-terminated string.
 // No need to call string_extract()!

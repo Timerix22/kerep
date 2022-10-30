@@ -2,7 +2,7 @@
 #include "../src/Autoarr/Autoarr.h"
 
 static void printautoarr(Autoarr(uint16)* ar){
-    printf("\e[94mAutoarr(uint16): "
+    kprintf("\e[94mAutoarr(uint16): "
         IFWIN("%llu", "%lu")
         "\n  max_blocks_count: %u\n"
         "  blocks_count: %u\n"
@@ -29,25 +29,25 @@ static void resetar(Autoarr(uint16)* ar){
 }
 
 static void printallval(Autoarr(uint16)* ar){
-    printf("\e[90m");
+    kprintf("\e[90m");
     for (uint16 i=0;i<Autoarr_length(ar);i++)
-        printf("%u ",Autoarr_get(ar,i));
-    printf("\n");
+        kprintf("%u ",Autoarr_get(ar,i));
+    kprintf("\n");
 }
 
 void test_autoarr(){
     optime("test_autoarr",1,({
-        printf("\e[96m------------[test_autoarr]------------\n");
+        kprintf("\e[96m------------[test_autoarr]------------\n");
         Autoarr(uint16)* ar=Autoarr_create(uint16,10,16);
-        printf("\e[92mautoarr created\n");
+        kprintf("\e[92mautoarr created\n");
         fillar(ar);
-        printf("\e[92mautoarr filled up\n");
+        kprintf("\e[92mautoarr filled up\n");
         printautoarr(ar);
         printallval(ar);
         resetar(ar);
-        printf("\e[92mautoarr values reset\n");
+        kprintf("\e[92mautoarr values reset\n");
         printallval(ar);
-        Autoarr_free(ar);
-        printf("\e[92mautoarr deleted\n");
+        Autoarr_free(ar, true);
+        kprintf("\e[92mautoarr deleted\n");
     }));
 }

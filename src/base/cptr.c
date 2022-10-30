@@ -34,3 +34,56 @@ char* char_multiply(char c, uint32 n){
         rez[n]=c;
     return rez;
 }
+
+bool cptr_startsWith(char* ptr, char* fragment){
+    for(char cs=*ptr, cf=*fragment; cf; cs=*++ptr, cf=*++fragment)
+        if(cs!=cf) return false;
+    return true;
+}
+
+bool cptr_endsWith(char* ptr, char* fragment){
+    ptr+=cptr_length(ptr)-cptr_length(fragment);
+    for(char cs=*ptr, cf=*fragment; cf; cs=*++ptr, cf=*++fragment)
+        if(cs!=cf) return false;
+    return true;
+}
+
+void memcopy(void* from, void* to, uint32 size){
+    if(from==NULL || to==NULL)
+        throw(ERR_NULLPTR);
+    for(uint32 i=0; i<size; i++)
+        ((char*)to)[i]=((char*)from)[i];
+}
+
+char* __cptr_concat(uint16 n, ...){
+    char** strs=(char**)malloc(n*sizeof(char*));
+    uint32* lengths=malloc(n*sizeof(uint32));
+    uint32 totalLength=0;
+
+    // reading args from va_list
+    va_list vl;
+    va_start(vl, n);
+    for(uint16 i=0; i<n; i++){
+        char* str=va_arg(vl,char*);
+        int16 length=cptr_length(str);
+        strs[i]=str;
+        lengths[i]=length;
+        totalLength+=length;
+    }
+    va_end(vl);
+
+    // allocating memory for output value
+    char* totality=malloc(totalLength+1);
+    const char* output=totality;
+    totality[totalLength]=0;
+    
+    // copying content of all strings to rezult
+    for(uint16 k=0; k<n; k++){
+        memcopy(strs[k], totality, lengths[k]);
+        totality+=lengths[k];
+    }
+    
+    free(strs);
+    free(lengths);
+    return output;
+}

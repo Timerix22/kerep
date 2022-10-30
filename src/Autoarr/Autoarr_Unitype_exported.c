@@ -9,7 +9,7 @@ EXPORT void CALL kerep_Autoarr_Unitype_create(uint16 max_blocks_count, uint16 ma
 }
 
 EXPORT void CALL kerep_Autoarr_Unitype_free(Autoarr_Unitype* ar){
-    Autoarr_free_Unitype(ar);
+    Autoarr_free(ar, true);
 }
 
 EXPORT void CALL kerep_Autoarr_Unitype_get(Autoarr_Unitype* ar, uint32 index, Unitype* output){

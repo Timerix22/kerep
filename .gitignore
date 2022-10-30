@@ -5,9 +5,8 @@ obj/
 # user files
 .old*/
 .vs/
-.vscode/
 .vshistory/
 .editorconfig
 *.user
 *.vcxproj.filters
-.config
+current.config

@@ -5,10 +5,11 @@ extern "C" {
 #endif
 
 #include "std.h"
-#include "types.h"
 #include "errors.h"
 #include "cptr.h"
 #include "optime.h"
+#include "type_system/type_system.h"
+#include "../kprint/kprintf.h"
 
 #if __cplusplus
 }

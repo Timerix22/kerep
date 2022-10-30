@@ -1,6 +1,7 @@
 #include "std.h"
 #include "errors.h"
 #include "cptr.h"
+#include "../kprint/kprintf.h"
 
 char* errname(ErrorId err){
     switch(err){
@@ -12,6 +13,8 @@ char* errname(ErrorId err){
         case ERR_NULLPTR: return "ERR_NULLPTR";
         case ERR_ENDOFSTR: return "ERR_ENDOFSTR";
         case ERR_KEYNOTFOUND: return "ERR_KEYNOTFOUND";
+        case ERR_FORMAT: return "ERR_FORMAT";
+        case ERR_UNEXPECTEDVAL: return "ERR_UNEXPECTEDVAL";
         default: return "UNKNOWN_ERROR";
     }
 }
@@ -45,7 +48,7 @@ void Maybe_free(Maybe e){
 }
 
 void printMaybe(Maybe e){
-    if(e.errmsg) printf("%s\n",e.errmsg);
+    if(e.errmsg) kprintf("%s\n",e.errmsg);
     else printuni(e.value);
 }
 

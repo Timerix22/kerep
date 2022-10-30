@@ -5,13 +5,13 @@ extern "C" {
 #endif
 
 #include "std.h"
-#include "types.h"
+#include "type_system/unitype.h"
 
 typedef enum ErrorId {
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, 
     ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR, 
-    ERR_KEYNOTFOUND
+    ERR_KEYNOTFOUND, ERR_FORMAT, ERR_UNEXPECTEDVAL
 } ErrorId;
 
 char* errname(ErrorId err);
@@ -36,7 +36,7 @@ void printMaybe(Maybe e);
 
 #define __RETURN_EXCEPTION(ERRMSG) return (Maybe){.errmsg=ERRMSG, .value=UniNull}
 
-#define __EXIT(ERRMSG) ({ printf("\e[91m%s\e[0m \n", ERRMSG); free(ERRMSG); exit(128); })
+#define __EXIT(ERRMSG) ({ kprintf("\e[91m%s\e[0m \n", ERRMSG); free(ERRMSG); exit(128); })
 
 char* __doNothing(char* a);
 char* __unknownErr( );
@@ -59,12 +59,12 @@ char* __unknownErr( );
         freeMem;\
         _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
         return _rezult;\
-    }else 
+    }
 
 #define tryLast(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
         _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
         __EXIT(_rezult.errmsg);\
-    }else
+    }
     
 #endif
 

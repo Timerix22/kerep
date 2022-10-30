@@ -1,5 +1,8 @@
 #include "string.h"
 
+ktId_define(string);
+ktId_define(stringPtr);
+
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str){
     if(str.length==0) return NULL;

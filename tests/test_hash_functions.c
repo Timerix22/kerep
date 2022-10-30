@@ -9,13 +9,13 @@
 char data[]="iojihiojopijiugbjmoihftytryfdrh";
 
 #define test_hashfunc(hasht, hashf)({\
-    printf("\e[94mfunction: \e[92m" #hashf "\n");\
+    kprintf("\e[94mfunction: \e[92m" #hashf "\n");\
     hasht h=0;\
     optime("speed test", 1, ({\
         for(uint32 i=0; i<SPEED_TESTS; i++)\
             h=hashf(h, data, sizeof(data));\
     }));\
-    /*printf("\e[94mhash of \"\e[90m%s\e[94m\": \e[92m%x\n",data, h);*/\
+    /*kprintf("\e[94mhash of \"\e[90m%s\e[94m\": \e[92m%x\n",data, h);*/\
     Autoarr(hasht)* hashes=Autoarr_create(hasht,512,32768);\
     optime("collision test",1,({\
         uint32 collisions=0;\
@@ -31,15 +31,15 @@ char data[]="iojihiojopijiugbjmoihftytryfdrh";
             if(col) collisions++;\
             else Autoarr_add(hashes,h);\
         }\
-        printf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS);\
+        kprintf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS);\
     }));\
-    Autoarr_free(hashes);\
-    printf("\e[96m--------------------------------------\n");\
+    Autoarr_free(hashes, true);\
+    kprintf("\e[96m--------------------------------------\n");\
 })
 
 void test_hash_functions(){
     optime("test_hash_functions",1,({
-        printf("\e[96m--------[test_hash_functions]---------\n");
+        kprintf("\e[96m--------[test_hash_functions]---------\n");
         test_hashfunc(uint32, hash_crc32);
         test_hashfunc(uint32, hash_sdbm32);
     }));

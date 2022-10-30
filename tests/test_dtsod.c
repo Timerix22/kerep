@@ -15,26 +15,26 @@ const char text[]=
 "h: { };";
 
 void print_dtsod(Hashtable* dtsod){
-    printf("\e[92m");
+    kprintf("\e[92m");
     Hashtable_foreach(dtsod, p,({
         printkvp(p);
-        if(p.value.type==HashtablePtr){
-            printf(": {\n");
+        if(p.value.typeId==ktId_HashtablePtr){
+            kprintf(": {\n");
             Hashtable* sub=p.value.VoidPtr;
             Hashtable_foreach(sub, _p,({
-                printf("    ");
+                kprintf("    ");
                 printkvp(_p);
-                printf("\n");
+                kprintf("\n");
             }));
-            printf("}");
+            kprintf("}");
         }
-        printf("\n");
+        kprintf("\n");
     }));
 }
 
 void test_dtsod(){
     optime(__func__,1,({
-        printf("\e[96m-------------[test_dtsod]-------------\n");
+        kprintf("\e[96m-------------[test_dtsod]-------------\n");
         Hashtable* dtsod;
         char* s;
 
@@ -49,7 +49,7 @@ void test_dtsod(){
                 s=r.value.VoidPtr;
         }));
         DtsodV24_free(dtsod);
-        printf("\e[92m%s",s);
+        kprintf("\e[92m%s",s);
 
         optime("reserialize",10,({
             tryLast(DtsodV24_deserialize(s),r) 
