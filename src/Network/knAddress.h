@@ -26,7 +26,6 @@ typedef struct knIPV4Endpoint {
 
 #define knIPV4Endpoint_create(ADDR, PORT) (knIPV4Endpoint){ADDR, PORT}
 
-
 #if __cplusplus
 }
 #endif

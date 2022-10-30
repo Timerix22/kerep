@@ -13,6 +13,7 @@ extern "C" {
 #include "knAddress.h"
 #include "knPackage.h"
 #include "knSocket.h"
+#include "knChanneledSocket.h"
 
 #if __cplusplus
 }

@@ -6,6 +6,7 @@ extern "C" {
 
 #include "network.h"
 
+
 #if KN_USE_WINSOCK
     #include <winsock2.h>
 #else

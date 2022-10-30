@@ -33,7 +33,7 @@ void test_network(){
         test_knIPV4Address_fromStr(3,3,3,128);
 
         knSocket* s;
-        tryLast(knSocket_open(knSocketType_TCP), maybeS)
+        tryLast(knSocket_open(knSocketProtocol_TCP), maybeS)
             s=maybeS.value.VoidPtr;
         printf("\e[92mTCP socket created\n");
         tryLast(knSocket_close(s);,_);

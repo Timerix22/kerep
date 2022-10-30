@@ -40,7 +40,6 @@ typedef struct knChannel {
     knPackageQueueElem* queueStart;
 } knChannel;
 
-
 #if __cplusplus
 }
 #endif

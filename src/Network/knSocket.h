@@ -9,21 +9,21 @@ extern "C" {
 #include "knPackage.h"
 
 
-typedef enum __attribute__((__packed__)) knSocketType {
-    knSocketType_TCP, knSocketType_UDP 
-} knSocketType;
+typedef enum __attribute__((__packed__)) knSocketProtocol {
+    knSocketProtocol_TCP, knSocketProtocol_UDP, knSocket_Channeled
+} knSocketProtocol;
 
 typedef struct knSocket {
-    knSocketType type;
-    uint16 channelsAmount;
-    knChannel** channels;
+    knSocketProtocol type;
     int64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;
+    // uint16 channelsAmount;
+    // knChannel** channels;
 } knSocket;
 
 ///@return Maybe<knSocket*> new socket
-Maybe knSocket_open(knSocketType sockType);
+Maybe knSocket_open(knSocketProtocol sockType);
 
 ///@return Maybe<void> error or nothing
 Maybe knSocket_close(knSocket* socket);

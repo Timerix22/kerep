@@ -11,7 +11,7 @@ Maybe knIPV4Address_fromStr(char* addrStr){
         c=*addrStr++;
         switch (c){
             case '\0':
-                if(i<3) {
+                if(i<3){
                     errmsg_extra="end of string";
                     goto default_case;
                 }

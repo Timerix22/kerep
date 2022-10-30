@@ -2,7 +2,7 @@
 #include "stdSocketHeaders.h"
 
 
-Maybe knSocket_open(knSocketType sockType){
+Maybe knSocket_open(knSocketProtocol sockType){
     knSocket* newSocket=malloc(sizeof(knSocket));
     newSocket->type=sockType;
     newSocket->channels=NULL;
@@ -13,12 +13,12 @@ Maybe knSocket_open(knSocketType sockType){
         default:
             safethrow("unknown socket type", free(newSocket));
             break;
-        case knSocketType_TCP:
+        case knSocketProtocol_TCP:
             newSocket->socketfd=socket(AF_INET, SOCK_STREAM, 0);
             if(newSocket->socketfd==-1)
                 safethrow("can't create TCP socket", free(newSocket));
             break;
-        case knSocketType_UDP:
+        case knSocketProtocol_UDP:
             newSocket->socketfd=socket(AF_INET, SOCK_DGRAM, 0);
             if(newSocket->socketfd==-1)
                 safethrow("can't create UDP socket", free(newSocket));
