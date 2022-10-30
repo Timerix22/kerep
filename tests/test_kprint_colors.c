@@ -33,7 +33,7 @@ void test_kprint_colors(){
     testColor(DarkGreen);
     testColor(DarkYellow);
     testColor(DarkBlue);
-    testColor(DarkMagneta);
+    testColor(DarkMagenta);
     testColor(DarkCyan);
     testColor(Gray);
     testColor(DarkGray);
@@ -41,7 +41,7 @@ void test_kprint_colors(){
     testColor(Green);
     testColor(Yellow);
     testColor(Blue);
-    testColor(Magneta);
+    testColor(Magenta);
     testColor(Cyan);
     testColor(White);
     kprint_setColor(kprint_bgBlack | kprint_fgGray);
