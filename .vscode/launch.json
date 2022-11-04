@@ -5,12 +5,35 @@
             "name": "(gdb) Debug",
             "type": "cppdbg",
             "request": "launch",
+            "program": "${workspaceFolder}/bin/kerep.com",
+            "preLaunchTask": "build_exec_dbg",
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb-pipe) Debug",
+            "type": "cppdbg",
+            "request": "launch",
             "preLaunchTask": "build_exec_dbg",
             "program": "${workspaceFolder}/bin/kerep.com",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "externalConsole": true,
-            "internalConsoleOptions": "openOnSessionStart",
+            "externalConsole": false,
             "miDebuggerPath": "/usr/bin/gdb",
             "MIMode": "gdb",
             "pipeTransport": {
