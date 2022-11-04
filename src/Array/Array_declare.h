@@ -13,6 +13,7 @@ typedef struct Array_##type{\
     bool allocatedOnHeap;\
 } Array_##type;\
 \
+ktid_declare(Array_##type);\
 \
 static inline Array_##type Array_##type##_allocValues(uint32 length){\
     return (Array_##type) {\

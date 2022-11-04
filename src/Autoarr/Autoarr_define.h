@@ -8,6 +8,8 @@ extern "C" {
 
 #define Autoarr_define(type)\
 \
+ktid_define(Autoarr_##type);\
+\
 void __Autoarr_add_##type(Autoarr_##type* ar, type element){\
     if(!ar->values){\
         ar->values=malloc(ar->max_blocks_count*sizeof(type*));\

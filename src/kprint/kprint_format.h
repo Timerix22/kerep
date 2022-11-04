@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #include "../base/std.h"
-#include "../base/type_system/ktId.h"
+#include "../base/type_system/ktid.h"
 
 typedef enum kprint_dataFormat{
     // 00000000 00000000  00000000 00000000
@@ -41,7 +41,7 @@ typedef uint32 kprint_format;
 #define kprint_format_fgColor(FMT) (kprint_fgColor)(FMT&0x8f000000)
 #define kprint_format_bgColor(FMT) (kprint_bgColor)(FMT&0x40f00000)
 #define kprint_format_dataFormat(FMT) (kprint_dataFormat)(FMT&0x000f0000)
-#define kprint_format_ktId(FMT) (kprint_dataFormat)(FMT&0x0000ffff)
+#define kprint_format_ktid(FMT) (kprint_dataFormat)(FMT&0x0000ffff)
 
 #if __cplusplus
 }

@@ -1,27 +1,16 @@
 #include "Array.h"
 
-ktId_define(ArrayChar);
-ktId_define(ArrayBool);
-ktId_define(ArrayFloat32);
-ktId_define(ArrayFloat64);
-ktId_define(ArrayInt8);
-ktId_define(ArrayUInt8);
-ktId_define(ArrayInt16);
-ktId_define(ArrayUInt16);
-ktId_define(ArrayInt32);
-ktId_define(ArrayUInt32);
-ktId_define(ArrayInt64);
-ktId_define(ArrayUInt64);
+Array_define(char)
+Array_define(bool)
+Array_define(float32)
+Array_define(float64)
+Array_define(int8)
+Array_define(uint8)
+Array_define(int16)
+Array_define(uint16)
+Array_define(int32)
+Array_define(uint32)
+Array_define(int64)
+Array_define(uint64)
 
-ktId_define(ArrayCharPtr);
-ktId_define(ArrayBoolPtr);
-ktId_define(ArrayFloat32Ptr);
-ktId_define(ArrayFloat64Ptr);
-ktId_define(ArrayInt8Ptr);
-ktId_define(ArrayUInt8Ptr);
-ktId_define(ArrayInt16Ptr);
-ktId_define(ArrayUInt16Ptr);
-ktId_define(ArrayInt32Ptr);
-ktId_define(ArrayUInt32Ptr);
-ktId_define(ArrayInt64Ptr);
-ktId_define(ArrayUInt64Ptr);
+Array_define(Unitype)

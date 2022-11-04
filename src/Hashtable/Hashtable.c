@@ -1,7 +1,6 @@
 #include "Hashtable.h"
 
-ktId_define(Hashtable);
-ktId_define(HashtablePtr);
+ktid_define(Hashtable);
 
 // amount of rows
 static const uint16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
@@ -96,7 +95,7 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
-    return u.typeId!=ktId_Null;
+    return u.typeId!=ktid_Null;
 }
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){

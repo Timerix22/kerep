@@ -44,11 +44,11 @@ void test_searchtree(){
         printuni(u);
         ST_push(node,"channel_id", u);
         kprintf(" -> channel_id\n  ");
-        u=UniHeap(ktId_CharPtr, cptr_copy("32.2004"));
+        u=UniHeapPtr(char, cptr_copy("32.2004"));
         printuni(u);
         ST_push(node,"message_id", u);
         kprintf(" -> message_id\n  ");
-        u=UniStack(ktId_CharPtr,"some text UwU");
+        u=UniStackPtr(char,"some text UwU");
         printuni(u);
         ST_push(node,"text", u);
         kprintf(" -> text\n");

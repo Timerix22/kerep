@@ -11,7 +11,8 @@ typedef enum ErrorId {
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, 
     ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR, 
-    ERR_KEYNOTFOUND, ERR_FORMAT, ERR_UNEXPECTEDVAL
+    ERR_KEYNOTFOUND, ERR_FORMAT, ERR_UNEXPECTEDVAL,
+    ERR_IO, ERR_IO_EOF
 } ErrorId;
 
 char* errname(ErrorId err);
@@ -34,7 +35,7 @@ void printMaybe(Maybe e);
 
 #define SUCCESS(REZLT) (Maybe){.errmsg=NULL, .value=REZLT}
 
-#define __RETURN_EXCEPTION(ERRMSG) return (Maybe){.errmsg=ERRMSG, .value=UniNull}
+#define __RETURN_EXCEPTION(ERRMSG) return (Maybe){.value=UniNull, .errmsg=ERRMSG}
 
 #define __EXIT(ERRMSG) ({ kprintf("\e[91m%s\e[0m \n", ERRMSG); free(ERRMSG); exit(128); })
 

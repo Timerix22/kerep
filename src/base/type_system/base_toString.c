@@ -3,14 +3,18 @@
 #include "../../kprint/kprint_format.h"
 
 char* __toString_char(void* c, uint32 fmt) {
-    char* cc=malloc(2); 
-    cc[0]=*(char*)c;
-    cc[1]=0;
-    return cc;
-}
-
-char* __toString_charPtr(void* c, uint32 fmt){
-    return cptr_copy(*(char**)c);
+    //*c=char
+    if(kprint_format_dataFormat(fmt)==kprint_fmtChar){
+        char* cc=malloc(2); 
+        cc[0]=*(char*)c;
+        cc[1]=0;
+        return cc;
+    }
+    // *c=cstring
+    else if(kprint_format_dataFormat(fmt)==kprint_fmtString){
+        return cptr_copy(*(char**)c);
+    }
+    else throw(ERR_FORMAT);
 }
 
 char* __toString_bool(void* c, uint32 fmt) {

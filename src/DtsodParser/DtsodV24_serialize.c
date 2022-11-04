@@ -23,18 +23,18 @@ void __AppendTabs(SerializeSharedData* shared) {
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u);
 #define AppendValue(UNI) __AppendValue(shared, UNI)
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
-    if(u.typeId==ktId_Int64){
+    if(u.typeId==ktid_name(int64)){
         StringBuilder_append_int64(b,u.Int64);
     }
-    else if(u.typeId==ktId_UInt64){
+    else if(u.typeId==ktid_name(uint64)){
         StringBuilder_append_uint64(b,u.UInt64);
         addc('u');
     }
-    else if(u.typeId==ktId_Float64){
+    else if(u.typeId==ktid_name(float64)){
         StringBuilder_append_float64(b,u.Float64);
         addc('f');
     }
-    else if(u.typeId==ktId_CharPtr){
+    else if(u.typeId==ktid_ptrName(char)){
         addc('"');
         char c;
         while((c=*(char*)(u.VoidPtr++))){
@@ -43,13 +43,13 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
         }
         addc('"');
     }
-    else if(u.typeId==ktId_Bool){
+    else if(u.typeId==ktid_name(bool)){
         StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
     }
-    else if(u.typeId==ktId_Null){
+    else if(u.typeId==ktid_Null){
         safethrow("Null isn't supported in DtsodV24",;);
     }
-    else if(u.typeId==ktId_AutoarrUnitypePtr){
+    else if(u.typeId==ktid_ptrName(Autoarr_Unitype)){
         if(Autoarr_length(((Autoarr_Unitype*)(u.VoidPtr)))){
             addc('\n');
             AppendTabs();
@@ -72,7 +72,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             addc(']');
         }
     }
-    else if(u.typeId==ktId_HashtablePtr){
+    else if(u.typeId==ktid_ptrName(Hashtable)){
         // check hashtable is blank
         bool hashtableNotBlank=false;
         Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
@@ -126,5 +126,5 @@ Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder* sb=StringBuilder_create();
     try(__serialize(sb,0,dtsod),__, StringBuilder_free(sb));
     char* str=StringBuilder_build(sb).ptr;
-    return SUCCESS(UniHeap(ktId_CharPtr, str));
+    return SUCCESS(UniHeapPtr(char, str));
 }

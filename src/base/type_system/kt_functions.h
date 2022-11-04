@@ -5,55 +5,43 @@ extern "C" {
 #endif
 
 #include "../std.h"
-#include "ktId.h"
+#include "ktid.h"
 #include "ktDescriptor.h"
 
-extern ktId ktId_last;
+extern ktid ktid_last;
 void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, uint32));
 
-#define kt_register(TYPE, ID_VAR_NAME, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
-    __kt_register(#ID_VAR_NAME, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
-    ID_VAR_NAME=ktId_last;
+#define kt_register(TYPE, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
+    __kt_register(#TYPE, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
+    ktid_##TYPE=ktid_last;\
+    __kt_register(#TYPE "*", sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
+    ktid_##TYPE##_Ptr=ktid_last;
 
 void ktDescriptors_beginInit();
 void ktDescriptors_endInit();
 
 /// @param id id of registered type
-ktDescriptor ktDescriptor_get(ktId id);
+ktDescriptor ktDescriptor_get(ktid id);
 
 // call it to free heap-allocated ktDescriptors array
 void ktDescriptors_free();
 
-ktId_declare(Null);
+extern ktid ktid_Null;
 
-ktId_declare(Char);
-ktId_declare(Bool);
-ktId_declare(Float32);
-ktId_declare(Float64);
-ktId_declare(Int8);
-ktId_declare(UInt8);
-ktId_declare(Int16);
-ktId_declare(UInt16);
-ktId_declare(Int32);
-ktId_declare(UInt32);
-ktId_declare(Int64);
-ktId_declare(UInt64);
+ktid_declare(char);
+ktid_declare(bool);
+ktid_declare(float32);
+ktid_declare(float64);
+ktid_declare(int8);
+ktid_declare(uint8);
+ktid_declare(int16);
+ktid_declare(uint16);
+ktid_declare(int32);
+ktid_declare(uint32);
+ktid_declare(int64);
+ktid_declare(uint64);
 
-ktId_declare(CharPtr);
-ktId_declare(BoolPtr);
-ktId_declare(Float32Ptr);
-ktId_declare(Float64Ptr);
-ktId_declare(Int8Ptr);
-ktId_declare(UInt8Ptr);
-ktId_declare(Int16Ptr);
-ktId_declare(UInt16Ptr);
-ktId_declare(Int32Ptr);
-ktId_declare(UInt32Ptr);
-ktId_declare(Int64Ptr);
-ktId_declare(UInt64Ptr);
-
-ktId_declare(ktDescriptor);
-ktId_declare(ktDescriptorPtr);
+ktid_declare(ktDescriptor);
 
 #if __cplusplus
 }
