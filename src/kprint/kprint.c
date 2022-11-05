@@ -84,7 +84,7 @@ DWORD kprint_fgColor_toWin(kprint_fgColor f){
         case kprint_fgDarkGreen: return FOREGROUND_GREEN;
         case kprint_fgDarkYellow: return FOREGROUND_GREEN | FOREGROUND_RED;
         case kprint_fgDarkBlue: return FOREGROUND_BLUE;
-        case kprint_fgDarkMagneta: return FOREGROUND_RED | FOREGROUND_BLUE;
+        case kprint_fgDarkMagenta: return FOREGROUND_RED | FOREGROUND_BLUE;
         case kprint_fgDarkCyan: return FOREGROUND_BLUE | FOREGROUND_GREEN;
         case kprint_fgGray: return FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
         case kprint_fgDarkGray: return FOREGROUND_INTENSITY;
@@ -92,7 +92,7 @@ DWORD kprint_fgColor_toWin(kprint_fgColor f){
         case kprint_fgGreen: return FOREGROUND_GREEN | FOREGROUND_INTENSITY;
         case kprint_fgYellow: return FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
         case kprint_fgBlue: return FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-        case kprint_fgMagneta: return FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY;
+        case kprint_fgMagenta: return FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY;
         case kprint_fgCyan: return FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
         case kprint_fgWhite: return FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
         default: throw(ERR_FORMAT);
@@ -107,7 +107,7 @@ DWORD kprint_bgColor_toWin(kprint_bgColor f){
         case kprint_bgDarkGreen: return BACKGROUND_GREEN;
         case kprint_bgDarkYellow: return BACKGROUND_GREEN | BACKGROUND_RED;
         case kprint_bgDarkBlue: return BACKGROUND_BLUE;
-        case kprint_bgDarkMagneta: return BACKGROUND_RED | BACKGROUND_BLUE;
+        case kprint_bgDarkMagenta: return BACKGROUND_RED | BACKGROUND_BLUE;
         case kprint_bgDarkCyan: return BACKGROUND_BLUE | BACKGROUND_GREEN;
         case kprint_bgGray: return BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED;
         case kprint_bgDarkGray: return BACKGROUND_INTENSITY;
@@ -115,7 +115,7 @@ DWORD kprint_bgColor_toWin(kprint_bgColor f){
         case kprint_bgGreen: return BACKGROUND_GREEN | BACKGROUND_INTENSITY;
         case kprint_bgYellow: return BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
         case kprint_bgBlue: return BACKGROUND_BLUE | BACKGROUND_INTENSITY;
-        case kprint_bgMagneta: return BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY;
+        case kprint_bgMagenta: return BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_INTENSITY;
         case kprint_bgCyan: return BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
         case kprint_bgWhite: return BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
         default: throw(ERR_FORMAT);
