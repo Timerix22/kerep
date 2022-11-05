@@ -36,3 +36,7 @@ char* __path_concat(uint16 n, char* prev_part, ...){
     free(lengths);
     return output;
 }
+
+char* path_fixSeparators(char* path){
+    
+}
