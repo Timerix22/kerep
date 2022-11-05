@@ -22,6 +22,17 @@ bool cptr_startsWith(char* ptr, char* fragment);
 
 bool cptr_endsWith(char* ptr, char* fragment);
 
+/// @brief search for <fragment> in <ptr>
+/// @return index of first <fragment> inclusion or -1 if not found
+uint32 cptr_indexOf(char* ptr, char* fragment);
+
+static inline bool cptr_contains(char* ptr, char* fragment){
+    // if(cptr_indexOf(ptr, fragment)==-1)
+    //     return false;
+    // return true;
+    return cptr_indexOf(ptr, fragment) +1;
+}
+
 void memcopy(void* from, void* to, uint32 size);
 
 char* __cptr_concat(uint16 n, ...);

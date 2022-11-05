@@ -48,6 +48,19 @@ bool cptr_endsWith(char* ptr, char* fragment){
     return true;
 }
 
+uint32 cptr_indexOf(char* ptr, char* fragment){
+    char sc=*ptr;
+    for(int si=0, fi=0; sc!=0; si++){
+        sc=ptr[si];
+        if(sc==fragment[fi]){
+            fi++;
+            if(fragment[fi]==0)
+                return si-fi+1;
+        }
+    }
+    return -1;
+}
+
 void memcopy(void* from, void* to, uint32 size){
     if(from==NULL || to==NULL)
         throw(ERR_NULLPTR);
