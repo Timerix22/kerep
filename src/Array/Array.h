@@ -1,3 +1,9 @@
+#pragma once
+
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "Array_declare.h"
 #include "Array_define.h"
 
@@ -15,3 +21,7 @@ Array_declare(int64)
 Array_declare(uint64)
 
 Array_declare(Unitype)
+
+#if __cplusplus
+}
+#endif
