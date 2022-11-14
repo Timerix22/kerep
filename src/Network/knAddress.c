@@ -1,5 +1,8 @@
 #include "knAddress.h"
 
+ktId_define(knIPV4Address);
+ktId_define(knIPV4Endpoint);
+
 Maybe knIPV4Address_fromStr(char* addrStr){
     char* addrStr_src=addrStr;
     char* errmsg_extra="wrong char";
@@ -37,5 +40,5 @@ Maybe knIPV4Address_fromStr(char* addrStr){
                 break;
         }
     }
-    return SUCCESS(Uni(UInt64, (uint64)addr.address));
+    return SUCCESS(UniStack(knIPV4Address, addr));
 }

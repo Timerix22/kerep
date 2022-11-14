@@ -6,12 +6,12 @@ extern "C" {
 
 #include "../base/base.h"
 #include "knAddress.h"
-#include "knPackage.h"
 
 
 typedef enum __attribute__((__packed__)) knSocketProtocol {
     knSocketProtocol_TCP, knSocketProtocol_UDP, knSocket_Channeled
 } knSocketProtocol;
+ktId_declare(knSocketProtocol);
 
 typedef struct knSocket {
     knSocketProtocol type;
@@ -21,15 +21,13 @@ typedef struct knSocket {
     // uint16 channelsAmount;
     // knChannel** channels;
 } knSocket;
+ktId_declare(knSocket);
 
 ///@return Maybe<knSocket*> new socket
 Maybe knSocket_open(knSocketProtocol sockType);
 
 ///@return Maybe<void> error or nothing
 Maybe knSocket_close(knSocket* socket);
-
-///@return Maybe<uint64> channel index
-Maybe knSocket_createChannel(knSocket* socket);
 
 ///sets socket local endpoint
 ///@return Maybe<void> error or nothing
