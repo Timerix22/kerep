@@ -2,7 +2,7 @@
 
 ```
           00000000 00000000 00000000 00000000
-fgColorSet┘│││└┼┴┘ └┼┴┘└┴┴┤       ktId
+fgColorSet┘│││└┼┴┘ └┼┴┘└┴┴┤       ktid
 bgColorSet─┘││ │  bgColor └data format
  prefix┬────┘│ └fgColor
  postfix     └uppercase

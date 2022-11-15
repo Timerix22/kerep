@@ -7,7 +7,6 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <stdarg.h>
 #include <locale.h>
 #include <time.h>
@@ -23,6 +22,15 @@ typedef int64_t int64;
 typedef uint64_t uint64;
 typedef float float32;
 typedef double float64;
+// Usually bool from stdbool.h is defined as macro, 
+// so in other macros like ktid_##TYPE it will be replaced by _Bool.
+// ktid__Bool will be created instead of ktid_bool
+// In C++ bool is a keyword, so there is no need to redefine it.
+#if !__cplusplus
+typedef uint8 bool;
+#define true  1
+#define false 0
+#endif
 
 #define dbg(N) kprintf("\e[95m%d\n",N)
 

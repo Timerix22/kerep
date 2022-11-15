@@ -1,23 +1,23 @@
 #include "../String/StringBuilder.h"
 #include "kprint.h"
 
-ktId __typeFromFormat(kprint_format f){
-    ktId typeId=kprint_format_ktId(f);
+ktid __typeFromFormat(kprint_format f){
+    ktid typeId=kprint_format_ktid(f);
     if(typeId) 
         return typeId;
     switch(kprint_format_dataFormat(f)){
         case kprint_fmtInt:
         case kprint_fmtHex:
         case kprint_fmtBin: 
-            return ktId_Int64;
+            return ktid_name(int64);
         case kprint_fmtUInt:
-            return ktId_UInt64; 
+            return ktid_name(uint64); 
         case kprint_fmtFloat:
-            return ktId_Float64; 
+            return ktid_name(float64); 
         case kprint_fmtChar:
-            return ktId_Char; 
+            return ktid_char; 
         case kprint_fmtString:
-            return ktId_CharPtr; 
+            return ktid_ptrName(char); 
         default: 
             return -1;
     }
@@ -25,13 +25,13 @@ ktId __typeFromFormat(kprint_format f){
 
 Maybe __next_toString(kprint_format f, __kprint_value_union* object){
     // detecting type
-    ktId typeId=__typeFromFormat(f);
+    ktid typeId=__typeFromFormat(f);
     if(typeId==-1)
         safethrow("typeId is not set, can't autodetect type",;);
     ktDescriptor typeDesc=ktDescriptor_get(typeId);
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);
-    return SUCCESS(UniHeap(ktId_CharPtr, typeDesc.toString(object, f)));
+    return SUCCESS(UniHeapPtr(char, typeDesc.toString(object, f)));
 }
 
 Maybe __ksprint(uint8 n, kprint_format* formats, __kprint_value_union* objects){
@@ -43,7 +43,7 @@ Maybe __ksprint(uint8 n, kprint_format* formats, __kprint_value_union* objects){
         Unitype_free(mStr.value);
     }
     char* rezult=StringBuilder_build(strb).ptr;
-    return SUCCESS(UniHeap(ktId_CharPtr, rezult));
+    return SUCCESS(UniHeapPtr(char, rezult));
 }
 
 Maybe __kfprint(FILE* file, uint8 n, kprint_format* formats, __kprint_value_union* objects){
@@ -150,7 +150,7 @@ void kprint_setColor(kprint_format f){
 }
 #endif
 
-/* Maybe ksprint_ar(uint32 count, kprint_format format, ktId typeId, void* array){
+/* Maybe ksprint_ar(uint32 count, kprint_format format, ktid typeId, void* array){
     ktDescriptor typeDesc=ktDescriptor_get(format.typeId);
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);

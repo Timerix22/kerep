@@ -1,7 +1,6 @@
 #include "../base.h"
 
-ktId_define(Unitype);
-ktId_define(UnitypePtr);
+ktid_define(Unitype);
 
 void Unitype_free(Unitype u){
     ktDescriptor type=ktDescriptor_get(u.typeId);
@@ -29,15 +28,15 @@ char* toString_Unitype(void* _u, uint32 fmt){
 char* sprintuni(Unitype v){
     char* buf=malloc(BUFSIZE);
     ktDescriptor type=ktDescriptor_get(v.typeId);
-    if(v.typeId==ktId_Null)
+    if(v.typeId==ktid_Null)
         sprintf_s(buf, BUFSIZE, "{Null}");
-    else if(v.typeId==ktId_Float64)
+    else if(v.typeId==ktid_name(float64))
         sprintf_s(buf, BUFSIZE, "{%s : %lf}", type.name,v.Float64);
-    else if(v.typeId==ktId_Bool || v.typeId==ktId_UInt64)
+    else if(v.typeId==ktid_name(bool) || v.typeId==ktid_name(uint64))
         sprintf_s(buf, BUFSIZE, "{%s : " IFWIN("%llu", "%lu") "}", type.name,v.UInt64);
-    else if(v.typeId==ktId_Int64)
+    else if(v.typeId==ktid_name(int64))
         sprintf_s(buf, BUFSIZE, "{%s : " IFWIN("%lld", "%ld") "}", type.name,v.Int64);
-    else if(v.typeId==ktId_CharPtr){
+    else if(v.typeId==ktid_ptrName(char)){
         size_t newBUFSIZE=cptr_length(v.VoidPtr) + BUFSIZE/2;
         buf=realloc(buf, newBUFSIZE);
         sprintf_s(buf, BUFSIZE, "{%s : \"%s\"}", type.name,(char*)v.VoidPtr);

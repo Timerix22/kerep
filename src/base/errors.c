@@ -15,6 +15,8 @@ char* errname(ErrorId err){
         case ERR_KEYNOTFOUND: return "ERR_KEYNOTFOUND";
         case ERR_FORMAT: return "ERR_FORMAT";
         case ERR_UNEXPECTEDVAL: return "ERR_UNEXPECTEDVAL";
+        case ERR_IO: return "ERR_IO";
+        case ERR_IO_EOF: return "ERR_IO_EOF";
         default: return "UNKNOWN_ERROR";
     }
 }

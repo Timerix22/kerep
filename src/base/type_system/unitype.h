@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include "ktId.h"
+#include "ktid.h"
 
 typedef struct Unitype{
     union {
@@ -15,27 +15,26 @@ typedef struct Unitype{
         void* VoidPtr;
         char Bytes[8];
     };
-    ktId typeId;
+    ktid typeId;
     bool allocatedInHeap; // should Unitype_free call free() to VoidPtr*
 } Unitype;
-ktId_declare(Unitype);
-ktId_declare(UnitypePtr);
+ktid_declare(Unitype);
 
 
-#define __UniDef(TYPE, VAL) (Unitype){\
-    .TYPE=VAL, .typeId=ktId_##TYPE, .allocatedInHeap=false}
+#define __UniDef(FIELD, TYPE, VAL) (Unitype){\
+    .FIELD=VAL, .typeId=ktid_name(TYPE), .allocatedInHeap=false}
 
-#define UniInt64(VAL)   __UniDef(Int64,   VAL)
-#define UniUInt64(VAL)  __UniDef(UInt64,  VAL)
-#define UniFloat64(VAL) __UniDef(Float64, VAL)
-#define UniBool(VAL)    __UniDef(Bool,    VAL)
+#define UniInt64(VAL)   __UniDef(Int64,   int64,   VAL)
+#define UniUInt64(VAL)  __UniDef(UInt64,  uint64,  VAL)
+#define UniFloat64(VAL) __UniDef(Float64, float64, VAL)
+#define UniBool(VAL)    __UniDef(Bool,    bool,    VAL)
 
-#define UniStack(ID_VAR_NAME, VAL) (Unitype){\
-    .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=false}
-#define UniHeap(ID_VAR_NAME, VAL) (Unitype){\
-    .VoidPtr=VAL, .typeId=ID_VAR_NAME, .allocatedInHeap=true}
+#define UniStackPtr(TYPE, VAL) (Unitype){\
+    .VoidPtr=VAL, .typeId=ktid_ptrName(TYPE), .allocatedInHeap=false}
+#define UniHeapPtr(TYPE, VAL) (Unitype){\
+    .VoidPtr=VAL, .typeId=ktid_ptrName(TYPE), .allocatedInHeap=true}
 
-#define UniNull  UniStack(ktId_Null, NULL)
+#define UniNull  (Unitype){.Int64=0, .typeId=ktid_Null, .allocatedInHeap=false}
 #define UniTrue  UniBool(true)
 #define UniFalse UniBool(false)
 

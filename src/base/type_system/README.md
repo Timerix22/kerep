@@ -4,18 +4,16 @@ For using some kerep capabilities, such as generic structs, unitype, and kprint,
 
 ## type id
 
-Every registered type has its own id (`ktId`), which should be declared in header file and defined in source file.  
+Every registered type has its own id (`ktid`), which should be declared in header file and defined in source file.  
 Example: 
 ```c
 //someStruct.h
 typedef struct { } someStruct;
-ktId_declare(someStruct);
-ktId_declare(someStructPtr); // pointer to type is another type
+ktid_declare(someStruct);
 ```
 ```c
 //someStruct.c
-ktId_define(someStruct);
-ktId_define(someStructPtr);
+ktid_define(someStruct);
 ```
 
 ## type descriptors

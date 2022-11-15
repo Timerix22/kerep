@@ -1,13 +1,13 @@
 #include "filesystem.h"
 
-char* __path_concat(uint16 n, char* prev_part, ...){
+char* __path_concat(uint16 n, ...){
     char** parts=(char**)malloc(n*sizeof(char*));
     uint32* lengths=malloc(n*sizeof(uint32));
     uint32 totalLength=0;
 
     // reading args from va_list
     va_list vl;
-    va_start(vl, prev_part);
+    va_start(vl, n);
     for(uint16 i=0; i<n; i++){
         char* part=va_arg(vl,char*);
         int16 length=cptr_length(part);
@@ -35,4 +35,21 @@ char* __path_concat(uint16 n, char* prev_part, ...){
     free(parts);
     free(lengths);
     return output;
+}
+
+char* path_fixSeparators(char* path){
+    char* pathCopy=cptr_copy(path);
+    char c;
+    while((c=*pathCopy)){
+        if(c==path_notSep)
+            *pathCopy=path_sep;
+        pathCopy++;
+    }
+    return pathCopy;
+}
+
+Maybe path_throwIfEscapes(char* path){
+    if(cptr_contains(path,".."))
+        safethrow(cptr_concat("path <",path,"> uses <..>, that's not allowed"),);
+    return MaybeNull;
 }

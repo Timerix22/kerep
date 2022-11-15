@@ -20,9 +20,8 @@ int main(){
     ktDescriptors_initKerepTypes();
     ktDescriptors_endInit();
     kprintf("\e[97mkerep tests are starting!\n");
-    //optime("test_all",1,test_all());
+    optime("test_all",1,test_all());
     ktDescriptors_free();
-    kprintf("ъъъъ");
     kprintf("\e[0m\n");
     return 0;
 }
