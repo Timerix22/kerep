@@ -13,7 +13,7 @@ extern "C" {
 typedef enum __attribute__((__packed__)) knPacVersion {
     knPac_V1
 } knPacVersion;
-ktId_declare(knPacVersion);
+ktid_declare(knPacVersion);
 
 static const char knPacHeader[5]={'k','n','p','a','c'};
 
@@ -26,63 +26,60 @@ typedef struct knPackage {
     uint64 data_hash;           // hash64 of data
     uint8* data;                // ptr to data
 } knPackage;
-ktId_declare(knPackage);
+ktid_declare(knPackage);
 
 typedef struct knPackageQueueElem knPackageQueueElem;
 struct knPackageQueueElem {
-    union {
-        knPackage;
-        knPackage package;
-    };
+    knPackage package;
     knPackageQueueElem* previousElem;
     knPackageQueueElem* nextElem;
 };
-ktId_declare(knPackageQueueElem);
+ktid_declare(knPackageQueueElem);
 
 typedef struct knChannel {
     knPackageQueueElem* queueStart;
 } knChannel;
-ktId_declare(knChannel);
+ktid_declare(knChannel);
 
 typedef struct knSocketChanneled{
-    union {
-        knSocket;
-        knSocket base;
-    };
+    knSocketProtocol type;
+    int64 socketfd;
+    knIPV4Endpoint localEndpoint;
+    knIPV4Endpoint remoteEndpoint;
     uint16 channelsAmount;
     knChannel** channels;
 } knSocketChanneled;
-ktId_declare(knSocketChanneled);
+ktid_declare(knSocketChanneled);
 
 
-///@return Maybe<knSocket*> new socket
+///@return Maybe<knSocketChanneled*> new socket
 Maybe knSocketChanneled_open(knSocketProtocol sockType);
 
 ///@return Maybe<void> error or nothing
-Maybe knSocketChanneled_close(knSocket* socket);
+Maybe knSocketChanneled_close(knSocketChanneled* socket);
 
 ///@return Maybe<uint64> channel index
-Maybe knSocketChanneled_createChannel(knSocket* socket);
+Maybe knSocketChanneled_createChannel(knSocketChanneled* socket);
 
 ///sets socket local endpoint
 ///@return Maybe<void> error or nothing
-Maybe knSocketChanneled_bind(knSocket* socket, knIPV4Endpoint localEndp);
+Maybe knSocketChanneled_bind(knSocketChanneled* socket, knIPV4Endpoint localEndp);
 
 ///sets socket remote endpoint
 ///@return Maybe<void> error or nothing
-Maybe knSocketChanneled_connect(knSocket* socket, knIPV4Endpoint remoteEndp);
+Maybe knSocketChanneled_connect(knSocketChanneled* socket, knIPV4Endpoint remoteEndp);
 
-///@return Maybe<knSocket*> new socket connected to client
-Maybe knSocketChanneled_accept(knSocket* socket);
+///@return Maybe<knSocketChanneled*> new socket connected to client
+Maybe knSocketChanneled_accept(knSocketChanneled* socket);
 
 ///@param dataLength 0-4294967295
 ///@return Maybe<void>
-Maybe knSocketChanneled_send(knSocket* socket, uint16 destinationIndex, uint8* data, uint32 dataLength);
+Maybe knSocketChanneled_send(knSocketChanneled* socket, uint16 destinationIndex, uint8* data, uint32 dataLength);
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
 ///@return Maybe<uint64> recieved bytes amount
-Maybe knSocketChanneled_recieve(knSocket* socket, uint16 destinationIndex, uint8* buffer, uint32 bufferLength);
+Maybe knSocketChanneled_recieve(knSocketChanneled* socket, uint16 destinationIndex, uint8* buffer, uint32 bufferLength);
 
 #if __cplusplus
 }

@@ -6,7 +6,7 @@ extern "C" {
 
 #include "../base/base.h"
 
-#if defined(_MSC_VER) || defined(_WIN64) || defined(_WIN32) || 0
+#if defined(_MSC_VER) || defined(_WIN64) || defined(_WIN32)
     #define KN_USE_WINSOCK 1
 #endif
 

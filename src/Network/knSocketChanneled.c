@@ -1,11 +1,11 @@
 #include "network.h"
 #include "stdSocketHeaders.h"
 
-ktId_define(knPacVersion);
-ktId_define(knPackage);
-ktId_define(knPackageQueueElem);
-ktId_define(knChannel);
-ktId_define(knSocketChanneled);
+ktid_define(knPacVersion);
+ktid_define(knPackage);
+ktid_define(knPackageQueueElem);
+ktid_define(knChannel);
+ktid_define(knSocketChanneled);
 
 Maybe knSocketChanneled_open(knSocketProtocol sockType){
     knSocketChanneled* newSocket=malloc(sizeof(knSocketChanneled));
@@ -29,7 +29,7 @@ Maybe knSocketChanneled_open(knSocketProtocol sockType){
                 safethrow("can't create UDP socket", free(newSocket));
             break;
     }
-    return SUCCESS(UniPtr(knSocketChanneledPtr, newSocket));
+    return SUCCESS(UniHeapPtr(knSocketChanneled, newSocket));
 }
 
 Maybe knSocketChanneled_close(knSocketChanneled* knsocket){
@@ -43,7 +43,7 @@ Maybe knSocketChanneled_close(knSocketChanneled* knsocket){
     if(rezult==-1) {
         safethrow("can't close socket",;);
     }
-    else return SUCCESS(UniNull);
+    else return MaybeNull;
 }
 
 knChannel* __createChannel(){
@@ -72,7 +72,7 @@ Maybe knSocketChanneled_createChannel(knSocketChanneled* sock){
     addr.sin_family=
     bind(sock->socketfd);
     sock->localEndpoint=localEndp;
-    return SUCCESS(UniNull);
+    return MaybeNull;
 }
 
 Maybe knSocketChanneled_connect(knSocketChanneled* sock, knIPV4Endpoint remoteEndp){
@@ -80,7 +80,7 @@ Maybe knSocketChanneled_connect(knSocketChanneled* sock, knIPV4Endpoint remoteEn
         safethrow("socket is connected already",;);
     
     sock->remoteEndpoint=remoteEndp;
-    return SUCCESS(UniNull);
+    return MaybeNull;
 }
 
 Maybe knSocketChanneled_accept(knSocketChanneled* sock){

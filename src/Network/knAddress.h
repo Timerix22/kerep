@@ -13,7 +13,7 @@ typedef union knIPV4Address {
     uint32 address;
     char bytes[4];
 } knIPV4Address;
-ktId_declare(knIPV4Address);
+ktid_declare(knIPV4Address);
 
 #define knIPV4Address_fromBytes(A, B, C, D) (knIPV4Address){.bytes={A,B,C,D}}
 
@@ -24,7 +24,7 @@ typedef struct knIPV4Endpoint {
     knIPV4Address address;
     knPort port;
 } knIPV4Endpoint;
-ktId_declare(knIPV4Endpoint);
+ktid_declare(knIPV4Endpoint);
 
 #define knIPV4Endpoint_create(ADDR, PORT) (knIPV4Endpoint){ADDR, PORT}
 

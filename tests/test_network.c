@@ -31,12 +31,13 @@ void test_network(){
         test_knIPV4Address_fromStr(127,0,0,1);
         test_knIPV4Address_fromStr(34,255,45,0);
         test_knIPV4Address_fromStr(3,3,3,128);
-
+        /*
         knSocket* s;
         tryLast(knSocket_open(knSocketProtocol_TCP), maybeS)
             s=maybeS.value.VoidPtr;
         printf("\e[92mTCP socket created\n");
         tryLast(knSocket_close(s);,_);
         printf("\e[92mTCP socket closed\n");
+        */
     }));
 }

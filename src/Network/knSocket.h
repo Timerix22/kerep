@@ -11,17 +11,15 @@ extern "C" {
 typedef enum __attribute__((__packed__)) knSocketProtocol {
     knSocketProtocol_TCP, knSocketProtocol_UDP, knSocket_Channeled
 } knSocketProtocol;
-ktId_declare(knSocketProtocol);
+ktid_declare(knSocketProtocol);
 
 typedef struct knSocket {
     knSocketProtocol type;
     int64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;
-    // uint16 channelsAmount;
-    // knChannel** channels;
 } knSocket;
-ktId_declare(knSocket);
+ktid_declare(knSocket);
 
 ///@return Maybe<knSocket*> new socket
 Maybe knSocket_open(knSocketProtocol sockType);

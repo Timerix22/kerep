@@ -1,7 +1,7 @@
 #include "knAddress.h"
 
-ktId_define(knIPV4Address);
-ktId_define(knIPV4Endpoint);
+ktid_define(knIPV4Address);
+ktid_define(knIPV4Endpoint);
 
 Maybe knIPV4Address_fromStr(char* addrStr){
     char* addrStr_src=addrStr;
@@ -40,5 +40,6 @@ Maybe knIPV4Address_fromStr(char* addrStr){
                 break;
         }
     }
-    return SUCCESS(UniStack(knIPV4Address, addr));
+    //TODO UniStack for generic structs
+    return SUCCESS(UniUInt64(addr.address));
 }
