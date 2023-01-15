@@ -4,16 +4,15 @@
 extern "C" {
 #endif
 
-#include "../base/base.h"
-#include "knSocket.h"
+#include "../../base/base.h"
+#include "../knAddress.h"
 
 #define KNPAC_MAX_DATA_SIZE (65535-sizeof(knPackage)+sizeof(uint8*))
 
 
 typedef enum __attribute__((__packed__)) knPacVersion {
-    knPac_V1
+    knPac_V1=1
 } knPacVersion;
-ktid_declare(knPacVersion);
 
 static const char knPacHeader[5]={'k','n','p','a','c'};
 
@@ -42,7 +41,6 @@ typedef struct knChannel {
 ktid_declare(knChannel);
 
 typedef struct knSocketChanneled{
-    knSocketProtocol type;
     int64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;
@@ -53,7 +51,7 @@ ktid_declare(knSocketChanneled);
 
 
 ///@return Maybe<knSocketChanneled*> new socket
-Maybe knSocketChanneled_open(knSocketProtocol sockType);
+Maybe knSocketChanneled_open();
 
 ///@return Maybe<void> error or nothing
 Maybe knSocketChanneled_close(knSocketChanneled* socket);
@@ -61,9 +59,9 @@ Maybe knSocketChanneled_close(knSocketChanneled* socket);
 ///@return Maybe<uint64> channel index
 Maybe knSocketChanneled_createChannel(knSocketChanneled* socket);
 
-///sets socket local endpoint
+///start listening at local endpoint
 ///@return Maybe<void> error or nothing
-Maybe knSocketChanneled_bind(knSocketChanneled* socket, knIPV4Endpoint localEndp);
+Maybe knSocketChanneled_listen(knSocketChanneled* socket, knIPV4Endpoint localEndp);
 
 ///sets socket remote endpoint
 ///@return Maybe<void> error or nothing

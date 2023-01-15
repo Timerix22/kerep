@@ -10,7 +10,7 @@ extern "C" {
 typedef uint16 knPort;
 
 typedef union knIPV4Address {
-    uint32 address;
+    uint32 u32;
     char bytes[4];
 } knIPV4Address;
 ktid_declare(knIPV4Address);
@@ -19,6 +19,11 @@ ktid_declare(knIPV4Address);
 
 ///@return Maybe<knIPV4Address> as Maybe<knIPV4Address>
 Maybe knIPV4Address_fromStr(char* addrStr);
+
+#define IPV4_NONE     knIPV4Address_fromBytes(255,255,255,255)
+#define IPV4_ANY      knIPV4Address_fromBytes(0,0,0,0)
+#define IPV4_LOOPBACK knIPV4Address_fromBytes(127,0,0,1)
+
 
 typedef struct knIPV4Endpoint {
     knIPV4Address address;

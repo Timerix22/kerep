@@ -8,7 +8,7 @@ Maybe knIPV4Address_fromStr(char* addrStr){
     char* errmsg_extra="wrong char";
     uint8 c;
     knIPV4Address addr;
-    addr.address=0;
+    addr.u32=0;
     uint16 n=0;
     for(uint8 i=0; i<4; ){
         c=*addrStr++;
@@ -41,5 +41,5 @@ Maybe knIPV4Address_fromStr(char* addrStr){
         }
     }
     //TODO UniStack for generic structs
-    return SUCCESS(UniUInt64(addr.address));
+    return SUCCESS(UniUInt64(addr.u32));
 }

@@ -4,9 +4,9 @@
 void __test_knIPV4Address_fromStr(char* addrStr, uint8 a, uint8 b, uint8 c, uint8 d){
     tryLast(knIPV4Address_fromStr(addrStr), maybeAddr){
         knIPV4Address addr;
-        addr.address=(uint32)maybeAddr.value.UInt64;
+        addr.u32=(uint32)maybeAddr.value.UInt64;
         printf("\e[94mknIPV4Address_fromStr(\e[96m%s\e[94m) -> ", addrStr);
-        if(maybeAddr.value.UInt64!=knIPV4Address_fromBytes(a,b,c,d).address){
+        if(maybeAddr.value.UInt64!=knIPV4Address_fromBytes(a,b,c,d).u32){
             printf("\e[91m%u.%u.%u.%u\n", 
                 (uint8)addr.bytes[0], (uint8)addr.bytes[1], (uint8)addr.bytes[2], (uint8)addr.bytes[3]);
             throw("knIPV4Address_fromStr returned wrong value");
@@ -26,13 +26,13 @@ void test_network(){
         PRINT_SIZEOF(knIPV4Endpoint);
         PRINT_SIZEOF(knPackage);
         PRINT_SIZEOF(knChannel);
-        PRINT_SIZEOF(knSocket);
+        PRINT_SIZEOF(knSocketTCP);
 
         test_knIPV4Address_fromStr(127,0,0,1);
         test_knIPV4Address_fromStr(34,255,45,0);
         test_knIPV4Address_fromStr(3,3,3,128);
         /*
-        knSocket* s;
+        knSocketTCP* s;
         tryLast(knSocket_open(knSocketProtocol_TCP), maybeS)
             s=maybeS.value.VoidPtr;
         printf("\e[92mTCP socket created\n");
