@@ -84,11 +84,11 @@ void kprintf(const char* format, ...){
                     // }
                     // break;
                 case 'p':
-                case 'x':
+                case 'x': ;
                     uint64 px=va_arg(vl, uint64);
                     argstr=toString_hex(&px,sizeof(px),1,0);
                     break;
-                case 's':
+                case 's': ;
                     char* cptr=va_arg(vl,char*);
                     if(!cptr)
                         cptr="<nullstr>";
