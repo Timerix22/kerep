@@ -57,13 +57,24 @@ typedef union {
 
 
 Maybe __ksprint(uint8 n, kprint_format* formats, __kprint_value_union* objects);
-#define ksprint(ARGS...) __ksprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
+#define ksprint(ARGS...) WARNING_DISABLE( W_INT_CONVERSION,\
+        __ksprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))\
+    )
 
 Maybe __kfprint(FILE* fd, uint8 n, kprint_format* formats, __kprint_value_union* objects);
-#define kfprint(FD, ARGS...) __kfprint(FD, count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
+#define kfprint(FD, ARGS...) WARNING_DISABLE( W_INT_CONVERSION,\
+        __kfprint(FD, count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))\
+    )
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wint-conversion"
 void __kprint(uint8 n, kprint_format* formats, __kprint_value_union* objects);
-#define kprint(ARGS...) __kprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))
+#define kprint(ARGS...) WARNING_DISABLE( W_INT_CONVERSION,\
+        __kprint(count_args(ARGS), __kprint_argsToArrs(count_args(ARGS),ARGS, __32zeroes))\
+    )
+    
+    
+#pragma GCC diagnostic pop
 
 // can take (bgColor | fgColor) 
 void kprint_setColor(kprint_format f);

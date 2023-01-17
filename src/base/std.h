@@ -77,12 +77,38 @@ typedef uint8 bool;
     a16,a17,a18,a19,a20,a21,a22,a23,\
     a24,a25,a26,a27,a28,a29,a30,a31,\
     a32,...) a32
+// Macro for counting variadic arguments
+// (see usage in kprint.h)
 #define count_args(ARGS...) __count_args(\
     ARGS,\
     32,31,30,29,28,27,26,25,\
     24,23,22,21,20,19,18,17,\
     16,15,14,13,12,11,10,9,\
     8, 7, 6, 5, 4, 3, 2, 1, 0)
+
+/*
+Cross-platform warning supression.
+WARNING_DISABLE( W_EXAMPLE,
+    some code producing W_EXAMPLE;
+);
+You can even embed it into macro in header (see kprint.h)
+*/
+#ifdef _MSC_VER
+    #define PRAGMA_WARNING_PUSH __pragma(warning( push ))
+    #define DISABLE_WARNING(wNumber) __pragma(warning( disable : wNumber ))
+    #define PRAGMA_WARNING_POP  __pragma(warning( pop ))
+#else
+    #define _PRAGMA(P) _Pragma(#P)
+    #define PRAGMA_WARNING_PUSH _PRAGMA(GCC diagnostic push)
+    #define PRAGMA_WARNING_DISABLE(wName) _PRAGMA(GCC diagnostic ignored wName)
+    #define PRAGMA_WARNING_POP  _PRAGMA(GCC diagnostic pop)
+    #define W_INT_CONVERSION "-Wint-conversion"
+#endif
+#define WARNING_DISABLE(WARNING, CODE)\
+    PRAGMA_WARNING_PUSH\
+    PRAGMA_WARNING_DISABLE(WARNING)\
+    CODE;\
+    PRAGMA_WARNING_POP
 
 #if __cplusplus
 }

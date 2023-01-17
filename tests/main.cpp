@@ -19,6 +19,11 @@ int main(){
     ktDescriptors_beginInit();
     ktDescriptors_initKerepTypes();
     ktDescriptors_endInit();
+    for(ktid id=0; id<ktid_last; id++){
+        ktDescriptor d=ktDescriptor_get(id);
+        kprintf("{ id:%u name:%s size:%u freeMembers:%p toString:%p }\n",
+                    d.id, d.name, d.size, d.freeMembers, d.toString);
+    }
     kprintf("\e[97mkerep tests are starting!\n");
     optime("test_all",1,test_all());
     ktDescriptors_free();
