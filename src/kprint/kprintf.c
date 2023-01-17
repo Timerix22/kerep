@@ -53,19 +53,26 @@ void kprintf(const char* format, ...){
     for(char c=format[i++]; c!=0; c=format[i++]){
         if(c=='%'){
             char* argstr=NULL;
+            bool l=false;
             c=format[i++];
             format_escape_seq:
             switch (c) {
                 case 'u':
-                    argstr=toString_uint(va_arg(vl, uint64),0,0);
+                    argstr=toString_uint(
+                        l ? va_arg(vl, uint64) : va_arg(vl, uint32)
+                        ,0,0);
                     break;
                 case 'i': case 'd':
-                    argstr=toString_int(va_arg(vl, uint64));
+                    argstr=toString_int(
+                        l ? va_arg(vl, int64) : va_arg(vl, int32)
+                        );
                     break;
                 case 'f':
+                    // float32 is promoted to float64 when passed through '...'
                     argstr=toString_float(va_arg(vl, float64),0,0);
                     break;
                case 'l':
+                    l=true;
                     if((c=format[i++]))
                         goto format_escape_seq;
                     break;

@@ -31,29 +31,32 @@ char* __toString_bool(void* c, uint32 fmt) {
 }
 
 char* toString_int(int64 n){
-    int64 d=n;
+    int64 d=n<0 ? -1*n : n;
     char str[32];
     uint8 i=sizeof(str);
     str[--i]=0;
-    while(d!=0){
+    if(d==0)
+        str[--i]='0';
+    else while(d!=0){
         str[--i]='0' + d%10;
         d/=10;
     }
-    if(n>>63)
+    if(n<0)
         str[--i]='-';
     return cptr_copy((char*)str+i);
 }
 
 char* toString_uint(uint64 n, bool withPostfix, bool uppercase){
-    uint64 d=n;
     char str[32];
     uint8 i=sizeof(str);
     str[--i]=0;
     if(withPostfix)
         str[--i]= uppercase ? 'U' : 'u';
-    while(d!=0){
-        str[--i]='0' + d%10;
-        d/=10;
+    if(n==0)
+        str[--i]='0';
+    else while(n!=0){
+        str[--i]='0' + n%10;
+        n/=10;
     }
     return cptr_copy((char*)str+i);
 }
