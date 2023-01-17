@@ -4,14 +4,14 @@
 
 char* __toString_char(void* c, uint32 fmt) {
     //*c=char
-    if(kprint_format_dataFormat(fmt)==kprint_fmtChar){
+    if(kp_fmt_dataFormat(fmt)==kp_c){
         char* cc=malloc(2); 
         cc[0]=*(char*)c;
         cc[1]=0;
         return cc;
     }
     // *c=cstring
-    else if(kprint_format_dataFormat(fmt)==kprint_fmtString){
+    else if(kp_fmt_dataFormat(fmt)==kp_s){
         return cptr_copy(*(char**)c);
     }
     else throw(ERR_FORMAT);
@@ -19,7 +19,7 @@ char* __toString_char(void* c, uint32 fmt) {
 
 char* __toString_bool(void* c, uint32 fmt) {
     static const char _strbool[4][6]={ "false", "true\0", "False", "True\0" };
-    uint8 strind=*(bool*)c==1 + kprint_format_isUppercase(fmt)*2;
+    uint8 strind=*(bool*)c==1 + kp_fmt_isUpper(fmt)*2;
     char* rez=malloc(6);
     rez[0]=_strbool[strind][0];
     rez[1]=_strbool[strind][1];
@@ -134,16 +134,16 @@ char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
 
 
 #define __toString_int_def(BITS) char* __toString_int##BITS(void* _n, uint32 f){\
-    switch(kprint_format_dataFormat(f)){\
-        case kprint_fmtInt: ;\
+    switch(kp_fmt_dataFormat(f)){\
+        case kp_i: ;\
             int##BITS n=*(int##BITS*)_n;\
             return toString_int(n);\
-        case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, kprint_format_isWithPrefix(f));\
-        case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, kprint_format_isWithPrefix(f), kprint_format_isUppercase(f));\
+        case kp_b:\
+            return toString_bin(_n, BITS/8, kp_fmt_withPrefix(f));\
+        case kp_h:\
+            return toString_hex(_n, BITS/8, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
         default:\
-            kprintf("\n%u\n", kprint_format_dataFormat(f));\
+            kprintf("\n%u\n", kp_fmt_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\
@@ -154,16 +154,16 @@ __toString_int_def(32)
 __toString_int_def(64)
 
 #define __toString_uint_def(BITS) char* __toString_uint##BITS(void* _n, uint32 f){\
-    switch(kprint_format_dataFormat(f)){\
-        case kprint_fmtUInt: ;\
+    switch(kp_fmt_dataFormat(f)){\
+        case kp_u: ;\
             uint##BITS n=*(uint##BITS*)_n;\
-            return toString_uint(n, kprint_format_isWithPostfix(f), kprint_format_isUppercase(f));\
-        case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, kprint_format_isWithPrefix(f));\
-        case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, kprint_format_isWithPrefix(f), kprint_format_isUppercase(f));\
+            return toString_uint(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
+        case kp_b:\
+            return toString_bin(_n, BITS/8, kp_fmt_withPrefix(f));\
+        case kp_h:\
+            return toString_hex(_n, BITS/8, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
         default:\
-            kprintf("\n%u\n", kprint_format_dataFormat(f));\
+            kprintf("\n%u\n", kp_fmt_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\
@@ -174,16 +174,16 @@ __toString_uint_def(32)
 __toString_uint_def(64)
 
 #define __toString_float_def(BITS) char* __toString_float##BITS(void* _n, uint32 f){\
-    switch(kprint_format_dataFormat(f)){\
-        case kprint_fmtFloat: ;\
+    switch(kp_fmt_dataFormat(f)){\
+        case kp_f: ;\
             float##BITS n=*(float##BITS*)_n;\
-            return toString_float(n, kprint_format_isWithPostfix(f), kprint_format_isUppercase(f));\
-        case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, kprint_format_isWithPrefix(f));\
-        case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, kprint_format_isWithPrefix(f), kprint_format_isUppercase(f));\
+            return toString_float(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
+        case kp_b:\
+            return toString_bin(_n, BITS/8, kp_fmt_withPrefix(f));\
+        case kp_h:\
+            return toString_hex(_n, BITS/8, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
         default:\
-            kprintf("\n%u\n", kprint_format_dataFormat(f));\
+            kprintf("\n%u\n", kp_fmt_dataFormat(f));\
             throw(ERR_FORMAT);\
             return NULL;\
     }\

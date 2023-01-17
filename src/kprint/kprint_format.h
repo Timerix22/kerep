@@ -7,41 +7,42 @@ extern "C" {
 #include "../base/std.h"
 #include "../base/type_system/ktid.h"
 
-typedef enum kprint_dataFormat{
-    // 00000000 00000000  00000000 00000000
-    //              ^^^^
-    //              type
-    kprint_fmtInt       = 0x00000000,
-    kprint_fmtUInt      = 0x00010000,
-    kprint_fmtHex       = 0x00020000,
-    kprint_fmtBin       = 0x00030000,
-    kprint_fmtFloat     = 0x00040000,
-    kprint_fmtChar      = 0x00050000,
-    kprint_fmtString    = 0x00060000,
+/// kprint_format
+typedef uint32 kp_fmt;
+
+typedef enum kp_dataFmt{
+// 00000000 00000000  00000000 00000000
+//              ^^^^
+//              type
+    kp_i = 0x00000000,
+    kp_u = 0x00010000,
+    kp_h = 0x00020000,
+    kp_b = 0x00030000,
+    kp_f = 0x00040000,
+    kp_c = 0x00050000,
+    kp_s = 0x00060000,
     
-    // 00100000 00000000  00000000 00000000
-    //   ^
-    // prefix/postfix flag
-    kprint_fmtWithPrefix=0x20000000,
-    kprint_fmtWithPostfix=kprint_fmtWithPrefix,
+// 00100000 00000000  00000000 00000000
+//   ^
+// prefix/postfix flag
+    kp_pre=0x20000000,
+    kp_post=kp_pre,
 
-    // 00010000 00000000  00000000 00000000
-    //    ^
-    // uppercase flag
-    kprint_fmtUppercase=0x10000000
-} kprint_dataFormat;
+// 00010000 00000000  00000000 00000000
+//    ^
+// uppercase flag
+    kp_upper=0x10000000
+} kp_dataFmt;
 
-typedef uint32 kprint_format;
-
-#define kprint_format_isFgColorChanged(FMT) (bool)((FMT&0x80000000)!=0)
-#define kprint_format_isBgColorChanged(FMT) (bool)((FMT&0x40000000)!=0)
-#define kprint_format_isWithPrefix(FMT) (bool)((FMT&kprint_fmtWithPrefix)!=0)
-#define kprint_format_isWithPostfix(FMT) (bool)((FMT&kprint_fmtWithPostfix)!=0)
-#define kprint_format_isUppercase(FMT) (bool)((FMT&kprint_fmtUppercase)!=0)
-#define kprint_format_fgColor(FMT) (kprint_fgColor)(FMT&0x8f000000)
-#define kprint_format_bgColor(FMT) (kprint_bgColor)(FMT&0x40f00000)
-#define kprint_format_dataFormat(FMT) (kprint_dataFormat)(FMT&0x000f0000)
-#define kprint_format_ktid(FMT) (kprint_dataFormat)(FMT&0x0000ffff)
+#define kp_fmt_fgColorSet(FMT) (bool)((FMT&0x80000000)!=0)
+#define kp_fmt_bgColorSet(FMT) (bool)((FMT&0x40000000)!=0)
+#define kp_fmt_withPrefix(FMT) (bool)((FMT&kp_pre)!=0)
+#define kp_fmt_withPostfix(FMT) (bool)((FMT&kp_post)!=0)
+#define kp_fmt_isUpper(FMT) (bool)((FMT&kp_upper)!=0)
+#define kp_fmt_fgColor(FMT) (kp_fgColor)(FMT&0x8f000000)
+#define kp_fmt_bgColor(FMT) (kp_bgColor)(FMT&0x40f00000)
+#define kp_fmt_dataFormat(FMT) (kp_dataFmt)(FMT&0x000f0000)
+#define kp_fmt_ktid(FMT) (ktid)(FMT&0x0000ffff)
 
 #if __cplusplus
 }
