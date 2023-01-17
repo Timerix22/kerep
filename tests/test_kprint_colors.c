@@ -5,11 +5,11 @@
 #endif
 
 #define testColor(COLOR) \
-    kprint_setColor(kp_bgBlack | kp_fg##COLOR);\
+    kprint_setColor(kp_bgBlack|kp_fg##COLOR);\
     kprintf(#COLOR " ");\
-    kprint_setColor(kp_bg##COLOR | kp_fgGray);\
+    kprint_setColor(kp_bg##COLOR|kp_fgGray);\
     kprintf(#COLOR);\
-    kprint_setColor(kp_bgBlack | kp_fgBlack);\
+    kprint_setColor(kp_bgBlack|kp_fgBlack);\
     kprintf("\n");
 
 void test_kprint_colors(){
@@ -44,7 +44,5 @@ void test_kprint_colors(){
     testColor(Magenta);
     testColor(Cyan);
     testColor(White);
-    kprint_setColor(kp_bgBlack | kp_fgGray);
-
-    kprint(kprint_fmtInt | kp_fgCyan, 8888, kprint_fmtString | kp_fgYellow, "  ooo  ", kprint_fmtFloat | kp_bgGreenD | kp_fgRed, 4.01, kprint_fmtString | kp_fgWhite, "\ngg\n");
+    kprint_setColor(kp_bgBlack|kp_fgGray);
 }

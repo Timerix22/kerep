@@ -34,7 +34,14 @@ Maybe __next_toString(kp_fmt f, __kp_value_union* object){
     return SUCCESS(UniHeapPtr(char, typeDesc.toString(object, f)));
 }
 
+Maybe check_argsN(uint8 n){
+    if(n%2 != 0) safethrow("kprint recieved non-even number of arguments",;);
+    if(n > 32) safethrow("kprint recieved >32 number of arguments",;);
+    return MaybeNull;
+}
+
 Maybe __ksprint(uint8 n, kp_fmt* formats, __kp_value_union* objects){
+    try(check_argsN(n), _,;);
     n/=2;
     StringBuilder* strb=StringBuilder_create();
     for(uint8 i=0; i<n; i++){
@@ -47,6 +54,7 @@ Maybe __ksprint(uint8 n, kp_fmt* formats, __kp_value_union* objects){
 }
 
 Maybe __kfprint(FILE* file, uint8 n, kp_fmt* formats, __kp_value_union* objects){
+    try(check_argsN(n), _,;);
     n/=2;
     for(uint8 i=0; i<n; i++){
         try(__next_toString(formats[i], &objects[i]),maybeStr,;);
@@ -59,6 +67,7 @@ Maybe __kfprint(FILE* file, uint8 n, kp_fmt* formats, __kp_value_union* objects)
 }
 
 void __kprint(uint8 n, kp_fmt* formats, __kp_value_union* objects){
+    tryLast(check_argsN(n), _);
     n/=2;
     for(uint8 i=0; i<n; i++){
         kp_fmt fmt=formats[i];
