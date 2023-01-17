@@ -33,11 +33,11 @@ typedef enum kprint_dataFormat{
 
 typedef uint32 kprint_format;
 
-#define kprint_format_fgColorChanged(FMT) (FMT&0x80000000)
-#define kprint_format_bgColorChanged(FMT) (FMT&0x40000000)
-#define kprint_format_withPrefix(FMT) (FMT&kprint_fmtWithPrefix)
-#define kprint_format_withPostfix(FMT) (FMT&kprint_fmtWithPostfix)
-#define kprint_format_uppercase(FMT) (FMT&kprint_fmtUppercase)
+#define kprint_format_isFgColorChanged(FMT) (bool)((FMT&0x80000000)!=0)
+#define kprint_format_isBgColorChanged(FMT) (bool)((FMT&0x40000000)!=0)
+#define kprint_format_isWithPrefix(FMT) (bool)((FMT&kprint_fmtWithPrefix)!=0)
+#define kprint_format_isWithPostfix(FMT) (bool)((FMT&kprint_fmtWithPostfix)!=0)
+#define kprint_format_isUppercase(FMT) (bool)((FMT&kprint_fmtUppercase)!=0)
 #define kprint_format_fgColor(FMT) (kprint_fgColor)(FMT&0x8f000000)
 #define kprint_format_bgColor(FMT) (kprint_bgColor)(FMT&0x40f00000)
 #define kprint_format_dataFormat(FMT) (kprint_dataFormat)(FMT&0x000f0000)

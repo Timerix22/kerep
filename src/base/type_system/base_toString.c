@@ -19,7 +19,7 @@ char* __toString_char(void* c, uint32 fmt) {
 
 char* __toString_bool(void* c, uint32 fmt) {
     static const char _strbool[4][6]={ "false", "true\0", "False", "True\0" };
-    uint8 strind=*(bool*)c==1 + kprint_format_uppercase(fmt)*2;
+    uint8 strind=*(bool*)c==1 + kprint_format_isUppercase(fmt)*2;
     char* rez=malloc(6);
     rez[0]=_strbool[strind][0];
     rez[1]=_strbool[strind][1];
@@ -139,9 +139,9 @@ char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
             int##BITS n=*(int##BITS*)_n;\
             return toString_int(n);\
         case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, kprint_format_withPrefix(f));\
+            return toString_bin(_n, BITS/8, kprint_format_isWithPrefix(f));\
         case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
+            return toString_hex(_n, BITS/8, kprint_format_isWithPrefix(f), kprint_format_isUppercase(f));\
         default:\
             kprintf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
@@ -157,11 +157,11 @@ __toString_int_def(64)
     switch(kprint_format_dataFormat(f)){\
         case kprint_fmtUInt: ;\
             uint##BITS n=*(uint##BITS*)_n;\
-            return toString_uint(n, kprint_format_withPostfix(f), kprint_format_uppercase(f));\
+            return toString_uint(n, kprint_format_isWithPostfix(f), kprint_format_isUppercase(f));\
         case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, kprint_format_withPrefix(f));\
+            return toString_bin(_n, BITS/8, kprint_format_isWithPrefix(f));\
         case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
+            return toString_hex(_n, BITS/8, kprint_format_isWithPrefix(f), kprint_format_isUppercase(f));\
         default:\
             kprintf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\
@@ -177,11 +177,11 @@ __toString_uint_def(64)
     switch(kprint_format_dataFormat(f)){\
         case kprint_fmtFloat: ;\
             float##BITS n=*(float##BITS*)_n;\
-            return toString_float(n, kprint_format_withPostfix(f), kprint_format_uppercase(f));\
+            return toString_float(n, kprint_format_isWithPostfix(f), kprint_format_isUppercase(f));\
         case kprint_fmtBin:\
-            return toString_bin(_n, BITS/8, kprint_format_withPrefix(f));\
+            return toString_bin(_n, BITS/8, kprint_format_isWithPrefix(f));\
         case kprint_fmtHex:\
-            return toString_hex(_n, BITS/8, kprint_format_withPrefix(f), kprint_format_uppercase(f));\
+            return toString_hex(_n, BITS/8, kprint_format_isWithPrefix(f), kprint_format_isUppercase(f));\
         default:\
             kprintf("\n%u\n", kprint_format_dataFormat(f));\
             throw(ERR_FORMAT);\

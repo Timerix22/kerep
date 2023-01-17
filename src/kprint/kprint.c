@@ -124,24 +124,24 @@ DWORD kprint_bgColor_toWin(kprint_bgColor f){
 
 void kprint_setColor(kprint_format f){
     DWORD color=0;
-    if(!kprint_format_fgColorChanged(f) & !kprint_format_bgColorChanged(f))
+    if(!kprint_format_isFgColorChanged(f) & !kprint_format_isBgColorChanged(f))
         return;
-    if(kprint_format_fgColorChanged(f))
+    if(kprint_format_isFgColorChanged(f))
         color+=kprint_fgColor_toWin(kprint_format_fgColor(f));
-    if(kprint_format_bgColorChanged(f))
+    if(kprint_format_isBgColorChanged(f))
         color+=kprint_bgColor_toWin(kprint_format_bgColor(f));
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
 }
 #else
 void kprint_setColor(kprint_format f){
-    if(kprint_format_fgColorChanged(f)){
+    if(kprint_format_isFgColorChanged(f)){
         uint8 fg=(f&0x0f000000)>>24;
         if(fg<8) fg+=30;
         else fg+=90-8;
         printf("\e[%um", fg);
     }
-    if(kprint_format_bgColorChanged(f)){
+    if(kprint_format_isBgColorChanged(f)){
         uint8 bg=(f&0x00f00000)>>20;
         if(bg<8) bg+=40;
         else bg+=100-8;
