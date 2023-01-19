@@ -20,7 +20,14 @@ typedef union {
     float64 f64;
     void* ptr;
 } __kp_value_union; 
-#define __kpVU(value) (__kp_value_union){ value }
+
+
+static inline __kp_value_union __kpVU_f(float64 f) { return (__kp_value_union){ .f64=f }; } 
+inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i64=f }; } 
+
+#define __kpVU_selectType(V) _Generic(V, float: __kpVU_f, double: __kpVU_f, default: __kpVU_i)(V)
+
+#define __kpVU(V) __kpVU_selectType(V)
 
 #define __kp_argsToFmts8(\
     a0, a1, a2, a3, a4, a5, a6, a7,...)\
