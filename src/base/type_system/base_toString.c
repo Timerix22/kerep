@@ -83,6 +83,17 @@ char* toString_float(float64 n, bool withPostfix, bool uppercase){
     return cptr_copy("<float>");
 }
 
+#define byte_to_bits(byte) {\
+    str[cn++]='0' + (uint8)((byte>>7)&1); /* 8th bit */\
+    str[cn++]='0' + (uint8)((byte>>6)&1); /* 7th bit */\
+    str[cn++]='0' + (uint8)((byte>>5)&1); /* 6th bit */\
+    str[cn++]='0' + (uint8)((byte>>4)&1); /* 5th bit */\
+    str[cn++]='0' + (uint8)((byte>>3)&1); /* 4th bit */\
+    str[cn++]='0' + (uint8)((byte>>2)&1); /* 3th bit */\
+    str[cn++]='0' + (uint8)((byte>>1)&1); /* 2th bit */\
+    str[cn++]='0' + (uint8)((byte>>0)&1); /* 1th bit */\
+}
+
 char* toString_bin(void* _bytes, uint32 size, bool inverse, bool withPrefix){
     char* bytes=_bytes;
     char* str=malloc(size*8 + (withPrefix?2:0) +1);
@@ -92,23 +103,18 @@ char* toString_bin(void* _bytes, uint32 size, bool inverse, bool withPrefix){
         str[cn++]='b';
     }
     if(inverse){
-        for(int32 bn=size-1; bn>=0; bn--){ // byte number
-            unsigned char byte=bytes[bn];
-            for(uint8 i=0; i<8; i++)
-                str[cn++]='0' + (byte & (char)128>>i);
-        }
-    }
-    else{
-        for(uint32 bn=0; bn<size; bn++){
-            unsigned char byte=bytes[bn];
-            for(uint8 i=0; i<8; i++)
-                str[cn++]='0' + (byte & (char)128>>i);
-        }
+        // byte number
+        for(int32 bn=size-1; bn>=0; bn--)
+            byte_to_bits(bytes[bn])
+    } else {
+        for(int32 bn=0; bn<size; bn++)
+            byte_to_bits(bytes[bn])
     }
     str[cn]=0;
     return str;
 }
 
+// converts number from 0 to F to char
 char _4bitsHex(uint8 u, bool uppercase){
     switch(u){
         case 0: case 1: case 2: case 3: case 4:
@@ -134,7 +140,8 @@ char* toString_hex(void* _bytes, uint32 size, bool inverse, bool withPrefix, boo
     }
     // left to right
     if(inverse){
-        for(int32 bn=size-1; bn>=0; bn--){ // byte number
+        // byte number
+        for(int32 bn=size-1; bn>=0; bn--){ 
             unsigned char byte=bytes[bn];
             str[cn++]=_4bitsHex(byte/16, uppercase);
             str[cn++]=_4bitsHex(byte%16, uppercase);
