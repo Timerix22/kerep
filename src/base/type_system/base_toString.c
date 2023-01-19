@@ -61,27 +61,24 @@ char* toString_uint(uint64 n, bool withPostfix, bool uppercase){
     return cptr_copy((char*)str+i);
 }
 
-char* toString_float(float64 n, bool withPostfix, bool uppercase){
-    // int64 d=n;
-    // float64 r=n-d;
-    // char* strint=toString_int(d);
-    // char strfract[32];
-    // uint8 i=0;
-    // strfract[i++]='.';
-    // while(r!=0){
-    //     r*=10.0;
-    //     char fc=r;
-    //     strfract[i++]=fc;
-    //     r-=fc;
-    // }
-    // if(withPostfix)
-    //     strfract[i++]= uppercase ? 'F' : 'f';
-    // strfract[i]=0;
-    // char* str==cptr_concat(strint, strfract);
-    // free(strint);
-    // return str;
-    return cptr_copy("<float>");
+#define _toString_float_impl(bufsize, maxPrecision) {\
+    char str[bufsize];\
+    if(precision>maxPrecision)\
+        throw("too big precision");\
+    if(precision==0)\
+        precision=toString_float_default_precision;\
+    int cn=sprintf(str, "%.*f", precision, n);\
+    if(withPostfix)\
+        str[cn++]= uppercase ? 'F' : 'f';\
+    str[cn]='\0';\
+    return cptr_copy(str);\
 }
+
+char* toString_float32(float32 n, uint8 precision, bool withPostfix, bool uppercase)
+    _toString_float_impl(48, toString_float32_max_precision)
+
+char* toString_float64(float64 n, uint8 precision, bool withPostfix, bool uppercase)
+    _toString_float_impl(512, toString_float64_max_precision)
 
 #define byte_to_bits(byte) {\
     str[cn++]='0' + (uint8)((byte>>7)&1); /* 8th bit */\
@@ -204,7 +201,7 @@ __toString_uint_def(64)
     switch(kp_fmt_dataFormat(f)){\
         case kp_f: ;\
             float##BITS n=*(float##BITS*)_n;\
-            return toString_float(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
+            return toString_float64(n, toString_float_default_precision, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
         case kp_b:\
             return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
         case kp_h:\

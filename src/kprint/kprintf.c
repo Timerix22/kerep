@@ -69,27 +69,13 @@ void kprintf(const char* format, ...){
                     break;
                 case 'f':
                     // float32 is promoted to float64 when passed through '...'
-                    argstr=toString_float(va_arg(vl, float64),0,0);
+                    argstr=toString_float64(va_arg(vl, float64), toString_float_default_precision,0,0);
                     break;
                case 'l':
                     l=true;
                     if((c=format[i++]))
                         goto format_escape_seq;
                     break;
-                    // switch (c) {
-                    //     case 'u':
-                    //         argstr=toString_uint(va_arg(vl, uint64),0,0);
-                    //         break;
-                    //     case 'i':
-                    //         argstr=toString_int(va_arg(vl, uint64));
-                    //         break;
-                    //     case 'f':
-                    //         argstr=toString_float(va_arg(vl, float64),0,0);
-                    //         break;
-                    //     default:
-                    //         throw(ERR_FORMAT);
-                    // }
-                    // break;
                 case 'p':
                 case 'x': ;
                     uint64 px=va_arg(vl, uint64);
