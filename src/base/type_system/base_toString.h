@@ -25,11 +25,12 @@ char* __toString_uint64(void* n, uint32 fmt);
 
 char* toString_float(float64 n, bool withPostfix, bool uppercase); // very bad implimentation
 char* __toString_float32(void* n, uint32 fmt);
-char* __toString_float64(void* n, uint32 fmt);
+char* __toString_float64(void* n, uint32 fmt); 
 
-// universal functions
-char* toString_bin(void* bytes, uint32 size, bool withPrefix);
-char* toString_hex(void* bytes, uint32 size, bool withPrefix, bool uppercase);
+///@param inverse set to true for little endian numbers (their bytes are in reverse order)
+char* toString_bin(void* bytes, uint32 size, bool inverse, bool withPrefix);
+///@param inverse set to true for little endian numbers (their bytes are in reverse order)
+char* toString_hex(void* bytes, uint32 size, bool inverse, bool withPrefix, bool uppercase);
 
 #if __cplusplus
 }

@@ -83,18 +83,27 @@ char* toString_float(float64 n, bool withPostfix, bool uppercase){
     return cptr_copy("<float>");
 }
 
-char* toString_bin(void* _bytes, uint32 size, bool withPrefix){
+char* toString_bin(void* _bytes, uint32 size, bool inverse, bool withPrefix){
     char* bytes=_bytes;
     char* str=malloc(size*8 + (withPrefix?2:0) +1);
-    uint32 cn=0;
+    uint32 cn=0; // char number
     if(withPrefix){
         str[cn++]='0';
         str[cn++]='b';
     }
-    for(uint32 bn=0; bn<size; bn++){
-        unsigned char byte=bytes[bn];
-        for(uint8 i=0; i<8; i++)
-            str[cn++]='0' + (byte & (char)128>>i);
+    if(inverse){
+        for(int32 bn=size-1; bn>=0; bn--){ // byte number
+            unsigned char byte=bytes[bn];
+            for(uint8 i=0; i<8; i++)
+                str[cn++]='0' + (byte & (char)128>>i);
+        }
+    }
+    else{
+        for(uint32 bn=0; bn<size; bn++){
+            unsigned char byte=bytes[bn];
+            for(uint8 i=0; i<8; i++)
+                str[cn++]='0' + (byte & (char)128>>i);
+        }
     }
     str[cn]=0;
     return str;
@@ -115,18 +124,29 @@ char _4bitsHex(uint8 u, bool uppercase){
     }
 }
 
-char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
+char* toString_hex(void* _bytes, uint32 size, bool inverse, bool withPrefix, bool uppercase){
     char* bytes=_bytes;
     char* str=malloc(size*2 + (withPrefix?2:0) + 1);
-    uint32 cn=0;
+    uint32 cn=0; // char number
     if(withPrefix){
         str[cn++]='0';
         str[cn++]='x';
     }
-    for(uint32 bn=0; bn<size; bn++){
-        unsigned char byte=bytes[bn];
-        str[cn++]=_4bitsHex(byte%16, uppercase);
-        str[cn++]=_4bitsHex(byte/16, uppercase);
+    // left to right
+    if(inverse){
+        for(int32 bn=size-1; bn>=0; bn--){ // byte number
+            unsigned char byte=bytes[bn];
+            str[cn++]=_4bitsHex(byte/16, uppercase);
+            str[cn++]=_4bitsHex(byte%16, uppercase);
+        }
+    }
+    // right to left
+    else {
+        for(int32 bn=0; bn<size; bn++){ // byte number
+            unsigned char byte=bytes[bn];
+            str[cn++]=_4bitsHex(byte/16, uppercase);
+            str[cn++]=_4bitsHex(byte%16, uppercase);
+        }
     }
     str[cn]=0;
     return str;
@@ -139,9 +159,9 @@ char* toString_hex(void* _bytes, uint32 size, bool withPrefix, bool uppercase){
             int##BITS n=*(int##BITS*)_n;\
             return toString_int(n);\
         case kp_b:\
-            return toString_bin(_n, BITS/8, kp_fmt_withPrefix(f));\
+            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
         case kp_h:\
-            return toString_hex(_n, BITS/8, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
+            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
         default:\
             kprintf("\n%u\n", kp_fmt_dataFormat(f));\
             throw(ERR_FORMAT);\
@@ -159,9 +179,9 @@ __toString_int_def(64)
             uint##BITS n=*(uint##BITS*)_n;\
             return toString_uint(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
         case kp_b:\
-            return toString_bin(_n, BITS/8, kp_fmt_withPrefix(f));\
+            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
         case kp_h:\
-            return toString_hex(_n, BITS/8, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
+            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
         default:\
             kprintf("\n%u\n", kp_fmt_dataFormat(f));\
             throw(ERR_FORMAT);\
@@ -179,9 +199,9 @@ __toString_uint_def(64)
             float##BITS n=*(float##BITS*)_n;\
             return toString_float(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
         case kp_b:\
-            return toString_bin(_n, BITS/8, kp_fmt_withPrefix(f));\
+            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
         case kp_h:\
-            return toString_hex(_n, BITS/8, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
+            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
         default:\
             kprintf("\n%u\n", kp_fmt_dataFormat(f));\
             throw(ERR_FORMAT);\

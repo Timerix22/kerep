@@ -93,7 +93,7 @@ void kprintf(const char* format, ...){
                 case 'p':
                 case 'x': ;
                     uint64 px=va_arg(vl, uint64);
-                    argstr=toString_hex(&px,sizeof(px),1,0);
+                    argstr=toString_hex(&px,getEndian()==LittleEndian,sizeof(px),1,0);
                     break;
                 case 's': ;
                     char* cptr=va_arg(vl,char*);
