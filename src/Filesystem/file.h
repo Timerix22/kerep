@@ -13,7 +13,7 @@ Array_declare(FilePath);
 typedef FILE File;
 ktid_declare(File);
 
-typedef enum FileOpenMode{
+PACK_ENUM(FileOpenMode,
     // open a file for reading 
     FileOpenMode_Read=1, 
     // (re)create a file for writing
@@ -24,7 +24,7 @@ typedef enum FileOpenMode{
     FileOpenMode_ReadWrite=FileOpenMode_Read|FileOpenMode_Write, 
     // opens file for readng/writing additional data to the end / creates new file 
     FileOpenMode_ReadAppend=FileOpenMode_Read|FileOpenMode_Append
-} FileOpenMode;
+ )
 
 
 /// @brief opens file

@@ -10,6 +10,7 @@ extern "C" {
 #include "optime.h"
 #include "type_system/type_system.h"
 #include "../kprint/kprintf.h"
+#include "endian.h"
 
 #if __cplusplus
 }

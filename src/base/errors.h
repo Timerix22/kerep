@@ -7,13 +7,13 @@ extern "C" {
 #include "std.h"
 #include "type_system/unitype.h"
 
-typedef enum ErrorId {
+PACK_ENUM(ErrorId,
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, 
     ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR, 
     ERR_KEYNOTFOUND, ERR_FORMAT, ERR_UNEXPECTEDVAL,
     ERR_IO, ERR_IO_EOF
-} ErrorId;
+)
 
 char* errname(ErrorId err);
 

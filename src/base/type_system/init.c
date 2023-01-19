@@ -81,7 +81,7 @@ void ktDescriptors_initKerepTypes(){
 
     // string
     kt_register(string, NULL, NULL);
-    kt_register(string, ____Autoarr_free_string, NULL);
+    kt_register(Autoarr_string, ____Autoarr_free_string, NULL);
     // StringBuilder
     kt_register(StringBuilder, __StringBuilder_free, NULL);
 }

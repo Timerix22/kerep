@@ -53,42 +53,35 @@ void kprintf(const char* format, ...){
     for(char c=format[i++]; c!=0; c=format[i++]){
         if(c=='%'){
             char* argstr=NULL;
+            bool l=false;
             c=format[i++];
             format_escape_seq:
             switch (c) {
                 case 'u':
-                    argstr=toString_uint(va_arg(vl, uint64),0,0);
+                    argstr=toString_uint(
+                        l ? va_arg(vl, uint64) : va_arg(vl, uint32)
+                        ,0,0);
                     break;
                 case 'i': case 'd':
-                    argstr=toString_int(va_arg(vl, uint64));
+                    argstr=toString_int(
+                        l ? va_arg(vl, int64) : va_arg(vl, int32)
+                        );
                     break;
                 case 'f':
-                    argstr=toString_float(va_arg(vl, float64),0,0);
+                    // float32 is promoted to float64 when passed through '...'
+                    argstr=toString_float64(va_arg(vl, float64), toString_float_default_precision,0,0);
                     break;
                case 'l':
+                    l=true;
                     if((c=format[i++]))
                         goto format_escape_seq;
                     break;
-                    // switch (c) {
-                    //     case 'u':
-                    //         argstr=toString_uint(va_arg(vl, uint64),0,0);
-                    //         break;
-                    //     case 'i':
-                    //         argstr=toString_int(va_arg(vl, uint64));
-                    //         break;
-                    //     case 'f':
-                    //         argstr=toString_float(va_arg(vl, float64),0,0);
-                    //         break;
-                    //     default:
-                    //         throw(ERR_FORMAT);
-                    // }
-                    // break;
                 case 'p':
-                case 'x':
+                case 'x': ;
                     uint64 px=va_arg(vl, uint64);
-                    argstr=toString_hex(&px,sizeof(px),1,0);
+                    argstr=toString_hex(&px,getEndian()==LittleEndian,sizeof(px),1,0);
                     break;
-                case 's':
+                case 's': ;
                     char* cptr=va_arg(vl,char*);
                     if(!cptr)
                         cptr="<nullstr>";

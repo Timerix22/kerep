@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-// cross-platform kprintf analog
+// cross-platform printf analog
 void kprintf(const char* format, ...);
 
 #if __cplusplus
