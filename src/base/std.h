@@ -118,6 +118,10 @@ You can even embed it into macro in header (see kprint.h)
     CODE;\
     PRAGMA_WARNING_POP
 
+#define PACK_ENUM(ENUM_NAME, ENUM_MEMBERS...) typedef enum ENUM_NAME {\
+    ENUM_MEMBERS\
+} __attribute__((__packed__)) ENUM_NAME;
+
 #if __cplusplus
 }
 #endif

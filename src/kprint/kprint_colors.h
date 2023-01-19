@@ -8,7 +8,7 @@ extern "C" {
 //         ^   ^^^^
 //         |   color num
 // fgColorSet flag   
-typedef enum kp_fgColor{
+PACK_ENUM(kp_fgColor,
     /// black foreground
     kp_fgBlack   = 0x80000000,
     /// dark red foreground
@@ -41,12 +41,12 @@ typedef enum kp_fgColor{
     kp_fgCyan    = 0x8e000000,
     /// white foreground
     kp_fgWhite      = 0x8f000000 
-} kp_fgColor;
+)
 
 //          01000000 00000000  00000000 00000000
 //           ^       ^^^^
 // bgColorSet flag   color num
-typedef enum kp_bgColor{
+PACK_ENUM(kp_bgColor,
     /// black background
     kp_bgBlack   = 0x40000000,
     /// dark red background
@@ -78,8 +78,8 @@ typedef enum kp_bgColor{
     /// cyan background
     kp_bgCyan    = 0x40e00000,
     /// white background
-    kp_bgWhite   = 0x40f00000 
-} kp_bgColor;
+    kp_bgWhite   = 0x40f00000
+)
 
 #if __cplusplus
 }

@@ -10,7 +10,7 @@ extern "C" {
 /// kprint_format
 typedef uint32 kp_fmt;
 
-typedef enum kp_dataFmt{
+PACK_ENUM(kp_dataFmt,
 // 00000000 00000000  00000000 00000000
 //              ^^^^
 //              type
@@ -32,7 +32,7 @@ typedef enum kp_dataFmt{
 //    ^
 // uppercase flag
     kp_upper=0x10000000
-} kp_dataFmt;
+)
 
 #define kp_fmt_fgColorSet(FMT) (bool)((FMT&0x80000000)!=0)
 #define kp_fmt_bgColorSet(FMT) (bool)((FMT&0x40000000)!=0)
