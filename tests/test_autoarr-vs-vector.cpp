@@ -7,34 +7,28 @@ int64 _autoarrVsVector(uint16 blockCount, uint16 blockLength){
     kprintf("\e[94mblock count: %u block length: %u count: " IFWIN("%llu", "%lu") "\n", blockCount, blockLength, (uint64)count);
     Autoarr_int64* ar=Autoarr_create(int64, blockCount, blockLength);
     std::vector<int64> vec=std::vector<int64>();
-    optime("Autoarr_add", 1, ({
-        for(uint32 i=0; i< count; i++)
-            Autoarr_add(ar, i);
-    }));
-    optime("vector_push_back", 1, ({
-        for(uint32 i=0; i< count; i++)
-            vec.push_back(i);
-    }));
+    optime("Autoarr_add", count,
+        Autoarr_add(ar, op_i));
+    optime("vector_push_back", count, 
+        vec.push_back(op_i));
     int64 t=0;
-    optime("Autoarr_get", 1, ({
-        for(uint32 i=0; i< count; i++)
-            t=Autoarr_get(ar, i);
-    }));
-    optime("vector_get", 1, ({
-        for(uint32 i=0; i< count; i++)
-            t=vec[i];
-    }));
+    optime("Autoarr_get", count,
+        t=Autoarr_get(ar, op_i));
+    optime("vector_get", count,
+        t=vec[op_i]);
     Autoarr_free(ar, true);
     return t;
 }
 
 void test_autoarrVsVector(){
-    kprintf("\e[96m-------[test_autoarr_vs_vector]-------\n");
-    _autoarrVsVector(4, 16);
-    _autoarrVsVector(16, 64);
-    _autoarrVsVector(32, 32);
-    _autoarrVsVector(64, 64);
-    _autoarrVsVector(32, 1024);
-    _autoarrVsVector(256, 256);
-    _autoarrVsVector(1024, 1024);
+    optime(__func__, 1, ({
+        kprintf("\e[96m-------[test_autoarr_vs_vector]-------\n");
+        _autoarrVsVector(4, 16);
+        _autoarrVsVector(16, 64);
+        _autoarrVsVector(32, 32);
+        _autoarrVsVector(64, 64);
+        _autoarrVsVector(32, 1024);
+        _autoarrVsVector(256, 256);
+        _autoarrVsVector(1024, 1024);
+    }));
 }
