@@ -1,3 +1,9 @@
+#pragma once
+
+#if __cplusplus
+extern "C" {
+#endif
+
 #include "std.h"
 
 PACK_ENUM(Endian,
@@ -7,3 +13,7 @@ PACK_ENUM(Endian,
 );
 
 Endian getEndian();
+
+#if __cplusplus
+}
+#endif

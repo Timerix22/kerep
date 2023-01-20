@@ -31,7 +31,7 @@ static inline Array_##type Array_##type##_fromBuffer(type* buffer, uint32 buffer
     };\
 }\
 \
-static inline void Array_##type##_freeValues(Array_##type* array){\
+static inline void Array_##type##_free(Array_##type* array){\
     if(array->allocatedOnHeap)\
         free(array->values);\
 }

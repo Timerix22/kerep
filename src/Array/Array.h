@@ -22,6 +22,10 @@ Array_declare(uint64)
 
 Array_declare(Unitype)
 
+/// use this function instead of auto generated
+void Array_Unitype_free_(Array_Unitype* array, bool freeMembers);
+void __Array_Unitype_free_(void* ar);
+
 #if __cplusplus
 }
 #endif

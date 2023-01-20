@@ -5,6 +5,7 @@ extern "C" {
 #endif
 
 #include "../base/base.h"
+#include "../Array/Array.h"
 
 // my fixed length string struct
 // doesn't store '\0' at the end
@@ -13,6 +14,7 @@ typedef struct string{
     uint64 length;  // amount of chars in ptr value
 } string;
 ktid_declare(string);
+Array_declare(string);
 
 static const string stringNull={NULL,0};
 
