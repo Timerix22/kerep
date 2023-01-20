@@ -86,7 +86,7 @@ Maybe file_readAll(File* file, char** allBytes){
     uint64 i=0;
     while(true){
         rezult=fgetc(file);
-        if(rezult!=EOF){
+        if(rezult==EOF){
             if(ferror(file)) 
                 safethrow(ERR_IO,; StringBuilder_free(sb));
             break;
