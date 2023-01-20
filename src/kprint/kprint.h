@@ -23,7 +23,7 @@ typedef union {
 
 
 static inline __kp_value_union __kpVU_f(float64 f) { return (__kp_value_union){ .f64=f }; } 
-inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i64=f }; } 
+static inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i64=f }; } 
 
 #define __kpVU_selectType(V) _Generic(V, float: __kpVU_f, double: __kpVU_f, default: __kpVU_i)(V)
 
