@@ -91,7 +91,7 @@ Maybe file_readAll(File* file, char** allBytes){
                 safethrow(ERR_IO,; StringBuilder_free(sb));
             break;
         }
-        buffer[i]=(char)rezult;
+        buffer[i%sizeof(buffer)]=(char)rezult;
         i++;
         if(!(i%sizeof(buffer)))
             StringBuilder_append_string(sb,bufStr);
