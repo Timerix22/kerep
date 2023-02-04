@@ -16,7 +16,7 @@ Array_define(uint64)
 Array_define(Unitype)
 
 void Array_Unitype_free_(Array_Unitype* array, bool freeMembers){
-    if(freeMembers) for (int32 i; i<array->length; i++)
+    if(freeMembers) for (int32 i=0; i<array->length; i++)
         Unitype_free(array->values[i]);
     if(array->allocatedOnHeap)
         free(array->values);
