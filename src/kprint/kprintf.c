@@ -133,7 +133,7 @@ void kprintf(const char* format, ...){
             putc(c,stdout);
         }
         #if defined(_WIN64) || defined(_WIN32)
-        end_iteration:
+        end_iteration:;
         #endif
     }
     va_end(vl);
