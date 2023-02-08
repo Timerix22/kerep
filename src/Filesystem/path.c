@@ -53,3 +53,22 @@ Maybe path_throwIfEscapes(char* path){
         safethrow(cptr_concat("path <",path,"> uses <..>, that's not allowed"),);
     return MaybeNull;
 }
+
+char* path_parentDir(char* dir){
+    throw(ERR_NOTIMPLEMENTED);
+    char* copy=cptr_copy(dir);
+    uint32 length=cptr_length(copy);
+    int i=cptr_lastIndexOfChar(copy,path_sep);
+    if(i==length-1){
+        copy[length-1]=0;
+        i=cptr_lastIndexOfChar(copy,path_sep);
+    }
+    if(i==-1){
+        free(copy);
+        copy=malloc(3);
+        copy[0]='.';
+        copy[1]=path_sep;
+        copy[2]=0;
+    }
+    return copy;
+}

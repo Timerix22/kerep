@@ -57,6 +57,41 @@ uint32 cptr_indexOf(char* ptr, char* fragment){
             if(fragment[fi]==0)
                 return si-fi+1;
         }
+        else fi=0;
+    }
+    return -1;
+}
+uint32 cptr_indexOfChar(char* ptr, char fragment){
+    char sc=*ptr;
+    for(int si=0; sc!=0; si++){
+        sc=ptr[si];
+        if(sc==fragment){
+            return si;
+        }
+    }
+    return -1;
+}
+uint32 cptr_lastIndexOf(char* ptr, char* fragment){
+    char sc=*ptr;
+    int fi_last=cptr_length(fragment)-1;
+    for(int si=cptr_length(ptr)-1, fi=fi_last; si>=0; si--){
+        sc=ptr[si];
+        if(sc==fragment[fi]){
+            if(fi==0)
+                return si;
+            fi--;
+        }
+        else fi=fi_last;
+    }
+    return -1;
+}
+uint32 cptr_lastIndexOfChar(char* ptr, char fragment){
+    char sc=*ptr;
+    for(int si=cptr_length(ptr)-1; si>=0; si--){
+        sc=ptr[si];
+        if(sc==fragment){
+            return si;
+        }
     }
     return -1;
 }

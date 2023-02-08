@@ -1,7 +1,31 @@
 #include "file.h"
 #include "../String/StringBuilder.h"
+#include "io_includes.h"
 
 ktid_define(File);
+
+bool file_exists(char* path){
+    
+    // tryLast(path_throwIfEscapes(path));
+
+#if KFS_USE_WINDOWS_H
+    DWORD dwAttrib = GetFileAttributes(path);
+    return (bool)(
+        (dwAttrib != INVALID_FILE_ATTRIBUTES) & // file exists
+        !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)); // file is not directory
+#else
+    struct stat stats;
+    int rez=stat(path, &stats);
+    return (bool)(
+        (rez!=-1) & // file exists
+        !(S_ISDIR(stats.st_mode))); // file is not directory
+#endif
+}
+
+Maybe file_delete(char* path, bool recursive){
+    throw(ERR_NOTIMPLEMENTED);
+    return MaybeNull;
+}
 
 char* FileOpenMode_toStr(FileOpenMode m){
     char* p;
@@ -18,7 +42,7 @@ char* FileOpenMode_toStr(FileOpenMode m){
     return p;
 }
 
-Maybe file_open(FilePath path, FileOpenMode mode){
+Maybe file_open(char* path, FileOpenMode mode){
     File* file=fopen(path, FileOpenMode_toStr(mode));
     if(!file)
         safethrow(cptr_concat("can't open file ", (char*)path),;);

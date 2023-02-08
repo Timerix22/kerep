@@ -8,10 +8,13 @@ extern "C" {
 #include "../Array/Array.h"
 #include "../String/string.h"
 
-typedef char* FilePath;
-Array_declare(FilePath);
 typedef FILE File;
 ktid_declare(File);
+
+bool file_exists(char* path);
+
+///@return Maybe<void>
+Maybe file_delete(char* path, bool recursive);
 
 PACK_ENUM(FileOpenMode,
     // open a file for reading 
@@ -24,14 +27,13 @@ PACK_ENUM(FileOpenMode,
     FileOpenMode_ReadWrite=FileOpenMode_Read|FileOpenMode_Write, 
     // opens file for readng/writing additional data to the end / creates new file 
     FileOpenMode_ReadAppend=FileOpenMode_Read|FileOpenMode_Append
- )
-
+)
 
 /// @brief opens file
 /// @param path path to file
 /// @param mode Read/Write/Append/ReadWrite/ReadAppend
 /// @return Maybe<File*>
-Maybe file_open(FilePath path, FileOpenMode mode);
+Maybe file_open(char* path, FileOpenMode mode);
 
 /// @brief closes file descriptor
 /// @return Maybe<void>

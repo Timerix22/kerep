@@ -31,6 +31,8 @@ char* path_fixSeparators(char* path);
 /// @return Maybe<void>
 Maybe path_throwIfEscapes(char* path);
 
+char* path_parentDir(char* dir);
+
 #if __cplusplus
 }
 #endif

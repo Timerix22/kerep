@@ -25,6 +25,15 @@ bool cptr_endsWith(char* ptr, char* fragment);
 /// @brief search for <fragment> in <ptr>
 /// @return index of first <fragment> inclusion or -1 if not found
 uint32 cptr_indexOf(char* ptr, char* fragment);
+/// @brief search for <fragment> in <ptr>
+/// @return index of first <fragment> inclusion or -1 if not found
+uint32 cptr_indexOfChar(char* ptr, char fragment);
+/// @brief search for <fragment> in <ptr>
+/// @return index of last <fragment> inclusion or -1 if not found
+uint32 cptr_lastIndexOf(char* ptr, char* fragment);
+/// @brief search for <fragment> in <ptr>
+/// @return index of last <fragment> inclusion or -1 if not found
+uint32 cptr_lastIndexOfChar(char* ptr, char fragment);
 
 static inline bool cptr_contains(char* ptr, char* fragment){
     // if(cptr_indexOf(ptr, fragment)==-1)
