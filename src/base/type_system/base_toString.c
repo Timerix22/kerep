@@ -67,7 +67,10 @@ char* toString_uint(uint64 n, bool withPostfix, bool uppercase){
         throw("too big precision");\
     if(precision==0)\
         precision=toString_float_default_precision;\
-    int cn=sprintf(str, "%.*f", precision, n);\
+    int cn=IFMSC(\
+        sprintf_s(str, bufsize, "%.*f", precision, n),\
+        sprintf(str, "%.*f", precision, n)\
+    );\
     /* remove trailing zeroes except .0*/\
     while(str[cn-1]=='0' && str[cn-2]!='.')\
         cn--;\

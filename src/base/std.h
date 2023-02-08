@@ -67,7 +67,7 @@ typedef uint8 bool;
 #endif
 
 #ifndef sprintf_s
-    #define sprintf_s(BUF, BUFSIZE, FORMAT, ...) sprintf(BUF, FORMAT, ## __VA_ARGS__)
+    //#define sprintf_s(BUF, BUFSIZE, FORMAT, ...) sprintf(BUF, FORMAT, ## __VA_ARGS__)
 #endif
 
 
