@@ -50,24 +50,40 @@ char* __unknownErr( );
 )(E)
 
 #if __cplusplus
-    #define throw_id(E) __EXIT(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)))
-    #define throw_msg(E) __EXIT(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)))
+#define throw_id(E) __EXIT(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)))
+#define throw_msg(E) __EXIT(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)))
+
+#define safethrow_id(E, FREEMEM) { FREEMEM;\
+    __RETURN_EXCEPTION(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)));\
+}
+#define safethrow_msg(E, FREEMEM) { FREEMEM;\
+    __RETURN_EXCEPTION(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)));\
+}
+
+#define try_cpp(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
+    freeMem;\
+    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
+    return _rezult;\
+}
+
 #else
-    #define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
-    #define safethrow(E, FREEMEM) { FREEMEM; __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); }
+#define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
+
+#define safethrow(E, FREEMEM) { FREEMEM;\
+    __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)));\
+}
 
 #define try(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
-        freeMem;\
-        _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
-        return _rezult;\
-    }
+    freeMem;\
+    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
+    return _rezult;\
+}
+#endif
 
 #define tryLast(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
-        _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
-        __EXIT(_rezult.errmsg);\
-    }
-    
-#endif
+    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
+    __EXIT(_rezult.errmsg);\
+}
 
 #if __cplusplus
 }

@@ -37,7 +37,7 @@ char* __path_concat(uint16 n, ...){
     return output;
 }
 
-char* path_fixSeparators(char* path){
+char* path_fixSeparators(const char* path){
     char* pathCopy=cptr_copy(path);
     char c;
     while((c=*pathCopy)){
@@ -48,14 +48,13 @@ char* path_fixSeparators(char* path){
     return pathCopy;
 }
 
-Maybe path_throwIfEscapes(char* path){
+Maybe path_throwIfEscapes(const char* path){
     if(cptr_contains(path,".."))
         safethrow(cptr_concat("path <",path,"> uses <..>, that's not allowed"),);
     return MaybeNull;
 }
 
 char* path_parentDir(char* dir){
-    throw(ERR_NOTIMPLEMENTED);
     char* copy=cptr_copy(dir);
     uint32 length=cptr_length(copy);
     int i=cptr_lastIndexOfChar(copy,path_sep);
@@ -65,10 +64,9 @@ char* path_parentDir(char* dir){
     }
     if(i==-1){
         free(copy);
-        copy=malloc(3);
+        copy=malloc(2);
         copy[0]='.';
-        copy[1]=path_sep;
-        copy[2]=0;
+        copy[1]=0;
     }
     return copy;
 }

@@ -22,14 +22,14 @@ char* __path_concat(uint16 n, ...);
 /// @brief fixes path separators
 /// @param cstr where can be <path_notSep>
 /// @return new cstr with correct separators 
-char* path_fixSeparators(char* path);
+char* path_fixSeparators(const char* path);
 
 #define path_resolve(PATH_PARTS...) path_fixSeparators(path_concat(PATH_PARTS))
 
 /// @brief calls safethrow() if finds escape sequense in path
 /// @param path cstr where can be <..>
 /// @return Maybe<void>
-Maybe path_throwIfEscapes(char* path);
+Maybe path_throwIfEscapes(const char* path);
 
 char* path_parentDir(char* dir);
 

@@ -1,12 +1,16 @@
-#include "file.h"
+#include "filesystem.h"
 #include "../String/StringBuilder.h"
 #include "io_includes.h"
 
 ktid_define(File);
 
-bool file_exists(char* path){
-    
-    // tryLast(path_throwIfEscapes(path));
+bool file_exists(const char* path){
+    if(path[0]=='.'){
+        if(path[1]==0 || (path[1]==path_sep && path[2]==0))
+            return false; // . or ./ is not a file
+        // else if(path[1]=='.' && path[2]==path_sep)
+        //TODO path_resolve because windows doesnt recognize .\ pattern
+    }
 
 #if KFS_USE_WINDOWS_H
     DWORD dwAttrib = GetFileAttributes(path);
@@ -22,7 +26,7 @@ bool file_exists(char* path){
 #endif
 }
 
-Maybe file_delete(char* path, bool recursive){
+Maybe file_delete(const char* path, bool recursive){
     throw(ERR_NOTIMPLEMENTED);
     return MaybeNull;
 }
@@ -42,7 +46,7 @@ char* FileOpenMode_toStr(FileOpenMode m){
     return p;
 }
 
-Maybe file_open(char* path, FileOpenMode mode){
+Maybe file_open(const char* path, FileOpenMode mode){
     File* file=fopen(path, FileOpenMode_toStr(mode));
     if(!file)
         safethrow(cptr_concat("can't open file ", (char*)path),;);

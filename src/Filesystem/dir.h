@@ -7,21 +7,21 @@ extern "C" {
 #include "../base/base.h"
 #include "file.h"
 
-bool dir_exists(char* path);
+bool dir_exists(const char* path);
 ///@return Maybe<void>
-Maybe dir_create(char* path);
+Maybe dir_create(const char* path);
 ///@return Maybe<void>
-Maybe dir_delete(char* path);
+Maybe dir_delete(const char* path);
 
 ///@return Maybe<Array_string>
-Maybe dir_getFiles(char* path, bool recursive);
+Maybe dir_getFiles(const char* path, bool recursive);
 ///@return Maybe<Array_string>
-Maybe dir_getDirs(char* path, bool recursive);
+Maybe dir_getDirs(const char* path, bool recursive);
 
 ///@return Maybe<Array_string>
-Maybe dir_findFiles(char* path, char* searchPattern, bool recursive);
+Maybe dir_findFiles(const char* path, char* searchPattern, bool recursive);
 ///@return Maybe<Array_string>
-Maybe dir_findDirs(char* path, char* searchPattern, bool recursive);
+Maybe dir_findDirs(const char* path, char* searchPattern, bool recursive);
 
 #if __cplusplus
 }

@@ -11,10 +11,10 @@ extern "C" {
 typedef FILE File;
 ktid_declare(File);
 
-bool file_exists(char* path);
+bool file_exists(const char* path);
 
 ///@return Maybe<void>
-Maybe file_delete(char* path, bool recursive);
+Maybe file_delete(const char* path, bool recursive);
 
 PACK_ENUM(FileOpenMode,
     // open a file for reading 
@@ -33,7 +33,7 @@ PACK_ENUM(FileOpenMode,
 /// @param path path to file
 /// @param mode Read/Write/Append/ReadWrite/ReadAppend
 /// @return Maybe<File*>
-Maybe file_open(char* path, FileOpenMode mode);
+Maybe file_open(const char* path, FileOpenMode mode);
 
 /// @brief closes file descriptor
 /// @return Maybe<void>
