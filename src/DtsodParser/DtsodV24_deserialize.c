@@ -18,17 +18,17 @@ typedef struct DeserializeSharedData{
 
 
 // special func for throwing error messages about wrong characters in deserializing text
-Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* srcfile, int line, const char* funcname){
+Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* srcfile, i32 line, const char* funcname){
     char errBuf[68];
-    for(uint8 n=0; n<sizeof(errBuf);n++)
+    for(u8 n=0; n<sizeof(errBuf);n++)
         errBuf[n]='\0';
     char* errText=_text-32;
-    uint8 cplace=32;
+    u8 cplace=32;
     if(errText<text_first) {
         cplace=_text-text_first;
         errText=text_first;
     }
-    uint8 i=0;
+    u8 i=0;
     for(; i<cplace; i++){
         // writes 32 chars before the wrongchar
         errBuf[i]=errText[i];
@@ -188,7 +188,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         }
         // UInt64
         case 'u': {
-            uint64 lu=0;
+            u64 lu=0;
             char* _c=string_extract(str);
             if(sscanf(_c, IFWIN("%llu", "%lu"), &lu)!=1){
                 char err[64];
@@ -204,7 +204,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
         // Int64
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9': {
-            int64 li=0;
+            i64 li=0;
             char* _c=string_extract(str);
             if(sscanf(_c, IFWIN("%lli", "%li"), &li)!=1){
                 char err[64];

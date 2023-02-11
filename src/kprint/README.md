@@ -2,16 +2,16 @@
 It is just my cross-plaform variant of printf.
 Unlike in standard printf, `%l...` and `%ll...` placeholders dont depend on size of `long int` and `long long int`. And you can change terminal colors by unix codes (`\e[92m`) even on Windows.
 
-| type                    | placeholder             |
-|-------------------------|-------------------------|
-| int8 / int16 / int32    | %i / %d                 |
-| int64                   | %li / %ld / %lld / %lli |
-| uint8 / uint16 / uint32 | %u                      |
-| uint64                  | %lu / %llu              |
-| float32 / float64       | %f                      |
-| char                    | %c                      |
-| char[]                  | %s                      |
-| void\*                  | %p / %x                 |
+| type           | placeholder             |
+|----------------|-------------------------|
+| i8 / i16 / i32 | %i / %d                 |
+| i64            | %li / %ld / %lld / %lli |
+| u8 / u16 / u32 | %u                      |
+| u64            | %lu / %llu              |
+| f32 / f64      | %f                      |
+| char           | %c                      |
+| char[]         | %s                      |
+| void\*         | %p / %x                 |
 
 <br>
 

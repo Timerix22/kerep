@@ -19,7 +19,7 @@ bool file_exists(const char* path){
         !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)); // file is not directory
 #else
     struct stat stats;
-    int rez=stat(path, &stats);
+    i32 rez=stat(path, &stats);
     return (bool)(
         (rez!=-1) & // file exists
         !(S_ISDIR(stats.st_mode))); // file is not directory
@@ -68,36 +68,36 @@ Maybe file_close(File* file){
         safethrow(ERR_IO,;);
 
 Maybe file_writeChar(File* file, char byte){
-    int rezult=fputc(byte, file);
+    i32 rezult=fputc(byte, file);
     ioWriteCheck();
     return MaybeNull;
 }
 
-Maybe file_writeBuffer(File* file, char* buffer, uint64 length){
-    int rezult=0;
-    for(uint64 i=0; i<length && !rezult; i++)
+Maybe file_writeBuffer(File* file, char* buffer, u64 length){
+    i32 rezult=0;
+    for(u64 i=0; i<length && !rezult; i++)
         rezult=fputc(buffer[i], file);
     ioWriteCheck();
     return MaybeNull;
 }
 
 Maybe file_writeCptr(File* file, char* cptr){
-    int rezult=fputs(cptr, file);
+    i32 rezult=fputs(cptr, file);
     ioWriteCheck();
     return MaybeNull;
 }
 
 
 Maybe file_readChar(File* file){
-    int rezult=fgetc(file);
+    i32 rezult=fgetc(file);
     if(feof(file)) safethrow(ERR_IO_EOF,;);
     if(ferror(file)) safethrow(ERR_IO,;);
     return SUCCESS(UniUInt64(rezult));
 }
 
-Maybe file_readBuffer(File* file, char* buffer, uint64 length){
-    int rezult=0;
-    uint64 i=0;
+Maybe file_readBuffer(File* file, char* buffer, u64 length){
+    i32 rezult=0;
+    u64 i=0;
     for(; i<length && rezult!=EOF; i++){
         rezult=fgetc(file);
         buffer[i]=(char)rezult;
@@ -107,11 +107,11 @@ Maybe file_readBuffer(File* file, char* buffer, uint64 length){
 }
 
 Maybe file_readAll(File* file, char** allBytes){
-    int rezult=0;
+    i32 rezult=0;
     char buffer[256];
     string bufStr={.ptr=buffer, .length=sizeof(buffer)};
     StringBuilder* sb=StringBuilder_create();
-    uint64 i=0;
+    u64 i=0;
     while(true){
         rezult=fgetc(file);
         if(rezult==EOF){

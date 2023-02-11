@@ -15,23 +15,23 @@ This file looks like a mess, but all cotnent here just solves the problem of put
 */
 
 typedef union {
-    int64 i64;
-    uint64 u64;
-    float64 f64;
+    i64 i64;
+    u64 u64;
+    f64 f64;
     void* ptr;
 } __kp_value_union; 
 
 
-static inline __kp_value_union __kpVU_f(float64 f) { return (__kp_value_union){ .f64=f }; } 
-static inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i64=f }; } 
+static inline __kp_value_union __kpVU_f(f64 f) { return (__kp_value_union){ .f64=f }; } 
+static inline __kp_value_union __kpVU_i(i64 f) { return (__kp_value_union){ .i64=f }; } 
 
-#define __kpVU_selectType(V) _Generic(V, float: __kpVU_f, double: __kpVU_f, default: __kpVU_i)(V)
+#define __kpVU_selectType(V) _Generic(V, float: __kpVU_f, f64: __kpVU_f, default: __kpVU_i)(V)
 
 #define __kpVU(V) __kpVU_selectType(V)
 
 #define __kp_argsToFmts8(\
     a0, a1, a2, a3, a4, a5, a6, a7,...)\
-    ((int32[]){ a0,a2,a4,a6 })
+    ((i32[]){ a0,a2,a4,a6 })
 #define __kp_argsToObjs8(\
     a0, a1, a2, a3, a4, a5, a6, a7,...)\
     ((__kp_value_union[]){ __kpVU(a1),__kpVU(a3),__kpVU(a5),__kpVU(a7) })
@@ -39,7 +39,7 @@ static inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i
 #define __kp_argsToFmts16(\
     a0, a1, a2, a3, a4, a5, a6, a7,\
     a8, a9, a10,a11,a12,a13,a14,a15,...)\
-    ((int32[]){ a0,a2,a4,a6,a8,a10,a12,a14 })
+    ((i32[]){ a0,a2,a4,a6,a8,a10,a12,a14 })
 #define __kp_argsToObjs16(\
     a0, a1, a2, a3, a4, a5, a6, a7,\
     a8, a9, a10,a11,a12,a13,a14,a15,...)\
@@ -50,7 +50,7 @@ static inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i
     a8, a9, a10,a11,a12,a13,a14,a15,\
     a16,a17,a18,a19,a20,a21,a22,a23,\
     a24,a25,a26,a27,a28,a29,a30,a31,...)\
-    ((int32[]){ a0,a2,a4,a6,a8,a10,a12,a14,a16,a18,a20,a22,a24,a26,a28,a30 })
+    ((i32[]){ a0,a2,a4,a6,a8,a10,a12,a14,a16,a18,a20,a22,a24,a26,a28,a30 })
 #define __kp_argsToObjs32(\
     a0, a1, a2, a3, a4, a5, a6, a7,\
     a8, a9, a10,a11,a12,a13,a14,a15,\
@@ -71,7 +71,7 @@ static inline __kp_value_union __kpVU_i(int64 f) { return (__kp_value_union){ .i
         __kp_argsToObjs32(ARGS))
 
 
-Maybe __ksprint(uint8 n, kp_fmt* formats, __kp_value_union* objects);
+Maybe __ksprint(u8 n, kp_fmt* formats, __kp_value_union* objects);
 
 /// @param ARGS kp_fmt, value, kp_fmt, value...
 ///@returns Maybe<char*>
@@ -80,7 +80,7 @@ Maybe __ksprint(uint8 n, kp_fmt* formats, __kp_value_union* objects);
     )
 /*-Wint-conversion warning was produced during value to __kp_value_union conversion*/ 
 
-Maybe __kfprint(FILE* fd, uint8 n, kp_fmt* formats, __kp_value_union* objects);
+Maybe __kfprint(FILE* fd, u8 n, kp_fmt* formats, __kp_value_union* objects);
 
 /// @param FD FILE*  
 /// @param ARGS kp_fmt, value, kp_fmt, value...
@@ -89,7 +89,7 @@ Maybe __kfprint(FILE* fd, uint8 n, kp_fmt* formats, __kp_value_union* objects);
         __kfprint(FD, count_args(ARGS), __kp_argsToArrs(count_args(ARGS),ARGS, __32zeroes))\
     )
 
-void __kprint(uint8 n, kp_fmt* formats, __kp_value_union* objects);
+void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects);
 
 ///can use non-catchable throw !!!
 ///@param ARGS kp_fmt, value, kp_fmt, value...

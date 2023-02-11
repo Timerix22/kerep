@@ -5,7 +5,7 @@ void test_kprint(){
     //int
     kprint(kp_fgCyan|
         kp_i,-8888, kp_c,' ', kp_i,0, kp_c,' ', kp_i,1234567890987654321LL,kp_s,"\n");
-    //uint
+    //u
     kprint(kp_fgGreen|
         kp_u|kp_post,-8888, kp_c|kp_post|kp_upper,' ', kp_u,0, kp_c,' ', 
         kp_u,1234567890987654321LL, kp_c,'\n');
@@ -15,7 +15,7 @@ void test_kprint(){
         kp_f,-1.0f, kp_c,' ', kp_f,0.0f, kp_c,' ', kp_f,1.0f, kp_c,'\n', 
         kp_f|kp_post,0.000020004f, kp_c,' ',
         kp_f|kp_post|kp_upper,4000.0109f, kp_c,'\n');
-    //double
+    //f64
     kprint(kp_fgYellowD|
         kp_f,-4000.0109, kp_c,' ', kp_f,-0.000020004, kp_c,'\n', 
         kp_f,-1.0, kp_c,' ', kp_f,0.0, kp_c,' ', kp_f,1.0, kp_c,'\n', 

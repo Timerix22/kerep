@@ -13,18 +13,18 @@ generator.
 
 // The state can be seeded with any (upto) 64 bit integer value.
 
-void* splitmix64_init(uint64 seed){
+void* splitmix64_init(u64 seed){
     splitmix64_state* state=malloc(sizeof(splitmix64_state));
     *state=seed;
     return state;
 }
 
-uint64 splitmix64_next(void* _state) {
+u64 splitmix64_next(void* _state) {
     splitmix64_state* state=_state;
     // increment the state variable
     *state += 0x9e3779b97f4a7c15;
     // copy the state to a working variable
-    uint64 z = *state;
+    u64 z = *state;
     // xor the variable with the variable right bit shifted 30 then multiply by a constant
     z = (z ^ (z>>30)) * 0xbf58476d1ce4e5b9;
     // xor the variable with the variable right bit shifted 27 then multiply by a constant

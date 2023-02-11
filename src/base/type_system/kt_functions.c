@@ -7,16 +7,16 @@ ktid ktid_Null=-1;
 
 ktid_define(char);
 ktid_define(bool);
-ktid_define(float32);
-ktid_define(float64);
-ktid_define(int8);
-ktid_define(uint8);
-ktid_define(int16);
-ktid_define(uint16);
-ktid_define(int32);
-ktid_define(uint32);
-ktid_define(int64);
-ktid_define(uint64);
+ktid_define(f32);
+ktid_define(f64);
+ktid_define(i8);
+ktid_define(u8);
+ktid_define(i16);
+ktid_define(u16);
+ktid_define(i32);
+ktid_define(u32);
+ktid_define(i64);
+ktid_define(u64);
 
 ktid_define(ktDescriptor);
 
@@ -44,7 +44,7 @@ void ktDescriptors_endInit(){
     kprintf("\e[92minitialized %u type descriptors\n", ktid_last);
 }
 
-void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, uint32)){
+void __kt_register(char* name, i16 size, void (*freeMembers)(void*), char* (*toString)(void*, u32)){
     ktDescriptor typeDesc={
         .name=name,
         .size=size,

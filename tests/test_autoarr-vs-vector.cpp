@@ -2,16 +2,16 @@
 #include "../src/Autoarr/Autoarr.h"
 #include <vector>
 
-int64 _autoarrVsVector(uint16 blockCount, uint16 blockLength){
-    uint32 count=blockLength*blockCount;
-    kprintf("\e[94mblock count: %u block length: %u count: " IFWIN("%llu", "%lu") "\n", blockCount, blockLength, (uint64)count);
-    Autoarr_int64* ar=Autoarr_create(int64, blockCount, blockLength);
-    std::vector<int64> vec=std::vector<int64>();
+i64 _autoarrVsVector(u16 blockCount, u16 blockLength){
+    u32 count=blockLength*blockCount;
+    kprintf("\e[94mblock count: %u block length: %u count: " IFWIN("%llu", "%lu") "\n", blockCount, blockLength, (u64)count);
+    Autoarr_i64* ar=Autoarr_create(i64, blockCount, blockLength);
+    std::vector<i64> vec=std::vector<i64>();
     optime("Autoarr_add", count,
         Autoarr_add(ar, op_i));
     optime("vector_push_back", count, 
         vec.push_back(op_i));
-    int64 t=0;
+    i64 t=0;
     optime("Autoarr_get", count,
         t=Autoarr_get(ar, op_i));
     optime("vector_get", count,

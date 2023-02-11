@@ -9,11 +9,11 @@ extern "C" {
 
 
 typedef union {
-    uint64 s[4];
+    u64 s[4];
 } xoshiro256_state;
 typedef void* xoshiro256_statePtr;
 
-xoshiro256_statePtr xoshiro256_init(uint64 seed);
+xoshiro256_statePtr xoshiro256_init(u64 seed);
 #define xoshiro256plus_init xoshiro256_init
 #define xoshiro256plusplus_init xoshiro256_init
 #define xoshiro256starstar_init xoshiro256_init
@@ -23,9 +23,9 @@ static inline xoshiro256_statePtr xoshiro256_initFromTime(void) { return xoshiro
 #define xoshiro256plusplus_initFromTime xoshiro256_initFromTime
 #define xoshiro256starstar_initFromTime xoshiro256_initFromTime
 
-uint64 xoshiro256plus_next(xoshiro256_statePtr);
-uint64 xoshiro256plusplus_next(xoshiro256_statePtr);
-uint64 xoshiro256starstar_next(xoshiro256_statePtr);
+u64 xoshiro256plus_next(xoshiro256_statePtr);
+u64 xoshiro256plusplus_next(xoshiro256_statePtr);
+u64 xoshiro256starstar_next(xoshiro256_statePtr);
 
 static inline void xoshiro256_free(xoshiro256_statePtr state) {
     free(state); 

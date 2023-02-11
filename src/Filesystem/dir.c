@@ -16,7 +16,7 @@ bool dir_exists(const char* path){
         (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)); // file is a directory
 #else
     struct stat stats;
-    int rez=stat(path, &stats);
+    i32 rez=stat(path, &stats);
     return (bool)(
         (rez!=-1) & // file exists
         (S_ISDIR(stats.st_mode))); // file is a directory

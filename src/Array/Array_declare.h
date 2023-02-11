@@ -9,13 +9,13 @@ extern "C" {
 #define Array_declare(type)\
 typedef struct Array_##type{\
     type* values;\
-    uint32 length;\
+    u32 length;\
     bool allocatedOnHeap;\
 } Array_##type;\
 \
 ktid_declare(Array_##type);\
 \
-static inline Array_##type Array_##type##_allocValues(uint32 length){\
+static inline Array_##type Array_##type##_allocValues(u32 length){\
     return (Array_##type) {\
         .values=(type*)malloc(sizeof(type)*length),\
         .length=length,\
@@ -23,7 +23,7 @@ static inline Array_##type Array_##type##_allocValues(uint32 length){\
     };\
 }\
 \
-static inline Array_##type Array_##type##_fromBuffer(type* buffer, uint32 bufferLength, bool allocatedOnHeap){\
+static inline Array_##type Array_##type##_fromBuffer(type* buffer, u32 bufferLength, bool allocatedOnHeap){\
     return (Array_##type) {\
         .values=buffer,\
         .length=bufferLength,\

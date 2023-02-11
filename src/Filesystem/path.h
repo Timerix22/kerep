@@ -14,7 +14,7 @@ static const char path_sep='/';
 static const char path_notSep='\\';
 #endif
 
-char* __path_concat(uint16 n, ...);
+char* __path_concat(u16 n, ...);
 /// @brief merges path parts together and places <path_sep> between them
 /// @return new cstr
 #define path_concat(PATH_PARTS...) __path_concat(count_args(PATH_PARTS), PATH_PARTS)

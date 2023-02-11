@@ -1,16 +1,16 @@
 #include "filesystem.h"
 
-char* __path_concat(uint16 n, ...){
+char* __path_concat(u16 n, ...){
     char** parts=(char**)malloc(n*sizeof(char*));
-    uint32* lengths=malloc(n*sizeof(uint32));
-    uint32 totalLength=0;
+    u32* lengths=malloc(n*sizeof(u32));
+    u32 totalLength=0;
 
     // reading args from va_list
     va_list vl;
     va_start(vl, n);
-    for(uint16 i=0; i<n; i++){
+    for(u16 i=0; i<n; i++){
         char* part=va_arg(vl,char*);
-        int16 length=cptr_length(part);
+        i16 length=cptr_length(part);
         parts[i]=part;
         lengths[i]=length;
         totalLength+=length;
@@ -23,7 +23,7 @@ char* __path_concat(uint16 n, ...){
     totality[totalLength]=0;
     
     // copying content of all strings to rezult
-    uint16 k=0;
+    u16 k=0;
     for(; k<n-1; k++){
         memcopy(parts[k], totality, lengths[k]);
         totality+=lengths[k];
@@ -56,8 +56,8 @@ Maybe path_throwIfEscapes(const char* path){
 
 char* path_parentDir(char* dir){
     char* copy=cptr_copy(dir);
-    uint32 length=cptr_length(copy);
-    int i=cptr_lastIndexOfChar(copy,path_sep);
+    u32 length=cptr_length(copy);
+    i32 i=cptr_lastIndexOfChar(copy,path_sep);
     if(i==length-1){
         copy[length-1]=0;
         i=cptr_lastIndexOfChar(copy,path_sep);

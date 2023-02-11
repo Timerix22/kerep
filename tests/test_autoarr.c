@@ -1,8 +1,8 @@
 #include "tests.h"
 #include "../src/Autoarr/Autoarr.h"
 
-static void printautoarr(Autoarr(uint16)* ar){
-    kprintf("\e[94mAutoarr(uint16): "
+static void printautoarr(Autoarr(u16)* ar){
+    kprintf("\e[94mAutoarr(u16): "
         IFWIN("%llu", "%lu")
         "\n  max_blocks_count: %u\n"
         "  blocks_count: %u\n"
@@ -10,7 +10,7 @@ static void printautoarr(Autoarr(uint16)* ar){
         "  block_length: %u\n"
         "  max_length: %u\n" 
         "  length: %u\n",
-        sizeof(Autoarr(uint16)),
+        sizeof(Autoarr(u16)),
         ar->max_blocks_count,
         ar->blocks_count,
         ar->max_block_length,
@@ -19,18 +19,18 @@ static void printautoarr(Autoarr(uint16)* ar){
         Autoarr_length(ar));
 }
 
-static void fillar(Autoarr(uint16)* ar){
-    for (uint16 i=0;i<Autoarr_max_length(ar);i++)
+static void fillar(Autoarr(u16)* ar){
+    for (u16 i=0;i<Autoarr_max_length(ar);i++)
         Autoarr_add(ar,i);
 }
-static void resetar(Autoarr(uint16)* ar){
-    for (uint16 i=0;i<Autoarr_max_length(ar);i++)
+static void resetar(Autoarr(u16)* ar){
+    for (u16 i=0;i<Autoarr_max_length(ar);i++)
         Autoarr_set(ar,i,Autoarr_max_length(ar)-i-1);
 }
 
-static void printallval(Autoarr(uint16)* ar){
+static void printallval(Autoarr(u16)* ar){
     kprintf("\e[90m");
-    for (uint16 i=0;i<Autoarr_length(ar);i++)
+    for (u16 i=0;i<Autoarr_length(ar);i++)
         kprintf("%u ",Autoarr_get(ar,i));
     kprintf("\n");
 }
@@ -38,7 +38,7 @@ static void printallval(Autoarr(uint16)* ar){
 void test_autoarr(){
     optime("test_autoarr",1,({
         kprintf("\e[96m------------[test_autoarr]------------\n");
-        Autoarr(uint16)* ar=Autoarr_create(uint16,10,16);
+        Autoarr(u16)* ar=Autoarr_create(u16,10,16);
         kprintf("\e[92mautoarr created\n");
         fillar(ar);
         kprintf("\e[92mautoarr filled up\n");

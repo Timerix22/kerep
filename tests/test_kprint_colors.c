@@ -16,13 +16,13 @@ void test_kprint_colors(){
     /* IFWIN(
         ({
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            for(uint8 col=0; col<255; col++){
+            for(u8 col=0; col<255; col++){
                 SetConsoleTextAttribute(hConsole, col);
                 kprintf("%u ",col);
             }
         }),
         ({
-            for(uint8 col=0; col<255; col++)
+            for(u8 col=0; col<255; col++)
                 kprintf("\e[%um%u ", col, col);
         })
     ); 

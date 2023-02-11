@@ -19,7 +19,7 @@ string string_copy(string src){
     string nstr;
     nstr.length=src.length;
     nstr.ptr=malloc(nstr.length);
-    for(uint32 i=0;i<nstr.length;i++)
+    for(u32 i=0;i<nstr.length;i++)
         nstr.ptr[i]=src.ptr[i];
     return nstr;
 }
@@ -39,7 +39,7 @@ bool string_compare(string str0, string str1){
 string string_reverse(string s){
     if(s.length==0) return s;
     string r={malloc(s.length), s.length};
-    for(uint32 i=0; i<s.length; i++)
+    for(u32 i=0; i<s.length; i++)
         r.ptr[i]=s.ptr[s.length-i-1];
     return r;
 }

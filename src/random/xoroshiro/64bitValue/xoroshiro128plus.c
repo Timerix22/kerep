@@ -9,9 +9,9 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 #include "xoroshiro128.h"
 
 /* This is xoroshiro128+ 1.0, our best and fastest small-state generator
-   for floating-point numbers, but its state space is large enough only
+   for floating-poi32 numbers, but its state space is large enough only
    for mild parallelism. We suggest to use its upper bits for
-   floating-point generation, as it is slightly faster than
+   floating-poi32 generation, as it is slightly faster than
    xoroshiro128++/xoroshiro128**. It passes all tests we are aware of
    except for the four lower bits, which might fail linearity tests (and
    just those), so if low linear complexity is not considered an issue (as
@@ -32,15 +32,15 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    better results in our test than the 2016 version (a=55, b=14, c=36).
 */
 
-static inline uint64 rotl(const uint64 x, int k) {
+static inline u64 rotl(const u64 x, i32 k) {
     return (x << k) | (x >> (64 - k));
 }
 
-uint64 xoroshiro128plus_next(void* _state){    
+u64 xoroshiro128plus_next(void* _state){    
     xoroshiro128_state* state=_state;
-    const uint64 s0 = state->s[0];
-    uint64 s1 = state->s[1];
-    const uint64 result = s0 + s1;
+    const u64 s0 = state->s[0];
+    u64 s1 = state->s[1];
+    const u64 result = s0 + s1;
 
     s1 ^= s0;
     state->s[0] = rotl(s0, 24) ^ s1 ^ (s1 << 16); // a, b
@@ -49,7 +49,7 @@ uint64 xoroshiro128plus_next(void* _state){
     return result;
 }
 
-void* xoroshiro128_init(uint64 seed){
+void* xoroshiro128_init(u64 seed){
     xoroshiro128_state* state=malloc(sizeof(xoroshiro128_state));
     splitmix64_state* splitmix=splitmix64_init(seed);
     state->s[0]=splitmix64_next(splitmix);

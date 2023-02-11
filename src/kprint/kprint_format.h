@@ -8,7 +8,7 @@ extern "C" {
 #include "../base/type_system/ktid.h"
 
 /// kprint_format
-typedef uint32 kp_fmt;
+typedef u32 kp_fmt;
 
 PACK_ENUM(kp_dataFmt,
 // 00000000 00000000  00000000 00000000

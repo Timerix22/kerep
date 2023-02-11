@@ -4,18 +4,18 @@
 
 typedef struct SerializeSharedData{
     StringBuilder* sh_builder; 
-    uint8 sh_tabs;
+    u8 sh_tabs;
 } SerializeSharedData;
 #define b shared->sh_builder
 #define tabs shared->sh_tabs
 
-Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod);
+Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod);
 
 #define addc(C) StringBuilder_append_char(b,C)
 
 
 void __AppendTabs(SerializeSharedData* shared) {
-    for (uint8 t = 0; t < tabs; t++)
+    for (u8 t = 0; t < tabs; t++)
         addc( '\t');
 };
 #define AppendTabs() __AppendTabs(shared)
@@ -23,15 +23,15 @@ void __AppendTabs(SerializeSharedData* shared) {
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u);
 #define AppendValue(UNI) __AppendValue(shared, UNI)
 Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
-    if(u.typeId==ktid_name(int64)){
-        StringBuilder_append_int64(b,u.Int64);
+    if(u.typeId==ktid_name(i64)){
+        StringBuilder_append_i64(b,u.Int64);
     }
-    else if(u.typeId==ktid_name(uint64)){
-        StringBuilder_append_uint64(b,u.UInt64);
+    else if(u.typeId==ktid_name(u64)){
+        StringBuilder_append_u64(b,u.UInt64);
         addc('u');
     }
-    else if(u.typeId==ktid_name(float64)){
-        StringBuilder_append_float64(b,u.Float64);
+    else if(u.typeId==ktid_name(f64)){
+        StringBuilder_append_f64(b,u.Float64);
         addc('f');
     }
     else if(u.typeId==ktid_ptrName(char)){
@@ -102,7 +102,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
     return MaybeNull;
 };
 
-Maybe __serialize(StringBuilder* _b, uint8 _tabs, Hashtable* dtsod){
+Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod){
     SerializeSharedData _shared={
         .sh_builder=_b,
         .sh_tabs=_tabs

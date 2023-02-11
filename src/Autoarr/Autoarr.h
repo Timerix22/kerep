@@ -10,16 +10,16 @@ extern "C" {
 
 Autoarr_declare(char)
 Autoarr_declare(bool)
-Autoarr_declare(float32)
-Autoarr_declare(float64)
-Autoarr_declare(int8)
-Autoarr_declare(uint8)
-Autoarr_declare(int16)
-Autoarr_declare(uint16)
-Autoarr_declare(int32)
-Autoarr_declare(uint32)
-Autoarr_declare(int64)
-Autoarr_declare(uint64)
+Autoarr_declare(f32)
+Autoarr_declare(f64)
+Autoarr_declare(i8)
+Autoarr_declare(u8)
+Autoarr_declare(i16)
+Autoarr_declare(u16)
+Autoarr_declare(i32)
+Autoarr_declare(u32)
+Autoarr_declare(i64)
+Autoarr_declare(u64)
 
 
 #if __cplusplus

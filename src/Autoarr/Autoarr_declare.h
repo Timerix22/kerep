@@ -12,25 +12,25 @@ struct Autoarr_##type;\
 \
 typedef struct {\
     void (*add)(struct Autoarr_##type* ar, type element);\
-    type (*get)(struct Autoarr_##type* ar, uint32 index);\
-    type* (*getptr)(struct Autoarr_##type* ar, uint32 index);\
-    void (*set)(struct Autoarr_##type* ar, uint32 index, type element);\
+    type (*get)(struct Autoarr_##type* ar, u32 index);\
+    type* (*getptr)(struct Autoarr_##type* ar, u32 index);\
+    void (*set)(struct Autoarr_##type* ar, u32 index, type element);\
     void (*freear)(struct Autoarr_##type* ar, bool freePtr);\
     type* (*toArray)(struct Autoarr_##type* ar);\
 } __functions_list_t_##type;\
 \
 typedef struct Autoarr_##type{\
-    uint16 blocks_count;\
-    uint16 max_blocks_count;\
-    uint16 block_length;\
-    uint16 max_block_length;\
+    u16 blocks_count;\
+    u16 max_blocks_count;\
+    u16 block_length;\
+    u16 max_block_length;\
     type** values;\
     __functions_list_t_##type* functions;\
 } Autoarr_##type;\
 \
 ktid_declare(Autoarr_##type);\
 \
-Autoarr_##type* __Autoarr_create_##type(uint16 max_blocks_count, uint16 max_block_length);\
+Autoarr_##type* __Autoarr_create_##type(u16 max_blocks_count, u16 max_block_length);\
 void __Autoarr_free_##type(Autoarr_##type* ar, bool freePtr);\
 void ____Autoarr_free_##type(void* ar);
 
@@ -52,10 +52,10 @@ void ____Autoarr_free_##type(void* ar);
     autoarr->functions->toArray(autoarr)
 
 #define Autoarr_length(autoarr) \
-    (uint32)(!autoarr->blocks_count ? 0 : \
+    (u32)(!autoarr->blocks_count ? 0 : \
     autoarr->max_block_length*(autoarr->blocks_count-1)+autoarr->block_length)
 #define Autoarr_max_length(autoarr)\
-    (uint32)(autoarr->max_block_length*autoarr->max_blocks_count)
+    (u32)(autoarr->max_block_length*autoarr->max_blocks_count)
 
 #define Autoarr_pop(AR){\
     if(AR->block_length==1){\

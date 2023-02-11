@@ -23,7 +23,7 @@ char* errname(ErrorId err){
 
 #define ERRMSG_MAXLENGTH 1024
 
-char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
+char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=ERRMSG_MAXLENGTH;
     char* rezult=malloc(bufsize);
     IFMSC(
@@ -33,7 +33,7 @@ char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char*
     return rezult;
 }
 
-char* __extendErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
+char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
     char* rezult=malloc(bufsize);
     IFMSC(

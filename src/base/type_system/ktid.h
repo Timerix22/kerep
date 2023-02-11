@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #include "../std.h"
-typedef uint16 ktid;
+typedef u16 ktid;
 
 #define ktid_name(TYPE) ktid_##TYPE
 #define ktid_ptrName(TYPE) ktid_##TYPE##_Ptr

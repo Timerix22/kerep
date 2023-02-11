@@ -5,7 +5,7 @@
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
 
-WORD unixColorToWin(uint8 c){
+WORD unixColorToWin(u8 c){
     switch(c){
         //foreground
         case 30: return 0;
@@ -49,7 +49,7 @@ WORD unixColorToWin(uint8 c){
 void kprintf(const char* format, ...){
     va_list vl;
     va_start(vl, format);
-    uint32 i=0;
+    u32 i=0;
     for(char c=format[i++]; c!=0; c=format[i++]){
         if(c=='%'){
             char* argstr=NULL;
@@ -58,18 +58,18 @@ void kprintf(const char* format, ...){
             format_escape_seq:
             switch (c) {
                 case 'u':
-                    argstr=toString_uint(
-                        l ? va_arg(vl, uint64) : va_arg(vl, uint32)
+                    argstr=toString_u64(
+                        l ? va_arg(vl, u64) : va_arg(vl, u32)
                         ,0,0);
                     break;
                 case 'i': case 'd':
-                    argstr=toString_int(
-                        l ? va_arg(vl, int64) : va_arg(vl, int32)
+                    argstr=toString_i64(
+                        l ? va_arg(vl, i64) : va_arg(vl, i32)
                         );
                     break;
                 case 'f':
-                    // float32 is promoted to float64 when passed through '...'
-                    argstr=toString_float64(va_arg(vl, float64), toString_float_default_precision,0,0);
+                    // f32 is promoted to f64 when passed through '...'
+                    argstr=toString_f64(va_arg(vl, f64), toString_float_default_precision,0,0);
                     break;
                case 'l':
                     l=true;
@@ -78,7 +78,7 @@ void kprintf(const char* format, ...){
                     break;
                 case 'p':
                 case 'x': ;
-                    uint64 px=va_arg(vl, uint64);
+                    u64 px=va_arg(vl, u64);
                     argstr=toString_hex(&px,getEndian()==LittleEndian,sizeof(px),1,0);
                     break;
                 case 's': ;
@@ -108,8 +108,8 @@ void kprintf(const char* format, ...){
             IFWIN(
                 ({
                     if((c=format[i++])=='['){
-                        uint8 colorUnix=0;
-                        for(int8 n=0; n<6 && c!=0; n++){
+                        u8 colorUnix=0;
+                        for(i8 n=0; n<6 && c!=0; n++){
                             c=format[i++];
                             switch (c){
                                 case '0': case '1': case '2': case '3': case '4':

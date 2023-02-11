@@ -24,15 +24,15 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    output to fill s. */
 
 
-static inline uint64 rotl(const uint64 x, int k) {
+static inline u64 rotl(const u64 x, i32 k) {
     return (x << k) | (x >> (64 - k));
 }
 
-uint64 xoshiro256plus_next(void* _state){    
+u64 xoshiro256plus_next(void* _state){    
     xoshiro256_state* state=_state;
-    const uint64 result = state->s[0] + state->s[3];
+    const u64 result = state->s[0] + state->s[3];
 
-    const uint64 t = state->s[1] << 17;
+    const u64 t = state->s[1] << 17;
 
     state->s[2] ^= state->s[0];
     state->s[3] ^= state->s[1];
@@ -46,7 +46,7 @@ uint64 xoshiro256plus_next(void* _state){
     return result;
 }
 
-void* xoshiro256_init(uint64 seed){
+void* xoshiro256_init(u64 seed){
     xoshiro256_state* state=malloc(sizeof(xoshiro256_state));
     splitmix64_state* splitmix=splitmix64_init(seed);
     state->s[0]=splitmix64_next(splitmix);

@@ -9,11 +9,11 @@ ktid __typeFromFormat(kp_fmt f){
         case kp_i:
         case kp_h:
         case kp_b: 
-            return ktid_name(int64);
+            return ktid_name(i64);
         case kp_u:
-            return ktid_name(uint64); 
+            return ktid_name(u64); 
         case kp_f:
-            return ktid_name(float64); 
+            return ktid_name(f64); 
         case kp_c:
             return ktid_char; 
         case kp_s:
@@ -34,17 +34,17 @@ Maybe __next_toString(kp_fmt f, __kp_value_union* object){
     return SUCCESS(UniHeapPtr(char, typeDesc.toString(object, f)));
 }
 
-Maybe check_argsN(uint8 n){
+Maybe check_argsN(u8 n){
     if(n%2 != 0) safethrow("kprint recieved non-even number of arguments",;);
     if(n > 32) safethrow("kprint recieved >32 number of arguments",;);
     return MaybeNull;
 }
 
-Maybe __ksprint(uint8 n, kp_fmt* formats, __kp_value_union* objects){
+Maybe __ksprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
     try(check_argsN(n), _,;);
     n/=2;
     StringBuilder* strb=StringBuilder_create();
-    for(uint8 i=0; i<n; i++){
+    for(u8 i=0; i<n; i++){
         try(__next_toString(formats[i], &objects[i]),mStr,;);
         StringBuilder_append_cptr(strb, mStr.value.VoidPtr);
         Unitype_free(mStr.value);
@@ -53,10 +53,10 @@ Maybe __ksprint(uint8 n, kp_fmt* formats, __kp_value_union* objects){
     return SUCCESS(UniHeapPtr(char, rezult));
 }
 
-Maybe __kfprint(FILE* file, uint8 n, kp_fmt* formats, __kp_value_union* objects){
+Maybe __kfprint(FILE* file, u8 n, kp_fmt* formats, __kp_value_union* objects){
     try(check_argsN(n), _,;);
     n/=2;
-    for(uint8 i=0; i<n; i++){
+    for(u8 i=0; i<n; i++){
         try(__next_toString(formats[i], &objects[i]),maybeStr,;);
         if(fputs(maybeStr.value.VoidPtr, file)==EOF)
             safethrow("can't write string to file", Unitype_free(maybeStr.value));
@@ -66,10 +66,10 @@ Maybe __kfprint(FILE* file, uint8 n, kp_fmt* formats, __kp_value_union* objects)
     return MaybeNull;
 }
 
-void __kprint(uint8 n, kp_fmt* formats, __kp_value_union* objects){
+void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
     tryLast(check_argsN(n), _);
     n/=2;
-    for(uint8 i=0; i<n; i++){
+    for(u8 i=0; i<n; i++){
         kp_fmt fmt=formats[i];
         kprint_setColor(fmt);
         tryLast(__next_toString(fmt, &objects[i]),maybeStr);
@@ -145,13 +145,13 @@ void kprint_setColor(kp_fmt f){
 #else
 void kprint_setColor(kp_fmt f){
     if(kp_fmt_fgColorSet(f)){
-        uint8 fg=(f&0x0f000000)>>24;
+        u8 fg=(f&0x0f000000)>>24;
         if(fg<8) fg+=30;
         else fg+=90-8;
         printf("\e[%um", fg);
     }
     if(kp_fmt_bgColorSet(f)){
-        uint8 bg=(f&0x00f00000)>>20;
+        u8 bg=(f&0x00f00000)>>20;
         if(bg<8) bg+=40;
         else bg+=100-8;
         printf("\e[%um", bg);
@@ -159,13 +159,13 @@ void kprint_setColor(kp_fmt f){
 }
 #endif
 
-/* Maybe ksprint_ar(uint32 count, kp_fmt format, ktid typeId, void* array){
+/* Maybe ksprint_ar(u32 count, kp_fmt format, ktid typeId, void* array){
     ktDescriptor typeDesc=ktDescriptor_get(format.typeId);
     if(!typeDesc.toString)
         safethrow("type descriptor doesnt have toString() func",;);
     StringBuilder* strb=StringBuilder_create();
     StringBuilder_append_char(strb, '[');
-    for (uint16 e=1; e<count; e++){
+    for (u16 e=1; e<count; e++){
         StringBuilder_append_char(strb, ' ');
         char* elStr=typeDesc.toString(array+typeDesc.size*e, &format);
         StringBuilder_append_cptr(strb, elStr);

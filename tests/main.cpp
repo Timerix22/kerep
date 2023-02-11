@@ -1,6 +1,6 @@
 #include "tests.h"
 
-int main(){
+i32 main(){
     if(!setlocale(LC_ALL, "C.UTF8"))
         kprintf("\e[93msetlocale failed\n");
     ktDescriptors_beginInit();

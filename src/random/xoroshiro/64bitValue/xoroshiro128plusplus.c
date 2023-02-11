@@ -13,7 +13,7 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    tests we are aware of, but its state space is large enough only for
    mild parallelism.
 
-   For generating just floating-point numbers, xoroshiro128+ is even
+   For generating just floating-poi32 numbers, xoroshiro128+ is even
    faster (but it has a very mild bias, see notes in the comments).
 
    The state must be seeded so that it is not everywhere zero. If you have
@@ -21,15 +21,15 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    output to fill s. */
 
 
-static inline uint64 rotl(const uint64 x, int k) {
+static inline u64 rotl(const u64 x, i32 k) {
     return (x << k) | (x >> (64 - k));
 }
 
-uint64 xoroshiro128plusplus_next(void* _state){    
+u64 xoroshiro128plusplus_next(void* _state){    
     xoroshiro128_state* state=_state;
-    const uint64 s0 = state->s[0];
-    uint64 s1 = state->s[1];
-    const uint64 result = rotl(s0 + s1, 17) + s0;
+    const u64 s0 = state->s[0];
+    u64 s1 = state->s[1];
+    const u64 result = rotl(s0 + s1, 17) + s0;
 
     s1 ^= s0;
     state->s[0] = rotl(s0, 49) ^ s1 ^ (s1 << 21); // a, b

@@ -17,8 +17,8 @@ PACK_ENUM(ErrorId,
 
 char* errname(ErrorId err);
 
-char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname);
-char* __extendErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname);
+char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname);
+char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname);
 
 typedef struct Maybe{
     Unitype value;

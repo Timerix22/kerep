@@ -48,7 +48,7 @@ Maybe file_writeChar(File* file, char byte);
 /// @param buffer bytes to write
 /// @param length buffer length
 /// @return Maybe<void>
-Maybe file_writeBuffer(File* file, char* buffer, uint64 length);
+Maybe file_writeBuffer(File* file, char* buffer, u64 length);
 
 /// @brief writes all cstring array content to file
 /// @param cptr zero-terminated cstring
@@ -63,12 +63,12 @@ Maybe file_readChar(File* file);
 /// @brief reads byte array of specofied length
 /// @param buffer buffer that will be filled with file bytes
 /// @param length buffer length
-/// @return Maybe<uint64> total number of successfully read bytes (<=length)
-Maybe file_readBuffer(File* file, char* buffer, uint64 length);
+/// @return Maybe<u64> total number of successfully read bytes (<=length)
+Maybe file_readBuffer(File* file, char* buffer, u64 length);
 
 /// @brief reads all bytes from file
 /// @param allBytes ptr to the file's content will be pushed there 
-/// @return Maybe<uint64> total number of successfully read bytes
+/// @return Maybe<u64> total number of successfully read bytes
 Maybe file_readAll(File* file, char** allBytes);
 
 #if __cplusplus

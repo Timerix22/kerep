@@ -9,7 +9,7 @@ extern "C" {
 #include "ktDescriptor.h"
 
 extern ktid ktid_last;
-void __kt_register(char* name, int16 size, void (*freeMembers)(void*), char* (*toString)(void*, uint32));
+void __kt_register(char* name, i16 size, void (*freeMembers)(void*), char* (*toString)(void*, u32));
 
 #define kt_register(TYPE, FREE_MEMBERS_FUNC, TO_STRING_FUNC)\
     __kt_register(#TYPE, sizeof(TYPE), FREE_MEMBERS_FUNC, TO_STRING_FUNC);\
@@ -30,16 +30,16 @@ extern ktid ktid_Null;
 
 ktid_declare(char);
 ktid_declare(bool);
-ktid_declare(float32);
-ktid_declare(float64);
-ktid_declare(int8);
-ktid_declare(uint8);
-ktid_declare(int16);
-ktid_declare(uint16);
-ktid_declare(int32);
-ktid_declare(uint32);
-ktid_declare(int64);
-ktid_declare(uint64);
+ktid_declare(f32);
+ktid_declare(f64);
+ktid_declare(i8);
+ktid_declare(u8);
+ktid_declare(i16);
+ktid_declare(u16);
+ktid_declare(i32);
+ktid_declare(u32);
+ktid_declare(i64);
+ktid_declare(u64);
 
 ktid_declare(ktDescriptor);
 

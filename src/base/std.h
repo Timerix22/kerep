@@ -12,22 +12,23 @@ extern "C" {
 #include <time.h>
 #include <setjmp.h>
 
-typedef int8_t int8;
-typedef uint8_t uint8;
-typedef int16_t int16;
-typedef uint16_t uint16;
-typedef int32_t int32;
-typedef uint32_t uint32;
-typedef int64_t int64;
-typedef uint64_t uint64;
-typedef float float32;
-typedef double float64;
+typedef int8_t i8;
+typedef uint8_t u8;
+typedef int16_t i16;
+typedef uint16_t u16;
+typedef int32_t i32;
+typedef uint32_t u32;
+typedef int64_t i64;
+typedef uint64_t u64;
+typedef float f32;
+typedef double f64;
+
 // Usually bool from stdbool.h is defined as macro, 
 // so in other macros like ktid_##TYPE it will be replaced by _Bool.
 // ktid__Bool will be created instead of ktid_bool
 // In C++ bool is a keyword, so there is no need to redefine it.
 #if !__cplusplus
-typedef uint8 bool;
+typedef u8 bool;
 #define true  1
 #define false 0
 #endif

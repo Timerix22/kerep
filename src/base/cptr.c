@@ -1,15 +1,15 @@
 #include "base.h"
 
 // returns length of char buffer (without \0)
-uint32 cptr_length(char* str){
-    uint32 len=0;
+u32 cptr_length(char* str){
+    u32 len=0;
     while(*(str++)) len++;
     return len;
 }
 
 // allocates new char[] and copies src there
 char* cptr_copy(char* src){
-    uint32 len=cptr_length(src)+1;
+    u32 len=cptr_length(src)+1;
     char* dst=malloc(len);
     while(len--!=0)
         dst[len]=src[len];
@@ -27,7 +27,7 @@ bool cptr_compare(char* key0, char* key1){
 }
 
 // multiplies char n times
-char* char_multiply(char c, uint32 n){
+char* char_multiply(char c, u32 n){
     char* rez=malloc(n+1);
     rez[n]=0;
     while(n--!=0)
@@ -48,9 +48,9 @@ bool cptr_endsWith(char* ptr, char* fragment){
     return true;
 }
 
-uint32 cptr_indexOf(char* ptr, char* fragment){
+u32 cptr_indexOf(char* ptr, char* fragment){
     char sc=*ptr;
-    for(int si=0, fi=0; sc!=0; si++){
+    for(i32 si=0, fi=0; sc!=0; si++){
         sc=ptr[si];
         if(sc==fragment[fi]){
             fi++;
@@ -61,9 +61,9 @@ uint32 cptr_indexOf(char* ptr, char* fragment){
     }
     return -1;
 }
-uint32 cptr_indexOfChar(char* ptr, char fragment){
+u32 cptr_indexOfChar(char* ptr, char fragment){
     char sc=*ptr;
-    for(int si=0; sc!=0; si++){
+    for(i32 si=0; sc!=0; si++){
         sc=ptr[si];
         if(sc==fragment){
             return si;
@@ -71,10 +71,10 @@ uint32 cptr_indexOfChar(char* ptr, char fragment){
     }
     return -1;
 }
-uint32 cptr_lastIndexOf(char* ptr, char* fragment){
+u32 cptr_lastIndexOf(char* ptr, char* fragment){
     char sc=*ptr;
-    int fi_last=cptr_length(fragment)-1;
-    for(int si=cptr_length(ptr)-1, fi=fi_last; si>=0; si--){
+    i32 fi_last=cptr_length(fragment)-1;
+    for(i32 si=cptr_length(ptr)-1, fi=fi_last; si>=0; si--){
         sc=ptr[si];
         if(sc==fragment[fi]){
             if(fi==0)
@@ -85,9 +85,9 @@ uint32 cptr_lastIndexOf(char* ptr, char* fragment){
     }
     return -1;
 }
-uint32 cptr_lastIndexOfChar(char* ptr, char fragment){
+u32 cptr_lastIndexOfChar(char* ptr, char fragment){
     char sc=*ptr;
-    for(int si=cptr_length(ptr)-1; si>=0; si--){
+    for(i32 si=cptr_length(ptr)-1; si>=0; si--){
         sc=ptr[si];
         if(sc==fragment){
             return si;
@@ -96,24 +96,24 @@ uint32 cptr_lastIndexOfChar(char* ptr, char fragment){
     return -1;
 }
 
-void memcopy(void* from, void* to, uint32 size){
+void memcopy(void* from, void* to, u32 size){
     if(from==NULL || to==NULL)
         throw(ERR_NULLPTR);
-    for(uint32 i=0; i<size; i++)
+    for(u32 i=0; i<size; i++)
         ((char*)to)[i]=((char*)from)[i];
 }
 
-char* __cptr_concat(uint16 n, ...){
+char* __cptr_concat(u16 n, ...){
     char** strs=(char**)malloc(n*sizeof(char*));
-    uint32* lengths=malloc(n*sizeof(uint32));
-    uint32 totalLength=0;
+    u32* lengths=malloc(n*sizeof(u32));
+    u32 totalLength=0;
 
     // reading args from va_list
     va_list vl;
     va_start(vl, n);
-    for(uint16 i=0; i<n; i++){
+    for(u16 i=0; i<n; i++){
         char* str=va_arg(vl,char*);
-        int16 length=cptr_length(str);
+        i16 length=cptr_length(str);
         strs[i]=str;
         lengths[i]=length;
         totalLength+=length;
@@ -126,7 +126,7 @@ char* __cptr_concat(uint16 n, ...){
     totality[totalLength]=0;
     
     // copying content of all strings to rezult
-    for(uint16 k=0; k<n; k++){
+    for(u16 k=0; k<n; k++){
         memcopy(strs[k], totality, lengths[k]);
         totality+=lengths[k];
     }

@@ -11,7 +11,7 @@ extern "C" {
 // doesn't store '\0' at the end
 typedef struct string{
     char* ptr;      // char pointer
-    uint64 length;  // amount of chars in ptr value
+    u64 length;  // amount of chars in ptr value
 } string;
 ktid_declare(string);
 Array_declare(string);
