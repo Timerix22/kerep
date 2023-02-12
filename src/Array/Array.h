@@ -19,6 +19,7 @@ Array_declare(i32)
 Array_declare(u32)
 Array_declare(i64)
 Array_declare(u64)
+Array_declare(Pointer)
 
 Array_declare(Unitype)
 

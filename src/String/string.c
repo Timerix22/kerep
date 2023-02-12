@@ -1,7 +1,8 @@
 #include "string.h"
 
-ktid_define(string);
-Array_define(string);
+kt_define(string, NULL, NULL);
+Array_define(string)
+Autoarr_define(string)
 
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str){

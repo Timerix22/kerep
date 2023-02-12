@@ -7,11 +7,10 @@ extern "C" {
 #include "../base/base.h"
 #include "../String/string.h"
 
-typedef struct SearchTreeNode{
-    struct SearchTreeNode**** branches; // *STNode[8][8][4]
+STRUCT(STNode,
+    struct STNode**** branches; // *STNode[8][8][4]
     Unitype value;
-} STNode;
-ktid_declare(STNode);
+)
 
 STNode* STNode_create();
 void STNode_free(STNode* node);

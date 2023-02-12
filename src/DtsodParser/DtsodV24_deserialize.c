@@ -154,10 +154,10 @@ Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     bool readingList=true;
     while (true){
-        try(ReadValue((&readingList)), val, Autoarr_free(list, true))
-            Autoarr_add(list,val.value); 
+        try(ReadValue((&readingList)), m_val, Autoarr_free(list, true))
+            Autoarr_add(list,m_val.value); 
         if (!readingList){
-            if(val.value.typeId==ktid_Null)
+            if(Unitype_isUniNull(m_val.value))
                 Autoarr_pop(list);
             break;
         }
@@ -275,7 +275,7 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
         case ';':
         case ',':
             if(valueStr.length!=0){
-                if(value.typeId!=ktid_Null) 
+                if(!Unitype_isUniNull(value)) 
                     safethrow_wrongchar(c,Unitype_free(value));
                 try(ParseValue(valueStr),maybeParsed,;)
                     value=maybeParsed.value;

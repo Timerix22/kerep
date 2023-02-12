@@ -1,12 +1,11 @@
 #include "SearchTree.h"
 
-ktid_define(STNode);
+kt_define(STNode, __STNode_free, NULL);
 
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));
     node->branches=NULL;
-    node->value.typeId=ktid_Null;
-    node->value.UInt64=0;
+    node->value=UniNull;
     return node;
 }
 

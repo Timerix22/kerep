@@ -2,10 +2,10 @@
 #include "../String/StringBuilder.h"
 
 
-typedef struct SerializeSharedData{
+STRUCT(SerializeSharedData,
     StringBuilder* sh_builder; 
     u8 sh_tabs;
-} SerializeSharedData;
+)
 #define b shared->sh_builder
 #define tabs shared->sh_tabs
 
@@ -46,7 +46,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
     else if(u.typeId==ktid_name(bool)){
         StringBuilder_append_cptr(b, u.Bool ? "true" : "false");
     }
-    else if(u.typeId==ktid_Null){
+    else if(Unitype_isUniNull(u)){
         safethrow("Null isn't supported in DtsodV24",;);
     }
     else if(u.typeId==ktid_ptrName(Autoarr_Unitype)){

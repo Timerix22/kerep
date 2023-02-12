@@ -12,6 +12,7 @@ Array_define(i32)
 Array_define(u32)
 Array_define(i64)
 Array_define(u64)
+Array_define(Pointer)
 
 Array_define(Unitype)
 

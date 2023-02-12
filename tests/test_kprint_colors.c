@@ -5,11 +5,11 @@
 #endif
 
 #define testColor(COLOR) \
-    kprint_setColor(kp_bgBlack|kp_fg##COLOR);\
-    kprintf(#COLOR " ");\
-    kprint_setColor(kp_bg##COLOR|kp_fgGray);\
-    kprintf(#COLOR);\
-    kprint_setColor(kp_bgBlack|kp_fgBlack);\
+    kprint_setColor(kp_bgBlack|kp_fg##COLOR); \
+    kprintf(#COLOR " "); \
+    kprint_setColor(kp_bg##COLOR|kp_fgGray); \
+    kprintf(#COLOR); \
+    kprint_setColor(kp_bgBlack|kp_fgBlack); \
     kprintf("\n");
 
 void test_kprint_colors(){

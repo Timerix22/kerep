@@ -5,8 +5,9 @@ extern "C" {
 #endif
 
 #include "ktid.h"
+#include "typedef_macros.h"
 
-typedef struct Unitype{
+STRUCT(Unitype,
     union {
         i64 Int64;
         u64 UInt64;
@@ -17,11 +18,10 @@ typedef struct Unitype{
     };
     ktid typeId;
     bool allocatedInHeap; // should Unitype_free call free() to VoidPtr*
-} Unitype;
-ktid_declare(Unitype);
+)
 
 
-#define __UniDef(FIELD, TYPE, VAL) (Unitype){\
+#define __UniDef(FIELD, TYPE, VAL) (Unitype){ \
     .FIELD=VAL, .typeId=ktid_name(TYPE), .allocatedInHeap=false}
 
 #define UniInt64(VAL)   __UniDef(Int64,   i64,   VAL)
@@ -29,20 +29,23 @@ ktid_declare(Unitype);
 #define UniFloat64(VAL) __UniDef(Float64, f64, VAL)
 #define UniBool(VAL)    __UniDef(Bool,    bool,    VAL)
 
-#define UniStackPtr(TYPE, VAL) (Unitype){\
+#define UniStackPtr(TYPE, VAL) (Unitype){ \
     .VoidPtr=VAL, .typeId=ktid_ptrName(TYPE), .allocatedInHeap=false}
-#define UniHeapPtr(TYPE, VAL) (Unitype){\
+#define UniHeapPtr(TYPE, VAL) (Unitype){ \
     .VoidPtr=VAL, .typeId=ktid_ptrName(TYPE), .allocatedInHeap=true}
 
-#define UniNull  (Unitype){.Int64=0, .typeId=ktid_Null, .allocatedInHeap=false}
+                                    // 0==ktid_Pointer
+#define UniNull  (Unitype){.Int64=0, .typeId=0, .allocatedInHeap=false}
 #define UniTrue  UniBool(true)
 #define UniFalse UniBool(false)
+
+#define Unitype_isUniNull(UNI) (UNI.typeId==ktid_Pointer && UNI.VoidPtr==NULL)
 
 // frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
 void __UnitypePtr_free(void* u);
+char* Unitype_toString(Unitype v, u32 fmt);
 void printuni(Unitype v);
-char* sprintuni(Unitype v);
 
 #if __cplusplus
 }

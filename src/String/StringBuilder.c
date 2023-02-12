@@ -1,8 +1,6 @@
 #include "StringBuilder.h"
 
-Autoarr_define(string)
-
-ktid_define(StringBuilder);
+kt_define(StringBuilder, __StringBuilder_free, NULL);
 
 #define BL_C 32
 #define BL_L 1024

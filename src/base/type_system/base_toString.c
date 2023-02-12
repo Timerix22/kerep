@@ -2,17 +2,19 @@
 #include "../base.h"
 #include "../../kprint/kprint_format.h"
 
+
+// accepts char* (ptr to char) and char** (ptr to string)
 char* __toString_char(void* c, u32 fmt) {
-    //*c=char
+    // *c=char*
+    if(kp_fmt_dataFormat(fmt)==kp_s){
+        return cptr_copy(*(char**)c); // to avoid segmentation fault on free() when *c allocalet on stack
+    }
+    // *c=char
     if(kp_fmt_dataFormat(fmt)==kp_c){
         char* cc=malloc(2); 
         cc[0]=*(char*)c;
         cc[1]=0;
         return cc;
-    }
-    // *c=cstring
-    else if(kp_fmt_dataFormat(fmt)==kp_s){
-        return cptr_copy(*(char**)c);
     }
     else throw(ERR_FORMAT);
 }
@@ -61,23 +63,23 @@ char* toString_u64(u64 n, bool withPostfix, bool uppercase){
     return cptr_copy((char*)str+i);
 }
 
-#define _toString_float_impl(bufsize, maxPrecision) {\
-    char str[bufsize];\
-    if(precision>maxPrecision)\
-        throw("too big precision");\
-    if(precision==0)\
-        precision=toString_float_default_precision;\
-    i32 cn=IFMSC(\
-        sprintf_s(str, bufsize, "%.*f", precision, n),\
-        sprintf(str, "%.*f", precision, n)\
-    );\
-    /* remove trailing zeroes except .0*/\
-    while(str[cn-1]=='0' && str[cn-2]!='.')\
-        cn--;\
-    if(withPostfix)\
-        str[cn++]= uppercase ? 'F' : 'f';\
-    str[cn]='\0';\
-    return cptr_copy(str);\
+#define _toString_float_impl(bufsize, maxPrecision) { \
+    char str[bufsize]; \
+    if(precision>maxPrecision) \
+        throw("too big precision"); \
+    if(precision==0) \
+        precision=toString_float_default_precision; \
+    i32 cn=IFMSC( \
+        sprintf_s(str, bufsize, "%.*f", precision, n), \
+        sprintf(str, "%.*f", precision, n) \
+    ); \
+    /* remove trailing zeroes except .0*/ \
+    while(str[cn-1]=='0' && str[cn-2]!='.') \
+        cn--; \
+    if(withPostfix) \
+        str[cn++]= uppercase ? 'F' : 'f'; \
+    str[cn]='\0'; \
+    return cptr_copy(str); \
 }
 
 char* toString_f32(f32 n, u8 precision, bool withPostfix, bool uppercase)
@@ -86,15 +88,15 @@ char* toString_f32(f32 n, u8 precision, bool withPostfix, bool uppercase)
 char* toString_f64(f64 n, u8 precision, bool withPostfix, bool uppercase)
     _toString_float_impl(512, toString_f64_max_precision)
 
-#define byte_to_bits(byte) {\
-    str[cn++]='0' + (u8)((byte>>7)&1); /* 8th bit */\
-    str[cn++]='0' + (u8)((byte>>6)&1); /* 7th bit */\
-    str[cn++]='0' + (u8)((byte>>5)&1); /* 6th bit */\
-    str[cn++]='0' + (u8)((byte>>4)&1); /* 5th bit */\
-    str[cn++]='0' + (u8)((byte>>3)&1); /* 4th bit */\
-    str[cn++]='0' + (u8)((byte>>2)&1); /* 3th bit */\
-    str[cn++]='0' + (u8)((byte>>1)&1); /* 2th bit */\
-    str[cn++]='0' + (u8)((byte>>0)&1); /* 1th bit */\
+#define byte_to_bits(byte) { \
+    str[cn++]='0' + (u8)((byte>>7)&1); /* 8th bit */ \
+    str[cn++]='0' + (u8)((byte>>6)&1); /* 7th bit */ \
+    str[cn++]='0' + (u8)((byte>>5)&1); /* 6th bit */ \
+    str[cn++]='0' + (u8)((byte>>4)&1); /* 5th bit */ \
+    str[cn++]='0' + (u8)((byte>>3)&1); /* 4th bit */ \
+    str[cn++]='0' + (u8)((byte>>2)&1); /* 3th bit */ \
+    str[cn++]='0' + (u8)((byte>>1)&1); /* 2th bit */ \
+    str[cn++]='0' + (u8)((byte>>0)&1); /* 1th bit */ \
 }
 
 char* toString_bin(void* _bytes, u32 size, bool inverse, bool withPrefix){
@@ -163,60 +165,72 @@ char* toString_hex(void* _bytes, u32 size, bool inverse, bool withPrefix, bool u
 }
 
 
-#define __toString_i32_def(BITS) char* __toString_i##BITS(void* _n, u32 f){\
-    switch(kp_fmt_dataFormat(f)){\
-        case kp_i: ;\
-            i##BITS n=*(i##BITS*)_n;\
-            return toString_i64(n);\
-        case kp_b:\
-            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
-        case kp_h:\
-            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
-        default:\
-            kprintf("\n%u\n", kp_fmt_dataFormat(f));\
-            throw(ERR_FORMAT);\
-            return NULL;\
-    }\
+#define __toString_i32_def(BITS) char* __toString_i##BITS(void* _n, u32 f){ \
+    switch(kp_fmt_dataFormat(f)){ \
+        case kp_i: ; \
+            i##BITS n=*(i##BITS*)_n; \
+            return toString_i64(n); \
+        case kp_b: \
+            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f)); \
+        case kp_h: \
+            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f)); \
+        default: \
+            kprintf("\n%u\n", kp_fmt_dataFormat(f)); \
+            throw(ERR_FORMAT); \
+            return NULL; \
+    } \
 }
 __toString_i32_def(8)
 __toString_i32_def(16)
 __toString_i32_def(32)
 __toString_i32_def(64)
 
-#define __toString_u_def(BITS) char* __toString_u##BITS(void* _n, u32 f){\
-    switch(kp_fmt_dataFormat(f)){\
-        case kp_u: ;\
-            u##BITS n=*(u##BITS*)_n;\
-            return toString_u64(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
-        case kp_b:\
-            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
-        case kp_h:\
-            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
-        default:\
-            kprintf("\n%u\n", kp_fmt_dataFormat(f));\
-            throw(ERR_FORMAT);\
-            return NULL;\
-    }\
+#define __toString_u_def(BITS) char* __toString_u##BITS(void* _n, u32 f){ \
+    switch(kp_fmt_dataFormat(f)){ \
+        case kp_u: ; \
+            u##BITS n=*(u##BITS*)_n; \
+            return toString_u64(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f)); \
+        case kp_b: \
+            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f)); \
+        case kp_h: \
+            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f)); \
+        default: \
+            kprintf("\n%u\n", kp_fmt_dataFormat(f)); \
+            throw(ERR_FORMAT); \
+            return NULL; \
+    } \
 }
 __toString_u_def(8)
 __toString_u_def(16)
 __toString_u_def(32)
-__toString_u_def(64)
+// __toString_u_def(64)
+char* __toString_u64(void* _n, u32 f){
+    switch(kp_fmt_dataFormat(f)){ 
+        case kp_u: ; 
+            u64 n=*(u64*)_n; 
+            return toString_u64(n, kp_fmt_withPostfix(f), kp_fmt_isUpper(f)); 
+        case kp_b: 
+            return toString_bin(_n, 64/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f)); 
+        case kp_h: 
+            return toString_hex(_n, 64/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f)); 
+        default: 
+            kprintf("\n%u\n", kp_fmt_dataFormat(f)); throw(ERR_FORMAT); return NULL; } 
+}
 
-#define __toString_float_def(BITS) char* __toString_f##BITS(void* _n, u32 f){\
-    switch(kp_fmt_dataFormat(f)){\
-        case kp_f: ;\
-            f##BITS n=*(f##BITS*)_n;\
-            return toString_f64(n, toString_float_default_precision, kp_fmt_withPostfix(f), kp_fmt_isUpper(f));\
-        case kp_b:\
-            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f));\
-        case kp_h:\
-            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f));\
-        default:\
-            kprintf("\n%u\n", kp_fmt_dataFormat(f));\
-            throw(ERR_FORMAT);\
-            return NULL;\
-    }\
+#define __toString_float_def(BITS) char* __toString_f##BITS(void* _n, u32 f){ \
+    switch(kp_fmt_dataFormat(f)){ \
+        case kp_f: ; \
+            f##BITS n=*(f##BITS*)_n; \
+            return toString_f64(n, toString_float_default_precision, kp_fmt_withPostfix(f), kp_fmt_isUpper(f)); \
+        case kp_b: \
+            return toString_bin(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f)); \
+        case kp_h: \
+            return toString_hex(_n, BITS/8, getEndian()==LittleEndian, kp_fmt_withPrefix(f), kp_fmt_isUpper(f)); \
+        default: \
+            kprintf("\n%u\n", kp_fmt_dataFormat(f)); \
+            throw(ERR_FORMAT); \
+            return NULL; \
+    } \
 }
 
 __toString_float_def(32)

@@ -1,62 +1,57 @@
 #include "../../Autoarr/Autoarr.h"
+#include "type_system.h"
+#include "base_toString.h"
 
-Autoarr_declare(ktDescriptor)
-Autoarr_define(ktDescriptor)
+kt_define(Pointer, free, __toString_u64);
+kt_define(char,NULL, __toString_char);
+kt_define(bool,NULL, __toString_bool);
+kt_define(f32, NULL, __toString_f32);
+kt_define(f64, NULL, __toString_f64);
+kt_define(i8,  NULL, __toString_i8);
+kt_define(u8,  NULL, __toString_u8);
+kt_define(i16, NULL, __toString_i16);
+kt_define(u16, NULL, __toString_u16);
+kt_define(i32, NULL, __toString_i32);
+kt_define(u32, NULL, __toString_u32);
+kt_define(i64, NULL, __toString_i64);
+kt_define(u64, NULL, __toString_u64);
 
-ktid ktid_Null=-1;
+kt_define(ktDescriptor, NULL, NULL);
 
-ktid_define(char);
-ktid_define(bool);
-ktid_define(f32);
-ktid_define(f64);
-ktid_define(i8);
-ktid_define(u8);
-ktid_define(i16);
-ktid_define(u16);
-ktid_define(i32);
-ktid_define(u32);
-ktid_define(i64);
-ktid_define(u64);
-
-ktid_define(ktDescriptor);
+typedef ktDescriptor* ktDescriptor_Ptr;
 
 // type descriptors are stored here during initialization 
-Autoarr(ktDescriptor)* __ktDescriptors=NULL;
+Autoarr(Pointer)* __descriptorPointers=NULL;
 // here type descriptors are stored when initialization is complited
-ktDescriptor* typeDescriptors=NULL;
+ktDescriptor** typeDescriptors=NULL;
 ktid ktid_last=-1;
 
-typedef enum{
+ENUM(ktDescriptorsState,
     NotInitialized, Initializing, Initialized
-} ktDescriptorsState;
+)
 ktDescriptorsState initState=NotInitialized;
 
 void ktDescriptors_beginInit(){
     kprintf("\e[94mtype descriptors initializing...\n");
-    __ktDescriptors=Autoarr_create(ktDescriptor, 256, 256);
-    if(__ktDescriptors==NULL) throw(ERR_NULLPTR);
+    __descriptorPointers=Autoarr_create(Pointer, 256, 256);
+    if(__descriptorPointers==NULL)
+        throw(ERR_NULLPTR);
 }
 
 void ktDescriptors_endInit(){
-    typeDescriptors=Autoarr_toArray(__ktDescriptors);
-    Autoarr_free(__ktDescriptors,true);
+    typeDescriptors=(ktDescriptor**)Autoarr_toArray(__descriptorPointers);
+    Autoarr_free(__descriptorPointers,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);
     kprintf("\e[92minitialized %u type descriptors\n", ktid_last);
 }
 
-void __kt_register(char* name, i16 size, void (*freeMembers)(void*), char* (*toString)(void*, u32)){
-    ktDescriptor typeDesc={
-        .name=name,
-        .size=size,
-        .id=++ktid_last,
-        .freeMembers=freeMembers,
-        .toString=toString
-    };
-    Autoarr_add(__ktDescriptors, typeDesc);
+void __kt_register(ktDescriptor* descriptor){
+    descriptor->id=++ktid_last;
+    Autoarr_add(__descriptorPointers, descriptor);
 }
 
-ktDescriptor ktDescriptor_get(ktid id){
-    if(id>ktid_last) {
+ktDescriptor* ktDescriptor_get(ktid id){
+    if(id>ktid_last || id==ktid_undefined) {
         kprintf("\ntype id: %u\n",id);
         throw("invalid type id");
     }

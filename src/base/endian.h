@@ -5,12 +5,13 @@ extern "C" {
 #endif
 
 #include "std.h"
+#include "type_system/typedef_macros.h"
 
-PACK_ENUM(Endian,
+PACKED_ENUM(Endian,
     UnknownEndian=0,
     LittleEndian=1,
     BigEndian=2
-);
+)
 
 Endian getEndian();
 

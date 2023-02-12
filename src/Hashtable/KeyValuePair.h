@@ -7,11 +7,10 @@ extern "C" {
 #include "../base/base.h"
 #include "../Autoarr/Autoarr.h"
 
-typedef struct KVPair{
+STRUCT(KVPair,
     char* key;
     Unitype value;
-} KVPair;
-ktid_declare(KVPair);
+)
 
 Autoarr_declare(KVPair)
 

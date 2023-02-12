@@ -47,4 +47,4 @@ I don't really like printf function (and its variants), so i made safer and more
     Maybe m=MaybeNull;
     kprint(kp_fgBlue|kp_s, "Maybe: ", kp_fgGreen|ktid_MaybePtr, &m);
     ```  
-    output: <span style="color:blue">Maybe:</span> <span style="color:lightgreen">{value={0, ktid_Null}}</span>
+    output: <span style="color:blue">Maybe:</span> <span style="color:lightgreen">{value: { Pointer, 0x0 }}</span>

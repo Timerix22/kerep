@@ -1,6 +1,6 @@
 #include "KeyValuePair.h"
 
-ktid_define(KVPair);
+kt_define(KVPair, __KVPair_free, NULL);
 
 Autoarr_define(KVPair)
 

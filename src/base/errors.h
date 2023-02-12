@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #include "std.h"
-#include "type_system/unitype.h"
+#include "type_system/type_system.h"
 
-PACK_ENUM(ErrorId,
+PACKED_ENUM(ErrorId,
     SUCCESS, // not an error 
     ERR_MAXLENGTH, ERR_WRONGTYPE, ERR_WRONGINDEX, 
     ERR_NOTIMPLEMENTED, ERR_NULLPTR, ERR_ENDOFSTR, 
@@ -20,10 +20,10 @@ char* errname(ErrorId err);
 char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname);
 char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname);
 
-typedef struct Maybe{
+STRUCT(Maybe,
     Unitype value;
     char* errmsg;
-} Maybe;
+)
 
 // return it if func doesn't return anything
 //                            .value  .errmsg
@@ -42,47 +42,47 @@ void printMaybe(Maybe e);
 char* __doNothing(char* a);
 char* __unknownErr( );
 
-#define __stringify_err(E) _Generic(\
-    (E),\
-    char*: __doNothing,\
-    int: errname,\
-    default: __unknownErr\
+#define __stringify_err(E) _Generic( \
+    (E), \
+    char*: __doNothing, \
+    int: errname, \
+    default: __unknownErr \
 )(E)
 
 #if __cplusplus
 #define throw_id(E) __EXIT(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)))
 #define throw_msg(E) __EXIT(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)))
 
-#define safethrow_id(E, FREEMEM) { FREEMEM;\
-    __RETURN_EXCEPTION(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__)));\
+#define safethrow_id(E, FREEMEM) { FREEMEM; \
+    __RETURN_EXCEPTION(((char*)__genErrMsg(errname(E), __FILE__,__LINE__,__func__))); \
 }
-#define safethrow_msg(E, FREEMEM) { FREEMEM;\
-    __RETURN_EXCEPTION(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__)));\
+#define safethrow_msg(E, FREEMEM) { FREEMEM; \
+    __RETURN_EXCEPTION(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__))); \
 }
 
-#define try_cpp(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
-    freeMem;\
-    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
-    return _rezult;\
+#define try_cpp(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
+    freeMem; \
+    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
+    return _rezult; \
 }
 
 #else
 #define throw(E) __EXIT(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)))
 
-#define safethrow(E, FREEMEM) { FREEMEM;\
-    __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__)));\
+#define safethrow(E, FREEMEM) { FREEMEM; \
+    __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); \
 }
 
-#define try(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
-    freeMem;\
-    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
-    return _rezult;\
+#define try(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
+    freeMem; \
+    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
+    return _rezult; \
 }
 #endif
 
-#define tryLast(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){\
-    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__);\
-    __EXIT(_rezult.errmsg);\
+#define tryLast(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
+    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
+    __EXIT(_rezult.errmsg); \
 }
 
 #if __cplusplus

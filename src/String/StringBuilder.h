@@ -7,13 +7,10 @@ extern "C" {
 #include "../Autoarr/Autoarr.h"
 #include "string.h"
 
-Autoarr_declare(string)
-
-typedef struct StringBuilder{
+STRUCT(StringBuilder,
 	Autoarr(string)* compl_bufs;
 	Autoarr(i8)* curr_buf;
-} StringBuilder;
-ktid_declare(StringBuilder);
+)
 
 StringBuilder* StringBuilder_create(void);
 void StringBuilder_free(StringBuilder* b);

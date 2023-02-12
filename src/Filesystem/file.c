@@ -2,7 +2,7 @@
 #include "../String/StringBuilder.h"
 #include "io_includes.h"
 
-ktid_define(File);
+kt_define(File, (freeMembers_t)file_close, NULL)
 
 bool file_exists(const char* path){
     if(path[0]=='.'){
@@ -61,10 +61,10 @@ Maybe file_close(File* file){
     return MaybeNull;
 }
 
-#define ioWriteCheck()\
-    if(rezult==EOF)\
-        safethrow(ERR_IO_EOF,;);\
-    if(rezult!=0)\
+#define ioWriteCheck() \
+    if(rezult==EOF) \
+        safethrow(ERR_IO_EOF,;); \
+    if(rezult!=0) \
         safethrow(ERR_IO,;);
 
 Maybe file_writeChar(File* file, char byte){

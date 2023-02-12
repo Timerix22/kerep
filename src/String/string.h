@@ -6,15 +6,17 @@ extern "C" {
 
 #include "../base/base.h"
 #include "../Array/Array.h"
+#include "../Autoarr/Autoarr.h"
 
 // my fixed length string struct
 // doesn't store '\0' at the end
-typedef struct string{
+STRUCT(string,
     char* ptr;      // char pointer
     u64 length;  // amount of chars in ptr value
-} string;
-ktid_declare(string);
-Array_declare(string);
+)
+
+Array_declare(string)
+Autoarr_declare(string)
 
 static const string stringNull={NULL,0};
 

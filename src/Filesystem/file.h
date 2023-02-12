@@ -9,14 +9,14 @@ extern "C" {
 #include "../String/string.h"
 
 typedef FILE File;
-ktid_declare(File);
+kt_declare(File);
 
 bool file_exists(const char* path);
 
 ///@return Maybe<void>
 Maybe file_delete(const char* path, bool recursive);
 
-PACK_ENUM(FileOpenMode,
+PACKED_ENUM(FileOpenMode,
     // open a file for reading 
     FileOpenMode_Read=1, 
     // (re)create a file for writing

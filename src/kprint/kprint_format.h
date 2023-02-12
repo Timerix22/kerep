@@ -10,7 +10,7 @@ extern "C" {
 /// kprint_format
 typedef u32 kp_fmt;
 
-PACK_ENUM(kp_dataFmt,
+PACKED_ENUM(kp_dataFmt,
 // 00000000 00000000  00000000 00000000
 //              ^^^^
 //              type

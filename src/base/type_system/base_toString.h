@@ -6,8 +6,8 @@ extern "C" {
 
 #include "../errors.h"
 
-// char and cstring
-// has different output for fmtChar and fmtString
+// accepts char* (ptr to char) and char** (ptr to string)
+// uses format kp_s and kp_c to determine what type is <c> argument
 char* __toString_char(void* c, u32 fmt);
 
 // bool

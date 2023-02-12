@@ -8,33 +8,33 @@
 
 char data[]="iojihiojopijiugbjmoihftytryfdrh";
 
-#define test_hashfunc(hasht, hashf)({\
-    kprintf("\e[94mfunction: \e[92m" #hashf "\n");\
-    hasht h=0;\
-    optime("speed test", 1, ({\
-        for(u32 i=0; i<SPEED_TESTS; i++)\
-            h=hashf(h, data, sizeof(data));\
-    }));\
-    /*kprintf("\e[94mhash of \"\e[90m%s\e[94m\": \e[92m%x\n",data, h);*/\
-    Autoarr(hasht)* hashes=Autoarr_create(hasht,512,32768);\
-    optime("collision test",1,({\
-        u32 collisions=0;\
-        for(u64 i=0;i< COLLISION_TESTS;i++){\
-            hasht h=hashb(hashf, (u8*)&i, sizeof(i));\
-            bool col=false;\
-            Autoarr_foreach(hashes,e,({\
-                if(e==h) {\
-                    col=true;\
-                    break;\
-                }\
-            }));\
-            if(col) collisions++;\
-            else Autoarr_add(hashes,h);\
-        }\
-        kprintf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS);\
-    }));\
-    Autoarr_free(hashes, true);\
-    kprintf("\e[96m--------------------------------------\n");\
+#define test_hashfunc(hasht, hashf)({ \
+    kprintf("\e[94mfunction: \e[92m" #hashf "\n"); \
+    hasht h=0; \
+    optime("speed test", 1, ({ \
+        for(u32 i=0; i<SPEED_TESTS; i++) \
+            h=hashf(h, data, sizeof(data)); \
+    })); \
+    /*kprintf("\e[94mhash of \"\e[90m%s\e[94m\": \e[92m%x\n",data, h);*/ \
+    Autoarr(hasht)* hashes=Autoarr_create(hasht,512,32768); \
+    optime("collision test",1,({ \
+        u32 collisions=0; \
+        for(u64 i=0;i< COLLISION_TESTS;i++){ \
+            hasht h=hashb(hashf, (u8*)&i, sizeof(i)); \
+            bool col=false; \
+            Autoarr_foreach(hashes,e,({ \
+                if(e==h) { \
+                    col=true; \
+                    break; \
+                } \
+            })); \
+            if(col) collisions++; \
+            else Autoarr_add(hashes,h); \
+        } \
+        kprintf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS); \
+    })); \
+    Autoarr_free(hashes, true); \
+    kprintf("\e[96m--------------------------------------\n"); \
 })
 
 void test_hash_functions(){

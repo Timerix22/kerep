@@ -15,7 +15,7 @@ ktid __typeFromFormat(kp_fmt f){
         case kp_f:
             return ktid_name(f64); 
         case kp_c:
-            return ktid_char; 
+            return ktid_name(char); 
         case kp_s:
             return ktid_ptrName(char); 
         default: 
@@ -26,12 +26,12 @@ ktid __typeFromFormat(kp_fmt f){
 Maybe __next_toString(kp_fmt f, __kp_value_union* object){
     // detecting type
     ktid typeId=__typeFromFormat(f);
-    if(typeId==-1)
-        safethrow("typeId is not set, can't autodetect type",;);
-    ktDescriptor typeDesc=ktDescriptor_get(typeId);
-    if(!typeDesc.toString)
+    if(typeId==ktid_undefined)
+        safethrow("typeId is undefined, can't autodetect type",;);
+    ktDescriptor* type=ktDescriptor_get(typeId);
+    if(!type->toString)
         safethrow("type descriptor doesnt have toString() func",;);
-    return SUCCESS(UniHeapPtr(char, typeDesc.toString(object, f)));
+    return SUCCESS(UniHeapPtr(char, type->toString(object, f)));
 }
 
 Maybe check_argsN(u8 n){
@@ -73,7 +73,7 @@ void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
         kp_fmt fmt=formats[i];
         kprint_setColor(fmt);
         tryLast(__next_toString(fmt, &objects[i]),maybeStr);
-        if(fputs(maybeStr.value.VoidPtr, stdout)==EOF)\
+        if(fputs(maybeStr.value.VoidPtr, stdout)==EOF) \
             throw("can't write string to stdout");
             //, Unitype_free(maybeStr.value)
         Unitype_free(maybeStr.value);
@@ -160,14 +160,14 @@ void kprint_setColor(kp_fmt f){
 #endif
 
 /* Maybe ksprint_ar(u32 count, kp_fmt format, ktid typeId, void* array){
-    ktDescriptor typeDesc=ktDescriptor_get(format.typeId);
-    if(!typeDesc.toString)
+    ktDescriptor* type=ktDescriptor_get(format.typeId);
+    if(!type->toString)
         safethrow("type descriptor doesnt have toString() func",;);
     StringBuilder* strb=StringBuilder_create();
     StringBuilder_append_char(strb, '[');
     for (u16 e=1; e<count; e++){
         StringBuilder_append_char(strb, ' ');
-        char* elStr=typeDesc.toString(array+typeDesc.size*e, &format);
+        char* elStr=type->toString(array+type->size*e, &format);
         StringBuilder_append_cptr(strb, elStr);
         StringBuilder_append_char(strb, ',');
     }

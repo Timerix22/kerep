@@ -2,21 +2,21 @@
 #include "../src/random/krandom.h"
 
 
-#define test_alg(ALG, VALUE_SIZE, EXPECTED_FROM_ZERO){\
-    kprintf("\e[94mrng algorithm: \e[96m" #ALG "\n");\
-    void* s= ALG##_init(0);\
-    u##VALUE_SIZE r=ALG##_next(s);\
-    kprintf("\e[97m  next from zero seed:");\
-    if(r!=EXPECTED_FROM_ZERO){\
-        kprintf("\e[91m " IFWIN("%llu\n","%lu\n"), (u64)r);\
-        throw(ERR_UNEXPECTEDVAL);\
-    }\
-    kprintf("\e[92m " IFWIN("%llu\n","%lu\n"), (u64)r);\
-    ALG##_free(s);\
-    s= ALG##_initFromTime();\
-    r=ALG##_next(s);\
-    ALG##_free(s);\
-    kprintf("\e[97m  next from time seed:\e[92m " IFWIN("%llu\n","%lu\n"), (u64)r);\
+#define test_alg(ALG, VALUE_SIZE, EXPECTED_FROM_ZERO){ \
+    kprintf("\e[94mrng algorithm: \e[96m" #ALG "\n"); \
+    void* s= ALG##_init(0); \
+    u##VALUE_SIZE r=ALG##_next(s); \
+    kprintf("\e[97m  next from zero seed:"); \
+    if(r!=EXPECTED_FROM_ZERO){ \
+        kprintf("\e[91m " IFWIN("%llu\n","%lu\n"), (u64)r); \
+        throw(ERR_UNEXPECTEDVAL); \
+    } \
+    kprintf("\e[92m " IFWIN("%llu\n","%lu\n"), (u64)r); \
+    ALG##_free(s); \
+    s= ALG##_initFromTime(); \
+    r=ALG##_next(s); \
+    ALG##_free(s); \
+    kprintf("\e[97m  next from time seed:\e[92m " IFWIN("%llu\n","%lu\n"), (u64)r); \
 }
 
 void test_rng_algorithms(){

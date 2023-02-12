@@ -8,7 +8,7 @@ extern "C" {
 //         ^   ^^^^
 //         |   color num
 // fgColorSet flag   
-PACK_ENUM(kp_fgColor,
+PACKED_ENUM(kp_fgColor,
     /// black foreground
     kp_fgBlack   = 0x80000000,
     /// dark red foreground
@@ -46,7 +46,7 @@ PACK_ENUM(kp_fgColor,
 //          01000000 00000000  00000000 00000000
 //           ^       ^^^^
 // bgColorSet flag   color num
-PACK_ENUM(kp_bgColor,
+PACKED_ENUM(kp_bgColor,
     /// black background
     kp_bgBlack   = 0x40000000,
     /// dark red background

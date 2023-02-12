@@ -20,7 +20,7 @@ Autoarr_declare(i32)
 Autoarr_declare(u32)
 Autoarr_declare(i64)
 Autoarr_declare(u64)
-
+Autoarr_declare(Pointer)
 
 #if __cplusplus
 }

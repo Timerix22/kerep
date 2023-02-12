@@ -4,14 +4,14 @@
 extern "C" {
 #endif
 
+#include "../base/base.h"
 #include "../HashFunctions/hash.h"
 #include "KeyValuePair.h"
 
-typedef struct Hashtable{
+STRUCT(Hashtable,
     u8 hein;  // height=HT_HEIGHTS[hein] 
     Autoarr(KVPair)** rows; // Autoarr[height]
-} Hashtable;
-ktid_declare(Hashtable);
+)
 
 Hashtable* Hashtable_create();
 void Hashtable_free(Hashtable* ht);
@@ -33,12 +33,12 @@ Unitype* Hashtable_getptr(Hashtable* ht, char* key);
 Unitype Hashtable_get(Hashtable* ht, char* key);
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output);
 
-#define Hashtable_foreach(HT, EL, codeblock)({\
-    u16 hmax=Hashtable_height(HT);\
-    for(u16 h=0; h<hmax; h++){\
-        Autoarr(KVPair)* AR=HT->rows[h];\
-        Autoarr_foreach(AR, EL, codeblock);\
-    }\
+#define Hashtable_foreach(HT, EL, codeblock)({ \
+    u16 hmax=Hashtable_height(HT); \
+    for(u16 h=0; h<hmax; h++){ \
+        Autoarr(KVPair)* AR=HT->rows[h]; \
+        Autoarr_foreach(AR, EL, codeblock); \
+    } \
 })
 
 #if __cplusplus
