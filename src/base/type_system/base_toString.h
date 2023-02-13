@@ -6,7 +6,7 @@ extern "C" {
 
 #include "../errors.h"
 
-// accepts char* (ptr to char) and char** (ptr to string)
+// accepts char* (ptr to char) and char* (ptr to string)
 // uses format kp_s and kp_c to determine what type is <c> argument
 char* __toString_char(void* c, u32 fmt);
 

@@ -9,4 +9,5 @@ obj/
 .editorconfig
 *.user
 *.vcxproj.filters
+*.log
 current.config

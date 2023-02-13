@@ -50,7 +50,8 @@ void Hashtable_expand(Hashtable* ht){
             Autoarr_add(newar,p);
         }
         // there is no need to free array values, because they are copied into new array
-        __Autoarr_free_KVPair(ar, true);
+        // so dont replace this incorrect auto-generated function
+        __Autoarr_KVPair_free_g(ar, true);
     }
 
     free(ht->rows);
@@ -72,11 +73,11 @@ void Hashtable_add(Hashtable* ht, char* key, Unitype u){
 }
 
 // returns null or pointer to value in hashtable
-Unitype* Hashtable_getptr(Hashtable* ht, char* key){
+Unitype* Hashtable_getPtr(Hashtable* ht, char* key){
     Autoarr(KVPair)* ar=getrow(ht,key,false);
     u32 arlen=Autoarr_length(ar);
     for(u32 i=0;i<arlen;i++){
-        KVPair* p=Autoarr_getptr(ar,i);
+        KVPair* p=Autoarr_getPtr(ar,i);
         if(cptr_compare(key,p->key)) return &p->value;
     }
     return NULL;
@@ -99,7 +100,7 @@ bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
 }
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){
-    Unitype* val=Hashtable_getptr(ht, key);
+    Unitype* val=Hashtable_getPtr(ht, key);
     if(val) *val=u;
     else Hashtable_add(ht, key, u);
 }

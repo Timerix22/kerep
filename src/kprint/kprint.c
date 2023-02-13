@@ -19,15 +19,19 @@ ktid __typeFromFormat(kp_fmt f){
         case kp_s:
             return ktid_ptrName(char); 
         default: 
-            return -1;
+            return ktid_undefined;
     }
 }
 
-Maybe __next_toString(kp_fmt f, __kp_value_union* object){
+Maybe __next_toString(kp_fmt f, void* object){
     // detecting type
     ktid typeId=__typeFromFormat(f);
     if(typeId==ktid_undefined)
         safethrow("typeId is undefined, can't autodetect type",;);
+
+    if(typeId==ktid_ptrName(char))
+        object=*(char**)object; // dereferencing char** to char*
+
     ktDescriptor* type=ktDescriptor_get(typeId);
     if(!type->toString)
         safethrow("type descriptor doesnt have toString() func",;);

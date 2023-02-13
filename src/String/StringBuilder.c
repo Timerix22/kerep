@@ -68,7 +68,7 @@ void StringBuilder_rmchar(StringBuilder* b){
         Autoarr_pop(b->curr_buf)
     else {
         if(!b->compl_bufs) throw(ERR_NULLPTR);
-        string* lastcb=Autoarr_getptr(b->compl_bufs, (Autoarr_length(b->compl_bufs)-1));
+        string* lastcb=Autoarr_getPtr(b->compl_bufs, (Autoarr_length(b->compl_bufs)-1));
         lastcb->length--;
     }
 }

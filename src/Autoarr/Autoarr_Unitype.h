@@ -10,8 +10,8 @@ extern "C" {
 Autoarr_declare(Unitype)
 
 // this function is injected in kerep_init()
-void __Autoarr_free_Unitype_(Autoarr(Unitype)* ar, bool freePtr);
-void ____Autoarr_free_Unitype_(void* ar);
+void __Autoarr_Unitype_free_fixed(Autoarr(Unitype)* ar, bool freePtr);
+void ____Autoarr_Unitype_free_fixed(void* ar);
 
 #define Autoarr_foreach(ar,elem,codeblock)({ \
     if(ar->blocks_count>0) { \

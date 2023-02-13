@@ -28,7 +28,7 @@ void Hashtable_add(Hashtable* ht, char* key, Unitype u);
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u);
 
 // returns null or pointer to value in hashtable
-Unitype* Hashtable_getptr(Hashtable* ht, char* key);
+Unitype* Hashtable_getPtr(Hashtable* ht, char* key);
 
 Unitype Hashtable_get(Hashtable* ht, char* key);
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output);

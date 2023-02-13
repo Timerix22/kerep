@@ -3,11 +3,12 @@
 #include "../../kprint/kprint_format.h"
 
 
-// accepts char* (ptr to char) and char** (ptr to string)
+// accepts char* (ptr to char) and char* (ptr to string)
+// uses format kp_s and kp_c to determine what type is <c> argument
 char* __toString_char(void* c, u32 fmt) {
     // *c=char*
     if(kp_fmt_dataFormat(fmt)==kp_s){
-        return cptr_copy(*(char**)c); // to avoid segmentation fault on free() when *c allocalet on stack
+        return cptr_copy((char*)c); // to avoid segmentation fault on free() when *c allocalet on stack
     }
     // *c=char
     if(kp_fmt_dataFormat(fmt)==kp_c){

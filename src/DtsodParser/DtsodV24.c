@@ -12,13 +12,13 @@ void DtsodV24_addOrSet(Hashtable* dtsod, char* key, Unitype value){
 
 // checks for dtsod contains value or dont
 bool DtsodV24_contains(Hashtable* dtsod, char* key){
-    Unitype* val=Hashtable_getptr(dtsod, key);
+    Unitype* val=Hashtable_getPtr(dtsod, key);
     return val!=NULL;
 }
 
 // replaces value with UniNull if key exists in dtsod
 bool DtsodV24_remove(Hashtable* dtsod, char* key){
-    Unitype* val=Hashtable_getptr(dtsod, key);
+    Unitype* val=Hashtable_getPtr(dtsod, key);
     if (!val) return false;
     *val=UniNull;
     return true;

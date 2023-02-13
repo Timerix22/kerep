@@ -14,13 +14,13 @@ STRUCT(KVPair,
 
 Autoarr_declare(KVPair)
 
-// proper way to clear a KVP
+// proper way to clean a KVP
 void KVPair_free(KVPair p);
 void __KVPair_free(void* p);
 
-// func to clear KVP array
-void __Autoarr_free_KVPair_(Autoarr_KVPair* ar, bool freePtr);
-void ____Autoarr_free_KVPair_(void* ar);
+// func to clean KVP array
+void __Autoarr_KVPair_free_fixed(Autoarr_KVPair* ar, bool freePtr);
+void ____Autoarr_KVPair_free_fixed(void* ar);
 
 void printkvp(KVPair p);
 
