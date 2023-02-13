@@ -15,7 +15,8 @@ typedef struct __Autoarr_##type##_functions_list_t { \
     type (*get)(struct Autoarr_##type* ar, u32 index); \
     type* (*getPtr)(struct Autoarr_##type* ar, u32 index); \
     void (*set)(struct Autoarr_##type* ar, u32 index, type element); \
-    void (*freear)(struct Autoarr_##type* ar, bool freePtr); \
+    void (*freeWithMembers)(struct Autoarr_##type* ar, bool freePtr); \
+    void (*freeWithoutMembers)(struct Autoarr_##type* ar, bool freePtr); \
     type* (*toArray)(struct Autoarr_##type* ar); \
 } __Autoarr_##type##_functions_list_t; \
 \
@@ -31,8 +32,8 @@ STRUCT(Autoarr_##type, \
 ) \
 \
 Autoarr_##type* __Autoarr_##type##_create(u16 max_blocks_count, u16 max_block_length); \
-void __Autoarr_##type##_free_g(Autoarr_##type* ar, bool freePtr); \
-void ____Autoarr_##type##_free_g(void* ar);
+void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr); \
+void ____Autoarr_##type##_freeWithMembers(void* ar);
 
 #define Autoarr(type) Autoarr_##type
 
@@ -47,7 +48,9 @@ void ____Autoarr_##type##_free_g(void* ar);
 #define Autoarr_set(autoarr, index, element) \
     autoarr->functions->set(autoarr, index, element)
 #define Autoarr_free(autoarr, freePtr) \
-    autoarr->functions->freear(autoarr, freePtr)
+    autoarr->functions->freeWithMembers(autoarr, freePtr)
+#define Autoarr_freeWithoutMembers(autoarr, freePtr) \
+    autoarr->functions->freeWithoutMembers(autoarr, freePtr)
 #define Autoarr_toArray(autoarr) \
     autoarr->functions->toArray(autoarr)
 

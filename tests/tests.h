@@ -28,12 +28,12 @@ inline void test_all(){
         test_searchtree();
         test_autoarr();
         test_autoarrVsVector();
-        test_hash_functions();
-        test_hashtable();
-        test_dtsod();
         test_rng_algorithms();
         test_kprint_colors();
         test_kprint();
+        test_hash_functions();
+        test_hashtable();
+        test_dtsod();
         kprintf("\e[96m--------------------------------------\e[0m\n");
     }));
 }

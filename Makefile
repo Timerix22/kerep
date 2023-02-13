@@ -42,7 +42,7 @@ exec: build_exec
 
 # executes $EXEC_FILE
 exec_dbg: build_exec_dbg
-	@cbuild/call_task.sh exec_dbg 2>&1 | tee -a make_raw.log
+	@cbuild/call_task.sh exec 2>&1 | tee -a make_raw.log
 
 # executes $EXEC_FILE with valgrind memory checker
 valgrind: build_exec_dbg

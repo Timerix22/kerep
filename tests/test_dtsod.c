@@ -33,39 +33,33 @@ void print_dtsod(Hashtable* dtsod){
 }
 
 void test_dtsod(){
-    // optime(__func__,1,({
+    optime(__func__,1,({
         kprintf("\e[96m-------------[test_dtsod]-------------\n");
         Hashtable* dtsod;
         char* s;
 
-        do {
-        // optime("deserialize",1,({
+        optime("deserialize",1,({
             tryLast(DtsodV24_deserialize(text),r) 
                 dtsod=r.value.VoidPtr;
-        // }));
-        } while(0);
+        }));
         print_dtsod(dtsod);
 
-        do {
-        // optime("serialize",1,({
+        optime("serialize",1,({
             tryLast(DtsodV24_serialize(dtsod),r)
                 s=r.value.VoidPtr;
-        // }));
-        } while(0);
+        }));
         DtsodV24_free(dtsod);
         kprintf("\e[92m%s",s);
 
-        do {
-        // optime("reserialize",10,({
+        optime("reserialize",10,({
             tryLast(DtsodV24_deserialize(s),r) 
                 dtsod=r.value.VoidPtr;
             free(s);
             tryLast(DtsodV24_serialize(dtsod),rr)
                 s=rr.value.VoidPtr;
             DtsodV24_free(dtsod);
-        // }));
-        } while(0);
+        }));
 
         free(s);
-    // }));
+    }));
 }

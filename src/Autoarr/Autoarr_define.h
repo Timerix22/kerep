@@ -6,9 +6,9 @@ extern "C" {
 
 #include "../base/base.h"
 
-#define Autoarr_define(type) \
+#define Autoarr_define(type, TYPE_IS_PTR) \
 \
-kt_define(Autoarr_##type, ____Autoarr_##type##_free_g, NULL); \
+kt_define(Autoarr_##type, ____Autoarr_##type##_freeWithMembers, NULL); \
 \
 void __Autoarr_##type##_add(Autoarr_##type* ar, type element){ \
     if(!ar->values){ \
@@ -41,14 +41,25 @@ void __Autoarr_##type##_set(Autoarr_##type* ar, u32 index, type element){ \
     ar->values[index/ar->max_block_length][index%ar->max_block_length]=element; \
 } \
 \
-void __Autoarr_##type##_free_g(Autoarr_##type* ar, bool freePtr){ \
+void __Autoarr_##type##_freeWithoutMembers(Autoarr_##type* ar, bool freePtr){ \
     for(u16 i=0; i<ar->blocks_count;i++) \
         free(ar->values[i]); \
     free(ar->values); \
     if(freePtr) free(ar); \
 } \
-void ____Autoarr_##type##_free_g(void* ar){ \
-    __Autoarr_##type##_free_g((Autoarr_##type*)ar, false); \
+\
+void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr){ \
+    if(ktDescriptor_##type.freeMembers!=NULL) { \
+        Autoarr_foreach(ar, el, ({ \
+            void* members_ptr=&el; \
+            if(TYPE_IS_PTR) members_ptr=*(type**)members_ptr; \
+            ktDescriptor_##type.freeMembers(members_ptr); \
+        })); \
+    } \
+    __Autoarr_##type##_freeWithoutMembers(ar, freePtr);\
+} \
+void ____Autoarr_##type##_freeWithMembers(void* ar){ \
+    __Autoarr_##type##_freeWithMembers((Autoarr_##type*)ar, false); \
 } \
 \
 type* __Autoarr_##type##_toArray(Autoarr_##type* ar){ \
@@ -64,7 +75,8 @@ __Autoarr_##type##_functions_list_t __Autoarr_##type##_functions_list={ \
     &__Autoarr_##type##_get, \
     &__Autoarr_##type##_getPtr, \
     &__Autoarr_##type##_set, \
-    &__Autoarr_##type##_free_g, \
+    &__Autoarr_##type##_freeWithMembers, \
+    &__Autoarr_##type##_freeWithoutMembers, \
     &__Autoarr_##type##_toArray \
 }; \
 \

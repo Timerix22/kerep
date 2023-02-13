@@ -51,7 +51,7 @@ void Hashtable_expand(Hashtable* ht){
         }
         // there is no need to free array values, because they are copied into new array
         // so dont replace this incorrect auto-generated function
-        __Autoarr_KVPair_free_g(ar, true);
+        Autoarr_freeWithoutMembers(ar, true);
     }
 
     free(ht->rows);

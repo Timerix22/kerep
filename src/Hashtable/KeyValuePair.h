@@ -18,10 +18,6 @@ Autoarr_declare(KVPair)
 void KVPair_free(KVPair p);
 void __KVPair_free(void* p);
 
-// func to clean KVP array
-void __Autoarr_KVPair_free_fixed(Autoarr_KVPair* ar, bool freePtr);
-void ____Autoarr_KVPair_free_fixed(void* ar);
-
 void printkvp(KVPair p);
 
 #if __cplusplus

@@ -2,7 +2,7 @@
 #include "type_system.h"
 #include "base_toString.h"
 
-kt_define(Pointer, free, __toString_u64);
+kt_define(Pointer, NULL, __toString_u64);
 kt_define(char,NULL, __toString_char);
 kt_define(bool,NULL, __toString_bool);
 kt_define(f32, NULL, __toString_f32);
