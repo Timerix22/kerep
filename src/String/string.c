@@ -14,14 +14,16 @@ char* string_extract(string str){
     return cptr;
 }
 
-// copies src.ptr content to new string
+// copies src.ptr content to new string and adds \0 at the end
 string string_copy(string src){
-    if(!src.ptr) return src;
+    if(!src.ptr)
+        return src;
     string nstr;
     nstr.length=src.length;
-    nstr.ptr=malloc(nstr.length);
+    nstr.ptr=malloc(nstr.length+1);
     for(u32 i=0;i<nstr.length;i++)
         nstr.ptr[i]=src.ptr[i];
+    nstr.ptr[nstr.length]='\0';
     return nstr;
 }
 

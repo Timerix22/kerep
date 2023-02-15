@@ -20,10 +20,13 @@ Autoarr_declare(string)
 
 static const string stringNull={NULL,0};
 
+/// wraps pointer without copy
+#define string_fromCptr(CPTR) (string){ .ptr=CPTR, .length=cptr_length(CPTR) }
+
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str);
 
-// copies src.ptr content to new string
+// copies src.ptr content to new string and adds \0 at the end
 string string_copy(string src);
 
 // compares two strings, NullPtr-friendly
