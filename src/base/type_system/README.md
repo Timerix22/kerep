@@ -26,9 +26,9 @@ Every registered type should have it's own descriptor (`ktDescriptor`). It's a s
 
 ## type registration
 
-To finally register a type, you should call macro `kt_register()` between `ktDescriptors_beginInit()` and `ktDescriptors_endInit()`. Better do it at the start of your program. To register all types from kerep, call `ktDescriptors_initKerepTypes()`.  
+To finally register a type, you should call macro `kt_register()` between `kt_beginInit()` and `kt_endInit()`. Better do it at the start of your program. To register all types from kerep, call `kt_initKerepTypes()`.  
 
-You can free internal ktDescriptors storage by calling `ktDescriptors_free()` at exit, if your debugger (valgrind in my case) sees a memory leak.  
+You can free internal ktDescriptors storage by calling `kt_free()` at exit, if your debugger (valgrind in my case) sees a memory leak.  
 Examples:  
-+ [ktDescriptors_initKerepTypes()](src/base/type_system/init.c)
-+ [kerep types registration](tests/main.cpp)
++ [kerep types registration](src/base/type_system/init.c)
++ [kt_initKerepTypes()](tests/main.cpp)

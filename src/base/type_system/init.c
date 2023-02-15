@@ -7,7 +7,7 @@
 #include "../../Filesystem/filesystem.h"
 #include "base_toString.h"
 
-void ktDescriptors_initKerepTypes(){
+void kt_initKerepTypes(){
     // base types
     kt_register(Pointer);
     if(ktid_Pointer!=0) // this can break UnitypeNull

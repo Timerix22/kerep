@@ -10,7 +10,9 @@ extern "C" {
 typedef u16 ktid;
 static const ktid ktid_undefined=-1;
 
+/// gets descriptor id for TYPE
 #define ktid_name(TYPE) ktid_##TYPE
+/// gets descriptor id for pointer to TYPE
 #define ktid_ptrName(TYPE) ktid_##TYPE##_Ptr
 
 #define ktid_declare(TYPE) \

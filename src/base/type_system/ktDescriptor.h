@@ -41,6 +41,11 @@ STRUCT(ktDescriptor,
     toString_t toString; // NULL or function which generates string representaion of object
 )
 
+/// gets descriptor for TYPE
+#define ktDescriptor_name(TYPE) ktDescriptor_##TYPE
+/// gets descriptor for pointer to TYPE
+#define ktDescriptor_namePtr(TYPE) ktDescriptor_##TYPE##_Ptr
+
 #if __cplusplus
 }
 #endif

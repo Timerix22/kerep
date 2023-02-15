@@ -17,14 +17,14 @@ void __kt_register(ktDescriptor* descriptor);
     __kt_register(&ktDescriptor_##TYPE##_Ptr); \
     ktid_##TYPE##_Ptr=ktid_last;
 
-void ktDescriptors_beginInit();
-void ktDescriptors_endInit();
+void kt_beginInit();
+void kt_endInit();
 
 /// @param id id of registered type
 ktDescriptor* ktDescriptor_get(ktid id);
 
 // call it to free heap-allocated ktDescriptors array
-void ktDescriptors_free();
+void kt_free();
 
 kt_declare(Pointer);
 kt_declare(char);

@@ -31,14 +31,14 @@ ENUM(ktDescriptorsState,
 )
 ktDescriptorsState initState=NotInitialized;
 
-void ktDescriptors_beginInit(){
+void kt_beginInit(){
     kprintf("\e[94mtype descriptors initializing...\n");
     __descriptorPointers=Autoarr_create(Pointer, 256, 256);
     if(__descriptorPointers==NULL)
         throw(ERR_NULLPTR);
 }
 
-void ktDescriptors_endInit(){
+void kt_endInit(){
     typeDescriptors=(ktDescriptor**)Autoarr_toArray(__descriptorPointers);
     Autoarr_free(__descriptorPointers,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);
@@ -58,6 +58,6 @@ ktDescriptor* ktDescriptor_get(ktid id){
     return typeDescriptors[id];
 }
 
-void ktDescriptors_free(){
+void kt_free(){
     free(typeDescriptors);
 }

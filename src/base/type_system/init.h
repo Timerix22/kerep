@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-// call this between ktDescriptors_beginInit() and ktDescriptors_endInit()
-void ktDescriptors_initKerepTypes();
+// call this between kt_beginInit() and kt_endInit()
+void kt_initKerepTypes();
 
 #if __cplusplus
 }
