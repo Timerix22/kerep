@@ -37,6 +37,8 @@ typedef u8 bool;
 
 #define dbg(N) kprintf("\e[95m%d\n",N)
 
+#define nameof(V) #V
+
 #ifdef _MSC_VER
     #pragma comment(lib, "mincore_downlevel.lib") // Support OS older than SDK
     #define _CRT_SECURE_NO_WARNINGS 1
