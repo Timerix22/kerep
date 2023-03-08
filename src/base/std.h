@@ -123,6 +123,9 @@ You can even embed it into macro in header (see kprint.h)
     CODE; \
     PRAGMA_WARNING_POP
 
+/// gcc throws warning on unused function return value
+#define WARN_UNUSED_REZULT __attribute__((warn_unused_result))
+
 #if __cplusplus
 }
 #endif
