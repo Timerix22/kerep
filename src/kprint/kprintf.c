@@ -75,10 +75,19 @@ void kprintf(const char* format, ...){
                     if((c=format[i++]))
                         goto format_escape_seq;
                     break;
-                case 'p':
+                case 'p': ;
+                    void* phex=va_arg(vl, void*);
+                    argstr=toString_hex(&phex,getEndian()==LittleEndian,sizeof(phex),1,0);
+                    break;
                 case 'x': ;
-                    u64 px=va_arg(vl, u64);
-                    argstr=toString_hex(&px,getEndian()==LittleEndian,sizeof(px),1,0);
+                    if(l){
+                        u64 xhex=va_arg(vl, u64);
+                        argstr=toString_hex(&xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
+                    }
+                    else {
+                        u32 xhex=va_arg(vl, u32);
+                        argstr=toString_hex(&xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
+                    }
                     break;
                 case 's': ;
                     char* cptr=va_arg(vl,char*);

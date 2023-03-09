@@ -11,7 +11,9 @@ Unlike in standard printf, `%l...` and `%ll...` placeholders dont depend on size
 | f32 / f64      | %f                      |
 | char           | %c                      |
 | char[]         | %s                      |
-| void\*         | %p / %x                 |
+| void\*         | %p                      |
+| 32bit or less  | %x                      |
+| 64bit          | %lx                     |
 
 <br>
 
