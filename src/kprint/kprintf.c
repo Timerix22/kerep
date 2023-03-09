@@ -1,6 +1,5 @@
 #include "kprintf.h"
 #include "../base/base.h"
-#include "../base/type_system/base_toString.h"
 
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
