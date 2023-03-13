@@ -70,3 +70,15 @@ char* path_parentDir(char* dir){
     }
     return copy;
 }
+
+
+char* path_basename(char* path, bool with_extension){
+    i32 nameIndex=cptr_lastIndexOfChar(path, path_sep)+1;
+    string rezult=string_fromCptr(path+nameIndex);
+    if(!with_extension){
+        i32 extIndex=cptr_lastIndexOfChar(rezult.ptr, '.');
+        if(extIndex!=0 && extIndex!=-1)
+            rezult.length=extIndex;
+    }
+    return string_extract(rezult);
+}

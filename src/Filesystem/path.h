@@ -31,7 +31,11 @@ char* path_fixSeparators(const char* path);
 /// @return Maybe<void>
 Maybe path_throwIfEscapes(const char* path);
 
-char* path_parentDir(char* dir);
+///@return  path of parent dir
+char* path_parentDir(char* path);
+
+///@return file name
+char* path_basename(char* path, bool with_extension);
 
 #if __cplusplus
 }
