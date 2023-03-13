@@ -116,7 +116,7 @@ Maybe file_readAll(File* file, char** allBytes){
         rezult=fgetc(file);
         if(rezult==EOF){
             if(ferror(file)) 
-                safethrow(ERR_IO,; StringBuilder_free(sb));
+                safethrow(ERR_IO, StringBuilder_free(sb));
             break;
         }
         buffer[i%sizeof(buffer)]=(char)rezult;

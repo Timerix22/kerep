@@ -8,7 +8,8 @@
     ENUM_MEMBERS \
 } __attribute__((__packed__)) ENUM_NAME;
 
-#define STRUCT(STRUCT_NAME, STRUCT_MEMBERS...) typedef struct STRUCT_NAME { \
+#define STRUCT(STRUCT_NAME, STRUCT_MEMBERS...) typedef struct STRUCT_NAME STRUCT_NAME; \
+typedef struct STRUCT_NAME { \
     STRUCT_MEMBERS \
 } STRUCT_NAME; \
 kt_declare(STRUCT_NAME);
