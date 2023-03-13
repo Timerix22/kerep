@@ -15,13 +15,13 @@ bool file_exists(const char* path){
 #if KFS_USE_WINDOWS_H
     DWORD dwAttrib = GetFileAttributes(path);
     return (bool)(
-        (dwAttrib != INVALID_FILE_ATTRIBUTES) & // file exists
+        (dwAttrib != INVALID_FILE_ATTRIBUTES) && // file exists
         !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)); // file is not directory
 #else
     struct stat stats;
     i32 rez=stat(path, &stats);
     return (bool)(
-        (rez!=-1) & // file exists
+        (rez!=-1) && // file exists
         !(S_ISDIR(stats.st_mode))); // file is not directory
 #endif
 }
