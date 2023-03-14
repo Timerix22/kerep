@@ -2,7 +2,7 @@
 #include "../String/StringBuilder.h"
 #include "io_includes.h"
 
-kt_define(File, (freeMembers_t)file_close, NULL)
+kt_define(FileHandle, (freeMembers_t)file_close, NULL)
 
 bool file_exists(const char* path){
     if(path[0]=='.'){
@@ -47,13 +47,13 @@ char* FileOpenMode_toStr(FileOpenMode m){
 }
 
 Maybe file_open(const char* path, FileOpenMode mode){
-    File* file=fopen(path, FileOpenMode_toStr(mode));
+    FileHandle file=fopen(path, FileOpenMode_toStr(mode));
     if(!file)
         safethrow(cptr_concat("can't open file ", (char*)path),;);
-    return SUCCESS(UniHeapPtr(File,file));
+    return SUCCESS(UniHeapPtr(FileHandle,file));
 }
 
-Maybe file_close(File* file){
+Maybe file_close(FileHandle file){
     if(!file)
         safethrow(ERR_NULLPTR,;);
     if(fclose(file))
@@ -67,13 +67,13 @@ Maybe file_close(File* file){
     if(rezult!=0) \
         safethrow(ERR_IO,;);
 
-Maybe file_writeChar(File* file, char byte){
+Maybe file_writeChar(FileHandle file, char byte){
     i32 rezult=fputc(byte, file);
     ioWriteCheck();
     return MaybeNull;
 }
 
-Maybe file_writeBuffer(File* file, char* buffer, u64 length){
+Maybe file_writeBuffer(FileHandle file, char* buffer, u64 length){
     i32 rezult=0;
     for(u64 i=0; i<length && !rezult; i++)
         rezult=fputc(buffer[i], file);
@@ -81,21 +81,21 @@ Maybe file_writeBuffer(File* file, char* buffer, u64 length){
     return MaybeNull;
 }
 
-Maybe file_writeCptr(File* file, char* cptr){
+Maybe file_writeCptr(FileHandle file, char* cptr){
     i32 rezult=fputs(cptr, file);
     ioWriteCheck();
     return MaybeNull;
 }
 
 
-Maybe file_readChar(File* file){
+Maybe file_readChar(FileHandle file){
     i32 rezult=fgetc(file);
     if(feof(file)) safethrow(ERR_IO_EOF,;);
     if(ferror(file)) safethrow(ERR_IO,;);
     return SUCCESS(UniUInt64(rezult));
 }
 
-Maybe file_readBuffer(File* file, char* buffer, u64 length){
+Maybe file_readBuffer(FileHandle file, char* buffer, u64 length){
     i32 rezult=0;
     u64 i=0;
     for(; i<length && rezult!=EOF; i++){
@@ -106,7 +106,7 @@ Maybe file_readBuffer(File* file, char* buffer, u64 length){
     return SUCCESS(UniUInt64(i));
 }
 
-Maybe file_readAll(File* file, char** allBytes){
+Maybe file_readAll(FileHandle file, char** allBytes){
     i32 rezult=0;
     char buffer[256];
     string bufStr={.ptr=buffer, .length=sizeof(buffer)};

@@ -83,5 +83,5 @@ void kt_initKerepTypes(){
     kt_register(StringBuilder);
 
     //File
-    kt_register(File);
+    kt_register(FileHandle);
 }
