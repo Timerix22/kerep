@@ -11,8 +11,7 @@ STRUCT(LLNode(TYPE), \
     TYPE value; \
 ) \
 \
-LLNode(TYPE)* LLNode_##TYPE##_create(); \
-LLNode(TYPE)* LLNode_##TYPE##_createFromValue(TYPE value); \
+LLNode(TYPE)* LLNode_##TYPE##_create(TYPE value); \
 void LLNode_##TYPE##_free(LLNode(TYPE)* node, bool free_value);
 
 
@@ -29,8 +28,6 @@ STRUCT(LinkedList(TYPE), \
 \
 typedef struct LinkedList_##TYPE##_functions_t { \
     freeMembers_t freeMembers; \
-    void (*insertPrev)(LinkedList(TYPE)* llist, LLNode(TYPE)* newNode, LLNode(TYPE)* nextNode); \
-    void (*insertNext)(LinkedList(TYPE)* llist, LLNode(TYPE)* newNode, LLNode(TYPE)* prevNode); \
     void (*removePrev)(LinkedList(TYPE)* llist, LLNode(TYPE)* nextNode, bool freeRemoved); \
     void (*removeNext)(LinkedList(TYPE)* llist, LLNode(TYPE)* prevNode, bool freeRemoved); \
 } LinkedList_##TYPE##_functions_t; \

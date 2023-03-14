@@ -13,14 +13,20 @@ extern "C" {
 #define LLNode(TYPE) LLNode_##TYPE
 #define LinkedList(TYPE) LinkedList_##TYPE
 
+#define LLNode_create(TYPE, VALUE) LLNode_##TYPE##_create(VALUE)
+
 #define LinkedList_create(TYPE) LinkedList_##TYPE##_create()
 #define LinkedList_free(LLIST) ({ LLIST->_functions->freeMembers(LLIST); free(LLIST); })
 
+
+void LinkedList_addToBeginning(void* _llist, void* _new_node);
+void LinkedList_addToEnd(void* _llist, void* _new_node);
+
 /// inserts NEW_NODE before NEXT_NODE in LLIST
-#define LinkedList_insertPrev(LLIST, NEW_NODE, NEXT_NODE) LLIST->_functions->insertPrev(LLIST, NEW_NODE, NEXT_NODE)
+void LinkedList_insertPrev(void* _llist, void* _new_node, void* _next_node);
 
 /// inserts NEW_NODE after PREV_NODE in LLIST
-#define LinkedList_insertNext(LLIST, NEW_NODE, PREV_NODE) LLIST->_functions->insertNext(LLIST, NEW_NODE, PREV_NODE)
+void LinkedList_insertNext(void* _llist, void* _new_node, void* _prev_node);
 
 /// removes node before NEXT_NODE in LLIST
 /// if FREE_REMOVED then frees removed node
@@ -35,9 +41,11 @@ extern "C" {
 ///@param CODE code todo in every iteration
 #define LLNode_foreach(FIRST_N, CURR_N, CODE...) { \
     typeof(FIRST_N) CURR_N=FIRST_N; \
+    typeof(FIRST_N) NEXT_N=FIRST_N; \
     while(CURR_N!=NULL) { \
+        NEXT_N=CURR_N->next; \
         CODE; \
-        CURR_N=CURR_N->next; \
+        CURR_N=NEXT_N; \
     } \
 }
 
@@ -46,9 +54,11 @@ extern "C" {
 ///@param CODE code todo in every iteration
 #define LLNode_foreachReverse(FIRST_N, CURR_N, CODE...) { \
     typeof(FIRST_N) CURR_N=FIRST_N; \
+    typeof(FIRST_N) PREV_N=FIRST_N; \
     while(CURR_N!=NULL) { \
+        PREV_N=CURR_N->prev; \
         CODE; \
-        CURR_N=CURR_N->prev; \
+        CURR_N=PREV_N; \
     } \
 }
 
