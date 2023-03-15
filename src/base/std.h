@@ -116,8 +116,9 @@ You can even embed it into macro in header (see kprint.h)
     #define PRAGMA_WARNING_DISABLE(wName) _PRAGMA(GCC diagnostic ignored wName)
     #define PRAGMA_WARNING_POP  _PRAGMA(GCC diagnostic pop)
     #define W_INT_CONVERSION "-Wint-conversion"
+    #define W_IMPLICIT_FALLTHROUGH "-Wimplicit-fallthrough"
 #endif
-#define WARNING_DISABLE(WARNING, CODE) \
+#define WARNING_DISABLE(WARNING, CODE...) \
     PRAGMA_WARNING_PUSH \
     PRAGMA_WARNING_DISABLE(WARNING) \
     CODE; \

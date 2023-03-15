@@ -44,7 +44,7 @@ static inline bool cptr_contains(char* ptr, char* fragment){
 
 void memcopy(void* from, void* to, u32 size);
 
-char* __cptr_concat(u16 n, ...);
+char* __cptr_concat(u32 n, ...);
 #define cptr_concat(STR...) __cptr_concat(count_args(STR), STR)
 
 #if __cplusplus

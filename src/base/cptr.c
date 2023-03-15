@@ -50,7 +50,7 @@ bool cptr_endsWith(char* ptr, char* fragment){
 
 u32 cptr_indexOf(char* ptr, char* fragment){
     char sc=*ptr;
-    for(i32 si=0, fi=0; sc!=0; si++){
+    for(u32 si=0, fi=0; sc!='\0'; si++){
         sc=ptr[si];
         if(sc==fragment[fi]){
             fi++;
@@ -63,7 +63,7 @@ u32 cptr_indexOf(char* ptr, char* fragment){
 }
 u32 cptr_indexOfChar(char* ptr, char fragment){
     char sc=*ptr;
-    for(i32 si=0; sc!=0; si++){
+    for(u32 si=0; sc!='\0'; si++){
         sc=ptr[si];
         if(sc==fragment){
             return si;
@@ -73,7 +73,7 @@ u32 cptr_indexOfChar(char* ptr, char fragment){
 }
 u32 cptr_lastIndexOf(char* ptr, char* fragment){
     char sc=*ptr;
-    i32 fi_last=cptr_length(fragment)-1;
+    u32 fi_last=cptr_length(fragment)-1;
     for(i32 si=cptr_length(ptr)-1, fi=fi_last; si>=0; si--){
         sc=ptr[si];
         if(sc==fragment[fi]){
@@ -103,7 +103,7 @@ void memcopy(void* from, void* to, u32 size){
         ((char*)to)[i]=((char*)from)[i];
 }
 
-char* __cptr_concat(u16 n, ...){
+char* __cptr_concat(u32 n, ...){
     char** strs=(char**)malloc(n*sizeof(char*));
     u32* lengths=malloc(n*sizeof(u32));
     u32 totalLength=0;

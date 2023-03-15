@@ -77,7 +77,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
         bool hashtableNotBlank=false;
         Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
             hashtableNotBlank=true;
-            if(__.key); // weird way to disable warning
+            if(__.key) {} // weird way to disable warning
             break;
         }));
         

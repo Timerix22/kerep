@@ -1,6 +1,6 @@
 #include "filesystem.h"
 
-char* __path_concat(u16 n, ...){
+char* __path_concat(u32 n, ...){
     char** parts=(char**)malloc(n*sizeof(char*));
     u32* lengths=malloc(n*sizeof(u32));
     u32 totalLength=0;
@@ -56,9 +56,9 @@ Maybe path_throwIfEscapes(const char* path){
 
 char* path_parentDir(char* dir){
     char* copy=cptr_copy(dir);
-    u32 length=cptr_length(copy);
+    i32 length=cptr_length(copy);
     i32 i=cptr_lastIndexOfChar(copy,path_sep);
-    if(i==length-1){
+    if(i!=-1 && i==length-1){
         copy[length-1]=0;
         i=cptr_lastIndexOfChar(copy,path_sep);
     }

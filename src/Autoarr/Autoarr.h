@@ -26,12 +26,12 @@ Autoarr_declare(Unitype)
 #define Autoarr_foreach(ar,elem,codeblock)({ \
     if(ar->blocks_count>0) { \
         typeof(**ar->values) elem; \
-        for(u32 blockI=0;blockI<ar->blocks_count-1;blockI++) \
+        for(u16 blockI=0;blockI<ar->blocks_count-1;blockI++) \
             for(u32 elemI=0;elemI<ar->max_block_length;elemI++){ \
                 elem=ar->values[blockI][elemI]; \
                 (codeblock); \
             } \
-        for(u32 elemI=0;elemI<ar->block_length;elemI++){ \
+        for(u16 elemI=0;elemI<ar->block_length;elemI++){ \
             elem=ar->values[ar->blocks_count-1][elemI]; \
             (codeblock); \
         } \

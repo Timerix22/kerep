@@ -2,7 +2,9 @@
 #include "../String/StringBuilder.h"
 #include "io_includes.h"
 
-kt_define(FileHandle, (freeMembers_t)file_close, NULL)
+void __file_freeMembers(void* _f){ fclose((FileHandle)_f); }
+
+kt_define(FileHandle, __file_freeMembers, NULL)
 
 bool file_exists(const char* path){
     if(path[0]=='.'){

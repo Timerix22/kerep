@@ -272,8 +272,10 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
         case ']':
             if(!readingList) safethrow_wrongchar(c,Unitype_free(value));
             *readingList=false;
+            goto return_value;
         case ';':
         case ',':
+            return_value:
             if(valueStr.length!=0){
                 if(!Unitype_isUniNull(value)) 
                     safethrow_wrongchar(c,Unitype_free(value));

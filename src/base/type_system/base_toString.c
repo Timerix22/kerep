@@ -113,7 +113,7 @@ char* toString_bin(void* _bytes, u32 size, bool inverse, bool withPrefix){
         for(i32 bn=size-1; bn>=0; bn--)
             byte_to_bits(bytes[bn])
     } else {
-        for(i32 bn=0; bn<size; bn++)
+        for(u32 bn=0; bn<size; bn++)
             byte_to_bits(bytes[bn])
     }
     str[cn]=0;
@@ -155,7 +155,7 @@ char* toString_hex(void* _bytes, u32 size, bool inverse, bool withPrefix, bool u
     }
     // right to left
     else {
-        for(i32 bn=0; bn<size; bn++){ // byte number
+        for(u32 bn=0; bn<size; bn++){ // byte number
             unsigned char byte=bytes[bn];
             str[cn++]=_4bitsHex(byte/16, uppercase);
             str[cn++]=_4bitsHex(byte%16, uppercase);
