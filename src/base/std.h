@@ -8,9 +8,12 @@ extern "C" {
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <stddef.h>
 #include <locale.h>
 #include <time.h>
 #include <setjmp.h>
+#include <signal.h>
+#include <math.h>
 
 typedef int8_t i8;
 typedef uint8_t u8;
