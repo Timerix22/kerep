@@ -5,7 +5,6 @@ extern "C" {
 #endif
 
 #include "../base/errors.h"
-#include "kprint_colors.h"
 #include "kprint_format.h"
 
 /*
@@ -97,9 +96,6 @@ void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects);
 #define kprint(ARGS...) WARNING_DISABLE( W_INT_CONVERSION, \
         __kprint(count_args(ARGS), __kp_argsToArrs(count_args(ARGS),ARGS, __32zeroes)) \
     )
- 
-///@param f bgColor | fgColor 
-void kprint_setColor(kp_fmt f);
 
 #if __cplusplus
 }

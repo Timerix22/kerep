@@ -6,6 +6,7 @@ extern "C" {
 
 #include "../base/std.h"
 #include "../base/type_system/ktid.h"
+#include "kprint_colors.h"
 
 /// kprint_format
 typedef u32 kp_fmt;
@@ -43,6 +44,9 @@ PACKED_ENUM(kp_dataFmt,
 #define kp_fmt_bgColor(FMT) (kp_bgColor)(FMT&0x40f00000)
 #define kp_fmt_dataFormat(FMT) (kp_dataFmt)(FMT&0x000f0000)
 #define kp_fmt_ktid(FMT) (ktid)(FMT&0x0000ffff)
+
+///@param f bgColor | fgColor 
+void kprint_setColor(kp_fmt f);
 
 #if __cplusplus
 }
