@@ -64,6 +64,8 @@ void ____Autoarr_##type##_freeWithMembers(void* ar){ \
 \
 type* __Autoarr_##type##_toArray(Autoarr_##type* ar){ \
     u32 length=Autoarr_length(ar); \
+    if(length==0) \
+        return NULL; \
     type* array=malloc(length * sizeof(type)); \
     for(u32 i=0; i<length; i++) \
         array[i]=__Autoarr_##type##_get(ar, i); \
