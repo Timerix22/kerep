@@ -2,7 +2,7 @@
 #include "../src/random/krandom.h"
 
 
-#define test_alg(ALG, VALUE_SIZE, EXPECTED_FROM_ZERO){ \
+#define test_alg(ALG, VALUE_SIZE, EXPECTED_FROM_ZERO) { \
     kprintf("\e[94mrng algorithm: \e[96m" #ALG "\n"); \
     void* s= ALG##_init(0); \
     u##VALUE_SIZE r=ALG##_next(s); \
@@ -20,7 +20,7 @@
 }
 
 void test_rng_algorithms(){
-    optime("test_rng_algorithms",1,({
+    optime("test_rng_algorithms",1,
         kprintf("\e[96m--------[test_rng_algorithms]---------\n");  
         // for ALG32      
             // xoroshiro64
@@ -41,5 +41,5 @@ void test_rng_algorithms(){
         test_alg(xoshiro256starstar, 64, 11091344671253066420ULL)
             // splitmix64
         test_alg(splitmix64, 64, 16294208416658607535ULL)
-    }));
+    );
 }

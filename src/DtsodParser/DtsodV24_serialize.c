@@ -55,12 +55,12 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             AppendTabs();
             addc('[');
             tabs++;
-            Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, ({
+            Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, 
                 addc('\n');
                 AppendTabs();
                 try(AppendValue(e),__,;);
                 addc(',');
-            }));
+            );
             StringBuilder_rmchar(b);
             addc('\n');
             tabs--;
@@ -75,11 +75,11 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
     else if(u.typeId==ktid_ptrName(Hashtable)){
         // check hashtable is blank
         bool hashtableNotBlank=false;
-        Hashtable_foreach(((Hashtable*)u.VoidPtr), __, ({
+        Hashtable_foreach(((Hashtable*)u.VoidPtr), __, 
             hashtableNotBlank=true;
             if(__.key) {} // weird way to disable warning
             break;
-        }));
+        );
         
         if(hashtableNotBlank){
             addc('\n');
@@ -109,7 +109,7 @@ Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod){
     };
     SerializeSharedData* shared=&_shared;
 
-    Hashtable_foreach(dtsod, p, ({
+    Hashtable_foreach(dtsod, p, 
         AppendTabs();
         StringBuilder_append_cptr(b,p.key);
         addc(':');
@@ -117,7 +117,7 @@ Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod){
         try(AppendValue(p.value),__,;);
         addc(';');
         addc('\n');
-    }));
+    );
 
     return MaybeNull;
 }

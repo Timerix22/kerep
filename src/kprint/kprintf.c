@@ -50,6 +50,7 @@ void kprintf(const char* format, ...){
     va_start(vl, format);
     u32 i=0;
     for(char c=format[i++]; c!=0; c=format[i++]){
+        // value format specifiers
         if(c=='%'){
             char* argstr=NULL;
             bool l=false;
@@ -112,8 +113,11 @@ void kprintf(const char* format, ...){
                 fputs(argstr, stdout);
                 free(argstr);
             }
-        } else if(c=='\e'){
+        }
+        // escape sequences 
+        else if(c=='\e'){
             IFWIN(
+                /* WINDOWS */
                 ({
                     if((c=format[i++])=='['){
                         u8 colorUnix=0;
@@ -135,9 +139,12 @@ void kprintf(const char* format, ...){
                         }
                     }
                 }),
+                /* UNIX */
                 putc(c,stdout);
             );
-        } else {
+        }
+        // common characters 
+        else {
             putc(c,stdout);
         }
         #if defined(_WIN64) || defined(_WIN32)

@@ -21,7 +21,7 @@ void test_type_system();
 
 inline void test_all(){
     kprintf("\e[97mkerep tests are starting!\n");
-    optime(__func__, 1, ({
+    optime(__func__, 1, 
         test_type_system();
         test_string();
         test_safethrow();
@@ -35,7 +35,7 @@ inline void test_all(){
         test_hashtable();
         test_dtsod();
         kprintf("\e[96m--------------------------------------\e[0m\n");
-    }));
+    );
 }
 
 #define PRINT_SIZEOF(T) kprintf("\e[94m" #T " size: \e[96m" IFWIN("%llu", "%lu") "\n", sizeof(T))

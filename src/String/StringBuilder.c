@@ -13,9 +13,9 @@ void complete_buf(StringBuilder* b){
     if(!len) return;
     string str={.length=len, .ptr=malloc(len)};
     u32 i=0;
-    Autoarr_foreach(b->curr_buf, c, ({
+    Autoarr_foreach(b->curr_buf, c, 
         str.ptr[i++]=c;
-    }));
+    );
     Autoarr_add(b->compl_bufs,str);
     Autoarr_free(b->curr_buf, true);
     b->curr_buf=Autoarr_create(i8,BL_C,BL_L);
@@ -47,17 +47,17 @@ void StringBuilder_free(StringBuilder* b){
 string StringBuilder_build(StringBuilder* b){
     complete_buf(b);
     u32 len=0;
-    Autoarr_foreach(b->compl_bufs, cs, ({
+    Autoarr_foreach(b->compl_bufs, cs, 
         len+=cs.length;
-    }));
+    );
     string str= { .length=len, .ptr=malloc(len+1) };
     str.ptr[len]='\0';
     u32 i=0;
-    Autoarr_foreach(b->compl_bufs, cs, ({
+    Autoarr_foreach(b->compl_bufs, cs, 
         for(u32 n=0;n<cs.length;n++)
             str.ptr[i++]=cs.ptr[n];
         free(cs.ptr);
-    }));
+    );
     StringBuilder_free(b);
     return str;
 }

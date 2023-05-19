@@ -36,7 +36,7 @@ static void printallval(Autoarr(u16)* ar){
 }
 
 void test_autoarr(){
-    optime("test_autoarr",1,({
+    optime("test_autoarr",1,
         kprintf("\e[96m------------[test_autoarr]------------\n");
         Autoarr(u16)* ar=Autoarr_create(u16,10,16);
         kprintf("\e[92mautoarr created\n");
@@ -49,5 +49,5 @@ void test_autoarr(){
         printallval(ar);
         Autoarr_free(ar, true);
         kprintf("\e[92mautoarr deleted\n");
-    }));
+    );
 }

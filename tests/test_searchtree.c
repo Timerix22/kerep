@@ -23,7 +23,7 @@ void printstnode(STNode* node){
 }
 
 void test_searchtree(){
-    optime("test_searchtree",1,({
+    optime("test_searchtree",1,
         kprintf("\e[96m-----------[test_searchtree]----------\n");
         STNode* node=STNode_create();
         kprintf("\e[92mnode created\n");
@@ -70,5 +70,5 @@ void test_searchtree(){
         printstnode(node);
         STNode_free(node);
         kprintf("\e[92mnode deleted\n");
-    }));
+    );
 }

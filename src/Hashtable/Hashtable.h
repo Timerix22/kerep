@@ -33,13 +33,13 @@ Unitype* Hashtable_getPtr(Hashtable* ht, char* key);
 Unitype Hashtable_get(Hashtable* ht, char* key);
 bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output);
 
-#define Hashtable_foreach(HT, EL, codeblock)({ \
+#define Hashtable_foreach(HT, EL, codeblock...) { \
     u16 hmax=Hashtable_height(HT); \
     for(u16 h=0; h<hmax; h++){ \
         Autoarr(KVPair)* AR=HT->rows[h]; \
         Autoarr_foreach(AR, EL, codeblock); \
     } \
-})
+}
 
 #if __cplusplus
 }

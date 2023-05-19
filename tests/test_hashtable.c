@@ -62,7 +62,7 @@ Unitype gett(Hashtable* ht){
 
 
 void test_hashtable(){
-    optime("test_hashtable",1,({
+    optime("test_hashtable",1,
         kprintf("\e[96m-----------[test_hashtable]-----------\n");
         Hashtable* ht=Hashtable_create();
         kprintf("\e[92mhashtable created\n");
@@ -73,5 +73,5 @@ void test_hashtable(){
         print_hashtable(ht);
         Hashtable_free(ht);
         kprintf("\e[92mhashtable freed\n");
-    }));
+    );
 }

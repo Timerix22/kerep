@@ -50,11 +50,11 @@ void __Autoarr_##type##_freeWithoutMembers(Autoarr_##type* ar, bool freePtr){ \
 \
 void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr){ \
     if(ktDescriptor_##type.freeMembers!=NULL) { \
-        Autoarr_foreach(ar, el, ({ \
+        Autoarr_foreach(ar, el,  \
             void* members_ptr=&el; \
             if(TYPE_IS_PTR) members_ptr=*(type**)members_ptr; \
             ktDescriptor_##type.freeMembers(members_ptr); \
-        })); \
+        ); \
     } \
     __Autoarr_##type##_freeWithoutMembers(ar, freePtr);\
 } \

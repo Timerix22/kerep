@@ -21,7 +21,7 @@ i64 _autoarrVsVector(u16 blockCount, u16 blockLength){
 }
 
 void test_autoarrVsVector(){
-    optime(__func__, 1, ({
+    optime(__func__, 1, 
         kprintf("\e[96m-------[test_autoarr_vs_vector]-------\n");
         _autoarrVsVector(4, 16);
         _autoarrVsVector(16, 64);
@@ -30,5 +30,5 @@ void test_autoarrVsVector(){
         _autoarrVsVector(32, 1024);
         _autoarrVsVector(256, 256);
         _autoarrVsVector(1024, 1024);
-    }));
+    );
 }
