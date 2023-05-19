@@ -29,7 +29,7 @@ I don't really like printf function (and its variants), so i made safer and more
 ## how to use it:
 + **format construction:**  
     ```
-    kp_fmt fmt= kp_fgColor | kp_bgColor | kprint_fdataFmt | flags | ktid;
+    kp_fmt fmt= kp_fgColor | kp_bgColor | kp_dataFmt | flags | ktid;
     ```
     [more about `kp_fmt`](kp_fmt.md)
     + fgColor and bgColor can be set to change console output color
