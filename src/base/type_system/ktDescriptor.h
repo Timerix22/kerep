@@ -13,21 +13,21 @@ extern "C" {
     extern ktDescriptor ktDescriptor_##TYPE; \
     extern ktDescriptor ktDescriptor_##TYPE##_Ptr;
 
-#define kt_define(TYPE, FREE_FUNC, TOSTRING_FUNC)\
+#define kt_define(TYPE, FREE_MEMBERS_F, TOSTRING_F)\
     ktid_define(TYPE); \
     ktDescriptor ktDescriptor_##TYPE={ \
         .name=#TYPE, \
         .id=ktid_undefined, \
         .size=sizeof(TYPE), \
-        .freeMembers=FREE_FUNC, \
-        .toString=TOSTRING_FUNC \
+        .freeMembers=FREE_MEMBERS_F, \
+        .toString=TOSTRING_F \
     }; \
     ktDescriptor ktDescriptor_##TYPE##_Ptr={\
         .name=#TYPE "_Ptr", \
         .id=ktid_undefined, \
         .size=sizeof(TYPE), \
-        .freeMembers=FREE_FUNC, \
-        .toString=TOSTRING_FUNC \
+        .freeMembers=FREE_MEMBERS_F, \
+        .toString=TOSTRING_F \
     };
 
 typedef void (*freeMembers_t)(void*);

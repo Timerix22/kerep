@@ -34,11 +34,11 @@ ktDescriptorsState initState=NotInitialized;
 void kt_beginInit(){
     kprintf("\e[94mtype descriptors initializing...\n");
     __descriptorPointers=Autoarr_create(Pointer, 256, 256);
-    if(__descriptorPointers==NULL)
-        throw(ERR_NULLPTR);
 }
 
 void kt_endInit(){
+    if(__descriptorPointers==NULL)
+        throw(ERR_NULLPTR);
     typeDescriptors=(ktDescriptor**)Autoarr_toArray(__descriptorPointers);
     Autoarr_free(__descriptorPointers,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);

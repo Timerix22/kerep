@@ -21,25 +21,24 @@ STRUCT(Unitype,
 )
 
 
-#define __UniDef(FIELD, TYPE, VAL) (Unitype){ \
-    .FIELD=VAL, .typeId=ktid_name(TYPE), .allocatedInHeap=false}
+#define __UniDef(FIELD, TYPE, VAL) ((Unitype){ \
+    .FIELD=VAL, .typeId=ktid_name(TYPE), .allocatedInHeap=false})
 
 #define UniInt64(VAL)   __UniDef(Int64,   i64,   VAL)
 #define UniUInt64(VAL)  __UniDef(UInt64,  u64,  VAL)
 #define UniFloat64(VAL) __UniDef(Float64, f64, VAL)
 #define UniBool(VAL)    __UniDef(Bool,    bool,    VAL)
 
-#define UniStackPtr(TYPE, VAL) (Unitype){ \
-    .VoidPtr=VAL, .typeId=ktid_ptrName(TYPE), .allocatedInHeap=false}
-#define UniHeapPtr(TYPE, VAL) (Unitype){ \
-    .VoidPtr=VAL, .typeId=ktid_ptrName(TYPE), .allocatedInHeap=true}
-
+#define UniPtr(TYPE_ID, VAL, ALLOCATED_ON_HEAP)((Unitype){ \
+    .VoidPtr=VAL, .typeId=TYPE_ID, .allocatedInHeap=ALLOCATED_ON_HEAP })
+#define UniStackPtr(TYPE, VAL) UniPtr(ktid_ptrName(TYPE), VAL, false)
+#define UniHeapPtr(TYPE, VAL) UniPtr(ktid_ptrName(TYPE), VAL, true)
                                     // 0==ktid_Pointer
-#define UniNull  (Unitype){.Int64=0, .typeId=0, .allocatedInHeap=false}
+#define UniNull  ((Unitype){.Int64=0, .typeId=0, .allocatedInHeap=false})
 #define UniTrue  UniBool(true)
 #define UniFalse UniBool(false)
 
-#define Unitype_isUniNull(UNI) (UNI.typeId==ktid_Pointer && UNI.VoidPtr==NULL)
+#define Unitype_isUniNull(UNI) (UNI.typeId==0 && UNI.Int64==0)
 
 // frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
