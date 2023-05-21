@@ -1,4 +1,5 @@
 #include "base.h"
+#include <ctype.h>
 
 // returns length of char buffer (without \0)
 u32 cptr_length(char* str){
@@ -72,7 +73,7 @@ u32 cptr_indexOfChar(char* ptr, char fragment){
     return -1;
 }
 u32 cptr_lastIndexOf(char* ptr, char* fragment){
-    char sc=*ptr;
+    char sc;
     u32 fi_last=cptr_length(fragment)-1;
     for(i32 si=cptr_length(ptr)-1, fi=fi_last; si>=0; si--){
         sc=ptr[si];
@@ -86,7 +87,7 @@ u32 cptr_lastIndexOf(char* ptr, char* fragment){
     return -1;
 }
 u32 cptr_lastIndexOfChar(char* ptr, char fragment){
-    char sc=*ptr;
+    char sc;
     for(i32 si=cptr_length(ptr)-1; si>=0; si--){
         sc=ptr[si];
         if(sc==fragment){
@@ -134,4 +135,22 @@ char* __cptr_concat(u32 n, ...){
     free(strs);
     free(lengths);
     return output;
+}
+
+char* cptr_toLower(char* src) {
+    u32 length=cptr_length(src);
+    char *p=malloc(length+1);
+    p[length]=0;
+    for(u32 i=0; i<length; i++)
+        p[i]=tolower(src[i]);
+    return p;
+}
+
+char* cptr_toUpper(char* src) {
+    u32 length=cptr_length(src);
+    char *p=malloc(length+1);
+    p[length]=0;
+    for(u32 i=0; i<length; i++)
+        p[i]=toupper(src[i]);
+    return p;
 }

@@ -47,6 +47,9 @@ void memcopy(void* from, void* to, u32 size);
 char* __cptr_concat(u32 n, ...);
 #define cptr_concat(STR...) __cptr_concat(count_args(STR), STR)
 
+char* cptr_toLower(char* src);
+char* cptr_toUpper(char* src);
+
 #if __cplusplus
 }
 #endif
