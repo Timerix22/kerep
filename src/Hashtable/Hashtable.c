@@ -67,9 +67,17 @@ Autoarr(KVPair)* getrow(Hashtable* ht, char* key, bool can_expand){
     return ar;
 }
 
+/// @param key must be heap allocated
+/// Hashtable_free will free this pointer
 void Hashtable_add(Hashtable* ht, char* key, Unitype u){
     KVPair p={ .key=key, .value=u };
     Autoarr_add(getrow(ht,key,true),p);
+}
+
+void Hashtable_addMany(Hashtable* ht, KVPair* pair_array, u32 count){
+    for(u32 i=0; i<count; i++){
+        Hashtable_add(ht, pair_array[i].key, pair_array[i].value);
+    }
 }
 
 // returns null or pointer to value in hashtable
@@ -93,14 +101,35 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
     return UniNull;
 }
 
-bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output){
+bool Hashtable_tryGet(Hashtable* ht, char* key, Unitype* output){
     Unitype u=Hashtable_get(ht,key);
     *output=u;
-    return Unitype_isUniNull(u);
+    return !Unitype_isUniNull(u);
+}
+
+
+bool Hashtable_trySet(Hashtable* ht, char* key, Unitype u){
+    Unitype* val=Hashtable_getPtr(ht,key);
+    if(Unitype_isUniNull((*val)))
+        return false;
+    *val=u;
+    return true;
+}
+
+bool Hashtable_tryAdd(Hashtable* ht, char* key, Unitype u){
+    Unitype* val=Hashtable_getPtr(ht,key);
+    if(Unitype_isUniNull((*val))){
+        Hashtable_add(ht, key, u);
+        return true;
+    }
+    return false;
 }
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){
     Unitype* val=Hashtable_getPtr(ht, key);
-    if(val) *val=u;
+    // set
+    if(!Unitype_isUniNull((*val)))
+        *val=u;
+    // add
     else Hashtable_add(ht, key, u);
 }

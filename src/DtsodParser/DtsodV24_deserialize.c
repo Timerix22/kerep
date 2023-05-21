@@ -318,7 +318,7 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                 partOfDollarList=false;
                 Autoarr(Unitype)* list;
                 Unitype lu;
-                if(Hashtable_try_get(dict,nameCPtr, &lu)){
+                if(Hashtable_tryGet(dict,nameCPtr, &lu)){
                     list=(Autoarr(Unitype)*)lu.VoidPtr;
                 }
                 else{

@@ -26,12 +26,15 @@ u16 Hashtable_height(Hashtable* ht);
 void Hashtable_add(Hashtable* ht, char* key, Unitype u);
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u);
+void Hashtable_addMany(Hashtable* ht, KVPair* pair_array, u32 count);
+bool Hashtable_tryAdd(Hashtable* ht, char* key, Unitype u);
+bool Hashtable_trySet(Hashtable* ht, char* key, Unitype u);
 
 // returns null or pointer to value in hashtable
 Unitype* Hashtable_getPtr(Hashtable* ht, char* key);
 
 Unitype Hashtable_get(Hashtable* ht, char* key);
-bool Hashtable_try_get(Hashtable* ht, char* key, Unitype* output);
+bool Hashtable_tryGet(Hashtable* ht, char* key, Unitype* output);
 
 #define Hashtable_foreach(HT, EL, codeblock...) { \
     u16 hmax=Hashtable_height(HT); \
