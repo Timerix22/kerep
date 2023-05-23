@@ -320,6 +320,9 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                 Unitype lu;
                 if(Hashtable_tryGet(dict,nameCPtr, &lu)){
                     list=(Autoarr(Unitype)*)lu.VoidPtr;
+                    // Key is not used in that case, because it is already added
+                    // to the table with the first dollar list item.
+                    free(nameCPtr);
                 }
                 else{
                     list=Autoarr_create(Unitype,ARR_BC,ARR_BL);

@@ -12,7 +12,11 @@ const char text[]=
 "    text: \"_$\\\"\\\\'''a ыыы000;2;=:%d;```\";\n"
 "    list: [10,20,30,0,0 ];"
 "};"
-"h: { };";
+"h: { };"
+"$dollar_list_single: { smth: \"-_-\"; };"
+"$dollar_list_many: { i: 0; };"
+"$dollar_list_many: { i: 1; };"
+"$dollar_list_many: { i: 2; };";
 
 void print_dtsod(Hashtable* dtsod){
     kprintf("\e[92m");
