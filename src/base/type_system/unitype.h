@@ -40,6 +40,10 @@ STRUCT(Unitype,
 
 #define Unitype_isUniNull(UNI) (UNI.typeId==0 && UNI.Int64==0)
 
+#define UniCheckTypeId(UNI, TYPE_ID) (UNI.typeId==TYPE_ID)
+#define UniCheckType(UNI, TYPE) UniCheckTypeId(UNI, ktid_name(TYPE))
+#define UniCheckTypePtr(UNI, TYPE) UniCheckTypeId(UNI, ktid_ptrName(TYPE))
+
 // frees VoidPtr value or does nothing if type isn't pointer
 void Unitype_free(Unitype u);
 void __UnitypePtr_free(void* u);

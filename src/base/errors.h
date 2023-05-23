@@ -80,7 +80,7 @@ char* __unknownErr( );
 }
 #endif
 
-#define tryLast(_funcCall, _rezult) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
+#define tryLast(_funcCall, _rezult, ON_EXIT) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
     _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
     __EXIT(_rezult.errmsg); \
 }

@@ -71,12 +71,12 @@ Maybe __kfprint(FILE* file, u8 n, kp_fmt* formats, __kp_value_union* objects){
 }
 
 void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
-    tryLast(check_argsN(n), _);
+    tryLast(check_argsN(n), _,;);
     n/=2;
     for(u8 i=0; i<n; i++){
         kp_fmt fmt=formats[i];
         kprint_setColor(fmt);
-        tryLast(__next_toString(fmt, &objects[i]),maybeStr);
+        tryLast(__next_toString(fmt, &objects[i]),maybeStr, kprint_setColor(kp_bgBlack|kp_fgGray));
         if(fputs(maybeStr.value.VoidPtr, stdout)==EOF) \
             throw("can't write string to stdout");
             //, Unitype_free(maybeStr.value)

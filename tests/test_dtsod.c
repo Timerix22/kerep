@@ -43,23 +43,23 @@ void test_dtsod(){
         char* s;
 
         optime("deserialize",1,
-            tryLast(DtsodV24_deserialize(text),r) 
+            tryLast(DtsodV24_deserialize(text),r,;) 
                 dtsod=r.value.VoidPtr;
         );
         print_dtsod(dtsod);
 
         optime("serialize",1,
-            tryLast(DtsodV24_serialize(dtsod),r)
+            tryLast(DtsodV24_serialize(dtsod),r,;)
                 s=r.value.VoidPtr;
         );
         DtsodV24_free(dtsod);
         kprintf("\e[92m%s",s);
 
         optime("reserialize",10,
-            tryLast(DtsodV24_deserialize(s),r) 
+            tryLast(DtsodV24_deserialize(s),r,;) 
                 dtsod=r.value.VoidPtr;
             free(s);
-            tryLast(DtsodV24_serialize(dtsod),rr)
+            tryLast(DtsodV24_serialize(dtsod),rr,;)
                 s=rr.value.VoidPtr;
             DtsodV24_free(dtsod);
         );
