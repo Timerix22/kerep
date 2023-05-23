@@ -110,7 +110,7 @@ bool Hashtable_tryGet(Hashtable* ht, char* key, Unitype* output){
 
 bool Hashtable_trySet(Hashtable* ht, char* key, Unitype u){
     Unitype* val=Hashtable_getPtr(ht,key);
-    if(Unitype_isUniNull((*val)))
+    if(val==NULL)
         return false;
     *val=u;
     return true;
@@ -118,7 +118,7 @@ bool Hashtable_trySet(Hashtable* ht, char* key, Unitype u){
 
 bool Hashtable_tryAdd(Hashtable* ht, char* key, Unitype u){
     Unitype* val=Hashtable_getPtr(ht,key);
-    if(Unitype_isUniNull((*val))){
+    if(val==NULL){
         Hashtable_add(ht, key, u);
         return true;
     }
@@ -127,9 +127,7 @@ bool Hashtable_tryAdd(Hashtable* ht, char* key, Unitype u){
 
 void Hashtable_addOrSet(Hashtable* ht, char* key, Unitype u){
     Unitype* val=Hashtable_getPtr(ht, key);
-    // set
-    if(!Unitype_isUniNull((*val)))
-        *val=u;
-    // add
-    else Hashtable_add(ht, key, u);
+    if(val==NULL)
+        Hashtable_add(ht, key, u); // add
+    else *val=u;   // set
 }
