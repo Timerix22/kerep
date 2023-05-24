@@ -49,10 +49,18 @@ profile:
 	@cbuild/call_task.sh profile 2>&1 | tee make_raw.log
 
 # compiles program with -pg and runs it with gprof
-# uses gprof2dot python script to generate function call tree  
+# uses gprof2dot python script to generate function call tree (pip install gprof2dot)
+# requires graphviz (https://www.graphviz.org/download/source/)
 gprof:
 	@cbuild/call_task.sh gprof 2>&1 | tee make_raw.log
-	
+
+# compiles program and runs it with callgrind (part of valgrind)
+# uses gprof2dot python script to generate function call tree (pip install gprof2dot)
+# requires graphviz (https://www.graphviz.org/download/source/)
+# P.S. detailed rezults can be viewed in KCacheGrind
+callgrind:
+	@cbuild/call_task.sh callgrind 2>&1 | tee make_raw.log
+
 # compiles executable with sanitizers and executes it to find errors and warnings
 sanitize:
 	@cbuild/call_task.sh sanitize 2>&1 | tee make_raw.log
