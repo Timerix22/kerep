@@ -179,3 +179,33 @@ void kprint_setColor(kp_fmt f){
     StringBuilder_append_char(strb, ' ');
     StringBuilder_append_char(strb, ']');
 } */
+
+static const char* _kp_colorNames[16]={
+    "black",
+    "dark_red",
+    "dark_green",
+    "dark_yellow",
+    "dark_blue",
+    "dark_magenta",
+    "dark_cyan",
+    "gray",
+    "dark_gray",
+    "red",
+    "green",
+    "yellow",
+    "blue",
+    "magenta",
+    "cyan",
+    "white"
+};
+
+char* kp_bgColor_toString(kp_fmt c){
+    u32 color_index=(c&0x00f00000)>>20;
+    if(color_index>15) throw(ERR_WRONGINDEX);
+    return _kp_colorNames[color_index];
+}
+char* kp_fgColor_toString(kp_fmt c){
+    u32 color_index=(c&0x00f00000)>>24;
+    if(color_index>15) throw(ERR_WRONGINDEX);
+    return _kp_colorNames[color_index];
+}

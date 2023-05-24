@@ -23,6 +23,8 @@ void kt_endInit();
 /// @param id id of registered type
 ktDescriptor* ktDescriptor_get(ktid id);
 
+char* ktDescriptor_toString(ktDescriptor* d);
+
 // call it to free heap-allocated ktDescriptors array
 void kt_free();
 

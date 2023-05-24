@@ -16,7 +16,30 @@ kt_define(u32, NULL, __toString_u32);
 kt_define(i64, NULL, __toString_i64);
 kt_define(u64, NULL, __toString_u64);
 
-kt_define(ktDescriptor, NULL, NULL);
+
+char* ktDescriptor_toString(ktDescriptor* d){
+    const char* n="null";
+    char *s0 = toString_u64(d->id, 0,0);
+    char *s1 = toString_u64(d->size, 0,0);
+    char *s2 = d->toString ? toString_hex(d->toString, sizeof(void*), 0,1,0) : n;
+    char *s3 = d->freeMembers ? toString_hex(d->freeMembers, sizeof(void*), 0,1,0) : n;
+    char *rez=cptr_concat("ktDescriptor {"
+        " name:", d->name,
+        " id:",s0,
+        " size:",s1,
+        " toString:",s2,
+        " freeMembers:",s3,
+        " }");
+    free(s0);
+    free(s1);
+    if(s2!=n) free(s2);
+    if(s3!=n) free(s3);
+    return rez;
+}
+
+char* _ktDescriptor_toString(void* _d, u32 fmt) { return ktDescriptor_toString(_d); }
+
+kt_define(ktDescriptor, NULL, _ktDescriptor_toString);
 
 typedef ktDescriptor* ktDescriptor_Ptr;
 

@@ -81,6 +81,9 @@ PACKED_ENUM(kp_bgColor,
     kp_bgWhite   = 0x40f00000
 )
 
+char* kp_bgColor_toString(kp_bgColor c);
+char* kp_fgColor_toString(kp_fgColor c);
+
 #if __cplusplus
 }
 #endif
