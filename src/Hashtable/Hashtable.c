@@ -86,7 +86,7 @@ Unitype* Hashtable_getPtr(Hashtable* ht, char* key){
     u32 arlen=Autoarr_length(ar);
     for(u32 i=0;i<arlen;i++){
         KVPair* p=Autoarr_getPtr(ar,i);
-        if(cptr_compare(key,p->key)) return &p->value;
+        if(cptr_equals(key,p->key)) return &p->value;
     }
     return NULL;
 }
@@ -96,7 +96,7 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
     u32 arlen=Autoarr_length(ar);
     for(u32 i=0;i<arlen;i++){
         KVPair p=Autoarr_get(ar,i);
-        if(cptr_compare(key,p.key)) return p.value;
+        if(cptr_equals(key,p.key)) return p.value;
     }
     return UniNull;
 }

@@ -1,30 +1,22 @@
 #include "base.h"
+#include "../String/StringBuilder.h"
 #include <ctype.h>
 
 // returns length of char buffer (without \0)
-u32 cptr_length(char* str){
-    u32 len=0;
-    while(*(str++)) len++;
-    return len;
+u32 cptr_length(const char* str){
+    const char *const str_first=str;
+    while(*str)
+        str++;
+    return str-str_first;
 }
 
 // allocates new char[] and copies src there
-char* cptr_copy(char* src){
+char* cptr_copy(const char* src){
     u32 len=cptr_length(src)+1;
     char* dst=malloc(len);
     while(len--!=0)
         dst[len]=src[len];
     return dst;
-}
-
-// compares two char buffers, NullPtr-friendly
-bool cptr_compare(char* key0, char* key1){
-    if(!key0) return key1 ? false : true;
-    if(!key1) return false;
-    while(*key0&&*key1)
-        if(*key0++ != *key1++) 
-            return false;
-    return true;
 }
 
 // multiplies char n times
@@ -36,63 +28,105 @@ char* char_multiply(char c, u32 n){
     return rez;
 }
 
-bool cptr_startsWith(char* ptr, char* fragment){
-    for(char cs=*ptr, cf=*fragment; cf; cs=*++ptr, cf=*++fragment)
-        if(cs!=cf) return false;
-    return true;
+bool cptr_equals(const char* key0, const char* key1){
+    char c0=*key0;
+    char c1=*key1;
+    bool eq=c0==c1;
+    while(c0 && c1 && eq) {
+        c0=*++key0;
+        c1=*++key1;
+        eq=c0==c1;
+    }
+    return eq;
 }
 
-bool cptr_endsWith(char* ptr, char* fragment){
-    ptr+=cptr_length(ptr)-cptr_length(fragment);
-    for(char cs=*ptr, cf=*fragment; cf; cs=*++ptr, cf=*++fragment)
-        if(cs!=cf) return false;
-    return true;
+bool cptr_startsWith(const char* src, const char* fragment){
+    char c0=*src;
+    char c1=*fragment;
+    bool eq=c0==c1 && c0 !=0 && c1!=0;
+    while(c0 && c1 && eq) {
+        c0=*++src;
+        c1=*++fragment;
+        eq=c0==c1;
+        if(c1==0)
+            return true;
+    }
+    return eq;
 }
 
-u32 cptr_indexOf(char* ptr, char* fragment){
-    char sc=*ptr;
-    for(u32 si=0, fi=0; sc!='\0'; si++){
-        sc=ptr[si];
-        if(sc==fragment[fi]){
-            fi++;
-            if(fragment[fi]==0)
-                return si-fi+1;
-        }
-        else fi=0;
+bool cptr_endsWith(const char* src, const char* fragment){
+    u32 src_len=cptr_length(src);
+    u32 fr_len=cptr_length(fragment);
+    if(src_len<fr_len || src_len==0 || fr_len==0)
+        return false;
+    src+=src_len-fr_len;
+    return cptr_equals(src, fragment);
+}
+
+
+i32 cptr_seek(const char* src, const char* fragment, u32 startIndex, u32 seekLength){
+    char sc=*src, fc=*fragment;
+    if(sc==0 || fc==0)
+        return -1;
+    u32 fr_start=startIndex;
+    for(u32 si=startIndex; si-startIndex<seekLength && sc!=0; si++){
+        sc=src[si];
+        fc=fragment[si-fr_start];
+        if(fc==0)
+            return fr_start;
+        if(sc!=fc)
+            fr_start++;
     }
     return -1;
 }
-u32 cptr_indexOfChar(char* ptr, char fragment){
-    char sc=*ptr;
-    for(u32 si=0; sc!='\0'; si++){
-        sc=ptr[si];
-        if(sc==fragment){
+
+i32 cptr_seekReverse(const char* src, const char* fragment, u32 startIndex, u32 seekLength){
+    char sc=*src, fc=*fragment;
+    if(sc==0 || fc==0)
+        return -1;
+    i32 len=cptr_length(src);
+    if(startIndex==(u32)-1)
+        startIndex=len-1;
+    u32 fr_len=cptr_length(fragment);
+    for(u32 si=startIndex; si<(u32)-1 && si!=len-1-seekLength; si--){
+        if(si+1<fr_len)
+            return -1;
+        sc=src[si];
+        fc=fragment[0];
+        u32 fr_start=si;
+        for(u32 fi=0; fc==sc ; fi++){
+            if(fi==fr_len)
+                return fr_start;
+            fc=fragment[fi];
+            sc=src[si--];
+        }
+    }
+    return -1;
+}
+
+i32 cptr_seekChar(const char* src, char fragment, u32 startIndex, u32 seekLength){
+    char sc=*src;
+    if(sc==0 || fragment==0)
+        return -1;
+    for(u32 si=startIndex; si-startIndex<seekLength && sc!=0; si++){
+        sc=src[si];
+        if(sc==fragment)
             return si;
-        }
     }
     return -1;
 }
-u32 cptr_lastIndexOf(char* ptr, char* fragment){
-    char sc;
-    u32 fi_last=cptr_length(fragment)-1;
-    for(i32 si=cptr_length(ptr)-1, fi=fi_last; si>=0; si--){
-        sc=ptr[si];
-        if(sc==fragment[fi]){
-            if(fi==0)
-                return si;
-            fi--;
-        }
-        else fi=fi_last;
-    }
-    return -1;
-}
-u32 cptr_lastIndexOfChar(char* ptr, char fragment){
-    char sc;
-    for(i32 si=cptr_length(ptr)-1; si>=0; si--){
-        sc=ptr[si];
-        if(sc==fragment){
+
+i32 cptr_seekCharReverse(const char* src, char fragment, u32 startIndex, u32 seekLength){
+    char sc=*src;
+    if(sc==0 || fragment==0)
+        return -1;
+    i32 len=cptr_length(src);
+    if(startIndex==(u32)-1)
+        startIndex=len-1;
+    for(u32 si=startIndex; si<(u32)-1 && si!=len-1-seekLength; si--){
+        sc=src[si];
+        if(sc==fragment)
             return si;
-        }
     }
     return -1;
 }
@@ -123,7 +157,7 @@ char* __cptr_concat(u32 n, ...){
 
     // allocating memory for output value
     char* totality=malloc(totalLength+1);
-    const char* output=totality;
+    char* output=totality;
     totality[totalLength]=0;
     
     // copying content of all strings to rezult
@@ -137,7 +171,7 @@ char* __cptr_concat(u32 n, ...){
     return output;
 }
 
-char* cptr_toLower(char* src) {
+char* cptr_toLower(const char* src) {
     u32 length=cptr_length(src);
     char *p=malloc(length+1);
     p[length]=0;
@@ -146,11 +180,36 @@ char* cptr_toLower(char* src) {
     return p;
 }
 
-char* cptr_toUpper(char* src) {
+char* cptr_toUpper(const char* src) {
     u32 length=cptr_length(src);
     char *p=malloc(length+1);
     p[length]=0;
     for(u32 i=0; i<length; i++)
         p[i]=toupper(src[i]);
     return p;
+}
+
+char* cptr_replaceChar(const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength){
+    char* rzlt=cptr_copy(src);
+    char c=*src;
+    for(u32 i=startIndex; i<seekLength && c!=0; i++, src++){
+        if(c==c_old)
+            *rzlt=c_new;
+    }
+    return rzlt;
+}
+
+char* cptr_replace(const char* src, char* str_old, char* str_new, u32 startIndex, u32 seekLength){
+    StringBuilder* sb=StringBuilder_create();
+    const u32 str_old_len=cptr_length(str_old);
+    const u32 str_new_len=cptr_length(str_new);
+    i32 i=startIndex;
+    while( (i=cptr_seek(src, str_old, i, -1)) !=-1 ){
+        if(i!=0)
+            StringBuilder_append_string(sb, (string){.ptr=(char*)src, .length=i});
+        StringBuilder_append_string(sb, (string){.ptr=str_new, .length=str_new_len});
+        src+=i+str_old_len;
+    }
+    string rezult=StringBuilder_build(sb);
+    return rezult.ptr;
 }

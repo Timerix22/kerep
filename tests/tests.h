@@ -6,6 +6,7 @@
 extern "C" {
 #endif
 
+void test_cptr();
 void test_string();
 void test_safethrow();
 void test_searchtree();
@@ -21,7 +22,8 @@ void test_type_system();
 
 inline void test_all(){
     kprintf("\e[97mkerep tests are starting!\n");
-    optime(__func__, 1, 
+    optime(__func__, 1,
+        test_cptr();
         test_type_system();
         test_string();
         test_safethrow();
