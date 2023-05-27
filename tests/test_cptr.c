@@ -1,14 +1,5 @@
 #include "tests.h"
 
-/*
-        TODO
-test cptr_seek...
-test cptr_...indexOf... 
-test cptr_replace...
-
-cases:
-*/
-
 const char* strings[]={
     "",
     "abab",
@@ -70,7 +61,7 @@ const char* strings[]={
 const int strings_len=sizeof(strings)/sizeof(strings[0]);
 
 void test_cptr(){
-    // optime(__func__,1,
+    optime(__func__,1,
         kprintf("\e[96m-------------[test_cptr]--------------\n");
         // compare
         kprintf("\e[94m--------------[compare]---------------\n");
@@ -157,5 +148,7 @@ void test_cptr(){
         test_seekReverse("ab", "", 2, 2, -1)
         test_seekReverse("ab", "b", 1, 2, 1)
         test_seekReverse("ab", "b", 1, 1, 1)
-    // );
+
+        // TODO cptr_replace
+    );
 }

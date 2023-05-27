@@ -189,27 +189,29 @@ char* cptr_toUpper(const char* src) {
     return p;
 }
 
-char* cptr_replaceChar(const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength){
+char* cptr_replaceCharIn(const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength){
     char* rzlt=cptr_copy(src);
-    char c=*src;
-    for(u32 i=startIndex; i<seekLength && c!=0; i++, src++){
-        if(c==c_old)
-            *rzlt=c_new;
+    for(u32 i=startIndex; i!=seekLength && src[i]!=0; i++){
+        if(src[i]==c_old)
+            rzlt[i]=c_new;
     }
     return rzlt;
 }
 
-char* cptr_replace(const char* src, char* str_old, char* str_new, u32 startIndex, u32 seekLength){
+char* cptr_replaceIn(const char* src, const char* str_old, const char* str_new, u32 startIndex, u32 seekLength){
     StringBuilder* sb=StringBuilder_create();
     const u32 str_old_len=cptr_length(str_old);
     const u32 str_new_len=cptr_length(str_new);
     i32 i=startIndex;
-    while( (i=cptr_seek(src, str_old, i, -1)) !=-1 ){
+    while( (i=cptr_seek(src, str_old, startIndex, seekLength)) !=-1 ){
         if(i!=0)
             StringBuilder_append_string(sb, (string){.ptr=(char*)src, .length=i});
         StringBuilder_append_string(sb, (string){.ptr=str_new, .length=str_new_len});
         src+=i+str_old_len;
     }
+    u32 src_remains_len=cptr_length(src);
+    if(src_remains_len>0)
+        StringBuilder_append_string(sb, (string){.ptr=(char*)src, .length=src_remains_len});
     string rezult=StringBuilder_build(sb);
     return rezult.ptr;
 }

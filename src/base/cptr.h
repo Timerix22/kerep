@@ -77,11 +77,17 @@ char* cptr_toUpper(const char* src);
 /// @param startIndex 0 ... src length
 /// @param seekLength 0 ... -1
 /// @return <src> with <str_old> replaced by <str_new> or empty cstring if <str_old> not found
-char* cptr_replace(const char* src, char* str_old, char* str_new, u32 startIndex, u32 seekLength);
+char* cptr_replaceIn(const char* src, const char* str_old, const char* str_new, u32 startIndex, u32 seekLength);
 /// @param startIndex 0 ... src length
 /// @param seekLength 0 ... -1
 /// @return <src> with <c_old> replaced by <c_new> or empty cstring if <str_old> not found
-char* cptr_replaceChar(const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength);
+char* cptr_replaceCharIn(const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength);
+
+static inline char* cptr_replace(const char* src, const char* str_old, const char* str_new)
+{ return cptr_replaceIn(src, str_old, str_new, 0, -1); }
+
+static inline char* cptr_replaceChar(const char* src, char c_old, char c_new)
+{ return cptr_replaceCharIn(src, c_old, c_new, 0, -1); }
 
 #if __cplusplus
 }
