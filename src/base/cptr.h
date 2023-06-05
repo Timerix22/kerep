@@ -66,8 +66,6 @@ static inline bool cptr_contains(const char* src, const char* fragment){
     return cptr_seek(src, fragment, 0, -1) +1;
 }
 
-void memcopy(void* from, void* to, u32 size);
-
 char* __cptr_concat(u32 n, ...);
 #define cptr_concat(STR...) __cptr_concat(count_args(STR), STR)
 
