@@ -11,40 +11,40 @@ extern "C" {
 kt_define(Autoarr_##type, ____Autoarr_##type##_freeWithMembers, NULL); \
 \
 void __Autoarr_##type##_add(Autoarr_##type* ar, type element){ \
-    if(!ar->values){ \
-        ar->values=malloc(ar->max_blocks_count*sizeof(type*)); \
-        goto create_block; \
+    if(!ar->chunks){ \
+        ar->chunks=malloc(ar->max_chunks_count*sizeof(type*)); \
+        goto create_chunk; \
     } \
-    if(ar->block_length==ar->max_block_length){ \
-        if (ar->blocks_count>=ar->max_blocks_count) throw(ERR_MAXLENGTH); \
-        ar->block_length=0; \
-create_block: \
-        ar->values[ar->blocks_count]=malloc(ar->max_block_length*sizeof(type)); \
-        ar->blocks_count++; \
+    if(ar->chunk_length==ar->max_chunk_length){ \
+        if (ar->chunks_count>=ar->max_chunks_count) throw(ERR_MAXLENGTH); \
+        ar->chunk_length=0; \
+create_chunk: \
+        ar->chunks[ar->chunks_count]=malloc(ar->max_chunk_length*sizeof(type)); \
+        ar->chunks_count++; \
     } \
-    ar->values[ar->blocks_count-1][ar->block_length]=element; \
-    ar->block_length++; \
+    ar->chunks[ar->chunks_count-1][ar->chunk_length]=element; \
+    ar->chunk_length++; \
 } \
 \
 type __Autoarr_##type##_get(Autoarr_##type* ar, u32 index){ \
     if(index>=Autoarr_length(ar)) throw(ERR_WRONGINDEX); \
-    return ar->values[index/ar->max_block_length][index%ar->max_block_length]; \
+    return ar->chunks[index/ar->max_chunk_length][index%ar->max_chunk_length]; \
 } \
 \
 type* __Autoarr_##type##_getPtr(Autoarr_##type* ar, u32 index){ \
     if(index>=Autoarr_length(ar)) throw(ERR_WRONGINDEX); \
-    return ar->values[index/ar->max_block_length]+(index%ar->max_block_length); \
+    return ar->chunks[index/ar->max_chunk_length]+(index%ar->max_chunk_length); \
 } \
 \
 void __Autoarr_##type##_set(Autoarr_##type* ar, u32 index, type element){ \
     if(index>=Autoarr_length(ar)) throw(ERR_WRONGINDEX); \
-    ar->values[index/ar->max_block_length][index%ar->max_block_length]=element; \
+    ar->chunks[index/ar->max_chunk_length][index%ar->max_chunk_length]=element; \
 } \
 \
 void __Autoarr_##type##_freeWithoutMembers(Autoarr_##type* ar, bool freePtr){ \
-    for(u16 i=0; i<ar->blocks_count;i++) \
-        free(ar->values[i]); \
-    free(ar->values); \
+    for(u16 i=0; i<ar->chunks_count;i++) \
+        free(ar->chunks[i]); \
+    free(ar->chunks); \
     if(freePtr) free(ar); \
 } \
 \
@@ -82,14 +82,14 @@ __Autoarr_##type##_functions_list_t __Autoarr_##type##_functions_list={ \
     &__Autoarr_##type##_toArray \
 }; \
 \
-Autoarr_##type* __Autoarr_##type##_create(u16 max_blocks_count, u16 max_block_length){ \
+Autoarr_##type* __Autoarr_##type##_create(u16 max_chunks_count, u16 max_chunk_length){ \
     Autoarr_##type* ar=malloc(sizeof(Autoarr_##type)); \
     *ar=(Autoarr_##type){ \
-        .max_blocks_count=max_blocks_count, \
-        .blocks_count=0, \
-        .max_block_length=max_block_length, \
-        .block_length=0, \
-        .values=NULL, \
+        .max_chunks_count=max_chunks_count, \
+        .chunks_count=0, \
+        .max_chunk_length=max_chunk_length, \
+        .chunk_length=0, \
+        .chunks=NULL, \
         .functions=&__Autoarr_##type##_functions_list \
     }; \
     return ar; \

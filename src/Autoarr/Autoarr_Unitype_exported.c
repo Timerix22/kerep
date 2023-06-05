@@ -4,8 +4,8 @@ extern "C" {
 
 #include "Autoarr.h"
 
-EXPORT void CALL kerep_Autoarr_Unitype_create(u16 max_blocks_count, u16 max_block_length, Autoarr_Unitype** output){
-    *output=Autoarr_create(Unitype, max_blocks_count, max_block_length);
+EXPORT void CALL kerep_Autoarr_Unitype_create(u16 max_chunks_count, u16 max_chunk_length, Autoarr_Unitype** output){
+    *output=Autoarr_create(Unitype, max_chunks_count, max_chunk_length);
 }
 
 EXPORT void CALL kerep_Autoarr_Unitype_free(Autoarr_Unitype* ar){

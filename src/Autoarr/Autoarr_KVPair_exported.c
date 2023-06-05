@@ -5,8 +5,8 @@ extern "C" {
 #include "Autoarr.h"
 #include "../Hashtable/KeyValuePair.h"
 
-EXPORT void CALL kerep_Autoarr_KVPair_create(u16 max_blocks_count, u16 max_block_length, Autoarr_KVPair** output){
-    *output=Autoarr_create(KVPair, max_blocks_count, max_block_length);
+EXPORT void CALL kerep_Autoarr_KVPair_create(u16 max_chunks_count, u16 max_chunk_length, Autoarr_KVPair** output){
+    *output=Autoarr_create(KVPair, max_chunks_count, max_chunk_length);
 }
 
 EXPORT void CALL kerep_Autoarr_KVPair_free(Autoarr_KVPair* ar){

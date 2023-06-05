@@ -23,22 +23,22 @@ typedef struct __Autoarr_##type##_functions_list_t { \
 extern __Autoarr_##type##_functions_list_t __Autoarr_##type##_functions_list; \
 \
 STRUCT(Autoarr_##type, \
-    u16 blocks_count; \
-    u16 max_blocks_count; \
-    u16 block_length; \
-    u16 max_block_length; \
-    type** values; \
+    u16 chunks_count; \
+    u16 max_chunks_count; \
+    u16 chunk_length; \
+    u16 max_chunk_length; \
+    type** chunks; \
     __Autoarr_##type##_functions_list_t* functions; \
 ) \
 \
-Autoarr_##type* __Autoarr_##type##_create(u16 max_blocks_count, u16 max_block_length); \
+Autoarr_##type* __Autoarr_##type##_create(u16 max_chunks_count, u16 max_chunk_length); \
 void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr); \
 void ____Autoarr_##type##_freeWithMembers(void* ar);
 
 #define Autoarr(type) Autoarr_##type
 
-#define Autoarr_create(type, max_blocks_count, max_block_length) \
-    __Autoarr_##type##_create(max_blocks_count, max_block_length)
+#define Autoarr_create(type, max_chunks_count, max_chunk_length) \
+    __Autoarr_##type##_create(max_chunks_count, max_chunk_length)
 #define Autoarr_add(autoarr, element) \
     autoarr->functions->add(autoarr, element)
 #define Autoarr_get(autoarr, index) \
@@ -55,18 +55,18 @@ void ____Autoarr_##type##_freeWithMembers(void* ar);
     autoarr->functions->toArray(autoarr)
 
 #define Autoarr_length(autoarr) \
-    (u32)(!autoarr->blocks_count ? 0 : \
-    autoarr->max_block_length*(autoarr->blocks_count-1)+autoarr->block_length)
+    (u32)(!autoarr->chunks_count ? 0 : \
+    autoarr->max_chunk_length*(autoarr->chunks_count-1)+autoarr->chunk_length)
 #define Autoarr_max_length(autoarr) \
-    (u32)(autoarr->max_block_length*autoarr->max_blocks_count)
+    (u32)(autoarr->max_chunk_length*autoarr->max_chunks_count)
 
 #define Autoarr_pop(AR){ \
-    if(AR->block_length==1){ \
-        AR->blocks_count--; \
-        AR->block_length=AR->max_block_length; \
-        free(AR->values[AR->blocks_count]); \
+    if(AR->chunk_length==1){ \
+        AR->chunks_count--; \
+        AR->chunk_length=AR->max_chunk_length; \
+        free(AR->chunks[AR->chunks_count]); \
     } \
-    else AR->block_length--; \
+    else AR->chunk_length--; \
 }
 
 #if __cplusplus

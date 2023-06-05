@@ -24,15 +24,15 @@ Autoarr_declare(u64)
 Autoarr_declare(Unitype)
 
 #define Autoarr_foreach(ar, elem, codeblock...) { \
-    if(ar->blocks_count>0) { \
-        typeof(**ar->values) elem; \
-        for(u16 blockI=0;blockI<ar->blocks_count-1;blockI++) \
-            for(u32 elemI=0;elemI<ar->max_block_length;elemI++){ \
-                elem=ar->values[blockI][elemI]; \
+    if(ar->chunks_count>0) { \
+        typeof(**ar->chunks) elem; \
+        for(u16 chunkI=0;chunkI<ar->chunks_count-1;chunkI++) \
+            for(u32 elemI=0;elemI<ar->max_chunk_length;elemI++){ \
+                elem=ar->chunks[chunkI][elemI]; \
                 { codeblock; } \
             } \
-        for(u16 elemI=0;elemI<ar->block_length;elemI++){ \
-            elem=ar->values[ar->blocks_count-1][elemI]; \
+        for(u16 elemI=0;elemI<ar->chunk_length;elemI++){ \
+            elem=ar->chunks[ar->chunks_count-1][elemI]; \
             { codeblock; } \
         } \
     } \

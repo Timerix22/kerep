@@ -22,7 +22,7 @@ void complete_buf(StringBuilder* b){
 }
 
 void try_complete_buf(StringBuilder* b){
-    if(b->curr_buf->blocks_count==BL_C)
+    if(b->curr_buf->chunks_count==BL_C)
         complete_buf(b);
 }
 
@@ -64,7 +64,7 @@ string StringBuilder_build(StringBuilder* b){
 
 
 void StringBuilder_rmchar(StringBuilder* b){
-    if(b->curr_buf->block_length!=0)
+    if(b->curr_buf->chunk_length!=0)
         Autoarr_pop(b->curr_buf)
     else {
         if(!b->compl_bufs) throw(ERR_NULLPTR);

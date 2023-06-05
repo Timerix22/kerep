@@ -4,17 +4,17 @@
 static void printautoarr(Autoarr(u16)* ar){
     kprintf("\e[94mAutoarr(u16): "
         IFWIN("%llu", "%lu")
-        "\n  max_blocks_count: %u\n"
-        "  blocks_count: %u\n"
-        "  max_block_length: %u\n"
-        "  block_length: %u\n"
+        "\n  max_chunks_count: %u\n"
+        "  chunks_count: %u\n"
+        "  max_chunk_length: %u\n"
+        "  chunk_length: %u\n"
         "  max_length: %u\n" 
         "  length: %u\n",
         sizeof(Autoarr(u16)),
-        ar->max_blocks_count,
-        ar->blocks_count,
-        ar->max_block_length,
-        ar->block_length,
+        ar->max_chunks_count,
+        ar->chunks_count,
+        ar->max_chunk_length,
+        ar->chunk_length,
         Autoarr_max_length(ar),
         Autoarr_length(ar));
 }
