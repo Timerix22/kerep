@@ -199,12 +199,12 @@ static const char* _kp_colorNames[16]={
     "white"
 };
 
-char* kp_bgColor_toString(kp_fmt c){
+char* kp_bgColor_toString(kp_bgColor c){
     u32 color_index=(c&0x00f00000)>>20;
     if(color_index>15) throw(ERR_WRONGINDEX);
     return _kp_colorNames[color_index];
 }
-char* kp_fgColor_toString(kp_fmt c){
+char* kp_fgColor_toString(kp_fgColor c){
     u32 color_index=(c&0x00f00000)>>24;
     if(color_index>15) throw(ERR_WRONGINDEX);
     return _kp_colorNames[color_index];

@@ -11,6 +11,7 @@ extern "C" {
 #include "type_system/type_system.h"
 #include "../kprint/kprintf.h"
 #include "endian.h"
+#include "memory/memory.h"
 
 #if __cplusplus
 }
