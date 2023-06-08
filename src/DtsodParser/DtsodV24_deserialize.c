@@ -44,16 +44,10 @@ Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* s
         if(!_c) break;
     }
     char errmsg[1024];
-    IFMSC(
-        sprintf_s(errmsg,1024, "unexpected <%c> at:\n"
-                        "  \"%s\"\n"
-                        "\\___[%s:%d] %s()", 
-                        c,errBuf, srcfile,line,funcname),
-        sprintf(errmsg, "unexpected <%c> at:\n"
-                        "  \"%s\"\n"
-                        " \\___[%s:%d] %s()", 
-                        c,errBuf, srcfile,line,funcname)
-    );
+    sprintf_s(errmsg, sizeof(errmsg), "unexpected <%c> at:\n"
+                    "  \"%s\"\n"
+                    "\\___[%s:%d] %s()",
+                    c,errBuf, srcfile,line,funcname);
     safethrow(errmsg,;);
 }
 #define safethrow_wrongchar(C, freeMem) { freeMem; return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__); }
@@ -96,7 +90,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
             nameStr.ptr=text+1; // skips '\n'
             break;
         case '}':
-            if(!calledRecursively || nameStr.length!=0) 
+            if(!calledRecursively || nameStr.length!=0)
                 safethrow_wrongchar(c,;);
             return SUCCESS(UniHeapPtr(char,NULL));
         case ':':
@@ -131,7 +125,7 @@ Maybe __ReadString(DeserializeSharedData* shared){
         if(c=='"') {
             if(prevIsBackslash) {
                 // replacing <\"> with <">
-                StringBuilder_rmchar(b); 
+                StringBuilder_rmchar(b);
                 StringBuilder_append_char(b,c);
                 prevIsBackslash=false;
             }
@@ -139,14 +133,14 @@ Maybe __ReadString(DeserializeSharedData* shared){
                 char* str=StringBuilder_build(b).ptr;
                 return SUCCESS(UniHeapPtr(char,str));
             }
-        } 
+        }
         else {
             prevIsBackslash= c=='\\' && !prevIsBackslash;
             StringBuilder_append_char(b,c);
         }
     }
 
-    safethrow(ERR_ENDOFSTR, StringBuilder_free(b));
+    safethrow(ERR_ENDOFSTR, StringBuilder_destruct(b));
 }
 #define ReadString() __ReadString(shared)
 
@@ -154,8 +148,8 @@ Maybe __ReadList(DeserializeSharedData* shared){
     Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
     bool readingList=true;
     while (true){
-        try(ReadValue((&readingList)), m_val, Autoarr_free(list, true))
-            Autoarr_add(list,m_val.value); 
+        try(ReadValue((&readingList)), m_val, Autoarr_destruct(list, true))
+            Autoarr_add(list,m_val.value);
         if (!readingList){
             if(Unitype_isUniNull(m_val.value))
                 Autoarr_pop(list);
@@ -192,10 +186,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             char* _c=string_extract(str);
             if(sscanf(_c, IFWIN("%llu", "%lu"), &lu)!=1){
                 char err[64];
-                IFMSC(
-                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
-                    sprintf(err,"can't parse to int: <%s>",_c)
-                );
+                sprintf_s(err, sizeof(err), "can't parse to int: <%s>", _c);
                 safethrow(err,free(_c));
             }
             free(_c);
@@ -208,10 +199,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             char* _c=string_extract(str);
             if(sscanf(_c, IFWIN("%lli", "%li"), &li)!=1){
                 char err[64];
-                IFMSC(
-                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
-                    sprintf(err,"can't parse to int: <%s>",_c)
-                );
+                sprintf_s(err, sizeof(err),"can't parse to int: <%s>",_c);
                 safethrow(err,free(_c));
             }
             free(_c);
@@ -239,53 +227,53 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
                 spaceAfterVal=true;
             else valueStr.ptr++;
             break;
-        case '=': case ':': 
+        case '=': case ':':
         case '}': case '$':
         case '\'':
-            safethrow_wrongchar(c,Unitype_free(value));
+            safethrow_wrongchar(c,Unitype_destruct(&value));
         case '#':;
             char _c=c;
             char* _text=text;
             try(SkipComment(),_,;);
             if(valueStr.length!=0){
                 text=_text;
-                safethrow_wrongchar(_c,Unitype_free(value));
+                safethrow_wrongchar(_c,Unitype_destruct(&value));
             }
             valueStr.ptr=text+1; // skips '\n'
             break;
         case '"':
-            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_free(value));
+            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_destruct(&value));
             try(ReadString(),maybeString,;)
                 value=maybeString.value;
             break;
         case '{':
-            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_free(value));
-            ++text; // skips '{' 
-            try(__deserialize(&text,true), val,Unitype_free(value))
+            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_destruct(&value));
+            ++text; // skips '{'
+            try(__deserialize(&text,true), val,Unitype_destruct(&value))
                 value=val.value;
             break;
         case '[':
-            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_free(value));
-            try(ReadList(),maybeList,Unitype_free(value))
+            if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_destruct(&value));
+            try(ReadList(),maybeList,Unitype_destruct(&value))
                 value=maybeList.value;
             break;
         case ']':
-            if(!readingList) safethrow_wrongchar(c,Unitype_free(value));
+            if(!readingList) safethrow_wrongchar(c,Unitype_destruct(&value));
             *readingList=false;
             goto return_value;
         case ';':
         case ',':
             return_value:
             if(valueStr.length!=0){
-                if(!Unitype_isUniNull(value)) 
-                    safethrow_wrongchar(c,Unitype_free(value));
+                if(!Unitype_isUniNull(value))
+                    safethrow_wrongchar(c,Unitype_destruct(&value));
                 try(ParseValue(valueStr),maybeParsed,;)
                     value=maybeParsed.value;
             }
             return SUCCESS(value);
         default:
             if(spaceAfterVal)
-                safethrow_wrongchar(c,Unitype_free(value)); 
+                safethrow_wrongchar(c,Unitype_destruct(&value));
             valueStr.length++;
             break;
     }
@@ -306,12 +294,12 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
     
     text--;
     while(true){
-        try(ReadName(), maybeName, Hashtable_free(dict))
-            if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call 
+        try(ReadName(), maybeName, Hashtable_destruct(dict))
+            if(!maybeName.value.VoidPtr) // end of file or '}' in recursive call
                 goto END;
         char* nameCPtr=maybeName.value.VoidPtr;
         try(ReadValue(NULL), val, {
-            Hashtable_free(dict);
+            Hashtable_destruct(dict);
             free(nameCPtr);
         }) {
             if(partOfDollarList){

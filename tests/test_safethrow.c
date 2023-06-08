@@ -34,10 +34,10 @@ void test_safethrow(){
         Maybe e=test_maybe();
         kprintf("\e[94mthrow_error:\n\e[92m");
         printMaybe(e);
-        Maybe_free(e);
+        Maybe_destruct(e);
         kprintf("\e[94mthrow_errcode:\n\e[92m");
         e=a();
         printMaybe(e);
-        Maybe_free(e);
+        Maybe_destruct(e);
     );
 }

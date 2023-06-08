@@ -8,7 +8,7 @@ typedef struct {
     size_t data_size;
 } AllocationHeader;
 
-void* StackingAllocator_alloc(allocator_t* _self, size_t size){
+void* StackingAllocator_alloc(allocator_ptr _self, size_t size){
     assert(_self!=NULL);
     assert(size>0);
     StackingAllocator* self = (StackingAllocator*)_self;
@@ -23,7 +23,7 @@ void* StackingAllocator_alloc(allocator_t* _self, size_t size){
     return data_ptr;
 }
 
-void StackingAllocator_free(allocator_t* _self, void* data_ptr){
+void StackingAllocator_free(allocator_ptr _self, void* data_ptr){
     assert(_self!=NULL);
     assert(data_ptr!=NULL);
     StackingAllocator* self = (StackingAllocator*)_self;

@@ -1,8 +1,8 @@
-// 
-// I planned to export functions from DtsodV24.h, 
+//
+// I planned to export functions from DtsodV24.h,
 // but C# P/Invoke can't get returned values for some reason.
 // Following functions return values by pointer, which looks in C# like out parameter
-// 
+//
 
 #if __cplusplus
 extern "C" {
@@ -45,8 +45,8 @@ EXPORT void CALL kerep_DtsodV24_remove(Hashtable* dtsod, char* key, bool* output
 }
 
 // replaces value with UniNull if key exists in dtsod
-EXPORT void CALL kerep_DtsodV24_free(Hashtable* dtsod){
-    DtsodV24_free(dtsod);
+EXPORT void CALL kerep_DtsodV24_destruct(Hashtable* dtsod){
+    DtsodV24_destruct(dtsod);
 }
 
 EXPORT void CALL kerep_DtsodV24_height(Hashtable* dtsod, u16* heigth){

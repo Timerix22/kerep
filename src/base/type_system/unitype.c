@@ -1,40 +1,36 @@
 #include "../../kprint/kprint_format.h"
 #include "../base.h"
 
-char *__Unitype_toString(void *_u, u32 fmt)
+char *__Unitype_toString(allocator_ptr al, void *_u, u32 fmt)
 {
-    return Unitype_toString(*(Unitype *)_u, fmt);
+    return Unitype_toString(al, *(Unitype *)_u, fmt);
 }
 
-kt_define(Unitype, __UnitypePtr_free, __Unitype_toString);
+kt_define(Unitype, (freeMembers_t)Unitype_destruct, __Unitype_toString);
 
-void Unitype_free(Unitype u)
+void Unitype_destruct(Unitype* u)
 {
-    if (u.typeId == ktid_undefined)
+    if (u->typeId == ktid_undefined)
     {
-        if (u.VoidPtr != NULL)
+        if (u->VoidPtr != NULL)
             throw("unitype with undefined typeId has value");
         return;
     }
 
-    ktDescriptor *type = ktDescriptor_get(u.typeId);
+    ktDescriptor *type = ktDescriptor_get(u->typeId);
     if (type->freeMembers)
-        type->freeMembers(u.VoidPtr);
-    if (u.allocatedInHeap)
-        free(u.VoidPtr);
-}
-void __UnitypePtr_free(void *u)
-{
-    Unitype_free(*(Unitype *)u);
+        type->freeMembers(u->VoidPtr);
+    if (u->allocatedInHeap)
+        free(u->VoidPtr);
 }
 
-char *Unitype_toString(Unitype u, u32 fmt)
+char *Unitype_toString(allocator_ptr al, Unitype u, u32 fmt)
 {
     if (u.typeId == ktid_undefined)
     {
         if (u.VoidPtr != NULL)
             throw("unitype with undefined typeId has value");
-        return cptr_copy("{ERROR_TYPE}");
+        return cptr_copy(al, "{ERROR_TYPE}");
     }
 
     if (fmt == 0)
@@ -74,7 +70,7 @@ char *Unitype_toString(Unitype u, u32 fmt)
         else if (u.typeId == ktid_name(Pointer))
         {
             if (u.VoidPtr == NULL)
-                return cptr_copy("{ UniNull }");
+                return cptr_copy(al, "{ UniNull }");
             fmt = kp_h;
         }
     }
@@ -82,19 +78,22 @@ char *Unitype_toString(Unitype u, u32 fmt)
     ktDescriptor *type = ktDescriptor_get(u.typeId);
     char *valuestr;
     if (type->toString)
-        valuestr = type->toString(u.VoidPtr, fmt);
+        valuestr = type->toString(al, u.VoidPtr, fmt);
     else
         valuestr = "ERR_NO_TOSTRING_FUNC";
-    char *rezult = cptr_concat("{ type: ", type->name, ", allocated on heap: ", (u.allocatedInHeap ? "true" : "false"),
+    char *rezult = cptr_concat(al, "{ type: ", type->name, ", allocated on heap: ", (u.allocatedInHeap ? "true" : "false"),
                                ", value:", valuestr, " }");
     if (type->toString)
-        free(valuestr);
+        allocator_free(al, valuestr);
     return rezult;
 }
 
 void printuni(Unitype v)
 {
-    char *s = Unitype_toString(v, 0);
+    LinearAllocator _al;
+    LinearAllocator_construct(&_al, 256);
+    allocator_ptr al=&_al.base;
+    char *s = Unitype_toString(al, v, 0);
     fputs(s, stdout);
-    free(s);
+    LinearAllocator_destruct(&_al);
 }

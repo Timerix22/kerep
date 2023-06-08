@@ -15,7 +15,7 @@
     kprintf("\e[93moperation \e[94m%s\e[93m lasted \e[94m%f \e[93m%s\n", \
                                     opname,              t,  tnames[tni]);
 
-#ifdef CLOCK_REALTIME 
+#ifdef CLOCK_REALTIME
 /// executes codeblock and prints execution time
 /// u64 op_i is counter of the internal loop
 /// uses non-standard high-precision clock
@@ -28,7 +28,7 @@
     f64 t=(f64)(stop.tv_sec-start.tv_sec)*1000000+(f64)(stop.tv_nsec-start.tv_nsec)/1000; \
     __optime_print(opname,t); \
 }
-#else 
+#else
 /// uses standard low precision clock
 #define optime(opname, repeats, codeblock...) { \
     clock_t start=clock(); \

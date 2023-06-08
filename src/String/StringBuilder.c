@@ -1,23 +1,23 @@
 #include "StringBuilder.h"
 
-kt_define(StringBuilder, __StringBuilder_free, NULL);
+kt_define(StringBuilder, __StringBuilder_destruct, NULL);
 
 #define BL_C 32
 #define BL_L 1024
 
 
 void complete_buf(StringBuilder* b){
-    if(!b->compl_bufs) 
+    if(!b->compl_bufs)
         b->compl_bufs=Autoarr_create(string,BL_C,BL_L);
     u32 len=Autoarr_length(b->curr_buf);
     if(!len) return;
     string str={.length=len, .ptr=malloc(len)};
     u32 i=0;
-    Autoarr_foreach(b->curr_buf, c, 
+    Autoarr_foreach(b->curr_buf, c,
         str.ptr[i++]=c;
     );
     Autoarr_add(b->compl_bufs,str);
-    Autoarr_free(b->curr_buf, true);
+    Autoarr_destruct(b->curr_buf, true);
     b->curr_buf=Autoarr_create(i8,BL_C,BL_L);
 }
 
@@ -34,31 +34,31 @@ StringBuilder* StringBuilder_create(){
     return b;
 }
 
-void __StringBuilder_free(void* _b){
+void __StringBuilder_destruct(void* _b){
     StringBuilder* b=_b;
-    if(b->compl_bufs) Autoarr_free(b->compl_bufs, true);
-    Autoarr_free(b->curr_buf, true);
+    if(b->compl_bufs) Autoarr_destruct(b->compl_bufs, true);
+    Autoarr_destruct(b->curr_buf, true);
 }
-void StringBuilder_free(StringBuilder* b){
-    __StringBuilder_free(b);
+void StringBuilder_destruct(StringBuilder* b){
+    __StringBuilder_destruct(b);
     free(b);
 }
 
 string StringBuilder_build(StringBuilder* b){
     complete_buf(b);
     u32 len=0;
-    Autoarr_foreach(b->compl_bufs, cs, 
+    Autoarr_foreach(b->compl_bufs, cs,
         len+=cs.length;
     );
     string str= { .length=len, .ptr=malloc(len+1) };
     str.ptr[len]='\0';
     u32 i=0;
-    Autoarr_foreach(b->compl_bufs, cs, 
+    Autoarr_foreach(b->compl_bufs, cs,
         for(u32 n=0;n<cs.length;n++)
             str.ptr[i++]=cs.ptr[n];
         free(cs.ptr);
     );
-    StringBuilder_free(b);
+    StringBuilder_destruct(b);
     return str;
 }
 
@@ -87,7 +87,7 @@ void StringBuilder_append_string(StringBuilder* b, string s){
 
 void StringBuilder_append_cptr(StringBuilder* b, char* s){
     string str={
-        .ptr=s, 
+        .ptr=s,
         .length=cptr_length(s)
     };
     StringBuilder_append_string(b,str);
@@ -139,9 +139,6 @@ void StringBuilder_append_u64(StringBuilder* b, u64 a){
 void StringBuilder_append_f64(StringBuilder* b, f64 a){
     try_complete_buf(b);
     char buf[32];
-    IFMSC(
-        sprintf_s(buf,32,"%lf",a),
-        sprintf(buf,"%lf",a)
-    );
+    sprintf_s(buf, sizeof(buf), "%lf", a);
     curr_buf_add_string(b, (string){.ptr=buf, .length=cptr_length(buf)});
 }

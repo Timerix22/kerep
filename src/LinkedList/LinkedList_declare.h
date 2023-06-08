@@ -12,7 +12,7 @@ STRUCT(LLNode(TYPE), \
 ) \
 \
 LLNode(TYPE)* LLNode_##TYPE##_create(TYPE value); \
-void LLNode_##TYPE##_free(LLNode(TYPE)* node, bool free_value);
+void LLNode_##TYPE##_destruct(LLNode(TYPE)* node, bool free_value);
 
 
 #define LinkedList_declare(TYPE)\

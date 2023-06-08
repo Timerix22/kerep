@@ -5,7 +5,6 @@ extern "C" {
 #endif
 
 #include "../base/base.h"
-#include "../Array/Array.h"
 #include "../Autoarr/Autoarr.h"
 
 // my fixed length string struct
@@ -15,7 +14,6 @@ STRUCT(string,
     u64 length;  // amount of chars in ptr value
 )
 
-Array_declare(string)
 Autoarr_declare(string)
 
 static const string stringNull={NULL,0};

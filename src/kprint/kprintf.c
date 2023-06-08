@@ -49,6 +49,9 @@ void kprintf(const char* format, ...){
     va_list vl;
     va_start(vl, format);
     u32 i=0;
+    LinearAllocator _al;
+    LinearAllocator_construct(&_al, 256);
+    allocator_ptr al=(allocator_ptr)&_al;
     for(char c=format[i++]; c!=0; c=format[i++]){
         // value format specifiers
         if(c=='%'){
@@ -58,18 +61,18 @@ void kprintf(const char* format, ...){
             format_escape_seq:
             switch (c) {
                 case 'u':
-                    argstr=toString_u64(
+                    argstr=toString_u64(al,
                         l ? va_arg(vl, u64) : va_arg(vl, u32)
                         ,0,0);
                     break;
                 case 'i': case 'd':
-                    argstr=toString_i64(
+                    argstr=toString_i64(al,
                         l ? va_arg(vl, i64) : va_arg(vl, i32)
                         );
                     break;
                 case 'f':
                     // f32 is promoted to f64 when passed through '...'
-                    argstr=toString_f64(va_arg(vl, f64), toString_float_default_precision,0,0);
+                    argstr=toString_f64(al, va_arg(vl, f64), toString_float_default_precision,0,0);
                     break;
                case 'l':
                     l=true;
@@ -78,16 +81,16 @@ void kprintf(const char* format, ...){
                     break;
                 case 'p': ;
                     void* phex=va_arg(vl, void*);
-                    argstr=toString_hex(&phex,getEndian()==LittleEndian,sizeof(phex),1,0);
+                    argstr=toString_hex(al, &phex,getEndian()==LittleEndian,sizeof(phex),1,0);
                     break;
                 case 'x': ;
                     if(l){
                         u64 xhex=va_arg(vl, u64);
-                        argstr=toString_hex(&xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
+                        argstr=toString_hex(al, &xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
                     }
                     else {
                         u32 xhex=va_arg(vl, u32);
-                        argstr=toString_hex(&xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
+                        argstr=toString_hex(al, &xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
                     }
                     break;
                 case 's': ;
@@ -98,7 +101,7 @@ void kprintf(const char* format, ...){
                         fputs(cptr, stdout);
                     break;
                 case 'c':
-                    argstr=malloc(2);
+                    argstr=allocator_alloc(al, 2);
                     argstr[0]=(char)va_arg(vl,int);
                     argstr[1]=0;
                     break;
@@ -111,10 +114,9 @@ void kprintf(const char* format, ...){
             }
             if(argstr){
                 fputs(argstr, stdout);
-                free(argstr);
             }
         }
-        // escape sequences 
+        // escape sequences
         else if(c=='\e'){
             IFWIN(
                 /* WINDOWS */
@@ -143,7 +145,7 @@ void kprintf(const char* format, ...){
                 putc(c,stdout);
             );
         }
-        // common characters 
+        // common characters
         else {
             putc(c,stdout);
         }
@@ -152,4 +154,5 @@ void kprintf(const char* format, ...){
         #endif
     }
     va_end(vl);
+    LinearAllocator_destruct(&_al);
 }

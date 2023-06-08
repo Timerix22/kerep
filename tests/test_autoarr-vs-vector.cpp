@@ -16,7 +16,7 @@ i64 _autoarrVsVector(u16 chunkCount, u16 chunkLength){
         t=Autoarr_get(ar, op_i));
     optime("vector_get", count,
         t=vec[op_i]);
-    Autoarr_free(ar, true);
+    Autoarr_destruct(ar, true);
     return t;
 }
 

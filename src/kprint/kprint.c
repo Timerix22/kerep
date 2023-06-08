@@ -3,27 +3,27 @@
 
 ktid __typeFromFormat(kp_fmt f){
     ktid typeId=kp_fmt_ktid(f);
-    if(typeId) 
+    if(typeId)
         return typeId;
     switch(kp_fmt_dataFormat(f)){
         case kp_i:
         case kp_h:
-        case kp_b: 
+        case kp_b:
             return ktid_name(i64);
         case kp_u:
-            return ktid_name(u64); 
+            return ktid_name(u64);
         case kp_f:
-            return ktid_name(f64); 
+            return ktid_name(f64);
         case kp_c:
-            return ktid_name(char); 
+            return ktid_name(char);
         case kp_s:
-            return ktid_ptrName(char); 
-        default: 
+            return ktid_ptrName(char);
+        default:
             return ktid_undefined;
     }
 }
 
-Maybe __next_toString(kp_fmt f, void* object){
+Maybe __next_toString(allocator_ptr al, kp_fmt f, void* object){
     // detecting type
     ktid typeId=__typeFromFormat(f);
     if(typeId==ktid_undefined)
@@ -35,7 +35,7 @@ Maybe __next_toString(kp_fmt f, void* object){
     ktDescriptor* type=ktDescriptor_get(typeId);
     if(!type->toString)
         safethrow("type descriptor doesnt have toString() func",;);
-    return SUCCESS(UniHeapPtr(char, type->toString(object, f)));
+    return SUCCESS(UniHeapPtr(char, type->toString(al, object, f)));
 }
 
 Maybe check_argsN(u8 n){
@@ -44,14 +44,14 @@ Maybe check_argsN(u8 n){
     return MaybeNull;
 }
 
-Maybe __ksprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
+Maybe __ksprint(allocator_ptr al, u8 n, kp_fmt* formats, __kp_value_union* objects){
     try(check_argsN(n), _,;);
     n/=2;
     StringBuilder* strb=StringBuilder_create();
     for(u8 i=0; i<n; i++){
-        try(__next_toString(formats[i], &objects[i]),mStr,;);
+        try(__next_toString(al, formats[i], &objects[i]),mStr,;);
         StringBuilder_append_cptr(strb, mStr.value.VoidPtr);
-        Unitype_free(mStr.value);
+        allocator_free(al, mStr.value.VoidPtr);
     }
     char* rezult=StringBuilder_build(strb).ptr;
     return SUCCESS(UniHeapPtr(char, rezult));
@@ -60,36 +60,43 @@ Maybe __ksprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
 Maybe __kfprint(FILE* file, u8 n, kp_fmt* formats, __kp_value_union* objects){
     try(check_argsN(n), _,;);
     n/=2;
+    LinearAllocator _al;
+    LinearAllocator_construct(&_al, 256);
+    allocator_ptr al=&_al.base;
     for(u8 i=0; i<n; i++){
-        try(__next_toString(formats[i], &objects[i]),maybeStr,;);
+        try(__next_toString(al, formats[i], &objects[i]),maybeStr, LinearAllocator_destruct(&_al));
         if(fputs(maybeStr.value.VoidPtr, file)==EOF)
-            safethrow("can't write string to file", Unitype_free(maybeStr.value));
-        Unitype_free(maybeStr.value);
+            safethrow("can't write string to file", LinearAllocator_destruct(&_al));
     }
     fflush(file);
+    LinearAllocator_destruct(&_al);
     return MaybeNull;
 }
 
 void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
     tryLast(check_argsN(n), _,;);
     n/=2;
+    LinearAllocator _al;
+    LinearAllocator_construct(&_al, 256);
+    allocator_ptr al=&_al.base;
     for(u8 i=0; i<n; i++){
         kp_fmt fmt=formats[i];
         kprint_setColor(fmt);
-        tryLast(__next_toString(fmt, &objects[i]),maybeStr, kprint_setColor(kp_bgBlack|kp_fgGray));
-        if(fputs(maybeStr.value.VoidPtr, stdout)==EOF) \
+        tryLast(__next_toString(al, fmt, &objects[i]), maybeStr,
+            LinearAllocator_destruct(&_al);
+            kprint_setColor(kp_bgBlack|kp_fgGray););
+        if(fputs(maybeStr.value.VoidPtr, stdout)==EOF)
             throw("can't write string to stdout");
-            //, Unitype_free(maybeStr.value)
-        Unitype_free(maybeStr.value);
     }
     fflush(stdout);
+    LinearAllocator_destruct(&_al);
 }
 
 #if defined(_WIN32)|| defined(_WIN64)
 #include <windows.h>
 #define FOREGROUND_YELLOW FOREGROUND_GREEN | FOREGROUND_RED
 
-DWORD kp_fgColor_toWin(kp_fgColor f){ 
+DWORD kp_fgColor_toWin(kp_fgColor f){
     //kprintf("fg: %x\n", f);
     switch(f){
         case kp_fgBlack: return 0;
@@ -112,7 +119,7 @@ DWORD kp_fgColor_toWin(kp_fgColor f){
     }
 }
 
-DWORD kp_bgColor_toWin(kp_bgColor f){ 
+DWORD kp_bgColor_toWin(kp_bgColor f){
     //kprintf("bg: %x\n", f);
     switch(f){
         case kp_bgBlack: return 0;
@@ -199,12 +206,12 @@ static const char* _kp_colorNames[16]={
     "white"
 };
 
-char* kp_bgColor_toString(kp_bgColor c){
+char* kp_bgColor_toString(allocator_ptr al, kp_bgColor c){
     u32 color_index=(c&0x00f00000)>>20;
     if(color_index>15) throw(ERR_WRONGINDEX);
     return _kp_colorNames[color_index];
 }
-char* kp_fgColor_toString(kp_fgColor c){
+char* kp_fgColor_toString(allocator_ptr al, kp_fgColor c){
     u32 color_index=(c&0x00f00000)>>24;
     if(color_index>15) throw(ERR_WRONGINDEX);
     return _kp_colorNames[color_index];

@@ -6,30 +6,7 @@ extern "C" {
 
 #include "../std.h"
 #include "../type_system/ktDescriptor.h"
-
-///////////////////////////////////////////
-//       MemoryAllocator interface       //
-///////////////////////////////////////////
-
-typedef struct MemoryAllocator allocator_t;
-
-typedef void* (*alloc_t)(allocator_t*, size_t size);
-typedef void (*free_t)(allocator_t*, void* ptr);
-
-typedef struct MemoryAllocator {
-    alloc_t alloc_f;
-    free_t free_f;
-} allocator_t;
-
-#define allocator_alloc(ALLOCATOR, SIZE) \
-    ((allocator_t*)ALLOCATOR)->alloc_f(ALLOCATOR, SIZE)
-#define allocator_free(ALLOCATOR, PTR) \
-    ((allocator_t*)ALLOCATOR)->free_f(ALLOCATOR, PTR)
-#define allocator_destruct(ALLOCATOR) \
-    ((allocator_t*)ALLOCATOR)->destruct_f(ALLOCATOR)
-
-void* allocator_transfer(allocator_t* src, allocator_t* dest, void* data, size_t data_size);
-
+#include "allocator_base.h"
 
 ///////////////////////////////////////////
 //             CstdAllocator             //
@@ -38,7 +15,7 @@ void* allocator_transfer(allocator_t* src, allocator_t* dest, void* data, size_t
 ///////////////////////////////////////////
 
 STRUCT(CstdAllocator,
-    allocator_t base;
+    MemoryAllocator base;
 );
 
 void CstdAllocator_construct(CstdAllocator* self);
@@ -59,7 +36,7 @@ typedef struct MemoryChunk {
 } MemoryChunk;
 
 STRUCT(LinearAllocator,
-    allocator_t base;
+    MemoryAllocator base;
     MemoryChunk* chunks;    /* MemoryChunk[max_chunks_count] */
     u16 chunks_count;       /* allocated chunks */
     u16 max_chunks_count;   /* chunks that can be allocated without reallocating .chunks */

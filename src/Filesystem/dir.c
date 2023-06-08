@@ -4,7 +4,7 @@
 
 bool dir_exists(const char* path){
     if(path[0]=='.'){
-        if(path[1]==0 || (path[1]==path_sep && path[1]==0)) 
+        if(path[1]==0 || (path[1]==path_sep && path[1]==0))
             return true; // dir . or ./ always exists
         // else if(path[1]=='.' && path[2]==path_sep)
         //TODO path_resolve because windows doesnt recognize .\ pattern
@@ -26,9 +26,10 @@ bool dir_exists(const char* path){
 Maybe dir_create(const char* path){
     if (dir_exists(path))
         return MaybeNull;
-    char* parentDir=path_parentDir(path);
+    LinearAllocator _al; LinearAllocator_construct(&_al, 128);
+    allocator_ptr al=&_al.base;
+    char* parentDir=path_parentDir(al, path);
     dir_create(parentDir);
-    free(parentDir);
 #if KFS_USE_WINDOWS_H
     if(!CreateDirectory(path, NULL))
 #else
@@ -36,12 +37,10 @@ Maybe dir_create(const char* path){
 #endif
     {
         char err[512];
-        IFWIN(
-            sprintf_s(err, 512, "can't create dicectory <%s>", path),
-            sprintf(err, "can't create dicectory <%s>", path));
+        sprintf_s(err, sizeof(err), "can't create dicectory <%s>", path);
         safethrow(err,;);
     }
-
+    LinearAllocator_destruct(&_al);
     return MaybeNull;
 }
 

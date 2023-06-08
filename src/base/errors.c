@@ -26,27 +26,21 @@ char* errname(ErrorId err){
 char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=ERRMSG_MAXLENGTH;
     char* rezult=malloc(bufsize);
-    IFMSC(
-        sprintf_s(rezult,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg),
-        sprintf(rezult,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg)
-    );
+    sprintf_s(rezult,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg);
     return rezult;
 }
 
 char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
     char* rezult=malloc(bufsize);
-    IFMSC(
-        sprintf_s(rezult,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname),
-        sprintf(rezult,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname)
-    );
+    sprintf_s(rezult,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname);
     free(errmsg);
     return rezult;
 }
 
-void Maybe_free(Maybe e){
+void Maybe_destruct(Maybe e){
     free(e.errmsg);
-    Unitype_free(e.value);
+    Unitype_destruct(&e.value);
 }
 
 void printMaybe(Maybe e){

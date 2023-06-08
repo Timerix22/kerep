@@ -34,7 +34,7 @@ void LinkedList_addToEnd(void* _llist, void* _new_node) {
     llist->last_node=new_node;
 }
 
-static inline void _insertNode(LinkedList(Pointer)* llist, 
+static inline void _insertNode(LinkedList(Pointer)* llist,
     LLNode(Pointer)* prev_node, LLNode(Pointer)* new_node, LLNode(Pointer)* next_node){
     if(prev_node==NULL){
         if(next_node==llist->first_node)

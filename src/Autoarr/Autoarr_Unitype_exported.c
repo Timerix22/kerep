@@ -8,8 +8,8 @@ EXPORT void CALL kerep_Autoarr_Unitype_create(u16 max_chunks_count, u16 max_chun
     *output=Autoarr_create(Unitype, max_chunks_count, max_chunk_length);
 }
 
-EXPORT void CALL kerep_Autoarr_Unitype_free(Autoarr_Unitype* ar){
-    Autoarr_free(ar, true);
+EXPORT void CALL kerep_Autoarr_Unitype_destruct(Autoarr_Unitype* ar){
+    Autoarr_destruct(ar, true);
 }
 
 EXPORT void CALL kerep_Autoarr_Unitype_get(Autoarr_Unitype* ar, u32 index, Unitype* output){

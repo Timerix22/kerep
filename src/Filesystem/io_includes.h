@@ -2,7 +2,7 @@
 
 #if defined(_WIN64) || defined(_WIN32)
 #define KFS_USE_WINDOWS_H 1
-#else 
+#else
 #define KFS_USE_WINDOWS_H 0
 #endif
 

@@ -1,12 +1,12 @@
 #include "allocators_internal.h"
 
-void* CstdAllocator_alloc(allocator_t* self, size_t size){
-    assert(size>0);
+void* CstdAllocator_alloc(allocator_ptr self, size_t size){
+    // assert(size>0);
     return malloc(size);
 }
 
-void CstdAllocator_free(allocator_t* self, void* ptr){
-    assert(ptr!=NULL);
+void CstdAllocator_free(allocator_ptr self, void* ptr){
+    // assert(ptr!=NULL);
     free(ptr);
 }
 

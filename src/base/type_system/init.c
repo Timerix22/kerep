@@ -1,5 +1,4 @@
 #include "../base.h"
-#include "../../Array/Array.h"
 #include "../../Autoarr/Autoarr.h"
 #include "../../SearchTree/SearchTree.h"
 #include "../../Hashtable/Hashtable.h"
@@ -29,21 +28,6 @@ void kt_initKerepTypes(){
     // ktDescriptor
     kt_register(ktDescriptor);
 
-    // base type arrays
-    kt_register(Array_char);
-    kt_register(Array_bool);
-    kt_register(Array_f32);
-    kt_register(Array_f64);
-    kt_register(Array_i8);
-    kt_register(Array_u8);
-    kt_register(Array_i16);
-    kt_register(Array_u16);
-    kt_register(Array_i32);
-    kt_register(Array_u32);
-    kt_register(Array_i64);
-    kt_register(Array_u64);
-    kt_register(Array_Pointer);
-
     // base type autoarrs
     kt_register(Autoarr_Pointer);
     kt_register(Autoarr_char);
@@ -61,7 +45,6 @@ void kt_initKerepTypes(){
 
     // Unitype
     kt_register(Unitype);
-    kt_register(Array_Unitype);
     kt_register(Autoarr_Unitype);
 
     // STNode
@@ -76,12 +59,16 @@ void kt_initKerepTypes(){
 
     // string
     kt_register(string);
-    kt_register(Array_string);
     kt_register(Autoarr_string);
 
     // StringBuilder
     kt_register(StringBuilder);
 
-    //File
+    // File
     kt_register(FileHandle);
+
+    // Allocators
+    kt_register(CstdAllocator);
+    kt_register(LinearAllocator);
+    kt_register(StackingAllocator);
 }

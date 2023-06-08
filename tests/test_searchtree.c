@@ -25,6 +25,9 @@ void printstnode(STNode* node){
 void test_searchtree(){
     optime("test_searchtree",1,
         kprintf("\e[96m-----------[test_searchtree]----------\n");
+        LinearAllocator _al;
+        LinearAllocator_construct(&_al, 1024);
+        allocator_ptr al=(allocator_ptr)&_al;
         STNode* node=STNode_create();
         kprintf("\e[92mnode created\n");
         kprintf("push:\e[94m\n  ");
@@ -44,7 +47,7 @@ void test_searchtree(){
         printuni(u);
         ST_push(node,"channel_id", u);
         kprintf(" -> channel_id\n  ");
-        u=UniHeapPtr(char, cptr_copy("32.2004"));
+        u=UniHeapPtr(char, cptr_copy(al, "32.2004"));
         printuni(u);
         ST_push(node,"message_id", u);
         kprintf(" -> message_id\n  ");
@@ -68,7 +71,8 @@ void test_searchtree(){
         kprintf("\n");
         kprintf("\e[92mfirst node:  ");
         printstnode(node);
-        STNode_free(node);
+        STNode_destruct(node);
         kprintf("\e[92mnode deleted\n");
+        LinearAllocator_destruct(&_al);
     );
 }

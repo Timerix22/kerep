@@ -8,7 +8,7 @@ extern "C" {
 
 #define Autoarr_define(type, TYPE_IS_PTR) \
 \
-kt_define(Autoarr_##type, ____Autoarr_##type##_freeWithMembers, NULL); \
+kt_define(Autoarr_##type, ____Autoarr_##type##_destructWithMembers, NULL); \
 \
 void __Autoarr_##type##_add(Autoarr_##type* ar, type element){ \
     if(!ar->chunks){ \
@@ -41,14 +41,14 @@ void __Autoarr_##type##_set(Autoarr_##type* ar, u32 index, type element){ \
     ar->chunks[index/ar->max_chunk_length][index%ar->max_chunk_length]=element; \
 } \
 \
-void __Autoarr_##type##_freeWithoutMembers(Autoarr_##type* ar, bool freePtr){ \
+void __Autoarr_##type##_destructWithoutMembers(Autoarr_##type* ar, bool freePtr){ \
     for(u16 i=0; i<ar->chunks_count;i++) \
         free(ar->chunks[i]); \
     free(ar->chunks); \
     if(freePtr) free(ar); \
 } \
 \
-void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr){ \
+void __Autoarr_##type##_destructWithMembers(Autoarr_##type* ar, bool freePtr){ \
     if(ktDescriptor_##type.freeMembers!=NULL) { \
         Autoarr_foreach(ar, el,  \
             void* members_ptr=&el; \
@@ -56,10 +56,10 @@ void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr){ \
             ktDescriptor_##type.freeMembers(members_ptr); \
         ); \
     } \
-    __Autoarr_##type##_freeWithoutMembers(ar, freePtr);\
+    __Autoarr_##type##_destructWithoutMembers(ar, freePtr); \
 } \
-void ____Autoarr_##type##_freeWithMembers(void* ar){ \
-    __Autoarr_##type##_freeWithMembers((Autoarr_##type*)ar, false); \
+void ____Autoarr_##type##_destructWithMembers(void* ar){ \
+    __Autoarr_##type##_destructWithMembers((Autoarr_##type*)ar, false); \
 } \
 \
 type* __Autoarr_##type##_toArray(Autoarr_##type* ar){ \
@@ -77,8 +77,8 @@ __Autoarr_##type##_functions_list_t __Autoarr_##type##_functions_list={ \
     &__Autoarr_##type##_get, \
     &__Autoarr_##type##_getPtr, \
     &__Autoarr_##type##_set, \
-    &__Autoarr_##type##_freeWithMembers, \
-    &__Autoarr_##type##_freeWithoutMembers, \
+    &__Autoarr_##type##_destructWithMembers, \
+    &__Autoarr_##type##_destructWithoutMembers, \
     &__Autoarr_##type##_toArray \
 }; \
 \

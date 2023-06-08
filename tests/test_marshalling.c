@@ -1,9 +1,12 @@
 #include "../src/Hashtable/KeyValuePair.h"
 
 EXPORT void CALL test_marshalling(char* text, KVPair** kptr){
-    KVPair* k=malloc(sizeof(KVPair));
+    CstdAllocator _al;
+    allocator_ptr al=(allocator_ptr)&_al;
+    CstdAllocator_construct(&_al);
+    KVPair* k=allocator_alloc(al, sizeof(KVPair));
     k->key="message";
-    char* tc=cptr_copy(text);
+    char* tc=cptr_copy(al, text);
     Unitype u=UniHeapPtr(char,tc);
     k->value=u;
     *kptr=k;

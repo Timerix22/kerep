@@ -9,13 +9,13 @@ extern "C" {
 #include "KeyValuePair.h"
 
 STRUCT(Hashtable,
-    u8 hein;  // height=HT_HEIGHTS[hein] 
+    u8 hein;  // height=HT_HEIGHTS[hein]
     Autoarr(KVPair)** rows; // Autoarr[height]
 )
 
 Hashtable* Hashtable_create();
-void Hashtable_free(Hashtable* ht);
-void __Hashtable_free(void* ht);
+void Hashtable_destruct(Hashtable* ht);
+void __Hashtable_destruct(void* ht);
 
 // amount of rows
 u16 Hashtable_height(Hashtable* ht);

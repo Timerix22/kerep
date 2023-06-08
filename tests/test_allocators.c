@@ -1,6 +1,6 @@
 #include "tests.h"
 
-void _test_allocator(allocator_t* al){
+void _test_allocator(allocator_ptr al){
     void* ptr=allocator_alloc(al, 1);
     allocator_free(al, ptr);
     ptr=allocator_alloc(al, 5);
@@ -30,18 +30,18 @@ void test_allocators(){
     optime("test CstdAllocator", 10000,
         CstdAllocator al;
         CstdAllocator_construct(&al);
-        _test_allocator((allocator_t*)&al);
+        _test_allocator((allocator_ptr)&al);
     );
     optime("test LinearAllocator", 10000,
         LinearAllocator al;
         LinearAllocator_construct(&al, 4096);
-        _test_allocator((allocator_t*)&al);
+        _test_allocator((allocator_ptr)&al);
         LinearAllocator_destruct(&al);
     );
     optime("test StackingAllocator", 10000,
         StackingAllocator al;
         StackingAllocator_construct(&al, 4096);
-        _test_allocator((allocator_t*)&al);
+        _test_allocator((allocator_ptr)&al);
         StackingAllocator_destruct(&al);
     );
 }

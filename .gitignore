@@ -4,6 +4,10 @@ obj/
 
 # user files
 .old*/
+[Tt]mp/
+[Tt]emp/
+.[Tt]mp/
+.[Tt]emp/
 .vs/
 .vshistory/
 .editorconfig

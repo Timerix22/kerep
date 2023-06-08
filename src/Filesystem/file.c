@@ -2,9 +2,9 @@
 #include "../String/StringBuilder.h"
 #include "io_includes.h"
 
-void __file_freeMembers(void* _f){ fclose((FileHandle)_f); }
+void __file_destructMembers(void* _f){ fclose((FileHandle)_f); }
 
-kt_define(FileHandle, __file_freeMembers, NULL)
+kt_define(FileHandle, __file_destructMembers, NULL)
 
 bool file_exists(const char* path){
     if(path[0]=='.'){
@@ -50,8 +50,11 @@ char* FileOpenMode_toStr(FileOpenMode m){
 
 Maybe file_open(const char* path, FileOpenMode mode){
     FileHandle file=fopen(path, FileOpenMode_toStr(mode));
+    LinearAllocator _al; LinearAllocator_construct(&_al, 128);
+    allocator_ptr al=&_al.base;
     if(!file)
-        safethrow(cptr_concat("can't open file ", (char*)path),;);
+        safethrow(cptr_concat(al, "can't open file ", (char*)path),;);
+    LinearAllocator_destruct(&_al);
     return SUCCESS(UniHeapPtr(FileHandle,file));
 }
 
@@ -117,8 +120,8 @@ Maybe file_readAll(FileHandle file, char** allBytes){
     while(true){
         rezult=fgetc(file);
         if(rezult==EOF){
-            if(ferror(file)) 
-                safethrow(ERR_IO, StringBuilder_free(sb));
+            if(ferror(file))
+                safethrow(ERR_IO, StringBuilder_destruct(sb));
             break;
         }
         buffer[i%sizeof(buffer)]=(char)rezult;
@@ -132,7 +135,7 @@ Maybe file_readAll(FileHandle file, char** allBytes){
     string str=StringBuilder_build(sb);
     *allBytes=str.ptr;
     // i dont know how can it happen, but if it will have, it will be very dangerous
-    if(i!=str.length) 
+    if(i!=str.length)
         throw(ERR_UNEXPECTEDVAL);
     return SUCCESS(UniUInt64(i));
 }

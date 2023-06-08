@@ -5,7 +5,6 @@ extern "C" {
 #endif
 
 #include "../base/base.h"
-#include "../Array/Array.h"
 #include "../String/string.h"
 
 typedef FILE* FileHandle;
@@ -17,15 +16,15 @@ bool file_exists(const char* path);
 Maybe file_delete(const char* path, bool recursive);
 
 PACKED_ENUM(FileOpenMode,
-    // open a file for reading 
-    FileOpenMode_Read=1, 
+    // open a file for reading
+    FileOpenMode_Read=1,
     // (re)create a file for writing
-    FileOpenMode_Write=2, 
-    // opens file for writing additional data to the end / creates new file 
+    FileOpenMode_Write=2,
+    // opens file for writing additional data to the end / creates new file
     FileOpenMode_Append=4,
     // (re)creates file for reading/writing
-    FileOpenMode_ReadWrite=FileOpenMode_Read|FileOpenMode_Write, 
-    // opens file for readng/writing additional data to the end / creates new file 
+    FileOpenMode_ReadWrite=FileOpenMode_Read|FileOpenMode_Write,
+    // opens file for readng/writing additional data to the end / creates new file
     FileOpenMode_ReadAppend=FileOpenMode_Read|FileOpenMode_Append
 )
 
@@ -67,7 +66,7 @@ Maybe file_readChar(FileHandle file);
 Maybe file_readBuffer(FileHandle file, char* buffer, u64 length);
 
 /// @brief reads all bytes from file
-/// @param allBytes ptr to the file's content will be pushed there 
+/// @param allBytes ptr to the file's content will be pushed there
 /// @return Maybe<u64> total number of successfully read bytes
 Maybe file_readAll(FileHandle file, char** allBytes);
 

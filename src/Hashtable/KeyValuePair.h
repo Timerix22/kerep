@@ -15,8 +15,8 @@ STRUCT(KVPair,
 Autoarr_declare(KVPair)
 
 // proper way to clean a KVP
-void KVPair_free(KVPair p);
-void __KVPair_free(void* p);
+void KVPair_destruct(KVPair p);
+void __KVPair_destruct(void* p);
 
 void printkvp(KVPair p);
 

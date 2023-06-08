@@ -52,7 +52,7 @@ void test_dtsod(){
             tryLast(DtsodV24_serialize(dtsod),r,;)
                 s=r.value.VoidPtr;
         );
-        DtsodV24_free(dtsod);
+        DtsodV24_destruct(dtsod);
         kprintf("\e[92m%s",s);
 
         optime("reserialize",10,
@@ -61,7 +61,7 @@ void test_dtsod(){
             free(s);
             tryLast(DtsodV24_serialize(dtsod),rr,;)
                 s=rr.value.VoidPtr;
-            DtsodV24_free(dtsod);
+            DtsodV24_destruct(dtsod);
         );
 
         free(s);

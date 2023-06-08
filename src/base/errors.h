@@ -29,7 +29,7 @@ STRUCT(Maybe,
 //                            .value  .errmsg
 #define MaybeNull (Maybe){UniNull, NULL}
 
-void Maybe_free(Maybe e);
+void Maybe_destruct(Maybe e);
 void printMaybe(Maybe e);
 
 

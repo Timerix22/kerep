@@ -17,7 +17,7 @@ STRUCT(Unitype,
         char Bytes[8];
     };
     ktid typeId;
-    bool allocatedInHeap; // should Unitype_free call free() to VoidPtr*
+    bool allocatedInHeap; // should Unitype_destruct call free() to VoidPtr*
 )
 
 
@@ -45,9 +45,8 @@ STRUCT(Unitype,
 #define UniCheckTypePtr(UNI, TYPE) UniCheckTypeId(UNI, ktid_ptrName(TYPE))
 
 // frees VoidPtr value or does nothing if type isn't pointer
-void Unitype_free(Unitype u);
-void __UnitypePtr_free(void* u);
-char* Unitype_toString(Unitype v, u32 fmt);
+void Unitype_destruct(Unitype* u);
+char* Unitype_toString(allocator_ptr al, Unitype v, u32 fmt);
 void printuni(Unitype v);
 
 #if __cplusplus

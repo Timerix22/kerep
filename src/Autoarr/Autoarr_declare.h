@@ -32,8 +32,8 @@ STRUCT(Autoarr_##type, \
 ) \
 \
 Autoarr_##type* __Autoarr_##type##_create(u16 max_chunks_count, u16 max_chunk_length); \
-void __Autoarr_##type##_freeWithMembers(Autoarr_##type* ar, bool freePtr); \
-void ____Autoarr_##type##_freeWithMembers(void* ar);
+void __Autoarr_##type##_destructWithMembers(Autoarr_##type* ar, bool freePtr); \
+void ____Autoarr_##type##_destructWithMembers(void* ar);
 
 #define Autoarr(type) Autoarr_##type
 
@@ -47,9 +47,9 @@ void ____Autoarr_##type##_freeWithMembers(void* ar);
     autoarr->functions->getPtr(autoarr,index)
 #define Autoarr_set(autoarr, index, element) \
     autoarr->functions->set(autoarr, index, element)
-#define Autoarr_free(autoarr, freePtr) \
+#define Autoarr_destruct(autoarr, freePtr) \
     autoarr->functions->freeWithMembers(autoarr, freePtr)
-#define Autoarr_freeWithoutMembers(autoarr, freePtr) \
+#define Autoarr_destructWithoutMembers(autoarr, freePtr) \
     autoarr->functions->freeWithoutMembers(autoarr, freePtr)
 #define Autoarr_toArray(autoarr) \
     autoarr->functions->toArray(autoarr)

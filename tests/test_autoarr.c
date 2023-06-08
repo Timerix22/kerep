@@ -47,7 +47,7 @@ void test_autoarr(){
         resetar(ar);
         kprintf("\e[92mautoarr values reset\n");
         printallval(ar);
-        Autoarr_free(ar, true);
+        Autoarr_destruct(ar, true);
         kprintf("\e[92mautoarr deleted\n");
     );
 }

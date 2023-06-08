@@ -45,7 +45,7 @@ PACKED_ENUM(kp_dataFmt,
 #define kp_fmt_dataFormat(FMT) (kp_dataFmt)(FMT&0x000f0000)
 #define kp_fmt_ktid(FMT) (ktid)(FMT&0x0000ffff)
 
-///@param f bgColor | fgColor 
+///@param f bgColor | fgColor
 void kprint_setColor(kp_fmt f);
 
 #if __cplusplus

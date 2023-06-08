@@ -1,8 +1,7 @@
 #include "string.h"
 
 kt_define(string, NULL, NULL);
-Array_define(string)
-Autoarr_define(string, false)
+Autoarr_define(string, false);
 
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str){
@@ -33,7 +32,7 @@ bool string_compare(string str0, string str1){
     if(!str0.ptr) return str1.ptr ? false : true;
     else if(!str1.ptr) return false;
     while(str0.length-->0)
-        if(*str0.ptr++ != *str1.ptr++) 
+        if(*str0.ptr++ != *str1.ptr++)
             return false;
     return true;
 }

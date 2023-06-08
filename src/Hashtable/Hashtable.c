@@ -1,6 +1,6 @@
 #include "Hashtable.h"
 
-kt_define(Hashtable, __Hashtable_free, NULL);
+kt_define(Hashtable, __Hashtable_destruct, NULL);
 
 // amount of rows
 static const u16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
@@ -19,14 +19,14 @@ Hashtable* Hashtable_create(){
     return ht;
 }
 
-void __Hashtable_free(void* _ht){
+void __Hashtable_destruct(void* _ht){
     Hashtable* ht=_ht;
     for(u16 i=0;i<HT_HEIGHTS[ht->hein];i++)
-        Autoarr_free(ht->rows[i], true);
+        Autoarr_destruct(ht->rows[i], true);
     free(ht->rows);
 }
-void Hashtable_free(Hashtable* ht){
-    __Hashtable_free(ht);
+void Hashtable_destruct(Hashtable* ht){
+    __Hashtable_destruct(ht);
     free(ht);
 }
 
@@ -51,7 +51,7 @@ void Hashtable_expand(Hashtable* ht){
         }
         // there is no need to free array values, because they are copied into new array
         // so dont replace this incorrect auto-generated function
-        Autoarr_freeWithoutMembers(ar, true);
+        Autoarr_destructWithoutMembers(ar, true);
     }
 
     free(ht->rows);
@@ -68,7 +68,7 @@ Autoarr(KVPair)* getrow(Hashtable* ht, char* key, bool can_expand){
 }
 
 /// @param key must be heap allocated
-/// Hashtable_free will free this pointer
+/// Hashtable_destruct will free this pointer
 void Hashtable_add(Hashtable* ht, char* key, Unitype u){
     KVPair p={ .key=key, .value=u };
     Autoarr_add(getrow(ht,key,true),p);

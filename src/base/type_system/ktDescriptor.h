@@ -7,6 +7,7 @@ extern "C" {
 #include "../std.h"
 #include "ktid.h"
 #include "typedef_macros.h"
+#include "../memory/allocator_base.h"
 
 #define kt_declare(TYPE)\
     ktid_declare(TYPE);\
@@ -31,7 +32,7 @@ extern "C" {
     };
 
 typedef void (*freeMembers_t)(void*);
-typedef char* (*toString_t)(void* obj, u32 fmt);
+typedef char* (*toString_t)(allocator_ptr al, void* obj, u32 fmt);
 
 STRUCT(ktDescriptor,
     char* name;

@@ -33,7 +33,7 @@ char data[]="iojihiojopijiugbjmoihftytryfdrh";
         } \
         kprintf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS); \
     ); \
-    Autoarr_free(hashes, true); \
+    Autoarr_destruct(hashes, true); \
     kprintf("\e[96m--------------------------------------\n"); \
 }
 

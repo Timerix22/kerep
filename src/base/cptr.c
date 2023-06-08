@@ -11,16 +11,16 @@ u32 cptr_length(const char* str){
 }
 
 // allocates new char[] and copies src there
-char* cptr_copy(const char* src){
+char* cptr_copy(allocator_ptr al, const char* src){
     u32 len=cptr_length(src)+1;
-    char* dst=malloc(len);
+    char* dst=allocator_alloc(al, len);
     memcpy(dst, src, len);
     return dst;
 }
 
 // multiplies char n times
-char* char_multiply(char c, u32 n){
-    char* rez=malloc(n+1);
+char* char_multiply(allocator_ptr al, char c, u32 n){
+    char* rez=allocator_alloc(al, n+1);
     rez[n]=0;
     while(n--!=0)
         rez[n]=c;
@@ -130,9 +130,9 @@ i32 cptr_seekCharReverse(const char* src, char fragment, u32 startIndex, u32 see
     return -1;
 }
 
-char* __cptr_concat(u32 n, ...){
-    char** strs=(char**)malloc(n*sizeof(char*));
-    u32* lengths=malloc(n*sizeof(u32));
+char* __cptr_concat(allocator_ptr al, u32 n, ...){
+    char** strs=(char**)allocator_alloc(al, n*sizeof(char*));
+    u32* lengths=allocator_alloc(al, n*sizeof(u32));
     u32 totalLength=0;
 
     // reading args from va_list
@@ -148,7 +148,7 @@ char* __cptr_concat(u32 n, ...){
     va_end(vl);
 
     // allocating memory for output value
-    char* totality=malloc(totalLength+1);
+    char* totality=allocator_alloc(al, totalLength+1);
     char* output=totality;
     totality[totalLength]=0;
     
@@ -163,26 +163,26 @@ char* __cptr_concat(u32 n, ...){
     return output;
 }
 
-char* cptr_toLower(const char* src) {
+char* cptr_toLower(allocator_ptr al, const char* src) {
     u32 length=cptr_length(src);
-    char *p=malloc(length+1);
+    char *p=allocator_alloc(al, length+1);
     p[length]=0;
     for(u32 i=0; i<length; i++)
         p[i]=tolower(src[i]);
     return p;
 }
 
-char* cptr_toUpper(const char* src) {
+char* cptr_toUpper(allocator_ptr al, const char* src) {
     u32 length=cptr_length(src);
-    char *p=malloc(length+1);
+    char *p=allocator_alloc(al, length+1);
     p[length]=0;
     for(u32 i=0; i<length; i++)
         p[i]=toupper(src[i]);
     return p;
 }
 
-char* cptr_replaceCharIn(const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength){
-    char* rzlt=cptr_copy(src);
+char* cptr_replaceCharIn(allocator_ptr al, const char* src, char c_old, char c_new, u32 startIndex, u32 seekLength){
+    char* rzlt=cptr_copy(al, src);
     for(u32 i=startIndex; i!=seekLength && src[i]!=0; i++){
         if(src[i]==c_old)
             rzlt[i]=c_new;
@@ -190,7 +190,7 @@ char* cptr_replaceCharIn(const char* src, char c_old, char c_new, u32 startIndex
     return rzlt;
 }
 
-char* cptr_replaceIn(const char* src, const char* str_old, const char* str_new, u32 startIndex, u32 seekLength){
+char* cptr_replaceIn(allocator_ptr al, const char* src, const char* str_old, const char* str_new, u32 startIndex, u32 seekLength){
     StringBuilder* sb=StringBuilder_create();
     const u32 str_old_len=cptr_length(str_old);
     const u32 str_new_len=cptr_length(str_new);

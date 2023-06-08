@@ -13,8 +13,8 @@ STRUCT(StringBuilder,
 )
 
 StringBuilder* StringBuilder_create(void);
-void StringBuilder_free(StringBuilder* b);
-void __StringBuilder_free(void* b);
+void StringBuilder_destruct(StringBuilder* b);
+void __StringBuilder_destruct(void* b);
 // Joins all strings from compl_bufs.
 // Returns zero-terminated string.
 // No need to call string_extract()!

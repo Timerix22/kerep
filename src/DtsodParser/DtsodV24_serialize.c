@@ -3,7 +3,7 @@
 
 
 STRUCT(SerializeSharedData,
-    StringBuilder* sh_builder; 
+    StringBuilder* sh_builder;
     u8 sh_tabs;
 )
 #define b shared->sh_builder
@@ -55,7 +55,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
             AppendTabs();
             addc('[');
             tabs++;
-            Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e, 
+            Autoarr_foreach(((Autoarr_Unitype*)(u.VoidPtr)), e,
                 addc('\n');
                 AppendTabs();
                 try(AppendValue(e),__,;);
@@ -75,7 +75,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
     else if(u.typeId==ktid_ptrName(Hashtable)){
         // check hashtable is blank
         bool hashtableNotBlank=false;
-        Hashtable_foreach(((Hashtable*)u.VoidPtr), __, 
+        Hashtable_foreach(((Hashtable*)u.VoidPtr), __,
             hashtableNotBlank=true;
             if(__.key) {} // weird way to disable warning
             break;
@@ -96,7 +96,7 @@ Maybe __AppendValue(SerializeSharedData* shared, Unitype u){
         }
     }
     else {
-        dbg((u.typeId)); 
+        dbg((u.typeId));
         safethrow(ERR_WRONGTYPE,;);
     }
     return MaybeNull;
@@ -109,7 +109,7 @@ Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod){
     };
     SerializeSharedData* shared=&_shared;
 
-    Hashtable_foreach(dtsod, p, 
+    Hashtable_foreach(dtsod, p,
         AppendTabs();
         StringBuilder_append_cptr(b,p.key);
         addc(':');
@@ -124,7 +124,7 @@ Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod){
 
 Maybe DtsodV24_serialize(Hashtable* dtsod){
     StringBuilder* sb=StringBuilder_create();
-    try(__serialize(sb,0,dtsod),__, StringBuilder_free(sb));
+    try(__serialize(sb,0,dtsod),__, StringBuilder_destruct(sb));
     char* str=StringBuilder_build(sb).ptr;
     return SUCCESS(UniHeapPtr(char, str));
 }

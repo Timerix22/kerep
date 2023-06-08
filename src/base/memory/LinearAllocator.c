@@ -30,7 +30,7 @@ __attribute__ ((noinline)) void* __alloc_new_chunk(LinearAllocator* self, size_t
     return curr_chunk->data;
 }
 
-void* LinearAllocator_alloc(allocator_t* _self, size_t size){
+void* LinearAllocator_alloc(allocator_ptr _self, size_t size){
     // assert(_self!=NULL);
     // assert(size>0);
     LinearAllocator* self = (LinearAllocator*)_self;
@@ -55,7 +55,7 @@ void* LinearAllocator_alloc(allocator_t* _self, size_t size){
     }
 }
 
-void LinearAllocator_free(allocator_t* _self, void* ptr){
+void LinearAllocator_free(allocator_ptr _self, void* ptr){
     // LinearAllocator can't free pointers
 }
 

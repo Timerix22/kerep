@@ -28,7 +28,7 @@ typedef double f64;
 /// anonymous pointer without specified freeMembers() func
 typedef void* Pointer;
 
-// Usually bool from stdbool.h is defined as macro, 
+// Usually bool from stdbool.h is defined as macro,
 // so in other macros like ktid_##TYPE it will be replaced by _Bool.
 // ktid__Bool will be created instead of ktid_bool
 // In C++ bool is a keyword, so there is no need to redefine it.

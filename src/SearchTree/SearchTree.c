@@ -1,6 +1,6 @@
 #include "SearchTree.h"
 
-kt_define(STNode, __STNode_free, NULL);
+kt_define(STNode, __STNode_destruct, NULL);
 
 STNode* STNode_create(){
     STNode* node=malloc(sizeof(STNode));
@@ -9,20 +9,20 @@ STNode* STNode_create(){
     return node;
 }
 
-void __STNode_free(void* _node){
+void __STNode_destruct(void* _node){
     STNode* node=_node;
     if (!node) throw(ERR_NULLPTR);
     if(node->branches){
         for(u8 n32 = 0;n32<8;n32++){
             STNode*** ptrn32=(STNode***)node->branches[n32];
-            if(ptrn32){ 
+            if(ptrn32){
                 for(u8 n4 = 0;n4<8;n4++){
                     STNode** ptrn4=ptrn32[n4];
                     if (ptrn4){
                         for(u8 rem=0;rem<4;rem++){
                             STNode* ptrrem=ptrn4[rem];
                             if(ptrrem)
-                                STNode_free(ptrrem);
+                                STNode_destruct(ptrrem);
                         }
                         free(ptrn4);
                     }
@@ -32,11 +32,11 @@ void __STNode_free(void* _node){
         }
         free(node->branches);
     }
-    if(node->value.VoidPtr) 
-        Unitype_free(node->value);
+    if(node->value.VoidPtr)
+        Unitype_destruct(&node->value);
 }
-void STNode_free(STNode* node){
-    __STNode_free(node);
+void STNode_destruct(STNode* node){
+    __STNode_destruct(node);
     free(node);
 }
 

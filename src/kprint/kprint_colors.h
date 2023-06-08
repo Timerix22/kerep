@@ -4,10 +4,12 @@
 extern "C" {
 #endif
 
+#include "../base/memory/allocator_base.h"
+
 //         10000000 00000000  00000000 00000000
 //         ^   ^^^^
 //         |   color num
-// fgColorSet flag   
+// fgColorSet flag  
 PACKED_ENUM(kp_fgColor,
     /// black foreground
     kp_fgBlack   = 0x80000000,
@@ -40,7 +42,7 @@ PACKED_ENUM(kp_fgColor,
     /// cyan foreground
     kp_fgCyan    = 0x8e000000,
     /// white foreground
-    kp_fgWhite      = 0x8f000000 
+    kp_fgWhite      = 0x8f000000
 )
 
 //          01000000 00000000  00000000 00000000
@@ -81,8 +83,8 @@ PACKED_ENUM(kp_bgColor,
     kp_bgWhite   = 0x40f00000
 )
 
-char* kp_bgColor_toString(kp_bgColor c);
-char* kp_fgColor_toString(kp_fgColor c);
+char* kp_bgColor_toString(allocator_ptr al, kp_bgColor c);
+char* kp_fgColor_toString(allocator_ptr al, kp_fgColor c);
 
 #if __cplusplus
 }

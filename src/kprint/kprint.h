@@ -9,7 +9,7 @@ extern "C" {
 
 /*
 
-This file looks like a mess, but all cotnent here just solves the problem of putting variadic arguments to array of formats and array of objects. 
+This file looks like a mess, but all cotnent here just solves the problem of putting variadic arguments to array of formats and array of objects.
 
 */
 
@@ -18,11 +18,11 @@ typedef union {
     u64 u64;
     f64 f64;
     void* ptr;
-} __kp_value_union; 
+} __kp_value_union;
 
 
-static inline __kp_value_union __kpVU_f(f64 f) { return (__kp_value_union){ .f64=f }; } 
-static inline __kp_value_union __kpVU_i(i64 f) { return (__kp_value_union){ .i64=f }; } 
+static inline __kp_value_union __kpVU_f(f64 f) { return (__kp_value_union){ .f64=f }; }
+static inline __kp_value_union __kpVU_i(i64 f) { return (__kp_value_union){ .i64=f }; }
 
 #define __kpVU_selectType(V) _Generic(V, float: __kpVU_f, f64: __kpVU_f, default: __kpVU_i)(V)
 
@@ -70,18 +70,18 @@ static inline __kp_value_union __kpVU_i(i64 f) { return (__kp_value_union){ .i64
         __kp_argsToObjs32(ARGS))
 
 
-Maybe __ksprint(u8 n, kp_fmt* formats, __kp_value_union* objects);
+Maybe __ksprint(allocator_ptr al, u8 n, kp_fmt* formats, __kp_value_union* objects);
 
 /// @param ARGS kp_fmt, value, kp_fmt, value...
 ///@returns Maybe<char*>
-#define ksprint(ARGS...) WARNING_DISABLE( W_INT_CONVERSION, \
-        __ksprint(count_args(ARGS), __kp_argsToArrs(count_args(ARGS),ARGS, __32zeroes)) \
+#define ksprint(ALLOCATOR, ARGS...) WARNING_DISABLE( W_INT_CONVERSION, \
+        __ksprint(ALLOCATOR, count_args(ARGS), __kp_argsToArrs(count_args(ARGS),ARGS, __32zeroes)) \
     )
-/*-Wint-conversion warning was produced during value to __kp_value_union conversion*/ 
+/*-Wint-conversion warning was produced during value to __kp_value_union conversion*/
 
 Maybe __kfprint(FILE* fd, u8 n, kp_fmt* formats, __kp_value_union* objects);
 
-/// @param FD FILE*  
+/// @param FD FILE* 
 /// @param ARGS kp_fmt, value, kp_fmt, value...
 ///@returns Maybe<void>
 #define kfprint(FD, ARGS...) WARNING_DISABLE( W_INT_CONVERSION, \

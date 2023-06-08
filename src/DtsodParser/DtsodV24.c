@@ -25,6 +25,6 @@ bool DtsodV24_remove(Hashtable* dtsod, char* key){
 }
 
 // frees memory including memory of elements (hashtables, autoarrs, etc.)
-void DtsodV24_free(Hashtable* dtsod){
-    Hashtable_free(dtsod);
+void DtsodV24_destruct(Hashtable* dtsod){
+    Hashtable_destruct(dtsod);
 }

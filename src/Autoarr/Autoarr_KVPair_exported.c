@@ -9,8 +9,8 @@ EXPORT void CALL kerep_Autoarr_KVPair_create(u16 max_chunks_count, u16 max_chunk
     *output=Autoarr_create(KVPair, max_chunks_count, max_chunk_length);
 }
 
-EXPORT void CALL kerep_Autoarr_KVPair_free(Autoarr_KVPair* ar){
-    Autoarr_free(ar, true);
+EXPORT void CALL kerep_Autoarr_KVPair_destruct(Autoarr_KVPair* ar){
+    Autoarr_destruct(ar, true);
 }
 
 EXPORT void CALL kerep_Autoarr_KVPair_get(Autoarr_KVPair* ar, u32 index, KVPair* output){

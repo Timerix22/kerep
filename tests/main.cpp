@@ -7,7 +7,7 @@ i32 main(){
     kt_initKerepTypes();
     kt_endInit();
     test_all();
-    kt_free();
+    kt_deinit();
     kprintf("\e[0m\n");
     return 0;
 }
