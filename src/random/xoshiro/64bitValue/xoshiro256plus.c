@@ -28,8 +28,7 @@ static inline u64 rotl(const u64 x, i32 k) {
     return (x << k) | (x >> (64 - k));
 }
 
-u64 xoshiro256plus_next(void* _state){    
-    xoshiro256_state* state=_state;
+u64 xoshiro256plus_next(xoshiro256_state* state){
     const u64 result = state->s[0] + state->s[3];
 
     const u64 t = state->s[1] << 17;
@@ -46,13 +45,11 @@ u64 xoshiro256plus_next(void* _state){
     return result;
 }
 
-void* xoshiro256_init(u64 seed){
-    xoshiro256_state* state=malloc(sizeof(xoshiro256_state));
-    splitmix64_state* splitmix=splitmix64_init(seed);
-    state->s[0]=splitmix64_next(splitmix);
-    state->s[1]=splitmix64_next(splitmix);
-    state->s[2]=splitmix64_next(splitmix);
-    state->s[3]=splitmix64_next(splitmix);
-    splitmix64_free(splitmix);
-    return state;
+void xoshiro256_construct(xoshiro256_state* state, u64 seed){
+    splitmix64_state sm_state;
+    splitmix64_construct(&sm_state, seed);
+    state->s[0]=splitmix64_next(&sm_state);
+    state->s[1]=splitmix64_next(&sm_state);
+    state->s[2]=splitmix64_next(&sm_state);
+    state->s[3]=splitmix64_next(&sm_state);
 }

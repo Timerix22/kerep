@@ -23,8 +23,7 @@ static inline u32 rotl(const u32 x, i32 k) {
     return (x << k) | (x >> (32 - k));
 }
 
-u32 xoroshiro64starstar_next(void* _state) {
-    xoroshiro64_state* state=_state;
+u32 xoroshiro64starstar_next(xoroshiro64_state* state) {
     const u32 s0 = state->s[0];
     u32 s1 = state->s[1];
     const u32 result = rotl(s0 * 0x9E3779BB, 5) * 5;

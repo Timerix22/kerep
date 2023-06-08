@@ -26,8 +26,7 @@ static inline u32 rotl(const u32 x, i32 k) {
     return (x << k) | (x >> (32 - k));
 }
 
-u32 xoshiro128plus_next(void* _state){    
-    xoshiro128_state* state=_state;
+u32 xoshiro128plus_next(xoshiro128_state* state){
     const u32 result = state->s[0] + state->s[3];
 
     const u32 t = state->s[1] << 9;
@@ -44,11 +43,9 @@ u32 xoshiro128plus_next(void* _state){
     return result;
 }
 
-void* xoshiro128_init(u64 seed){
-    xoshiro128_state* state=malloc(sizeof(xoshiro128_state));
-    splitmix64_state* splitmix=splitmix64_init(seed);
-    state->merged[0]=splitmix64_next(splitmix);
-    state->merged[1]=splitmix64_next(splitmix);
-    splitmix64_free(splitmix);
-    return state;
+void xoshiro128_construct(xoshiro128_state* state, u64 seed){
+    splitmix64_state sm_state;
+    splitmix64_construct(&sm_state, seed);
+    state->merged[0]=splitmix64_next(&sm_state);
+    state->merged[1]=splitmix64_next(&sm_state);
 }

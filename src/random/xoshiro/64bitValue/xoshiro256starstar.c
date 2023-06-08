@@ -23,8 +23,7 @@ static inline u64 rotl(const u64 x, i32 k) {
     return (x << k) | (x >> (64 - k));
 }
 
-u64 xoshiro256starstar_next(void* _state){    
-    xoshiro256_state* state=_state;
+u64 xoshiro256starstar_next(xoshiro256_state* state){
     const u64 result = rotl(state->s[1] * 5, 7) * 9;
 
     const u64 t = state->s[1] << 17;
