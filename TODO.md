@@ -1,14 +1,16 @@
-## General refactoring
+## Allocators
 - replace all malloc() and free() with allocator_alloc() and allocator_free()
-- replace allocating constructors with Type_init(var_ptr, ...)
+- replace allocating constructors with Type_construct(var_ptr, ...)
 - replace Struct_free functions with Struct_destruct which will not call free() on the struct ptr
 - store in resizable structs their buffer allocators and free them with Struct_destruct()
 - check allocator_free call order
+- deal with StackingAllocator_free not freing memory sometimes
 - replace LinearAllocator with StackingAllocator when possible (in DtsodV24_deserialize)
 
 ## Autoarr
 - store lenght and max_lenght inside the struct instead of calculating them by macro
 - keep Autoarr_length() and Autoarr_maxLength() to old code compatibility
+- toString()
 
 ## Hashtable
 - store hash in KVPair

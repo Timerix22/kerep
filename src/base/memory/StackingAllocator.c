@@ -5,10 +5,10 @@
 #define curr_chunk (linear.chunks+linear.curr_chunk_i)
 
 typedef struct {
-    size_t data_size;
+    alloc_size_t data_size;
 } AllocationHeader;
 
-void* StackingAllocator_alloc(allocator_ptr _self, size_t size){
+void* StackingAllocator_alloc(allocator_ptr _self, alloc_size_t size){
     assert(_self!=NULL);
     assert(size>0);
     StackingAllocator* self = (StackingAllocator*)_self;
@@ -36,7 +36,7 @@ void StackingAllocator_free(allocator_ptr _self, void* data_ptr){
         linear.curr_chunk_i--;
     }
 
-    size_t allocation_size=header_ptr->data_size+sizeof(*header_ptr);
+    alloc_size_t allocation_size=header_ptr->data_size+sizeof(*header_ptr);
     // data must fit in chunk
     assert(allocation_size <= curr_chunk->occupied_size);
     curr_chunk->occupied_size -= allocation_size;
@@ -46,7 +46,7 @@ void StackingAllocator_destruct(StackingAllocator* self){
     LinearAllocator_destruct(&self->base);
 }
 
-void StackingAllocator_construct(StackingAllocator* self, size_t starting_size){
+void StackingAllocator_construct(StackingAllocator* self, alloc_size_t starting_size){
     assert(self!=NULL);
     assert(starting_size>0);
     LinearAllocator_construct(&linear, starting_size);

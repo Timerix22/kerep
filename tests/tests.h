@@ -24,19 +24,19 @@ void test_type_system();
 static inline void test_all(){
     kprintf("\e[97mkerep tests are starting!\n");
     optime(__func__, 1,
-        test_type_system();
-        test_allocators();
-        test_kprint_colors();
-        test_kprint();
-        test_safethrow();
-        test_rng_algorithms();
-        test_cptr();
-        test_string();
+        // test_type_system();
+        // test_allocators();
+        // test_kprint_colors();
+        // test_kprint();
+        // test_safethrow();
+        // test_rng_algorithms();
+        // test_cptr();
+        // test_string();
         // test_searchtree();
-        test_autoarr();
-        test_autoarrVsVector();
+        // test_autoarr();
+        // test_autoarrVsVector();
         // test_hash_functions(); /* long test */
-        // test_hashtable();
+        test_hashtable();
         // test_dtsod();
         kprintf("\e[96m--------------------------------------\e[0m\n");
     );

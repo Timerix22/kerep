@@ -10,9 +10,11 @@ extern "C" {
 //       MemoryAllocator interface       //
 ///////////////////////////////////////////
 
-typedef struct MemoryAllocator* allocator_ptr;
+typedef u32 alloc_size_t;
+typedef struct MemoryAllocator MemoryAllocator;
+typedef MemoryAllocator* allocator_ptr;
 
-typedef void* (*alloc_t)(allocator_ptr, size_t size);
+typedef void* (*alloc_t)(allocator_ptr, alloc_size_t size);
 typedef void (*free_t)(allocator_ptr, void* ptr);
 
 typedef struct MemoryAllocator {
@@ -27,7 +29,7 @@ typedef struct MemoryAllocator {
 #define allocator_destruct(ALLOCATOR) \
     ((allocator_ptr)ALLOCATOR)->destruct_f(ALLOCATOR)
 
-void* allocator_transfer(allocator_ptr src, allocator_ptr dest, void* data, size_t data_size);
+void* allocator_transfer(allocator_ptr src, allocator_ptr dest, void* data, alloc_size_t data_size);
 
 #ifdef __cplusplus
 }

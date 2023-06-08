@@ -1,6 +1,6 @@
 #include "allocators_internal.h"
 
-void* CstdAllocator_alloc(allocator_ptr self, size_t size){
+void* CstdAllocator_alloc(allocator_ptr self, alloc_size_t size){
     // assert(size>0);
     return malloc(size);
 }

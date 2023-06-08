@@ -6,7 +6,7 @@ Autoarr_define(KVPair, false)
 
 // proper way to clean a KVP
 void KVPair_destruct(KVPair p){
-    free(p.key);
+    // free(p.key);
     Unitype_destruct(&p.value);
 }
 void __KVPair_destruct(void* p){ KVPair_destruct(*(KVPair*)p); }
