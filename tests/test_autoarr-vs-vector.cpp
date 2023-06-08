@@ -29,6 +29,6 @@ void test_autoarrVsVector(){
         _autoarrVsVector(64, 64);
         _autoarrVsVector(32, 1024);
         _autoarrVsVector(256, 256);
-        _autoarrVsVector(1024, 1024);
+        _autoarrVsVector(512, 4096);
     );
 }

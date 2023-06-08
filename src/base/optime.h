@@ -13,7 +13,8 @@
         tni=1; \
     } else tni=2; \
     kprintf("\e[93moperation \e[94m%s\e[93m lasted \e[94m%f \e[93m%s\n", \
-                                    opname,              t,  tnames[tni]);
+                                    opname,              t,  tnames[tni]); \
+     fflush(stdout);
 
 #ifdef CLOCK_REALTIME
 /// executes codeblock and prints execution time

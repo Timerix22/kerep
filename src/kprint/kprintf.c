@@ -50,7 +50,7 @@ void kprintf(const char* format, ...){
     va_start(vl, format);
     u32 i=0;
     LinearAllocator _al;
-    LinearAllocator_construct(&_al, 256);
+    LinearAllocator_construct(&_al, 128);
     allocator_ptr al=(allocator_ptr)&_al;
     for(char c=format[i++]; c!=0; c=format[i++]){
         // value format specifiers

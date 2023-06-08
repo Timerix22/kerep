@@ -158,8 +158,8 @@ char* __cptr_concat(allocator_ptr al, u32 n, ...){
         totality+=lengths[k];
     }
     
-    free(strs);
-    free(lengths);
+    allocator_free(al, lengths);
+    allocator_free(al, strs);
     return output;
 }
 

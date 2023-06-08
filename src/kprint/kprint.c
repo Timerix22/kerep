@@ -83,7 +83,6 @@ void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
         kp_fmt fmt=formats[i];
         kprint_setColor(fmt);
         tryLast(__next_toString(al, fmt, &objects[i]), maybeStr,
-            LinearAllocator_destruct(&_al);
             kprint_setColor(kp_bgBlack|kp_fgGray););
         if(fputs(maybeStr.value.VoidPtr, stdout)==EOF)
             throw("can't write string to stdout");

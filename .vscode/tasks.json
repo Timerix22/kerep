@@ -23,8 +23,7 @@
           "reveal": "always",
           "focus": true,
           "panel": "shared",
-          "showReuseMessage": false,
-          "clean": true
+          "showReuseMessage": false
         }
       }
     ]

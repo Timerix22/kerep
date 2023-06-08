@@ -91,7 +91,7 @@ char *Unitype_toString(allocator_ptr al, Unitype u, u32 fmt)
 void printuni(Unitype v)
 {
     LinearAllocator _al;
-    LinearAllocator_construct(&_al, 256);
+    LinearAllocator_construct(&_al, 128);
     allocator_ptr al=&_al.base;
     char *s = Unitype_toString(al, v, 0);
     fputs(s, stdout);

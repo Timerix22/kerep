@@ -42,16 +42,6 @@
                 "pipeArgs": ["-c"],
                 "pipeCwd": "${workspaceFolder}"
             }
-        },
-        {
-            "name": "(msvc) Debug",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "preLaunchTask": "build_dbg",
-            "program": "${workspaceFolder}\\bin\\kerep",
-            "cwd": "${workspaceFolder}\\bin",
-            "stopAtEntry": false,
-            "console": "integratedTerminal"
         }
     ]
 }

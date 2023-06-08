@@ -28,7 +28,7 @@ void StackingAllocator_free(allocator_ptr _self, void* data_ptr){
     assert(data_ptr!=NULL);
     StackingAllocator* self = (StackingAllocator*)_self;
     AllocationHeader* header_ptr = data_ptr - sizeof(AllocationHeader);
-    
+    // TODO check is data_ptr pointer to the last allocation
     // chunk is empty
     if(curr_chunk->occupied_size==0){
         // isn't the first chunk
