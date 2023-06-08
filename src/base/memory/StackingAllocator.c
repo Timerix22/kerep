@@ -55,4 +55,4 @@ void StackingAllocator_construct(StackingAllocator* self, size_t starting_size){
     self->allocations_count=0;
 }
 
-kt_define(StackingAllocator, (freeMembers_t)StackingAllocator_destruct, NULL)
+kt_define(StackingAllocator, (destruct_t)StackingAllocator_destruct, NULL)

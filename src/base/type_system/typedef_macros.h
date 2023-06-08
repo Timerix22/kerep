@@ -8,6 +8,10 @@
     ENUM_MEMBERS \
 } __attribute__((__packed__)) ENUM_NAME;
 
+#define PACKED_STRUCT(STRUCT_NAME, STRUCT_MEMBERS...) typedef struct STRUCT_NAME { \
+    STRUCT_MEMBERS \
+} __attribute__((__packed__)) STRUCT_NAME;
+
 #define STRUCT(STRUCT_NAME, STRUCT_MEMBERS...) typedef struct STRUCT_NAME STRUCT_NAME; \
 typedef struct STRUCT_NAME { \
     STRUCT_MEMBERS \

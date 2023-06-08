@@ -5,8 +5,7 @@ Maybe dont_throw(){
 }
 
 Maybe throw_error(){
-    char* k=malloc(64);
-    safethrow("test exception",free(k));
+    safethrow("test exception", kprintf("\e[94on_safethrow_free called\n"));
 }
 
 Maybe throw_errcode(){

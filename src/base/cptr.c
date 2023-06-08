@@ -191,7 +191,9 @@ char* cptr_replaceCharIn(allocator_ptr al, const char* src, char c_old, char c_n
 }
 
 char* cptr_replaceIn(allocator_ptr al, const char* src, const char* str_old, const char* str_new, u32 startIndex, u32 seekLength){
-    StringBuilder* sb=StringBuilder_create();
+    StringBuilder _sb;
+    StringBuilder* sb=&_sb;
+    StringBuilder_construct(sb, al);
     const u32 str_old_len=cptr_length(str_old);
     const u32 str_new_len=cptr_length(str_new);
     i32 i=startIndex;

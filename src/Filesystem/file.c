@@ -53,7 +53,7 @@ Maybe file_open(const char* path, FileOpenMode mode){
     LinearAllocator _al; LinearAllocator_construct(&_al, 128);
     allocator_ptr al=&_al.base;
     if(!file)
-        safethrow(cptr_concat(al, "can't open file ", (char*)path),;);
+        safethrow(cptr_concat(al, "can't open file ", (char*)path), LinearAllocator_destruct(&_al));
     LinearAllocator_destruct(&_al);
     return SUCCESS(UniHeapPtr(FileHandle,file));
 }
@@ -115,7 +115,9 @@ Maybe file_readAll(FileHandle file, char** allBytes){
     i32 rezult=0;
     char buffer[256];
     string bufStr={.ptr=buffer, .length=sizeof(buffer)};
-    StringBuilder* sb=StringBuilder_create();
+    StringBuilder _sb;
+    StringBuilder* sb=&_sb;
+    StringBuilder_construct(sb, NULL);
     u64 i=0;
     while(true){
         rezult=fgetc(file);

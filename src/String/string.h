@@ -22,16 +22,16 @@ static const string stringNull={NULL,0};
 #define string_fromCptr(CPTR) (string){ .ptr=CPTR, .length=cptr_length(CPTR) }
 
 // copies str content to new char pointer value (adding '\0' at the end)
-char* string_extract(string str);
+char* string_extract(allocator_ptr al, string str);
 
 // copies src.ptr content to new string and adds \0 at the end
-string string_copy(string src);
+string string_copy(allocator_ptr al, string src);
 
 // compares two strings, NullPtr-friendly
 bool string_compare(string str0, string str1);
 
 // creates new string which is reversed variant of <s>
-string string_reverse(string s);
+string string_reverse(allocator_ptr al, string s);
 
 #if __cplusplus
 }

@@ -52,7 +52,8 @@ Maybe path_throwIfEscapes(const char* path){
     LinearAllocator _al; LinearAllocator_construct(&_al, 128);
     allocator_ptr al=&_al.base;
     if(cptr_contains(path,".."))
-        safethrow(cptr_concat(al, "path <",path,"> uses <..>, that's not allowed"),);
+        safethrow(cptr_concat(al, "path <",path,"> uses <..>, that's not allowed"),
+            LinearAllocator_destruct(&_al));
     LinearAllocator_destruct(&_al);
     return MaybeNull;
 }
@@ -83,5 +84,5 @@ char* path_basename(allocator_ptr al, char* path, bool with_extension){
         if(extIndex!=0 && extIndex!=-1)
             rezult.length=extIndex;
     }
-    return string_extract(rezult);
+    return string_extract(al, rezult);
 }

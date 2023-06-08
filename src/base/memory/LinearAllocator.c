@@ -81,4 +81,4 @@ void LinearAllocator_construct(LinearAllocator* self, size_t starting_size){
     self->chunks[0]=chunk_alloc(starting_size, 0);
 }
 
-kt_define(LinearAllocator, (freeMembers_t)LinearAllocator_destruct, NULL)
+kt_define(LinearAllocator, (destruct_t)LinearAllocator_destruct, NULL)

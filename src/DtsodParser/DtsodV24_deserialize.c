@@ -10,11 +10,13 @@ typedef struct DeserializeSharedData{
     char* sh_text;
     bool sh_partOfDollarList;
     bool sh_calledRecursively;
+    allocator_ptr sh_tmp_al;
 } DeserializeSharedData;
 
 #define text shared->sh_text
 #define partOfDollarList shared->sh_partOfDollarList
 #define calledRecursively shared->sh_calledRecursively
+#define tmp_al shared->sh_tmp_al
 
 
 // special func for throwing error messages about wrong characters in deserializing text
@@ -94,7 +96,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
                 safethrow_wrongchar(c,;);
             return SUCCESS(UniHeapPtr(char,NULL));
         case ':':
-            return SUCCESS(UniHeapPtr(char,string_extract(nameStr)));
+            return SUCCESS(UniHeapPtr(char,string_extract(tmp_al, nameStr)));
         case '$':
             if(nameStr.length!=0)
                 safethrow_wrongchar(c,;);
@@ -111,7 +113,7 @@ Maybe __ReadName(DeserializeSharedData* shared){
 }
 #define ReadName() __ReadName(shared)
 
-Maybe __deserialize(char** _text, bool _calledRecursively);
+Maybe __deserialize(char** _text, bool _calledRecursively, allocator_ptr _tmp_al);
 Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList);
 #define ReadValue(rL) __ReadValue(shared, rL)
 
@@ -119,7 +121,9 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList);
 Maybe __ReadString(DeserializeSharedData* shared){
     char c;
     bool prevIsBackslash=false;
-    StringBuilder* b=StringBuilder_create();
+    StringBuilder _sb;
+    StringBuilder* b=&_sb;
+    StringBuilder_construct(b, tmp_al);
 
     while ((c=*++text)){
         if(c=='"') {
@@ -175,34 +179,34 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             else safethrow_wrongchar(*str.ptr,;);
         // Float64
         case 'f': {
-            char* _c=string_extract(str);
+            char* _c=string_extract(tmp_al, str);
             Unitype rez=UniFloat64(strtod(_c,NULL));
-            free(_c);
+            // allocator_free(tmp_al,_c);
             return SUCCESS(rez);
         }
         // UInt64
         case 'u': {
             u64 lu=0;
-            char* _c=string_extract(str);
+            char* _c=string_extract(tmp_al, str);
             if(sscanf(_c, IFWIN("%llu", "%lu"), &lu)!=1){
                 char err[64];
                 sprintf_s(err, sizeof(err), "can't parse to int: <%s>", _c);
-                safethrow(err,free(_c));
+                safethrow(err, /*allocator_free(tmp_al, _c)*/);
             }
-            free(_c);
+            // allocator_free(tmp_al, _c);
             return SUCCESS(UniUInt64(lu));
         }
         // Int64
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9': {
             i64 li=0;
-            char* _c=string_extract(str);
+            char* _c=string_extract(tmp_al, str);
             if(sscanf(_c, IFWIN("%lli", "%li"), &li)!=1){
                 char err[64];
                 sprintf_s(err, sizeof(err),"can't parse to int: <%s>",_c);
-                safethrow(err,free(_c));
+                // safethrow(err,allocator_free(tmp_al, _c));
             }
-            free(_c);
+            // allocator_free(tmp_al, _c);
             return SUCCESS(UniInt64(li));
         }
         // wrong type
@@ -249,7 +253,7 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
         case '{':
             if(valueStr.length!=0) safethrow_wrongchar(c,Unitype_destruct(&value));
             ++text; // skips '{'
-            try(__deserialize(&text,true), val,Unitype_destruct(&value))
+            try(__deserialize(&text,true,tmp_al), val, Unitype_destruct(&value))
                 value=val.value;
             break;
         case '[':
@@ -282,12 +286,13 @@ Maybe __ReadValue(DeserializeSharedData* shared, bool* readingList){
 }
 
 
-Maybe __deserialize(char** _text, bool _calledRecursively) {
+Maybe __deserialize(char** _text, bool _calledRecursively, allocator_ptr _tmp_al) {
     DeserializeSharedData _shared={
         .sh_text_first=*_text,
         .sh_text=*_text,
         .sh_partOfDollarList=false,
-        .sh_calledRecursively=_calledRecursively
+        .sh_calledRecursively=_calledRecursively,
+        .sh_tmp_al=_tmp_al
     };
     DeserializeSharedData* shared=&_shared;
     Hashtable* dict=Hashtable_create();
@@ -300,7 +305,8 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
         char* nameCPtr=maybeName.value.VoidPtr;
         try(ReadValue(NULL), val, {
             Hashtable_destruct(dict);
-            free(nameCPtr);
+            // do not use, free call order is incorrect
+            // allocator_free(tmp_al, nameCPtr);
         }) {
             if(partOfDollarList){
                 partOfDollarList=false;
@@ -310,7 +316,8 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
                     list=(Autoarr(Unitype)*)lu.VoidPtr;
                     // Key is not used in that case, because it is already added
                     // to the table with the first dollar list item.
-                    free(nameCPtr);
+                    // do not use, free call order is incorrect
+                    // allocator_free(tmp_al, nameCPtr);
                 }
                 else{
                     list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
@@ -328,5 +335,9 @@ Maybe __deserialize(char** _text, bool _calledRecursively) {
 }
 
 Maybe DtsodV24_deserialize(char* _text) {
-    return __deserialize(&_text, false);
+    LinearAllocator _tmp_al;
+    LinearAllocator_construct(&_tmp_al, 1024);
+    Maybe m=__deserialize(&_text, false, (allocator_ptr)&_tmp_al);
+    LinearAllocator_destruct(&_tmp_al);
+    return m;
 }

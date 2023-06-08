@@ -38,7 +38,7 @@ Maybe dir_create(const char* path){
     {
         char err[512];
         sprintf_s(err, sizeof(err), "can't create dicectory <%s>", path);
-        safethrow(err,;);
+        safethrow(err, LinearAllocator_destruct(&_al));
     }
     LinearAllocator_destruct(&_al);
     return MaybeNull;

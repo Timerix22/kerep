@@ -27,7 +27,7 @@ STRUCT(LinkedList(TYPE), \
 ) \
 \
 typedef struct LinkedList_##TYPE##_functions_t { \
-    freeMembers_t freeMembers; \
+    destruct_t freeMembers; \
     void (*removePrev)(LinkedList(TYPE)* llist, LLNode(TYPE)* nextNode, bool freeRemoved); \
     void (*removeNext)(LinkedList(TYPE)* llist, LLNode(TYPE)* prevNode, bool freeRemoved); \
 } LinkedList_##TYPE##_functions_t; \

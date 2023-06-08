@@ -8,17 +8,19 @@ extern "C" {
 #include "string.h"
 
 STRUCT(StringBuilder,
+    InternalAllocator_decl(LinearAllocator);
 	Autoarr(string)* compl_bufs;
 	Autoarr(i8)* curr_buf;
 )
 
-StringBuilder* StringBuilder_create(void);
+///@param external_al if null, creates internal allocator 
+void StringBuilder_construct(StringBuilder* b, allocator_ptr external_al);
 void StringBuilder_destruct(StringBuilder* b);
-void __StringBuilder_destruct(void* b);
+
 // Joins all strings from compl_bufs.
 // Returns zero-terminated string.
-// No need to call string_extract()!
-// Frees StringBuilder.
+// No need to call string_extract!
+// Destructs StringBuilder.
 string StringBuilder_build(StringBuilder* b);
 // removes last char
 void StringBuilder_rmchar(StringBuilder* b);

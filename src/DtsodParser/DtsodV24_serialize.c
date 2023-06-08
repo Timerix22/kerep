@@ -123,8 +123,13 @@ Maybe __serialize(StringBuilder* _b, u8 _tabs, Hashtable* dtsod){
 }
 
 Maybe DtsodV24_serialize(Hashtable* dtsod){
-    StringBuilder* sb=StringBuilder_create();
-    try(__serialize(sb,0,dtsod),__, StringBuilder_destruct(sb));
+    LinearAllocator _al; allocator_ptr al=(allocator_ptr)&_al;
+    LinearAllocator_construct(&_al, 512);
+    StringBuilder _sb;
+    StringBuilder* sb=&_sb;
+    StringBuilder_construct(sb, al);
+    try(__serialize(sb,0,dtsod),__, StringBuilder_destruct(sb); LinearAllocator_destruct(&_al););
     char* str=StringBuilder_build(sb).ptr;
+    LinearAllocator_destruct(&_al);
     return SUCCESS(UniHeapPtr(char, str));
 }

@@ -6,7 +6,7 @@ char *__Unitype_toString(allocator_ptr al, void *_u, u32 fmt)
     return Unitype_toString(al, *(Unitype *)_u, fmt);
 }
 
-kt_define(Unitype, (freeMembers_t)Unitype_destruct, __Unitype_toString);
+kt_define(Unitype, (destruct_t)Unitype_destruct, __Unitype_toString);
 
 void Unitype_destruct(Unitype* u)
 {

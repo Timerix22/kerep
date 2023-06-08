@@ -31,14 +31,14 @@ extern "C" {
         .toString=TOSTRING_F \
     };
 
-typedef void (*freeMembers_t)(void*);
+typedef void (*destruct_t)(void*);
 typedef char* (*toString_t)(allocator_ptr al, void* obj, u32 fmt);
 
 STRUCT(ktDescriptor,
     char* name;
     ktid id;
     u16 size;
-    freeMembers_t freeMembers; // NULL or function which frees all struct members
+    destruct_t freeMembers; // NULL or function which frees all struct members
     toString_t toString; // NULL or function which generates string representaion of object
 )
 

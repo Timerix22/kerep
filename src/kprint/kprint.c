@@ -47,13 +47,15 @@ Maybe check_argsN(u8 n){
 Maybe __ksprint(allocator_ptr al, u8 n, kp_fmt* formats, __kp_value_union* objects){
     try(check_argsN(n), _,;);
     n/=2;
-    StringBuilder* strb=StringBuilder_create();
+    StringBuilder _sb;
+    StringBuilder* sb=&_sb;
+    StringBuilder_construct(sb, al);
     for(u8 i=0; i<n; i++){
         try(__next_toString(al, formats[i], &objects[i]),mStr,;);
-        StringBuilder_append_cptr(strb, mStr.value.VoidPtr);
+        StringBuilder_append_cptr(sb, mStr.value.VoidPtr);
         allocator_free(al, mStr.value.VoidPtr);
     }
-    char* rezult=StringBuilder_build(strb).ptr;
+    char* rezult=StringBuilder_build(sb).ptr;
     return SUCCESS(UniHeapPtr(char, rezult));
 }
 
@@ -173,17 +175,19 @@ void kprint_setColor(kp_fmt f){
     ktDescriptor* type=ktDescriptor_get(format.typeId);
     if(!type->toString)
         safethrow("type descriptor doesnt have toString() func",;);
-    StringBuilder* strb=StringBuilder_create();
-    StringBuilder_append_char(strb, '[');
+    StringBuilder _sb;
+    StringBuilder* sb=&_sb;
+    StringBuilder_construct(sb, al);
+    StringBuilder_append_char(sb, '[');
     for (u16 e=1; e<count; e++){
-        StringBuilder_append_char(strb, ' ');
+        StringBuilder_append_char(sb, ' ');
         char* elStr=type->toString(array+type->size*e, &format);
-        StringBuilder_append_cptr(strb, elStr);
-        StringBuilder_append_char(strb, ',');
+        StringBuilder_append_cptr(sb, elStr);
+        StringBuilder_append_char(sb, ',');
     }
-    StringBuilder_rmchar(strb);
-    StringBuilder_append_char(strb, ' ');
-    StringBuilder_append_char(strb, ']');
+    StringBuilder_rmchar(sb);
+    StringBuilder_append_char(sb, ' ');
+    StringBuilder_append_char(sb, ']');
 } */
 
 static const char* _kp_colorNames[16]={
