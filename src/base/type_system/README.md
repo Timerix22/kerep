@@ -22,7 +22,7 @@ and register it.
 
 ## type descriptors
 
-Every registered type should have it's own descriptor (`ktDescriptor`). It's a struct, which contains some information about type and pointers to some specific functions for this type (`toString`, `freeMembers`).
+Every registered type should have it's own descriptor (`ktDescriptor`). It's a struct, which contains some information about type and pointers to some specific functions for this type (`toString`, `destruct`).
 
 ## type registration
 

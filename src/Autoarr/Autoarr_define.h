@@ -6,94 +6,79 @@ extern "C" {
 
 #include "../base/base.h"
 
-#define Autoarr_define(type, TYPE_IS_PTR) \
+#define Autoarr_define(TYPE, TYPE_IS_PTR) \
 \
-kt_define(Autoarr_##type, ____Autoarr_##type##_destructWithMembers, NULL); \
+void __Autoarr_##TYPE##_add(Autoarr_##TYPE* ar, TYPE element){ \
+    TYPE* ptr = allocator_alloc(InternalAllocator_getPtr(ar), sizeof(element)); \
+    *ptr=element; \
+    ar->length++; \
+} \
 \
-void __Autoarr_##type##_add(Autoarr_##type* ar, type element){ \
-    if(!ar->chunks){ \
-        ar->chunks=malloc(ar->max_chunks_count*sizeof(type*)); \
-        goto create_chunk; \
+TYPE* __Autoarr_##TYPE##_getPtr(Autoarr_##TYPE* ar, u32 index){ \
+    if(index >= Autoarr_length(ar)) \
+        throw(ERR_WRONGINDEX); \
+    u32 elem_count_sum=0; \
+    LinearAllocator* al=(LinearAllocator*)InternalAllocator_getPtr(ar); \
+    for(u16 chunk_i=0; chunk_i <= al->curr_chunk_i; chunk_i++) { \
+        MemoryChunk chunk = al->chunks[chunk_i]; \
+        alloc_size_t chunk_elem_count = chunk.occupied_size/sizeof(TYPE); \
+        alloc_size_t chunk_elem_i = index - elem_count_sum; \
+        if(chunk_elem_i < chunk_elem_count){ \
+            return chunk.data + chunk_elem_i*sizeof(TYPE); \
+        } \
+        elem_count_sum += chunk_elem_count; \
     } \
-    if(ar->chunk_length==ar->max_chunk_length){ \
-        if (ar->chunks_count>=ar->max_chunks_count) throw(ERR_MAXLENGTH); \
-        ar->chunk_length=0; \
-create_chunk: \
-        ar->chunks[ar->chunks_count]=malloc(ar->max_chunk_length*sizeof(type)); \
-        ar->chunks_count++; \
-    } \
-    ar->chunks[ar->chunks_count-1][ar->chunk_length]=element; \
-    ar->chunk_length++; \
+    return NULL; \
 } \
 \
-type __Autoarr_##type##_get(Autoarr_##type* ar, u32 index){ \
-    if(index>=Autoarr_length(ar)) throw(ERR_WRONGINDEX); \
-    return ar->chunks[index/ar->max_chunk_length][index%ar->max_chunk_length]; \
+TYPE __Autoarr_##TYPE##_get(Autoarr_##TYPE* ar, u32 index){ \
+    TYPE* ptr=__Autoarr_##TYPE##_getPtr(ar, index); \
+    return *ptr; \
 } \
 \
-type* __Autoarr_##type##_getPtr(Autoarr_##type* ar, u32 index){ \
-    if(index>=Autoarr_length(ar)) throw(ERR_WRONGINDEX); \
-    return ar->chunks[index/ar->max_chunk_length]+(index%ar->max_chunk_length); \
+void __Autoarr_##TYPE##_set(Autoarr_##TYPE* ar, u32 index, TYPE value){ \
+    TYPE* ptr=__Autoarr_##TYPE##_getPtr(ar, index); \
+    *ptr=value; \
 } \
 \
-void __Autoarr_##type##_set(Autoarr_##type* ar, u32 index, type element){ \
-    if(index>=Autoarr_length(ar)) throw(ERR_WRONGINDEX); \
-    ar->chunks[index/ar->max_chunk_length][index%ar->max_chunk_length]=element; \
-} \
-\
-void __Autoarr_##type##_destructWithoutMembers(Autoarr_##type* ar, bool freePtr){ \
-    for(u16 i=0; i<ar->chunks_count;i++) \
-        free(ar->chunks[i]); \
-    free(ar->chunks); \
-    if(freePtr) free(ar); \
-} \
-\
-void __Autoarr_##type##_destructWithMembers(Autoarr_##type* ar, bool freePtr){ \
-    if(ktDescriptor_##type.freeMembers!=NULL) { \
-        Autoarr_foreach(ar, el,  \
-            void* members_ptr=&el; \
-            if(TYPE_IS_PTR) members_ptr=*(type**)members_ptr; \
-            ktDescriptor_##type.freeMembers(members_ptr); \
+void __Autoarr_##TYPE##_destruct(Autoarr_##TYPE* ar){ \
+    destruct_t value_destructor=ar->type->destruct; \
+    if(value_destructor!=NULL) { \
+        Autoarr_foreach(ar, el, \
+            TYPE* value_ptr = TYPE_IS_PTR ? *(TYPE**)(&el) : &el; \
+            value_destructor(value_ptr); \
         ); \
     } \
-    __Autoarr_##type##_destructWithoutMembers(ar, freePtr); \
-} \
-void ____Autoarr_##type##_destructWithMembers(void* ar){ \
-    __Autoarr_##type##_destructWithMembers((Autoarr_##type*)ar, false); \
+    InternalAllocator_destructIfInternal(LinearAllocator, ar); \
 } \
 \
-type* __Autoarr_##type##_toArray(Autoarr_##type* ar){ \
+TYPE* __Autoarr_##TYPE##_toArray(Autoarr_##TYPE* ar, allocator_ptr array_alloctr){ \
     u32 length=Autoarr_length(ar); \
     if(length==0) \
         return NULL; \
-    type* array=malloc(length * sizeof(type)); \
-    for(u32 i=0; i<length; i++) \
-        array[i]=__Autoarr_##type##_get(ar, i); \
+    TYPE* array=allocator_alloc(array_alloctr, length); \
+    Autoarr_foreach(ar, el, { \
+        array[el_i]=el; \
+    }); \
     return array; \
 } \
 \
-__Autoarr_##type##_functions_list_t __Autoarr_##type##_functions_list={ \
-    &__Autoarr_##type##_add, \
-    &__Autoarr_##type##_get, \
-    &__Autoarr_##type##_getPtr, \
-    &__Autoarr_##type##_set, \
-    &__Autoarr_##type##_destructWithMembers, \
-    &__Autoarr_##type##_destructWithoutMembers, \
-    &__Autoarr_##type##_toArray \
+__Autoarr_##TYPE##_functions_list_t __Autoarr_##TYPE##_functions_list={ \
+    &__Autoarr_##TYPE##_add, \
+    &__Autoarr_##TYPE##_get, \
+    &__Autoarr_##TYPE##_getPtr, \
+    &__Autoarr_##TYPE##_set, \
+    &__Autoarr_##TYPE##_toArray \
 }; \
 \
-Autoarr_##type* __Autoarr_##type##_create(u16 max_chunks_count, u16 max_chunk_length){ \
-    Autoarr_##type* ar=malloc(sizeof(Autoarr_##type)); \
-    *ar=(Autoarr_##type){ \
-        .max_chunks_count=max_chunks_count, \
-        .chunks_count=0, \
-        .max_chunk_length=max_chunk_length, \
-        .chunk_length=0, \
-        .chunks=NULL, \
-        .functions=&__Autoarr_##type##_functions_list \
-    }; \
-    return ar; \
-}
+void __Autoarr_##TYPE##_construct(Autoarr_##TYPE* ar, alloc_size_t starting_size, allocator_ptr data_allocator){ \
+    InternalAllocator_setExternalOrConstruct(ar, data_allocator, LinearAllocator, starting_size); \
+    ar->functions=&__Autoarr_##TYPE##_functions_list; \
+    ar->type = TYPE_IS_PTR ? &ktDescriptor_namePtr(TYPE) : &ktDescriptor_name(TYPE); \
+    ar->length=0; \
+} \
+\
+kt_define(Autoarr_##TYPE, (destruct_t)__Autoarr_##TYPE##_destruct, NULL);
 
 #if __cplusplus
 }

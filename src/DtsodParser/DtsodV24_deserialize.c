@@ -1,8 +1,7 @@
 #include "DtsodV24.h"
 #include "../String/StringBuilder.h"
 
-#define ARR_BC 64
-#define ARR_BL 1024
+#define ARR_SZ_START 64
 
 
 typedef struct DeserializeSharedData{
@@ -149,19 +148,20 @@ Maybe __ReadString(DeserializeSharedData* shared){
 #define ReadString() __ReadString(shared)
 
 Maybe __ReadList(DeserializeSharedData* shared){
-    Autoarr(Unitype)* list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
+    Autoarr(Unitype) list;
+    Autoarr_construct(&list, Unitype, ARR_SZ_START, NULL);
     bool readingList=true;
     while (true){
-        try(ReadValue((&readingList)), m_val, Autoarr_destruct(list, true))
-            Autoarr_add(list,m_val.value);
+        try(ReadValue((&readingList)), m_val, Autoarr_destruct(&list))
+            Autoarr_add(&list, m_val.value);
         if (!readingList){
             if(Unitype_isUniNull(m_val.value))
-                Autoarr_pop(list);
+                Autoarr_pop(&list);
             break;
         }
     }
 
-    return SUCCESS(UniHeapPtr(Autoarr_Unitype,list));
+    return SUCCESS(UniHeapPtr(Autoarr_Unitype, &list));
 };
 #define ReadList() __ReadList(shared)
 
@@ -320,7 +320,8 @@ Maybe __deserialize(char** _text, bool _calledRecursively, allocator_ptr _tmp_al
                     // allocator_free(tmp_al, nameCPtr);
                 }
                 else{
-                    list=Autoarr_create(Unitype,ARR_BC,ARR_BL);
+                    list=allocator_alloc(tmp_al, sizeof(*list));
+                    Autoarr_construct(list, Unitype, ARR_SZ_START, NULL);
                     Hashtable_add(dict,nameCPtr,UniHeapPtr(Autoarr_Unitype,list));
                 }
                 Autoarr_add(list,val.value);

@@ -25,7 +25,7 @@ typedef int64_t i64;
 typedef uint64_t u64;
 typedef float f32;
 typedef double f64;
-/// anonymous pointer without specified freeMembers() func
+/// anonymous pointer without specified destruct() func
 typedef void* Pointer;
 
 // Usually bool from stdbool.h is defined as macro,

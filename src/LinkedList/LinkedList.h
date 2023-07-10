@@ -16,7 +16,7 @@ extern "C" {
 #define LLNode_create(TYPE, VALUE) LLNode_##TYPE##_create(VALUE)
 
 #define LinkedList_create(TYPE) LinkedList_##TYPE##_create()
-#define LinkedList_destruct(LLIST)  ({ LLIST->_functions->freeMembers(LLIST); free(LLIST); })
+#define LinkedList_destruct(LLIST)  ({ LLIST->_functions->destruct(LLIST); free(LLIST); })
 
 
 void LinkedList_addToBeginning(void* _llist, void* _new_node);

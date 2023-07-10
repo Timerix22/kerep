@@ -15,7 +15,7 @@ Hashtable* Hashtable_create(){
     ht->hein=HT_HEIN_MIN;
     ht->rows=malloc(HT_HEIGHTS[HT_HEIN_MIN]*sizeof(Autoarr(KVPair)*));
     for(u16 i=0;i<HT_HEIGHTS[HT_HEIN_MIN];i++)
-        ht->rows[i]=Autoarr_create(KVPair,ARR_BC,ARR_BL);
+        ht->rows[i]=Autoarr_construct(KVPair,ARR_BC,ARR_BL);
     return ht;
 }
 
@@ -38,7 +38,7 @@ void Hashtable_expand(Hashtable* ht){
 
     Autoarr(KVPair)** newrows=malloc(HT_HEIGHTS[++ht->hein]*sizeof(Autoarr(KVPair)*));
     for(u16 i=0;i<HT_HEIGHTS[ht->hein];i++)
-        newrows[i]=Autoarr_create(KVPair,ARR_BC,ARR_BL);
+        newrows[i]=Autoarr_construct(KVPair,ARR_BC,ARR_BL);
 
     for(u16 i=0;i<HT_HEIGHTS[ht->hein-1];i++){
         Autoarr(KVPair)* ar=ht->rows[i];

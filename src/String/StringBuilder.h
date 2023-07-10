@@ -8,7 +8,7 @@ extern "C" {
 #include "string.h"
 
 STRUCT(StringBuilder,
-    InternalAllocator_decl(LinearAllocator);
+    InternalAllocator_declare(LinearAllocator);
 	Autoarr(string)* compl_bufs;
 	Autoarr(i8)* curr_buf;
 )

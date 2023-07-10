@@ -18,7 +18,8 @@ STRUCT(CstdAllocator,
     MemoryAllocator base;
 );
 
-void CstdAllocator_construct(CstdAllocator* self);
+extern CstdAllocator CstdAllocator_instance;
+#define CstdAllocator_instPtr (allocator_ptr)(&CstdAllocator_instance)
 
 
 ///////////////////////////////////////////

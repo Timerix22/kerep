@@ -42,7 +42,7 @@ static inline void test_all(){
     );
 }
 
-#define PRINT_SIZEOF(T) kprintf("\e[94m" #T " size: \e[96m" IFWIN("%llu", "%lu") "\n", sizeof(T))
+#define PRINT_SIZEOF(T) kprintf("\e[94m" #T " size: \e[96m%lu\n", sizeof(T))
 
 #if __cplusplus
 }

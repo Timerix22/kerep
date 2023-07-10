@@ -8,7 +8,7 @@ kt_define(StringBuilder, (destruct_t)StringBuilder_destruct, NULL);
 
 void complete_buf(StringBuilder* b){
     if(!b->compl_bufs)
-        b->compl_bufs=Autoarr_create(string,BL_C,BL_L);
+        b->compl_bufs=Autoarr_construct(string,BL_C,BL_L);
     u32 len=Autoarr_length(b->curr_buf);
     if(len==0)
         return;
@@ -19,22 +19,21 @@ void complete_buf(StringBuilder* b){
     );
     Autoarr_add(b->compl_bufs,str);
     Autoarr_destruct(b->curr_buf, true);
-    b->curr_buf=Autoarr_create(i8,BL_C,BL_L);
+    b->curr_buf=Autoarr_construct(i8,BL_C,BL_L);
 }
 
 
 void StringBuilder_construct(StringBuilder* b, allocator_ptr external_al){
     InternalAllocator_setExternalOrConstruct(b, external_al, LinearAllocator, 1024);
     b->compl_bufs=NULL;
-    b->curr_buf=Autoarr_create(i8,BL_C,BL_L);
+    b->curr_buf=Autoarr_construct(i8,BL_C,BL_L);
 }
 
 void StringBuilder_destruct(StringBuilder* b){
     if(b->compl_bufs)
         Autoarr_destruct(b->compl_bufs, true);
     Autoarr_destruct(b->curr_buf, true);
-    if(InternalAllocator_isInternal(b))
-        LinearAllocator_destruct((LinearAllocator*)InternalAllocator_getPtr(b));
+    InternalAllocator_destructIfInternal(LinearAllocator, b);
 }
 
 string StringBuilder_build(StringBuilder* b){

@@ -16,7 +16,9 @@ char data[]="iojihi2ojo8la14nhvi3311pi[jiugbja38mo0ih6gfty88tryf-drh0lanvj03";
         h=hashf(h, data, sizeof(data)); \
     ); \
     /*kprintf("\e[94mhash of \"\e[90m%s\e[94m\": \e[92m%x\n",data, h);*/ \
-    Autoarr(hasht)* hashes=Autoarr_create(hasht,1,COLLISION_TESTS); \
+    Autoarr(hasht) _hashes; \
+    Autoarr(hasht)* hashes = &_hashes; \
+    Autoarr_construct(hashes, hasht, COLLISION_TESTS*sizeof(hasht), NULL); \
     splitmix64_state rng_state; \
     splitmix64_construct(&rng_state, random_seedFromTime()); \
     optime("collision test",1, \
@@ -38,7 +40,7 @@ char data[]="iojihi2ojo8la14nhvi3311pi[jiugbja38mo0ih6gfty88tryf-drh0lanvj03";
         } \
         kprintf("\e[93m%u \e[94mcollisions detected in %u hashes\n", collisions, COLLISION_TESTS); \
     ); \
-    Autoarr_destruct(hashes, true); \
+    Autoarr_destruct(hashes); \
     kprintf("\e[96m--------------------------------------\n"); \
 }
 

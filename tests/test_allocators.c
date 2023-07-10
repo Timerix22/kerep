@@ -28,9 +28,7 @@ void _test_allocator(allocator_ptr al){
 void test_allocators(){
     kprintf("\e[96m----------[test_allocators]-----------\n");
     optime("test CstdAllocator", 10000,
-        CstdAllocator al;
-        CstdAllocator_construct(&al);
-        _test_allocator((allocator_ptr)&al);
+        _test_allocator(CstdAllocator_instPtr);
     );
     optime("test LinearAllocator", 10000,
         LinearAllocator al;

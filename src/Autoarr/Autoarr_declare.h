@@ -6,67 +6,60 @@ extern "C" {
 
 #include "../base/base.h"
 
-#define Autoarr_declare(type) \
+#define Autoarr_declare(TYPE) \
 \
-struct Autoarr_##type; \
+typedef struct Autoarr_##TYPE Autoarr_##TYPE; \
 \
-typedef struct __Autoarr_##type##_functions_list_t { \
-    void (*add)(struct Autoarr_##type* ar, type element); \
-    type (*get)(struct Autoarr_##type* ar, u32 index); \
-    type* (*getPtr)(struct Autoarr_##type* ar, u32 index); \
-    void (*set)(struct Autoarr_##type* ar, u32 index, type element); \
-    void (*freeWithMembers)(struct Autoarr_##type* ar, bool freePtr); \
-    void (*freeWithoutMembers)(struct Autoarr_##type* ar, bool freePtr); \
-    type* (*toArray)(struct Autoarr_##type* ar); \
-} __Autoarr_##type##_functions_list_t; \
+typedef struct __Autoarr_##TYPE##_functions_list_t { \
+    void (*add)(Autoarr_##TYPE* ar, TYPE element); \
+    TYPE (*get)(Autoarr_##TYPE* ar, u32 index); \
+    TYPE* (*getPtr)(Autoarr_##TYPE* ar, u32 index); \
+    void (*set)(Autoarr_##TYPE* ar, u32 index, TYPE element); \
+    TYPE* (*toArray)(Autoarr_##TYPE* ar, allocator_ptr array_holder); \
+} __Autoarr_##TYPE##_functions_list_t; \
 \
-extern __Autoarr_##type##_functions_list_t __Autoarr_##type##_functions_list; \
-\
-STRUCT(Autoarr_##type, \
-    u16 chunks_count; \
-    u16 max_chunks_count; \
-    u16 chunk_length; \
-    u16 max_chunk_length; \
-    type** chunks; \
-    __Autoarr_##type##_functions_list_t* functions; \
+STRUCT(Autoarr_##TYPE, \
+    InternalAllocator_declare(LinearAllocator); \
+    __Autoarr_##TYPE##_functions_list_t* functions; \
+    ktDescriptor* type; \
+    u32 length; \
+    TYPE* _typeof_target; \
 ) \
 \
-Autoarr_##type* __Autoarr_##type##_create(u16 max_chunks_count, u16 max_chunk_length); \
-void __Autoarr_##type##_destructWithMembers(Autoarr_##type* ar, bool freePtr); \
-void ____Autoarr_##type##_destructWithMembers(void* ar);
+void __Autoarr_##TYPE##_construct(Autoarr_##TYPE* ar, alloc_size_t starting_size, allocator_ptr external_al); \
+void __Autoarr_##TYPE##_destruct(Autoarr_##TYPE* ar); \
 
-#define Autoarr(type) Autoarr_##type
+#define Autoarr(TYPE) Autoarr_##TYPE
 
-#define Autoarr_create(type, max_chunks_count, max_chunk_length) \
-    __Autoarr_##type##_create(max_chunks_count, max_chunk_length)
-#define Autoarr_add(autoarr, element) \
-    autoarr->functions->add(autoarr, element)
-#define Autoarr_get(autoarr, index) \
-    autoarr->functions->get(autoarr,index)
-#define Autoarr_getPtr(autoarr, index) \
-    autoarr->functions->getPtr(autoarr,index)
-#define Autoarr_set(autoarr, index, element) \
-    autoarr->functions->set(autoarr, index, element)
-#define Autoarr_destruct(autoarr, freePtr) \
-    autoarr->functions->freeWithMembers(autoarr, freePtr)
-#define Autoarr_destructWithoutMembers(autoarr, freePtr) \
-    autoarr->functions->freeWithoutMembers(autoarr, freePtr)
-#define Autoarr_toArray(autoarr) \
-    autoarr->functions->toArray(autoarr)
+#define Autoarr_construct(ptr, TYPE, starting_size, data_allocator) \
+    __Autoarr_##TYPE##_construct(ptr, starting_size, data_allocator)
+#define Autoarr_destruct(autoarr)               (autoarr)->type->destruct(autoarr)
+#define Autoarr_add(autoarr, element)           (autoarr)->functions->add(autoarr, element)
+#define Autoarr_get(autoarr, index)             (autoarr)->functions->get(autoarr,index)
+#define Autoarr_getPtr(autoarr, index)          (autoarr)->functions->getPtr(autoarr,index)
+#define Autoarr_set(autoarr, index, element)    (autoarr)->functions->set(autoarr, index, element)
+#define Autoarr_toArray(autoarr, array_alloctr) (autoarr)->functions->toArray(autoarr, array_alloctr)
+#define Autoarr_length(autoarr)                 (autoarr)->length
+#define Autoarr_pop(autoarr) { \
+    u32 new_len=(autoarr)->length-1; \
+    allocator_free(InternalAllocator_getPtr((autoarr)), Autoarr_getPtr((autoarr), new_len)); \
+    (autoarr)->length=new_len; \
+}
 
-#define Autoarr_length(autoarr) \
-    (u32)(!autoarr->chunks_count ? 0 : \
-    autoarr->max_chunk_length*(autoarr->chunks_count-1)+autoarr->chunk_length)
-#define Autoarr_max_length(autoarr) \
-    (u32)(autoarr->max_chunk_length*autoarr->max_chunks_count)
-
-#define Autoarr_pop(AR){ \
-    if(AR->chunk_length==1){ \
-        AR->chunks_count--; \
-        AR->chunk_length=AR->max_chunk_length; \
-        free(AR->chunks[AR->chunks_count]); \
+#define Autoarr_foreach(ar, elem, codeblock...) { \
+    if((ar)->length > 0) { \
+        typeof(*((ar)->_typeof_target)) elem; \
+        LinearAllocator* al=(LinearAllocator*)InternalAllocator_getPtr(ar); \
+        for(u16 chunk_i=0; chunk_i <= al->curr_chunk_i; chunk_i++) { \
+            MemoryChunk chunk = al->chunks[chunk_i]; \
+            alloc_size_t chunk_elem_count = chunk.occupied_size/sizeof(elem); \
+            typeof((ar)->_typeof_target) chunk_data = (void*)chunk.data; \
+            for(u32 elem##_i=0; elem##_i < chunk_elem_count; elem##_i++) { \
+                elem = chunk_data[elem##_i]; \
+                { codeblock; } \
+            } \
+        } \
     } \
-    else AR->chunk_length--; \
 }
 
 #if __cplusplus

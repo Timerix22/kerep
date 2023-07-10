@@ -18,8 +18,8 @@ void Unitype_destruct(Unitype* u)
     }
 
     ktDescriptor *type = ktDescriptor_get(u->typeId);
-    if (type->freeMembers)
-        type->freeMembers(u->VoidPtr);
+    if (type->destruct)
+        type->destruct(u->VoidPtr);
     if (u->allocatedInHeap)
         free(u->VoidPtr);
 }

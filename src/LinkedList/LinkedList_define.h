@@ -18,7 +18,7 @@ void LLNode_##TYPE##_destructMembers(void* _node){ \
     LLNode(TYPE)* node=(LLNode(TYPE)*)_node; \
     void* value_ptr=&node->value; \
     if(TYPE_IS_PTR) value_ptr=*(TYPE**)value_ptr; \
-    ktDescriptor_##TYPE.freeMembers(value_ptr); \
+    ktDescriptor_##TYPE.destruct(value_ptr); \
 } \
 \
 void LLNode_##TYPE##_destruct(LLNode(TYPE)* node, bool free_value){ \
@@ -69,7 +69,7 @@ void LinkedList_##TYPE##_removeNext(LinkedList(TYPE)* llist, LLNode(TYPE)* prevN
 } \
 \
 LinkedList_##TYPE##_functions_t _LinkedList_##TYPE##_functions={ \
-    .freeMembers=LinkedList_##TYPE##_destructMembers, \
+    .destruct=LinkedList_##TYPE##_destructMembers, \
     .removePrev=LinkedList_##TYPE##_removePrev, \
     .removeNext=LinkedList_##TYPE##_removeNext \
 }; \

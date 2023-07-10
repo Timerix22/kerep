@@ -22,13 +22,13 @@ char* ktDescriptor_toString(allocator_ptr al, ktDescriptor* d){
     char *s0 = toString_u64(al, d->id, 0,0);
     char *s1 = toString_u64(al, d->size, 0,0);
     char *s2 = d->toString ? toString_hex(al, d->toString, sizeof(void*), 0,1,0) : n;
-    char *s3 = d->freeMembers ? toString_hex(al, d->freeMembers, sizeof(void*), 0,1,0) : n;
+    char *s3 = d->destruct ? toString_hex(al, d->destruct, sizeof(void*), 0,1,0) : n;
     char *rez=cptr_concat(al, "ktDescriptor {"
         " name:", d->name,
         " id:",s0,
         " size:",s1,
         " toString:",s2,
-        " freeMembers:",s3,
+        " destruct:",s3,
         " }");
     if(s3!=n) allocator_free(al, s3);
     if(s2!=n) allocator_free(al, s2);
@@ -56,15 +56,16 @@ ktDescriptorsState initState=NotInitialized;
 
 void kt_beginInit(){
     kprintf("\e[94mtype descriptors initializing...\n");
-    __descriptorPointers=Autoarr_create(Pointer, 256, 256);
+    Autoarr_construct(__descriptorPointers, Pointer, 256, NULL);
 }
 
 void kt_endInit(){
     if(__descriptorPointers==NULL)
         throw(ERR_NULLPTR);
-    typeDescriptors=(ktDescriptor**)Autoarr_toArray(__descriptorPointers);
-    Autoarr_destruct(__descriptorPointers,true);
-    if(typeDescriptors==NULL) throw(ERR_NULLPTR);
+    typeDescriptors=(ktDescriptor**)Autoarr_toArray(__descriptorPointers, CstdAllocator_instPtr);
+    Autoarr_destruct(__descriptorPointers);
+    if(typeDescriptors==NULL)
+        throw(ERR_NULLPTR);
     kprintf("\e[92minitialized %u type descriptors\n", ktid_last);
 }
 

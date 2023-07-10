@@ -10,9 +10,6 @@ void CstdAllocator_free(allocator_ptr self, void* ptr){
     free(ptr);
 }
 
-void CstdAllocator_construct(CstdAllocator* self){
-    self->base.alloc_f=CstdAllocator_alloc;
-    self->base.free_f=CstdAllocator_free;
-}
-
 kt_define(CstdAllocator, NULL, NULL);
+
+CstdAllocator CstdAllocator_instance=(CstdAllocator){.base.alloc_f=CstdAllocator_alloc, .base.free_f=CstdAllocator_free};

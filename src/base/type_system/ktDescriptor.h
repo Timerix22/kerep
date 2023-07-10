@@ -20,14 +20,14 @@ extern "C" {
         .name=#TYPE, \
         .id=ktid_undefined, \
         .size=sizeof(TYPE), \
-        .freeMembers=FREE_MEMBERS_F, \
+        .destruct=FREE_MEMBERS_F, \
         .toString=TOSTRING_F \
     }; \
     ktDescriptor ktDescriptor_##TYPE##_Ptr={\
         .name=#TYPE "_Ptr", \
         .id=ktid_undefined, \
         .size=sizeof(TYPE), \
-        .freeMembers=FREE_MEMBERS_F, \
+        .destruct=FREE_MEMBERS_F, \
         .toString=TOSTRING_F \
     };
 
@@ -38,7 +38,7 @@ STRUCT(ktDescriptor,
     char* name;
     ktid id;
     u16 size;
-    destruct_t freeMembers; // NULL or function which frees all struct members
+    destruct_t destruct; // NULL or function which frees all struct members
     toString_t toString; // NULL or function which generates string representaion of object
 )
 

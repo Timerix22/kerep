@@ -2,9 +2,10 @@
 #include "../src/SearchTree/SearchTree.h"
 
 void printstnode(STNode* node){
-    kprintf("\e[94mSTNode: "
-    IFWIN("%llu", "%lu")
-    "\n  address: %p\n  value: ",sizeof(STNode),node);
+    kprintf("\e[94mSTNode: %lu\n"
+        "  address: %p\n"
+        "  value: ", 
+        sizeof(STNode), node);
     printuni(node->value);
     kprintf("\n");
     // prints pointers to all existing branches

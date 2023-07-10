@@ -6,9 +6,11 @@
 - check allocator_free call order
 - deal with StackingAllocator_free not freing memory sometimes
 - replace LinearAllocator with StackingAllocator when possible (in DtsodV24_deserialize)
+- use LinkedList instead of complicated LinearAllocator logic
+- configurable LinearAllocator chunk size (static/growing)
 
 ## Autoarr
-- store lenght and max_lenght inside the struct instead of calculating them by macro
+- store length and max_length inside the struct instead of calculating them by macro
 - keep Autoarr_length() and Autoarr_maxLength() to old code compatibility
 - toString()
 

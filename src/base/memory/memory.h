@@ -14,7 +14,7 @@
 ///////////////////////////////////////////
 
 /// call this macro inside struct declaration
-#define InternalAllocator_decl(AL_TYPE) \
+#define InternalAllocator_declare(AL_TYPE) \
     AL_TYPE _internal_al; \
     allocator_ptr _internal_al_ptr;
 
@@ -28,12 +28,17 @@
 #define InternalAllocator_setExternal(STRUCT_PTR, EXT_AL_PTR) (STRUCT_PTR->_internal_al_ptr = EXT_AL_PTR);
 
 /// create internal allocator and set ptr to it
-#define InternalAllocator_construct(STRUCT_PTR, TYPE, CTOR_ARGS...) ({ \
+#define InternalAllocator_construct(STRUCT_PTR, TYPE, CTOR_ARGS...) { \
     TYPE##_construct(&STRUCT_PTR->_internal_al, CTOR_ARGS); \
     STRUCT_PTR->_internal_al_ptr = (allocator_ptr)&STRUCT_PTR->_internal_al; \
-})
+}
 
 /// if EXT_AL_PTR isn't null, set external allocator, otherwise create new
 #define InternalAllocator_setExternalOrConstruct(STRUCT_PTR, EXT_AL_PTR, TYPE, CTOR_ARGS...) \
     if(EXT_AL_PTR!=NULL) InternalAllocator_setExternal(STRUCT_PTR, EXT_AL_PTR) \
     else InternalAllocator_construct(STRUCT_PTR, TYPE, CTOR_ARGS)
+
+#define InternalAllocator_destructIfInternal(TYPE, STRUCT_PTR) {\
+    if(InternalAllocator_isInternal(STRUCT_PTR)) \
+        TYPE##_destruct((TYPE*)InternalAllocator_getPtr(STRUCT_PTR)); \
+}
