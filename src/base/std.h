@@ -42,6 +42,10 @@ typedef u8 bool;
 extern void* memcpy(void *dest, const void * src, size_t n);
 #endif
 
+#ifndef typeof
+#define typeof __typeof__
+#endif
+
 #define dbg(N) kprintf("\e[95m%d\n",N)
 
 #define nameof(V) #V
