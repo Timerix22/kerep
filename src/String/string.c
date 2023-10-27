@@ -1,7 +1,7 @@
 #include "string.h"
 
 kt_define(string, NULL, NULL);
-Autoarr_define(string, false);
+Autoarr_define(string);
 
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(allocator_ptr al, string str){

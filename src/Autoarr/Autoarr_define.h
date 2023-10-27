@@ -6,7 +6,7 @@ extern "C" {
 
 #include "../base/base.h"
 
-#define Autoarr_define(TYPE, TYPE_IS_PTR) \
+#define Autoarr_define(TYPE) \
 \
 void __Autoarr_##TYPE##_add(Autoarr_##TYPE* ar, TYPE element){ \
     TYPE* ptr = allocator_alloc(InternalAllocator_getPtr(ar), sizeof(element)); \
@@ -42,13 +42,6 @@ void __Autoarr_##TYPE##_set(Autoarr_##TYPE* ar, u32 index, TYPE value){ \
 } \
 \
 void __Autoarr_##TYPE##_destruct(Autoarr_##TYPE* ar){ \
-    destruct_t value_destructor=ar->type->destruct; \
-    if(value_destructor!=NULL) { \
-        Autoarr_foreach(ar, el, \
-            TYPE* value_ptr = TYPE_IS_PTR ? *(TYPE**)(&el) : &el; \
-            value_destructor(value_ptr); \
-        ); \
-    } \
     InternalAllocator_destructIfInternal(LinearAllocator, ar); \
 } \
 \
@@ -74,7 +67,7 @@ __Autoarr_##TYPE##_functions_list_t __Autoarr_##TYPE##_functions_list={ \
 void __Autoarr_##TYPE##_construct(Autoarr_##TYPE* ar, alloc_size_t starting_size, allocator_ptr data_allocator){ \
     InternalAllocator_setExternalOrConstruct(ar, data_allocator, LinearAllocator, starting_size); \
     ar->functions=&__Autoarr_##TYPE##_functions_list; \
-    ar->type = TYPE_IS_PTR ? &ktDescriptor_namePtr(TYPE) : &ktDescriptor_name(TYPE); \
+    ar->type = &ktDescriptor_name(TYPE); \
     ar->length=0; \
 } \
 \
