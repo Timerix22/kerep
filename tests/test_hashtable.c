@@ -8,7 +8,7 @@ void print_hashtable(Hashtable* ht){
         "  rows: %p\n",
         sizeof(Hashtable),
         ht->hein,
-        Hashtable_height(ht),
+        __Hashtable_height(ht),
         ht->rows);
 }
 
@@ -18,8 +18,8 @@ void printrowgraph(allocator_ptr al, Hashtable* ht){
     u32 lgs[lgs_l];
      for(u32 i=0; i<lgs_l; i++)
         lgs[i]=0; 
-    for(u16 h=0;h<Hashtable_height(ht);h++){
-        Autoarr(KVPair)* ar=ht->rows[h];
+    for(u16 h=0;h<__Hashtable_height(ht);h++){
+        Autoarr(KVPair)* ar=&ht->rows[h];
         u32 l=Autoarr_length(ar);
         lgs[l]++;
     }
@@ -63,7 +63,9 @@ void test_hashtable(){
         StackingAllocator _al;
         allocator_ptr al=(allocator_ptr)&_al;
         StackingAllocator_construct(&_al, 4096);
-        Hashtable* ht=Hashtable_create();
+        Hashtable _ht;
+        Hashtable* ht=&_ht;
+        Hashtable_construct(ht, al);
         kprintf("\e[92mhashtable created\n");
         print_hashtable(ht);
         optime("fill",1,fill(al, ht));

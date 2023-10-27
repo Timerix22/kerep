@@ -9,16 +9,14 @@ extern "C" {
 #include "KeyValuePair.h"
 
 STRUCT(Hashtable,
+    InternalAllocator_declare(LinearAllocator);
     u8 hein;  // height=HT_HEIGHTS[hein]
-    Autoarr(KVPair)** rows; // Autoarr[height]
+    Autoarr(KVPair)* rows; // Autoarr[height]
 )
 
-Hashtable* Hashtable_create();
+void Hashtable_construct(Hashtable* ht, allocator_ptr external_al);
 void Hashtable_destruct(Hashtable* ht);
 void __Hashtable_destruct(void* ht);
-
-// amount of rows
-u16 Hashtable_height(Hashtable* ht);
 
 // don't add pairs with the same keys,
 // or something weird will happen
@@ -36,11 +34,13 @@ Unitype* Hashtable_getPtr(Hashtable* ht, char* key);
 Unitype Hashtable_get(Hashtable* ht, char* key);
 bool Hashtable_tryGet(Hashtable* ht, char* key, Unitype* output);
 
+u16 __Hashtable_height(Hashtable* ht);
+
 #define Hashtable_foreach(HT, EL, codeblock...) { \
-    u16 hmax=Hashtable_height(HT); \
+    u16 hmax=__Hashtable_height(HT); \
     for(u16 h=0; h<hmax; h++){ \
-        Autoarr(KVPair)* AR=HT->rows[h]; \
-        Autoarr_foreach(AR, EL, codeblock); \
+        Autoarr(KVPair)* row=&HT->rows[h]; \
+        Autoarr_foreach(row, EL, codeblock); \
     } \
 }
 

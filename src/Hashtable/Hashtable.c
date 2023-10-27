@@ -7,63 +7,59 @@ static const u16 HT_HEIGHTS[]={17,61,257,1021,4099,16381,65521};
 #define HT_HEIN_MIN 0
 #define HT_HEIN_MAX 6
 
-#define ARR_BC 2
-#define ARR_BL 8
+#define ARR_SIZE_MAX 16
 
-Hashtable* Hashtable_create(){
-    Hashtable* ht=malloc(sizeof(Hashtable));
+void Hashtable_construct(Hashtable* ht, allocator_ptr external_al){
+    InternalAllocator_setExternalOrConstruct(ht, external_al, LinearAllocator, 1024);
     ht->hein=HT_HEIN_MIN;
     ht->rows=malloc(HT_HEIGHTS[HT_HEIN_MIN]*sizeof(Autoarr(KVPair)*));
-    for(u16 i=0;i<HT_HEIGHTS[HT_HEIN_MIN];i++)
-        ht->rows[i]=Autoarr_construct(KVPair,ARR_BC,ARR_BL);
-    return ht;
+    allocator_ptr internal_al = InternalAllocator_getPtr(ht);
+    for(u16 i=0; i<HT_HEIGHTS[HT_HEIN_MIN]; i++)
+        Autoarr_construct(&ht->rows[i], KVPair, 16, internal_al);
 }
+
+u16 __Hashtable_height(Hashtable* ht) { return HT_HEIGHTS[ht->hein]; }
 
 void __Hashtable_destruct(void* _ht){
     Hashtable* ht=_ht;
     for(u16 i=0;i<HT_HEIGHTS[ht->hein];i++)
-        Autoarr_destruct(ht->rows[i], true);
-    free(ht->rows);
+        Autoarr_destruct(&ht->rows[i]);
+    allocator_free(InternalAllocator_getPtr(ht), ht->rows);
+    InternalAllocator_destructIfInternal(LinearAllocator, ht);
 }
 void Hashtable_destruct(Hashtable* ht){
     __Hashtable_destruct(ht);
-    free(ht);
 }
-
-u16 Hashtable_height(Hashtable* ht) { return HT_HEIGHTS[ht->hein]; }
-
 
 void Hashtable_expand(Hashtable* ht){
     if(ht->hein>=HT_HEIN_MAX) throw(ERR_MAXLENGTH);
 
-    Autoarr(KVPair)** newrows=malloc(HT_HEIGHTS[++ht->hein]*sizeof(Autoarr(KVPair)*));
+    Autoarr(KVPair)* newrows=malloc(HT_HEIGHTS[++ht->hein]*sizeof(Autoarr(KVPair)*));
     for(u16 i=0;i<HT_HEIGHTS[ht->hein];i++)
-        newrows[i]=Autoarr_construct(KVPair,ARR_BC,ARR_BL);
+        Autoarr_construct(&newrows[i], KVPair, ARR_SIZE_MAX, InternalAllocator_getPtr(ht));
 
     for(u16 i=0;i<HT_HEIGHTS[ht->hein-1];i++){
-        Autoarr(KVPair)* ar=ht->rows[i];
+        Autoarr(KVPair)* ar=&ht->rows[i];
         u32 arlen=Autoarr_length(ar);
         for(u32 k=0;k<arlen;k++){
             KVPair p=Autoarr_get(ar,k);
             u16 newrown=hashs(hash_sdbm32, p.key)%HT_HEIGHTS[ht->hein];
-            Autoarr(KVPair)* newar=newrows[newrown];
+            Autoarr(KVPair)* newar=&newrows[newrown];
             Autoarr_add(newar,p);
         }
-        // there is no need to free array values, because they are copied into new array
-        // so dont replace this incorrect auto-generated function
-        Autoarr_destructWithoutMembers(ar, true);
+        Autoarr_destruct(ar);
     }
 
     free(ht->rows);
-    ht->rows=newrows;
+    ht->rows = newrows;
 }
 
 Autoarr(KVPair)* getrow(Hashtable* ht, char* key, bool can_expand){
     u32 hash=hashs(hash_sdbm32, key);
-    Autoarr(KVPair)* ar=ht->rows[hash%HT_HEIGHTS[ht->hein]];
-    if(can_expand && Autoarr_length(ar)==Autoarr_max_length(ar))
+    Autoarr(KVPair)* ar=&ht->rows[hash%HT_HEIGHTS[ht->hein]];
+    if(can_expand && Autoarr_length(ar) == ARR_SIZE_MAX)
         Hashtable_expand(ht);
-    ar=ht->rows[hash%HT_HEIGHTS[ht->hein]];
+    ar=&ht->rows[hash%HT_HEIGHTS[ht->hein]];
     return ar;
 }
 
@@ -86,7 +82,8 @@ Unitype* Hashtable_getPtr(Hashtable* ht, char* key){
     u32 arlen=Autoarr_length(ar);
     for(u32 i=0;i<arlen;i++){
         KVPair* p=Autoarr_getPtr(ar,i);
-        if(cptr_equals(key,p->key)) return &p->value;
+        if(cptr_equals(key,p->key))
+            return &p->value;
     }
     return NULL;
 }
@@ -96,7 +93,8 @@ Unitype Hashtable_get(Hashtable* ht, char* key){
     u32 arlen=Autoarr_length(ar);
     for(u32 i=0;i<arlen;i++){
         KVPair p=Autoarr_get(ar,i);
-        if(cptr_equals(key,p.key)) return p.value;
+        if(cptr_equals(key,p.key))
+            return p.value;
     }
     return UniNull;
 }

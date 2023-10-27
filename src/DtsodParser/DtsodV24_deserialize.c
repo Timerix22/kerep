@@ -295,7 +295,9 @@ Maybe __deserialize(char** _text, bool _calledRecursively, allocator_ptr _tmp_al
         .sh_tmp_al=_tmp_al
     };
     DeserializeSharedData* shared=&_shared;
-    Hashtable* dict=Hashtable_create();
+    Hashtable _dict;
+    Hashtable* dict = &_dict;
+    Hashtable_construct(dict, _tmp_al);
     
     text--;
     while(true){
