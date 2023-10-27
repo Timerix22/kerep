@@ -19,18 +19,18 @@
     allocator_ptr _internal_al_ptr;
 
 /// get pointer to allocator
-#define InternalAllocator_getPtr(STRUCT_PTR) (STRUCT_PTR->_internal_al_ptr)
+#define InternalAllocator_getPtr(STRUCT_PTR) ((STRUCT_PTR)->_internal_al_ptr)
 
 /// true if allocator is stored inside the struct, otherwise false
-#define InternalAllocator_isInternal(STRUCT_PTR) (bool)(STRUCT_PTR->_internal_al_ptr == (allocator_ptr)&STRUCT_PTR->_internal_al)
+#define InternalAllocator_isInternal(STRUCT_PTR) (bool)((STRUCT_PTR)->_internal_al_ptr == (allocator_ptr)&(STRUCT_PTR)->_internal_al)
 
 /// set ptr to external allocator
-#define InternalAllocator_setExternal(STRUCT_PTR, EXT_AL_PTR) (STRUCT_PTR->_internal_al_ptr = EXT_AL_PTR);
+#define InternalAllocator_setExternal(STRUCT_PTR, EXT_AL_PTR) ((STRUCT_PTR)->_internal_al_ptr = EXT_AL_PTR);
 
 /// create internal allocator and set ptr to it
 #define InternalAllocator_construct(STRUCT_PTR, TYPE, CTOR_ARGS...) { \
-    TYPE##_construct(&STRUCT_PTR->_internal_al, CTOR_ARGS); \
-    STRUCT_PTR->_internal_al_ptr = (allocator_ptr)&STRUCT_PTR->_internal_al; \
+    TYPE##_construct(&(STRUCT_PTR)->_internal_al, CTOR_ARGS); \
+    (STRUCT_PTR)->_internal_al_ptr = (allocator_ptr)&(STRUCT_PTR)->_internal_al; \
 }
 
 /// if EXT_AL_PTR isn't null, set external allocator, otherwise create new

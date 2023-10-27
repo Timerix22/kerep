@@ -9,8 +9,9 @@ extern "C" {
 
 STRUCT(StringBuilder,
     InternalAllocator_declare(LinearAllocator);
-	Autoarr(string)* compl_bufs;
-	Autoarr(i8)* curr_buf;
+	Autoarr(string) compl_bufs;
+	MemoryChunk curr_buf;
+    u64 total_length;
 )
 
 ///@param external_al if null, creates internal allocator 
@@ -22,8 +23,10 @@ void StringBuilder_destruct(StringBuilder* b);
 // No need to call string_extract!
 // Destructs StringBuilder.
 string StringBuilder_build(StringBuilder* b);
-// removes last char
+
+/// OBSOLETE! Will be removed later 
 void StringBuilder_rmchar(StringBuilder* b);
+
 void StringBuilder_append_char(StringBuilder* b, char c);
 void StringBuilder_append_cptr(StringBuilder* b, char* s);
 void StringBuilder_append_string(StringBuilder* b, string s);
