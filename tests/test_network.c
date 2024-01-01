@@ -5,14 +5,14 @@ void __test_knIPV4Address_fromStr(char* addrStr, u8 a, u8 b, u8 c, u8 d){
     tryLast(knIPV4Address_fromStr(addrStr), maybeAddr, ;)
     knIPV4Address addr;
     addr.u32=(u32)maybeAddr.value.UInt64;
-    printf("\e[94mknIPV4Address_fromStr(\e[96m%s\e[94m) -> ", addrStr);
+    kprintf("\e[94mknIPV4Address_fromStr(\e[96m%s\e[94m) -> ", addrStr);
     if(maybeAddr.value.UInt64!=knIPV4Address_fromBytes(a,b,c,d).u32){
-        printf("\e[91m%u.%u.%u.%u\n", 
+        kprintf("\e[91m%u.%u.%u.%u\n", 
             (u8)addr.bytes[0], (u8)addr.bytes[1], (u8)addr.bytes[2], (u8)addr.bytes[3]);
         throw("knIPV4Address_fromStr returned wrong value");
     }
     else {
-        printf("\e[92m%u.%u.%u.%u\n",
+        kprintf("\e[92m%u.%u.%u.%u\n",
             (u8)addr.bytes[0], (u8)addr.bytes[1], (u8)addr.bytes[2], (u8)addr.bytes[3]);
     }
     
@@ -21,7 +21,7 @@ void __test_knIPV4Address_fromStr(char* addrStr, u8 a, u8 b, u8 c, u8 d){
 
 void test_network(){
     optime(__func__,1,({
-        printf("\e[96m------------[test_network]------------\n");
+        kprintf("\e[96m------------[test_network]------------\n");
         
         PRINT_SIZEOF(knIPV4Address);
         PRINT_SIZEOF(knPort);
@@ -37,9 +37,9 @@ void test_network(){
         knSocketTCP* s;
         tryLast(knSocket_open(knSocketProtocol_TCP), maybeS)
             s=maybeS.value.VoidPtr;
-        printf("\e[92mTCP socket created\n");
+        kprintf("\e[92mTCP socket created\n");
         tryLast(knSocket_close(s);,_);
-        printf("\e[92mTCP socket closed\n");
+        kprintf("\e[92mTCP socket closed\n");
         */
     }));
 }

@@ -8,6 +8,6 @@ i32 main(){
     kt_endInit();
     test_all();
     kt_free();
-    kprintf("\e[0m\n");
+    kprintf("\e[37m\n");
     return 0;
 }
