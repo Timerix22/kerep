@@ -7,7 +7,7 @@ extern "C" {
 #include "../../base/base.h"
 #include "../knAddress.h"
 
-#define KNPAC_MAX_DATA_SIZE (65535-sizeof(knPackage)+sizeof(uint8*))
+#define KNPAC_MAX_DATA_SIZE (65535-sizeof(knPackage)+sizeof(u8*))
 
 
 typedef enum __attribute__((__packed__)) knPacVersion {
@@ -19,11 +19,11 @@ static const char knPacHeader[5]={'k','n','p','a','c'};
 typedef struct knPackage {
     char header[5];             // knpac
     knPacVersion version;       // protocol version
-    uint16 data_size;           // size of data block in bytes (1-KNPAC_MAX_DATA_SIZE)
-    uint32 channel_id;          // id of knChannel in socket
-    uint32 package_num;         // number in sequence of sent packages
-    uint64 data_hash;           // hash64 of data
-    uint8* data;                // ptr to data
+    u16 data_size;           // size of data block in bytes (1-KNPAC_MAX_DATA_SIZE)
+    u32 channel_id;          // id of knChannel in socket
+    u32 package_num;         // number in sequence of sent packages
+    u64 data_hash;           // hash64 of data
+    u8* data;                // ptr to data
 } knPackage;
 ktid_declare(knPackage);
 
@@ -41,10 +41,10 @@ typedef struct knChannel {
 ktid_declare(knChannel);
 
 typedef struct knSocketChanneled{
-    int64 socketfd;
+    i64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;
-    uint16 channelsAmount;
+    u16 channelsAmount;
     knChannel** channels;
 } knSocketChanneled;
 ktid_declare(knSocketChanneled);
@@ -56,7 +56,7 @@ Maybe knSocketChanneled_open();
 ///@return Maybe<void> error or nothing
 Maybe knSocketChanneled_close(knSocketChanneled* socket);
 
-///@return Maybe<uint64> channel index
+///@return Maybe<u64> channel index
 Maybe knSocketChanneled_createChannel(knSocketChanneled* socket);
 
 ///start listening at local endpoint
@@ -72,12 +72,12 @@ Maybe knSocketChanneled_accept(knSocketChanneled* socket);
 
 ///@param dataLength 0-4294967295
 ///@return Maybe<void>
-Maybe knSocketChanneled_send(knSocketChanneled* socket, uint16 destinationIndex, uint8* data, uint32 dataLength);
+Maybe knSocketChanneled_send(knSocketChanneled* socket, u16 destinationIndex, u8* data, u32 dataLength);
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
-///@return Maybe<uint64> recieved bytes amount
-Maybe knSocketChanneled_recieve(knSocketChanneled* socket, uint16 destinationIndex, uint8* buffer, uint32 bufferLength);
+///@return Maybe<u64> recieved bytes amount
+Maybe knSocketChanneled_recieve(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);
 
 #if __cplusplus
 }

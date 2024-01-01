@@ -9,8 +9,8 @@ extern "C" {
 #define hashb(FUNC, BUF, LEN) FUNC(0xFFFFFFFF, BUF, LEN)
 #define hashs(FUNC, STR)      FUNC(0xFFFFFFFF, STR, cptr_length(STR))
 
-uint32 hash_sdbm32(uint32 oldhash, void* buf, uint32 len);
-uint32 hash_crc32(uint32 oldhash, void* buf, uint32 len);
+u32 hash_sdbm32(u32 oldhash, void* buf, u32 len);
+u32 hash_crc32(u32 oldhash, void* buf, u32 len);
 
 #if __cplusplus
 }

@@ -15,7 +15,7 @@ Maybe throw_errcode(){
 
 Maybe test_maybe(){
     kprintf("\e[94mdont_throw returns \e[92m");
-    tryLast(dont_throw(),rez0)
+    tryLast(dont_throw(),rez0,;)
         printMaybe(rez0);
     kprintf("\n");
     try(throw_error(),rez1,;)
@@ -30,7 +30,7 @@ Maybe a(){ try(b(),_,;) return MaybeNull; }
 
 void test_safethrow(){
     kprintf("\e[96m-----------[test_safethrow]-----------\n");
-    optime("test_safethrow", 1, ({
+    optime("test_safethrow", 1, 
         Maybe e=test_maybe();
         kprintf("\e[94mthrow_error:\n\e[92m");
         printMaybe(e);
@@ -39,5 +39,5 @@ void test_safethrow(){
         e=a();
         printMaybe(e);
         Maybe_free(e);
-    }));
+    );
 }

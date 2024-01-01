@@ -6,7 +6,12 @@ obj/
 .old*/
 .vs/
 .vshistory/
+tmp/
+temp/
+*.tmp
+*.temp
 .editorconfig
 *.user
 *.vcxproj.filters
+*.log
 current.config

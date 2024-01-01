@@ -5,24 +5,24 @@
 #endif
 
 #define testColor(COLOR) \
-    kprint_setColor(kp_bgBlack|kp_fg##COLOR);\
-    kprintf(#COLOR " ");\
-    kprint_setColor(kp_bg##COLOR|kp_fgGray);\
-    kprintf(#COLOR);\
-    kprint_setColor(kp_bgBlack|kp_fgBlack);\
+    kprint_setColor(kp_bgBlack|kp_fg##COLOR); \
+    kprintf(#COLOR " "); \
+    kprint_setColor(kp_bg##COLOR|kp_fgGray); \
+    kprintf(#COLOR); \
+    kprint_setColor(kp_bgBlack|kp_fgBlack); \
     kprintf("\n");
 
 void test_kprint_colors(){
     /* IFWIN(
         ({
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            for(uint8 col=0; col<255; col++){
+            for(u8 col=0; col<255; col++){
                 SetConsoleTextAttribute(hConsole, col);
                 kprintf("%u ",col);
             }
         }),
         ({
-            for(uint8 col=0; col<255; col++)
+            for(u8 col=0; col<255; col++)
                 kprintf("\e[%um%u ", col, col);
         })
     ); 

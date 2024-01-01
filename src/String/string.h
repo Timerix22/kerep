@@ -5,21 +5,28 @@ extern "C" {
 #endif
 
 #include "../base/base.h"
+#include "../Array/Array.h"
+#include "../Autoarr/Autoarr.h"
 
 // my fixed length string struct
 // doesn't store '\0' at the end
-typedef struct string{
+STRUCT(string,
     char* ptr;      // char pointer
-    uint64 length;  // amount of chars in ptr value
-} string;
-ktid_declare(string);
+    u64 length;  // amount of chars in ptr value
+)
+
+Array_declare(string)
+Autoarr_declare(string)
 
 static const string stringNull={NULL,0};
+
+/// wraps pointer without copy
+#define string_fromCptr(CPTR) (string){ .ptr=CPTR, .length=cptr_length(CPTR) }
 
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str);
 
-// copies src.ptr content to new string
+// copies src.ptr content to new string and adds \0 at the end
 string string_copy(string src);
 
 // compares two strings, NullPtr-friendly

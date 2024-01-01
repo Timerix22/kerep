@@ -54,15 +54,17 @@ bgColorSet─┘││ │  bgColor └data format
 
 ## Data format
 
-| format    | possible flags | data types | hex value | bin value |
-|-----------|----------------|------------|-----------|-----------|
-| kp_i    |                | int8... int64    | 0x00000000 | 00000000 00000000... |
-| kp_u   | Postfix, Upper | uint8... uint64  | 0x00010000 | 00000000 00000001... |
-| kp_h    | Prefix, Upper  | any              | 0x00020000 | 00000000 00000010... |
-| kp_b    | Prefix         | any              | 0x00030000 | 00000000 00000011... |
-| kp_f  | Postfix, Upper | float32, float64 | 0x00040000 | 00000000 00000100... |
-| kp_c   |                | char             | 0x00050000 | 00000000 00000101... |
-| kp_sing |                | char*            | 0x00060000 | 00000000 00000110... |
+| format    | possible flags | data types | hex value  | bin value |
+|-----------|----------------|------------|------------|-----------|
+| kp_i      |                | i8... i64  | 0x00000000 | 00000000 00000000... |
+| kp_u      | Postfix, Upper | u8... u64  | 0x00010000 | 00000000 00000001... |
+| kp_h      | Prefix, Upper  | any        | 0x00020000 | 00000000 00000010... |
+| kp_b      | Prefix         | any        | 0x00030000 | 00000000 00000011... |
+| kp_f      | Postfix, Upper | f32, f64   | 0x00040000 | 00000000 00000100... |
+| kp_c      |                | char       | 0x00050000 | 00000000 00000101... |
+| kp_string |                | char*      | 0x00060000 | 00000000 00000110... |
+
+P.S. `any` means you must add `kpid` to `kp_fmt` if data type is not base type  
 
 ### *Flags*
 | flag | hex value  | bin value |

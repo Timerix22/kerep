@@ -6,11 +6,11 @@ ktid_define(knIPV4Endpoint);
 Maybe knIPV4Address_fromStr(char* addrStr){
     char* addrStr_src=addrStr;
     char* errmsg_extra="wrong char";
-    uint8 c;
+    u8 c;
     knIPV4Address addr;
     addr.u32=0;
-    uint16 n=0;
-    for(uint8 i=0; i<4; ){
+    u16 n=0;
+    for(u8 i=0; i<4; ){
         c=*addrStr++;
         switch (c){
             case '\0':
@@ -18,6 +18,10 @@ Maybe knIPV4Address_fromStr(char* addrStr){
                     errmsg_extra="end of string";
                     goto default_case;
                 }
+                
+                addr.bytes[i++]=n;
+                n=0;
+                break;
             case '.':
                 addr.bytes[i++]=n;
                 n=0;
@@ -32,7 +36,7 @@ Maybe knIPV4Address_fromStr(char* addrStr){
                 break;
             default_case:
             default:
-                uint32 errmsgL=cptr_length(addrStr) + 80;
+                u32 errmsgL=cptr_length(addrStr) + 80;
                 char* errmsg=malloc(errmsgL);
                 IFMSC(sprintf_s(errmsg, errmsgL, "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra), 
                       sprintf(  errmsg,          "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra));

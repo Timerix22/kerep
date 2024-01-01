@@ -1,14 +1,14 @@
 #include "hash.h"
 
-uint32 hash_sdbm32(uint32 oldhash, void* buf, uint32 len){
-    uint8* ubuf=(uint8*)buf;
-    register uint32 hash=oldhash;
+u32 hash_sdbm32(u32 oldhash, void* buf, u32 len){
+    u8* ubuf=(u8*)buf;
+    register u32 hash=oldhash;
     for (; len ; len--, ubuf++)
         hash=(hash<<6)+(hash<<16)-hash+*ubuf;
     return hash;
 }
 
-static const uint32 crc_32_tab[]={
+static const u32 crc_32_tab[]={
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 
     0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3, 
     0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988,
@@ -75,19 +75,19 @@ static const uint32 crc_32_tab[]={
     0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
-uint32 hash_crc32(uint32 oldhash, void* buf, uint32 len){
-    uint8* ubuf=(uint8*)buf;
-    register uint32 crc=oldhash;
+u32 hash_crc32(u32 oldhash, void* buf, u32 len){
+    u8* ubuf=(u8*)buf;
+    register u32 crc=oldhash;
     for (; len; --len, ++ubuf)
         crc=crc_32_tab[(crc^(*ubuf)) & 0xff] ^ (crc>>8);
     return ~crc;
 }
 
 
-// bool hashf_crc32c(char *name, uint32 *crc, long *charcnt) {
+// bool hashf_crc32c(char *name, u32 *crc, long *charcnt) {
 //     register FILE *fin;
-//     register uint32 oldcrc32;
-//     register int c;
+//     register u32 oldcrc32;
+//     register i32 c;
 
 //     oldcrc32 = 0xFFFFFFFF; *charcnt = 0;
 //     if ((fin=fopen(name, "r"))==NULL) {

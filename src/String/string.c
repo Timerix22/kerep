@@ -1,6 +1,8 @@
 #include "string.h"
 
-ktid_define(string);
+kt_define(string, NULL, NULL);
+Array_define(string)
+Autoarr_define(string, false)
 
 // copies str content to new char pointer value (adding '\0' at the end)
 char* string_extract(string str){
@@ -12,14 +14,16 @@ char* string_extract(string str){
     return cptr;
 }
 
-// copies src.ptr content to new string
+// copies src.ptr content to new string and adds \0 at the end
 string string_copy(string src){
-    if(!src.ptr) return src;
+    if(!src.ptr)
+        return src;
     string nstr;
     nstr.length=src.length;
-    nstr.ptr=malloc(nstr.length);
-    for(uint32 i=0;i<nstr.length;i++)
+    nstr.ptr=malloc(nstr.length+1);
+    for(u32 i=0;i<nstr.length;i++)
         nstr.ptr[i]=src.ptr[i];
+    nstr.ptr[nstr.length]='\0';
     return nstr;
 }
 
@@ -38,7 +42,7 @@ bool string_compare(string str0, string str1){
 string string_reverse(string s){
     if(s.length==0) return s;
     string r={malloc(s.length), s.length};
-    for(uint32 i=0; i<s.length; i++)
+    for(u32 i=0; i<s.length; i++)
         r.ptr[i]=s.ptr[s.length-i-1];
     return r;
 }

@@ -49,11 +49,11 @@ EXPORT void CALL kerep_DtsodV24_free(Hashtable* dtsod){
     DtsodV24_free(dtsod);
 }
 
-EXPORT void CALL kerep_DtsodV24_height(Hashtable* dtsod, uint16* heigth){
+EXPORT void CALL kerep_DtsodV24_height(Hashtable* dtsod, u16* heigth){
     *heigth=Hashtable_height(dtsod);
 }
 
-EXPORT void CALL kerep_DtsodV24_getrow(Hashtable* dtsod, uint16 h, Autoarr_KVPair** row){
+EXPORT void CALL kerep_DtsodV24_getrow(Hashtable* dtsod, u16 h, Autoarr_KVPair** row){
     *row=dtsod->rows[h];
 }
 

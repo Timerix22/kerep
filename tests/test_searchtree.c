@@ -9,13 +9,13 @@ void printstnode(STNode* node){
     kprintf("\n");
     // prints pointers to all existing branches
     /* kprintf("  branches: %p\n", node->branches);
-    if(node->branches) for(uint8 i=0;i<8;i++){
+    if(node->branches) for(u8 i=0;i<8;i++){
         kprintf("    \e[90m[%u]=%p\n",i,node->branches[i]);
         if(node->branches[i]) 
-            for (uint8 ii = 0; ii < 8; ii++){
+            for (u8 ii = 0; ii < 8; ii++){
                 kprintf("       \e[90m[%u]=%p\n",ii,node->branches[i][ii]);
                 if(node->branches[i][ii])
-                    for (uint8 iii = 0; iii < 4; iii++) 
+                    for (u8 iii = 0; iii < 4; iii++) 
                         kprintf("          \e[90m[%u]=%p\n",iii,node->branches[i][ii][iii]);
             }
         
@@ -23,7 +23,7 @@ void printstnode(STNode* node){
 }
 
 void test_searchtree(){
-    optime("test_searchtree",1,({
+    optime("test_searchtree",1,
         kprintf("\e[96m-----------[test_searchtree]----------\n");
         STNode* node=STNode_create();
         kprintf("\e[92mnode created\n");
@@ -70,5 +70,5 @@ void test_searchtree(){
         printstnode(node);
         STNode_free(node);
         kprintf("\e[92mnode deleted\n");
-    }));
+    );
 }

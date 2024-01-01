@@ -5,25 +5,25 @@
 
 char* errname(ErrorId err){
     switch(err){
-        case SUCCESS: return "SUCCESS";
-        case ERR_MAXLENGTH: return "ERR_MAXLENGTH";
-        case ERR_WRONGTYPE: return "ERR_WRONGTYPE";
-        case ERR_WRONGINDEX: return "ERR_WRONGINDEX";
-        case ERR_NOTIMPLEMENTED: return "ERR_NOTIMPLEMENTED";
-        case ERR_NULLPTR: return "ERR_NULLPTR";
-        case ERR_ENDOFSTR: return "ERR_ENDOFSTR";
-        case ERR_KEYNOTFOUND: return "ERR_KEYNOTFOUND";
-        case ERR_FORMAT: return "ERR_FORMAT";
-        case ERR_UNEXPECTEDVAL: return "ERR_UNEXPECTEDVAL";
-        case ERR_IO: return "ERR_IO";
-        case ERR_IO_EOF: return "ERR_IO_EOF";
+        case SUCCESS: return nameof(SUCCESS);
+        case ERR_MAXLENGTH: return nameof(ERR_MAXLENGTH);
+        case ERR_WRONGTYPE: return nameof(ERR_WRONGTYPE);
+        case ERR_WRONGINDEX: return nameof(ERR_WRONGINDEX);
+        case ERR_NOTIMPLEMENTED: return nameof(ERR_NOTIMPLEMENTED);
+        case ERR_NULLPTR: return nameof(ERR_NULLPTR);
+        case ERR_ENDOFSTR: return nameof(ERR_ENDOFSTR);
+        case ERR_KEYNOTFOUND: return nameof(ERR_KEYNOTFOUND);
+        case ERR_FORMAT: return nameof(ERR_FORMAT);
+        case ERR_UNEXPECTEDVAL: return nameof(ERR_UNEXPECTEDVAL);
+        case ERR_IO: return nameof(ERR_IO);
+        case ERR_IO_EOF: return nameof(ERR_IO_EOF);
         default: return "UNKNOWN_ERROR";
     }
 }
 
 #define ERRMSG_MAXLENGTH 1024
 
-char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
+char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=ERRMSG_MAXLENGTH;
     char* rezult=malloc(bufsize);
     IFMSC(
@@ -33,7 +33,7 @@ char* __genErrMsg(const char* errmsg, const char* srcfile, int line, const char*
     return rezult;
 }
 
-char* __extendErrMsg(const char* errmsg, const char* srcfile, int line, const char* funcname){
+char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
     char* rezult=malloc(bufsize);
     IFMSC(

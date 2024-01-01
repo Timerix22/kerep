@@ -1,19 +1,21 @@
 #include "tests.h"
 #include "../src/Network/network.h"
 
-void __test_knIPV4Address_fromStr(char* addrStr, uint8 a, uint8 b, uint8 c, uint8 d){
-    tryLast(knIPV4Address_fromStr(addrStr), maybeAddr){
-        knIPV4Address addr;
-        addr.u32=(uint32)maybeAddr.value.UInt64;
-        printf("\e[94mknIPV4Address_fromStr(\e[96m%s\e[94m) -> ", addrStr);
-        if(maybeAddr.value.UInt64!=knIPV4Address_fromBytes(a,b,c,d).u32){
-            printf("\e[91m%u.%u.%u.%u\n", 
-                (uint8)addr.bytes[0], (uint8)addr.bytes[1], (uint8)addr.bytes[2], (uint8)addr.bytes[3]);
-            throw("knIPV4Address_fromStr returned wrong value");
-        }
-        else printf("\e[92m%u.%u.%u.%u\n",
-                (uint8)addr.bytes[0], (uint8)addr.bytes[1], (uint8)addr.bytes[2], (uint8)addr.bytes[3]);
+void __test_knIPV4Address_fromStr(char* addrStr, u8 a, u8 b, u8 c, u8 d){
+    tryLast(knIPV4Address_fromStr(addrStr), maybeAddr, ;)
+    knIPV4Address addr;
+    addr.u32=(u32)maybeAddr.value.UInt64;
+    printf("\e[94mknIPV4Address_fromStr(\e[96m%s\e[94m) -> ", addrStr);
+    if(maybeAddr.value.UInt64!=knIPV4Address_fromBytes(a,b,c,d).u32){
+        printf("\e[91m%u.%u.%u.%u\n", 
+            (u8)addr.bytes[0], (u8)addr.bytes[1], (u8)addr.bytes[2], (u8)addr.bytes[3]);
+        throw("knIPV4Address_fromStr returned wrong value");
     }
+    else {
+        printf("\e[92m%u.%u.%u.%u\n",
+            (u8)addr.bytes[0], (u8)addr.bytes[1], (u8)addr.bytes[2], (u8)addr.bytes[3]);
+    }
+    
 }
 #define test_knIPV4Address_fromStr(a,b,c,d) __test_knIPV4Address_fromStr(#a"."#b"."#c"."#d, a,b,c,d)
 

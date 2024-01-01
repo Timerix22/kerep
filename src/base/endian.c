@@ -2,7 +2,7 @@
 
 static const union
 {
-    uint16 number;
+    u16 number;
     Endian bytes[2];
 } _endian_union={ .number=0x0102 };
 

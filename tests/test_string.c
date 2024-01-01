@@ -2,7 +2,7 @@
 #include "../src/String/string.h"
 
 void test_string(){
-    optime(__func__,1,({
+    optime(__func__,1,
         kprintf("\e[96m-------------[test_string]------------\n");
         char c[]="0123456789abcdef";
         string s={.ptr=c, .length=cptr_length(c)};
@@ -10,5 +10,5 @@ void test_string(){
         char* p=string_extract(s);
         kprintf("\e[94mstring_extract() -> \e[92m\"%s\"\n",p);
         free(p);
-    }));
+    );
 }

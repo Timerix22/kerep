@@ -8,12 +8,12 @@ extern "C" {
 #include "../../splitmix64/splitmix64.h"
 
 typedef union {
-    uint64 merged;
-    uint32 s[2];
+    u64 merged;
+    u32 s[2];
 } xoroshiro64_state;
 typedef void* xoroshiro64_statePtr;
 
-xoroshiro64_statePtr xoroshiro64_init(uint64 seed);
+xoroshiro64_statePtr xoroshiro64_init(u64 seed);
 #define xoroshiro64star_init xoroshiro64_init
 #define xoroshiro64starstar_init xoroshiro64_init
 
@@ -21,8 +21,8 @@ static inline xoroshiro64_statePtr xoroshiro64_initFromTime(void) { return xoros
 #define xoroshiro64star_initFromTime xoroshiro64_initFromTime
 #define xoroshiro64starstar_initFromTime xoroshiro64_initFromTime
 
-uint32 xoroshiro64star_next(xoroshiro64_statePtr);
-uint32 xoroshiro64starstar_next(xoroshiro64_statePtr);
+u32 xoroshiro64star_next(xoroshiro64_statePtr);
+u32 xoroshiro64starstar_next(xoroshiro64_statePtr);
 
 static inline void xoroshiro64_free(xoroshiro64_statePtr state) {
     free(state); 

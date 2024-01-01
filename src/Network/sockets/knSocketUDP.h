@@ -7,7 +7,7 @@ extern "C" {
 #include "knSocketUDP.h"
 
 typedef struct knSocketUDP {
-    int64 socketfd;
+    i64 socketfd;
     knIPV4Endpoint localEndpoint;
 } knSocketUDP;
 ktid_declare(knSocketUDP);
@@ -27,12 +27,12 @@ Maybe knSocketUDP_accept(knSocketUDP* socket);
 
 ///@param dataLength 0-4294967295
 ///@return Maybe<void>
-Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, uint32 dataLength, knIPV4Endpoint destination);
+Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, u32 dataLength, knIPV4Endpoint destination);
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
-///@return Maybe<uint64> recieved bytes amount
-Maybe knSocketUDP_recieve(knSocketUDP* socket, char* buffer, uint32 bufferLength);
+///@return Maybe<u64> recieved bytes amount
+Maybe knSocketUDP_recieve(knSocketUDP* socket, char* buffer, u32 bufferLength);
 
 
 #if __cplusplus

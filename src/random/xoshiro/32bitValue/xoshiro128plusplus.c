@@ -19,15 +19,15 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    The state must be seeded so that it is not everywhere zero. */
 
 
-static inline uint32 rotl(const uint32 x, int k) {
+static inline u32 rotl(const u32 x, i32 k) {
     return (x << k) | (x >> (32 - k));
 }
 
-uint32 xoshiro128plusplus_next(void* _state){    
+u32 xoshiro128plusplus_next(void* _state){    
     xoshiro128_state* state=_state;
-    const uint32 result = rotl(state->s[0] + state->s[3], 7) + state->s[0];
+    const u32 result = rotl(state->s[0] + state->s[3], 7) + state->s[0];
 
-    const uint32 t = state->s[1] << 9;
+    const u32 t = state->s[1] << 9;
 
     state->s[2] ^= state->s[0];
     state->s[3] ^= state->s[1];

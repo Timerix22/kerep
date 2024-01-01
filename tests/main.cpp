@@ -1,13 +1,13 @@
 #include "tests.h"
 
-int main(){
-    if(!setlocale(LC_ALL, "C.UTF8"))
+i32 main(){
+    if(setlocale(LC_CTYPE, "C.UTF-8")!=0)
         kprintf("\e[93msetlocale failed\n");
-    ktDescriptors_beginInit();
-    ktDescriptors_initKerepTypes();
-    ktDescriptors_endInit();
+    kt_beginInit();
+    kt_initKerepTypes();
+    kt_endInit();
     test_all();
-    ktDescriptors_free();
+    kt_free();
     kprintf("\e[0m\n");
     return 0;
 }

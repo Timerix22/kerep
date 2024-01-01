@@ -38,7 +38,7 @@ knChannel* __createChannel(){
 Maybe knSocketChanneled_createChannel(knSocketChanneled* socket){
     if(socket->channelsAmount == 65535) 
         safethrow("max amount of channels",;);
-    uint16 channelsAmountPrev=socket->channelsAmount;
+    u16 channelsAmountPrev=socket->channelsAmount;
     socket->channelsAmount++;
     if(channelsAmountPrev==0) 
         socket->channels=malloc(sizeof(knChannel*));
@@ -54,6 +54,6 @@ Maybe knSocketChanneled_connect(knSocketChanneled* socket, knIPV4Endpoint remote
 
 Maybe knSocketChanneled_accept(knSocketChanneled* socket);
 
-Maybe knSocketChanneled_send(knSocketChanneled* socket, uint16 destinationIndex, uint8* data, uint32 dataLength);
+Maybe knSocketChanneled_send(knSocketChanneled* socket, u16 destinationIndex, u8* data, u32 dataLength);
 
-Maybe knSocketChanneled_recieve(knSocketChanneled* socket, uint16 destinationIndex, uint8* buffer, uint32 bufferLength);
+Maybe knSocketChanneled_recieve(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);

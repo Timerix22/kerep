@@ -7,10 +7,10 @@ extern "C" {
 #include "../base/base.h"
 
 
-typedef uint16 knPort;
+typedef u16 knPort;
 
 typedef union knIPV4Address {
-    uint32 u32;
+    u32 u32;
     char bytes[4];
 } knIPV4Address;
 ktid_declare(knIPV4Address);

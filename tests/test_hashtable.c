@@ -15,16 +15,16 @@ void print_hashtable(Hashtable* ht){
 
 void printrowgraph(Hashtable* ht){
     kprintf("\e[94mrow length graph:\n");
-    uint16 lgs_l=1000;
-    uint32 lgs[lgs_l];
-     for(uint32 i=0; i<lgs_l; i++)
+    u16 lgs_l=1000;
+    u32 lgs[lgs_l];
+     for(u32 i=0; i<lgs_l; i++)
         lgs[i]=0; 
-    for(uint16 h=0;h<Hashtable_height(ht);h++){
+    for(u16 h=0;h<Hashtable_height(ht);h++){
         Autoarr(KVPair)* ar=ht->rows[h];
-        uint32 l=Autoarr_length(ar);
+        u32 l=Autoarr_length(ar);
         lgs[l]++;
     }
-    for(uint32 i=0; i<lgs_l; i++)
+    for(u32 i=0; i<lgs_l; i++)
         if(lgs[i]>0) {
             char* str0=char_multiply(' ',i>=100?0:(i>=10?1:2));
             char* str1=char_multiply(' ',lgs[i]>=100?0:(lgs[i]>=10?1:2));
@@ -36,7 +36,7 @@ void printrowgraph(Hashtable* ht){
         }
 }
 
-char* genkey(uint32 i){
+char* genkey(u32 i){
     char* key=malloc(12);
     IFMSC(
         sprintf_s(key,12,"key_%u",i),
@@ -46,13 +46,13 @@ char* genkey(uint32 i){
 }
 
 void fill(Hashtable* ht){
-    for(uint32 i=0;i<100000;i++)
+    for(u32 i=0;i<100000;i++)
         Hashtable_add(ht,genkey(i),UniUInt64(i));
 }
 
 Unitype gett(Hashtable* ht){
     Unitype u;
-    for(uint32 i=0;i<100000;i++){
+    for(u32 i=0;i<100000;i++){
         char* key=genkey(i);
         u=Hashtable_get(ht,key);
         free(key);
@@ -62,7 +62,7 @@ Unitype gett(Hashtable* ht){
 
 
 void test_hashtable(){
-    optime("test_hashtable",1,({
+    optime("test_hashtable",1,
         kprintf("\e[96m-----------[test_hashtable]-----------\n");
         Hashtable* ht=Hashtable_create();
         kprintf("\e[92mhashtable created\n");
@@ -73,5 +73,5 @@ void test_hashtable(){
         print_hashtable(ht);
         Hashtable_free(ht);
         kprintf("\e[92mhashtable freed\n");
-    }));
+    );
 }

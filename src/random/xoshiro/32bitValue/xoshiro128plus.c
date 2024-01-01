@@ -9,8 +9,8 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 #include "xoshiro128.h"
 
 /* This is xoshiro128+ 1.0, our best and fastest 32-bit generator for 32-bit
-   floating-point numbers. We suggest to use its upper bits for
-   floating-point generation, as it is slightly faster than xoshiro128**.
+   floating-poi32 numbers. We suggest to use its upper bits for
+   floating-poi32 generation, as it is slightly faster than xoshiro128**.
    It passes all tests we are aware of except for
    linearity tests, as the lowest four bits have low linear complexity, so
    if low linear complexity is not considered an issue (as it is usually
@@ -22,15 +22,15 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    The state must be seeded so that it is not everywhere zero. */
 
 
-static inline uint32 rotl(const uint32 x, int k) {
+static inline u32 rotl(const u32 x, i32 k) {
     return (x << k) | (x >> (32 - k));
 }
 
-uint32 xoshiro128plus_next(void* _state){    
+u32 xoshiro128plus_next(void* _state){    
     xoshiro128_state* state=_state;
-    const uint32 result = state->s[0] + state->s[3];
+    const u32 result = state->s[0] + state->s[3];
 
-    const uint32 t = state->s[1] << 9;
+    const u32 t = state->s[1] << 9;
 
     state->s[2] ^= state->s[0];
     state->s[3] ^= state->s[1];
@@ -44,7 +44,7 @@ uint32 xoshiro128plus_next(void* _state){
     return result;
 }
 
-void* xoshiro128_init(uint64 seed){
+void* xoshiro128_init(u64 seed){
     xoshiro128_state* state=malloc(sizeof(xoshiro128_state));
     splitmix64_state* splitmix=splitmix64_init(seed);
     state->merged[0]=splitmix64_next(splitmix);

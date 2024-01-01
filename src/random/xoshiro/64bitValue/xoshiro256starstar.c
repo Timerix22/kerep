@@ -13,21 +13,21 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
    large enough for any parallel application, and it passes all tests we
    are aware of.
 
-   For generating just floating-point numbers, xoshiro256+ is even faster.
+   For generating just floating-poi32 numbers, xoshiro256+ is even faster.
 
    The state must be seeded so that it is not everywhere zero. If you have
    a 64-bit seed, we suggest to seed a splitmix64 generator and use its
    output to fill s. */
 
-static inline uint64 rotl(const uint64 x, int k) {
+static inline u64 rotl(const u64 x, i32 k) {
     return (x << k) | (x >> (64 - k));
 }
 
-uint64 xoshiro256starstar_next(void* _state){    
+u64 xoshiro256starstar_next(void* _state){    
     xoshiro256_state* state=_state;
-    const uint64 result = rotl(state->s[1] * 5, 7) * 9;
+    const u64 result = rotl(state->s[1] * 5, 7) * 9;
 
-    const uint64 t = state->s[1] << 17;
+    const u64 t = state->s[1] << 17;
 
     state->s[2] ^= state->s[0];
     state->s[3] ^= state->s[1];

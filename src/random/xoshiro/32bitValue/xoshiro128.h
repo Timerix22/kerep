@@ -9,12 +9,12 @@ extern "C" {
 
 
 typedef union {
-    uint64 merged[2];
-    uint32 s[4];
+    u64 merged[2];
+    u32 s[4];
 } xoshiro128_state;
 typedef void* xoshiro128_statePtr;
 
-xoshiro128_statePtr xoshiro128_init(uint64 seed);
+xoshiro128_statePtr xoshiro128_init(u64 seed);
 #define xoshiro128plus_init xoshiro128_init
 #define xoshiro128plusplus_init xoshiro128_init
 #define xoshiro128starstar_init xoshiro128_init
@@ -24,9 +24,9 @@ static inline xoshiro128_statePtr xoshiro128_initFromTime(void) { return xoshiro
 #define xoshiro128plusplus_initFromTime xoshiro128_initFromTime
 #define xoshiro128starstar_initFromTime xoshiro128_initFromTime
 
-uint32 xoshiro128plus_next(xoshiro128_statePtr);
-uint32 xoshiro128plusplus_next(xoshiro128_statePtr);
-uint32 xoshiro128starstar_next(xoshiro128_statePtr);
+u32 xoshiro128plus_next(xoshiro128_statePtr);
+u32 xoshiro128plusplus_next(xoshiro128_statePtr);
+u32 xoshiro128starstar_next(xoshiro128_statePtr);
 
 static inline void xoshiro128_free(xoshiro128_statePtr state) {
     free(state); 

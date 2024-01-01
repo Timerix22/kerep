@@ -7,21 +7,16 @@ extern "C" {
 #include "../base/base.h"
 #include "../Autoarr/Autoarr.h"
 
-typedef struct KVPair{
+STRUCT(KVPair,
     char* key;
     Unitype value;
-} KVPair;
-ktid_declare(KVPair);
+)
 
 Autoarr_declare(KVPair)
 
-// proper way to clear a KVP
+// proper way to clean a KVP
 void KVPair_free(KVPair p);
 void __KVPair_free(void* p);
-
-// func to clear KVP array
-void __Autoarr_free_KVPair_(Autoarr_KVPair* ar, bool freePtr);
-void ____Autoarr_free_KVPair_(void* ar);
 
 void printkvp(KVPair p);
 
