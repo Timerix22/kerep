@@ -85,11 +85,11 @@ char *Unitype_toString(Unitype u, u32 fmt)
         valuestr = type->toString(u.VoidPtr, fmt);
     else
         valuestr = "ERR_NO_TOSTRING_FUNC";
-    char *rezult = cptr_concat("{ type: ", type->name, ", allocated on heap: ", (u.allocatedInHeap ? "true" : "false"),
+    char *result = cptr_concat("{ type: ", type->name, ", allocated on heap: ", (u.allocatedInHeap ? "true" : "false"),
                                ", value:", valuestr, " }");
     if (type->toString)
         free(valuestr);
-    return rezult;
+    return result;
 }
 
 void printuni(Unitype v)

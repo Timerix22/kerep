@@ -60,10 +60,10 @@ char* __unknownErr( );
     __RETURN_EXCEPTION(((char*)__genErrMsg(E, __FILE__,__LINE__,__func__))); \
 }
 
-#define try_cpp(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
+#define try_cpp(_funcCall, _result, freeMem) Maybe _result=_funcCall; if(_result.errmsg){ \
     freeMem; \
-    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
-    return _rezult; \
+    _result.errmsg=__extendErrMsg(_result.errmsg, __FILE__,__LINE__,__func__); \
+    return _result; \
 }
 
 #else
@@ -73,16 +73,16 @@ char* __unknownErr( );
     __RETURN_EXCEPTION(((char*)__genErrMsg((__stringify_err(E)), __FILE__,__LINE__,__func__))); \
 }
 
-#define try(_funcCall, _rezult, freeMem) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
+#define try(_funcCall, _result, freeMem) Maybe _result=_funcCall; if(_result.errmsg){ \
     freeMem; \
-    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
-    return _rezult; \
+    _result.errmsg=__extendErrMsg(_result.errmsg, __FILE__,__LINE__,__func__); \
+    return _result; \
 }
 #endif
 
-#define tryLast(_funcCall, _rezult, ON_EXIT) Maybe _rezult=_funcCall; if(_rezult.errmsg){ \
-    _rezult.errmsg=__extendErrMsg(_rezult.errmsg, __FILE__,__LINE__,__func__); \
-    __EXIT(_rezult.errmsg); \
+#define tryLast(_funcCall, _result, ON_EXIT) Maybe _result=_funcCall; if(_result.errmsg){ \
+    _result.errmsg=__extendErrMsg(_result.errmsg, __FILE__,__LINE__,__func__); \
+    __EXIT(_result.errmsg); \
 }
 
 #if __cplusplus

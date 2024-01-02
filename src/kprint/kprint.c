@@ -53,8 +53,8 @@ Maybe __ksprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
         StringBuilder_append_cptr(strb, mStr.value.VoidPtr);
         Unitype_free(mStr.value);
     }
-    char* rezult=StringBuilder_build(strb).ptr;
-    return SUCCESS(UniHeapPtr(char, rezult));
+    char* result=StringBuilder_build(strb).ptr;
+    return SUCCESS(UniHeapPtr(char, result));
 }
 
 Maybe __kfprint(FILE* file, u8 n, kp_fmt* formats, __kp_value_union* objects){

@@ -22,7 +22,7 @@ char* __path_concat(u32 n, ...){
     const char* output=totality;
     totality[totalLength]=0;
     
-    // copying content of all strings to rezult
+    // copying content of all strings to result
     u16 k=0;
     for(; k<n-1; k++){
         memcopy(parts[k], totality, lengths[k]);
@@ -74,11 +74,11 @@ char* path_parentDir(char* dir){
 
 char* path_basename(char* path, bool with_extension){
     i32 nameIndex=cptr_lastIndexOfChar(path, path_sep)+1;
-    string rezult=string_fromCptr(path+nameIndex);
+    string result=string_fromCptr(path+nameIndex);
     if(!with_extension){
-        i32 extIndex=cptr_lastIndexOfChar(rezult.ptr, '.');
+        i32 extIndex=cptr_lastIndexOfChar(result.ptr, '.');
         if(extIndex!=0 && extIndex!=-1)
-            rezult.length=extIndex;
+            result.length=extIndex;
     }
-    return string_extract(rezult);
+    return string_extract(result);
 }

@@ -57,7 +57,7 @@ gprof:
 # compiles program and runs it with callgrind (part of valgrind)
 # uses gprof2dot python script to generate function call tree (pip install gprof2dot)
 # requires graphviz (https://www.graphviz.org/download/source/)
-# P.S. detailed rezults can be viewed in KCacheGrind
+# P.S. detailed results can be viewed in KCacheGrind
 callgrind:
 	@cbuild/call_task.sh callgrind 2>&1 | tee make_raw.log
 

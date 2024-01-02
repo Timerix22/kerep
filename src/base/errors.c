@@ -25,23 +25,23 @@ char* errname(ErrorId err){
 
 char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=ERRMSG_MAXLENGTH;
-    char* rezult=malloc(bufsize);
+    char* result=malloc(bufsize);
     IFMSC(
-        sprintf_s(rezult,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg),
-        sprintf(rezult,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg)
+        sprintf_s(result,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg),
+        sprintf(result,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg)
     );
-    return rezult;
+    return result;
 }
 
 char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
-    char* rezult=malloc(bufsize);
+    char* result=malloc(bufsize);
     IFMSC(
-        sprintf_s(rezult,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname),
-        sprintf(rezult,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname)
+        sprintf_s(result,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname),
+        sprintf(result,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname)
     );
     free(errmsg);
-    return rezult;
+    return result;
 }
 
 void Maybe_free(Maybe e){

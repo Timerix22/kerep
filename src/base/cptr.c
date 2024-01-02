@@ -160,7 +160,7 @@ char* __cptr_concat(u32 n, ...){
     char* output=totality;
     totality[totalLength]=0;
     
-    // copying content of all strings to rezult
+    // copying content of all strings to result
     for(u16 k=0; k<n; k++){
         memcopy(strs[k], totality, lengths[k]);
         totality+=lengths[k];
@@ -212,6 +212,6 @@ char* cptr_replaceIn(const char* src, const char* str_old, const char* str_new, 
     u32 src_remains_len=cptr_length(src);
     if(src_remains_len>0)
         StringBuilder_append_string(sb, (string){.ptr=(char*)src, .length=src_remains_len});
-    string rezult=StringBuilder_build(sb);
-    return rezult.ptr;
+    string result=StringBuilder_build(sb);
+    return result.ptr;
 }

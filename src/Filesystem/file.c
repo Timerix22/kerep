@@ -64,64 +64,64 @@ Maybe file_close(FileHandle file){
 }
 
 #define ioWriteCheck() \
-    if(rezult==EOF) \
+    if(result==EOF) \
         safethrow(ERR_IO_EOF,;); \
-    if(rezult!=0) \
+    if(result!=0) \
         safethrow(ERR_IO,;);
 
 Maybe file_writeChar(FileHandle file, char byte){
-    i32 rezult=fputc(byte, file);
+    i32 result=fputc(byte, file);
     ioWriteCheck();
     return MaybeNull;
 }
 
 Maybe file_writeBuffer(FileHandle file, char* buffer, u64 length){
-    i32 rezult=0;
-    for(u64 i=0; i<length && !rezult; i++)
-        rezult=fputc(buffer[i], file);
+    i32 result=0;
+    for(u64 i=0; i<length && !result; i++)
+        result=fputc(buffer[i], file);
     ioWriteCheck();
     return MaybeNull;
 }
 
 Maybe file_writeCptr(FileHandle file, char* cptr){
-    i32 rezult=fputs(cptr, file);
+    i32 result=fputs(cptr, file);
     ioWriteCheck();
     return MaybeNull;
 }
 
 
 Maybe file_readChar(FileHandle file){
-    i32 rezult=fgetc(file);
+    i32 result=fgetc(file);
     if(feof(file)) safethrow(ERR_IO_EOF,;);
     if(ferror(file)) safethrow(ERR_IO,;);
-    return SUCCESS(UniUInt64(rezult));
+    return SUCCESS(UniUInt64(result));
 }
 
 Maybe file_readBuffer(FileHandle file, char* buffer, u64 length){
-    i32 rezult=0;
+    i32 result=0;
     u64 i=0;
-    for(; i<length && rezult!=EOF; i++){
-        rezult=fgetc(file);
-        buffer[i]=(char)rezult;
+    for(; i<length && result!=EOF; i++){
+        result=fgetc(file);
+        buffer[i]=(char)result;
     }
     if(ferror(file)) safethrow(ERR_IO,;);
     return SUCCESS(UniUInt64(i));
 }
 
 Maybe file_readAll(FileHandle file, char** allBytes){
-    i32 rezult=0;
+    i32 result=0;
     char buffer[256];
     string bufStr={.ptr=buffer, .length=sizeof(buffer)};
     StringBuilder* sb=StringBuilder_create();
     u64 i=0;
     while(true){
-        rezult=fgetc(file);
-        if(rezult==EOF){
+        result=fgetc(file);
+        if(result==EOF){
             if(ferror(file)) 
                 safethrow(ERR_IO, StringBuilder_free(sb));
             break;
         }
-        buffer[i%sizeof(buffer)]=(char)rezult;
+        buffer[i%sizeof(buffer)]=(char)result;
         i++;
         if(!(i%sizeof(buffer)))
             StringBuilder_append_string(sb,bufStr);

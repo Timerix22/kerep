@@ -2,7 +2,6 @@
 #include "../stdSocketHeaders.h"
 ktid_define(knSocketTCP);
 
-///@return Maybe<knSocketTCP*> new socket
 Maybe knSocketTCP_open(){
     knSocketTCP* newSocket=malloc(sizeof(knSocketTCP));
     newSocket->localEndpoint=knIPV4Endpoint_create({.u32=INADDR_NONE},0);
@@ -14,23 +13,23 @@ Maybe knSocketTCP_open(){
     return SUCCESS(UniHeapPtr(knSocketTCP, newSocket));
 }
 
-///@return Maybe<void> error or nothing
 Maybe knSocketTCP_close(knSocketTCP* socket){
-    int rezult=
+    int result=
 #if KN_USE_WINSOCK
-    closesocket
+        closesocket
 #else
-    close
+        close
 #endif
-    (socket->socketfd);
-    if(rezult==-1) {
+        (socket->socketfd);
+    if(result==-1)
         safethrow("can't close socket",;);
-    }
-    else return MaybeNull;
+
+    socket->socketfd = 0;
+    socket->localEndpoint = knIPV4Endpoint_create(0, 0);
+    socket->remoteEndpoint = knIPV4Endpoint_create(0, 0);
+    return MaybeNull;
 }
 
-///sets socket local endpoint
-///@return Maybe<void> error or nothing
 Maybe knSocketTCP_listen(knSocketTCP* socket, knIPV4Endpoint localEndp){
     if(socket->localEndpoint.address.u32!=INADDR_NONE)
         safethrow("socket is bound already",;);
@@ -46,8 +45,6 @@ Maybe knSocketTCP_listen(knSocketTCP* socket, knIPV4Endpoint localEndp){
     return MaybeNull;
 }
 
-///sets socket remote endpoint
-///@return Maybe<void> error or nothing
 Maybe knSocketTCP_connect(knSocketTCP* socket, knIPV4Endpoint remoteEndp){
     if(socket->remoteEndpoint.address.u32!=0)
         safethrow("socket is connected already",;);
@@ -61,14 +58,12 @@ Maybe knSocketTCP_connect(knSocketTCP* socket, knIPV4Endpoint remoteEndp){
     return MaybeNull;
 }
 
-///@return Maybe<knSocketTCP*> new socket connected to client
-Maybe knSocketTCP_accept(knSocketTCP* socket);
+Maybe knSocketTCP_accept(knSocketTCP* socket){
+    accept(socket->socketfd, )
+}
 
-///@param dataLength 0-4294967295
-///@return Maybe<void>
-Maybe knSocketTCP_send(knSocketTCP* socket, char* data, u32 dataLength);
+Maybe knSocketTCP_send(knSocketTCP* socket, char* data, u32 dataLength){
 
-///@param buffer buffer for recieving data
-///@param bufferLength 0-4294967295
-///@return Maybe<u64> received bytes amount
+}
+
 Maybe knSocketTCP_receive(knSocketTCP* socket, char* buffer, u32 bufferLength);

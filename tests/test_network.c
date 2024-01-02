@@ -37,15 +37,22 @@ void test_network(){
         test_knIPV4Address_fromStr(34,255,45,0);
         test_knIPV4Address_fromStr(3,3,3,128);
         
-        knSocketTCP* s;
-        tryLast(knSocketTCP_open(), maybeS, ;);
-        s=maybeS.value.VoidPtr;
+        knSocketTCP* socket;
+        tryLast(knSocketTCP_open(), m_socket, ;);
+        socket=m_socket.value.VoidPtr;
         kprintf("\e[92mTCP socket created\n");
 
         knIPV4Endpoint localEnd = knIPV4Endpoint_create(knIPV4Address_fromBytes(127,0,0,1), 4444);
-        tryLast(knSocketTCP_listen(s, localEnd), _m81775, ;)
+        tryLast(knSocketTCP_listen(socket, localEnd), _m81775, ;)
 
-        tryLast(knSocketTCP_close(s), _m676, ;);
+        while(true){
+            tryLast(knSocketTCP_accept(socket), m_connection, ;);
+            knSocketTCP* connection = m_connection.value.VoidPtr;
+            knSocketTCP_receive()
+        }
+        
+
+        tryLast(knSocketTCP_close(socket), _m676, ;);
         kprintf("\e[92mTCP socket closed\n");
 
         tryLast(kt_tryDispose(), _m88ag, ;);

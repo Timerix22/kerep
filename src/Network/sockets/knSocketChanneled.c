@@ -16,14 +16,14 @@ Maybe knSocketChanneled_open(){
 }
 
 Maybe knSocketChanneled_close(knSocketChanneled* socket){
-    int rezult=
+    int result=
 #if KN_USE_WINSOCK
     closesocket
 #else
     close
 #endif
     (socket->socketfd);
-    if(rezult==-1) {
+    if(result==-1) {
         safethrow("can't close socket",;);
     }
     else return MaybeNull;
