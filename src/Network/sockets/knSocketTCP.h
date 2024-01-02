@@ -28,21 +28,25 @@ Maybe knSocketTCP_shutdown(knSocketTCP* socket, knShutdownType direction);
 ///@return Maybe<void> error or nothing
 Maybe knSocketTCP_close(knSocketTCP* socket);
 
-///start listening at local endpoint
+/// binds socket to a local endpoint and starts listening for incoming TCP connections
 ///@return Maybe<void> error or nothing
-Maybe knSocketTCP_listen(knSocketTCP* socket, knIPV4Endpoint localEndp);
+Maybe knSocketTCP_bindAndListen(knSocketTCP* socket, knIPV4Endpoint localEndp);
 
-///sets socket remote endpoint
+/// establishes TCP connection with a remote endpoint
 ///@return Maybe<void> error or nothing
-Maybe knSocketTCP_connect(knSocketTCP* socket, knIPV4Endpoint remoteEndp);
+Maybe knSocketTCP_connect(knSocketTCP* socket, knIPV4Endpoint remoteEnd);
 
 ///@return Maybe<knSocketTCP*> new socket connected to client
 Maybe knSocketTCP_accept(knSocketTCP* socket);
 
+/// sends <dataLength> bytes from buffer
+///@param buffer buffer for receiving data
 ///@param dataLength 0-4294967295
 ///@return Maybe<void>
-Maybe knSocketTCP_send(knSocketTCP* socket, char* data, u32 dataLength);
+Maybe knSocketTCP_send(knSocketTCP* socket, char* buffer, u32 dataLength);
 
+/// receives a package of any size
+/// (by TCP 32 bytes han be sent as 32x1byte, 4x8byte, 32x1byte or in any other combination)
 ///@param buffer buffer for receiving data
 ///@param bufferLength 0-4294967295
 ///@return Maybe<u64> received bytes amount

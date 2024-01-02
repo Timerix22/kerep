@@ -21,9 +21,9 @@ ktid_declare(knIPV4Address);
 ///@return Maybe<knIPV4Address> as Maybe<knIPV4Address>
 Maybe knIPV4Address_fromStr(char* addrStr);
 
-#define IPV4_NONE     knIPV4Address_fromBytes(255,255,255,255)
-#define IPV4_ANY      knIPV4Address_fromBytes(0,0,0,0)
-#define IPV4_LOOPBACK knIPV4Address_fromBytes(127,0,0,1)
+#define knIPV4Address_INVALID  knIPV4Address_fromBytes(255,255,255,255)
+#define knIPV4Address_ANY      knIPV4Address_fromBytes(0,0,0,0)
+#define knIPV4Address_LOOPBACK knIPV4Address_fromBytes(127,0,0,1)
 
 
 typedef struct knIPV4Endpoint {
@@ -33,6 +33,8 @@ typedef struct knIPV4Endpoint {
 ktid_declare(knIPV4Endpoint);
 
 #define knIPV4Endpoint_create(ADDR, PORT) ((knIPV4Endpoint){ADDR, PORT})
+
+#define knIPV4Endpoint_INVALID knIPV4Endpoint_create(knIPV4Address_INVALID, ~0)
 
 typedef enum knShutdownType {
     knShutdownType_Receive = 0,

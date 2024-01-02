@@ -27,22 +27,23 @@ Maybe knSocketUDP_shutdown(knSocketUDP* socket, knShutdownType direction);
 ///@return Maybe<void> error or nothing
 Maybe knSocketUDP_close(knSocketUDP* socket);
 
-///start listening at local endpoint
+/// binds socket to a local endpoint
 ///@return Maybe<void> error or nothing
-Maybe knSocketUDP_listen(knSocketUDP* socket, knIPV4Endpoint localEndp);
+Maybe knSocketUDP_bind(knSocketUDP* socket, knIPV4Endpoint localEndp);
 
-///@return Maybe<knSocketUDP*> new socket connected to client
-Maybe knSocketUDP_accept(knSocketUDP* socket);
-
-///@param dataLength 0-4294967295
-///@return Maybe<void>
-Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, u32 dataLength, knIPV4Endpoint destination);
-
+/// sends one package to destination endpoint
 ///@param buffer buffer for receiving data
-///@param bufferLength 0-4294967295
-///@return Maybe<u64> received bytes amount
-Maybe knSocketUDP_receive(knSocketUDP* socket, char* buffer, u32 bufferLength);
+///@param dataLength 0-64k
+///@param destEnd destination endpoint
+///@return Maybe<void>
+Maybe knSocketUDP_sendTo(knSocketUDP* socket, char* buffer, u32 dataLength, knIPV4Endpoint destEnd);
 
+/// receives one package from anywhere
+///@param buffer buffer for receiving data
+///@param bufferLength 0-64k
+///@param senderEnd [OUT] endpoint UPD package was sent from
+///@return Maybe<u64> received bytes amount
+Maybe knSocketUDP_receiveAny(knSocketUDP* socket, char* buffer, u32 bufferLength, knIPV4Endpoint* senderEnd);
 
 #if __cplusplus
 }

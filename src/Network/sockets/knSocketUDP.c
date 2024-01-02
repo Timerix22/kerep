@@ -1,5 +1,5 @@
-#include "../network.h"
-#include "../socket_impl_includes.h"
+#include "../network_internal.h"
+
 ktid_define(knSocketUDP);
 
 Maybe knSocketUDP_open(bool allowReuse){
@@ -28,10 +28,57 @@ Maybe knSocketUDP_close(knSocketUDP* socket){
     return MaybeNull;
 }
 
-Maybe knSocketUDP_listen(knSocketUDP* socket, knIPV4Endpoint localEndp);
+Maybe knSocketUDP_bind(knSocketUDP* socket, knIPV4Endpoint localEndp){
+    struct sockaddr_in servaddr = {
+        .sin_family = AF_INET,
+        .sin_addr.s_addr = localEndp.address.UintBigEndian,
+        .sin_port = htons(localEndp.port) /* transforms port to big endian */
+    };
+    
+    if(bind(socket->socketfd, (void*)&servaddr, sizeof(servaddr)) != 0)
+        safethrow("socket bind failed", ;);
 
-Maybe knSocketUDP_accept(knSocketUDP* socket);
+    socket->localEndpoint = localEndp;
+    return MaybeNull;
+}
 
-Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, u32 dataLength, knIPV4Endpoint destination);
+Maybe knSocketUDP_sendTo(knSocketUDP* socket, char* buffer, u32 dataLength, knIPV4Endpoint destEnd){
+    struct sockaddr_in dest_saddr = knIPV4Endpoint_toSockaddr(destEnd);
+    u32 sentCount = sendto(
+            socket->socketfd,
+            buffer,
+            dataLength, 
+            0, 
+            (struct sockaddr*)&dest_saddr,
+            sizeof(struct sockaddr_in)
+        );
+    
+    if(sentCount != dataLength) {
+        safethrow(
+            cptr_concat("can't send ", toString_u64(dataLength-sentCount,0,0),
+                " bytes out of ", toString_u64(dataLength,0,0)
+            ),
+            ;);
+    }
 
-Maybe knSocketUDP_receive(knSocketUDP* socket, char* buffer, u32 bufferLength);
+    return MaybeNull;
+}
+
+Maybe knSocketUDP_receiveAny(knSocketUDP* socket, char* buffer, u32 bufferLength, knIPV4Endpoint* senderEnd){
+    struct sockaddr_in remote_saddr = {0};
+    u64 remote_saddr_size = sizeof(remote_saddr);
+    int receivedCount = recvfrom(
+        socket->socketfd,
+        buffer,
+        bufferLength,
+        0,
+        (struct sockaddr*)&remote_saddr,
+        (void*)&remote_saddr_size
+    );
+
+    if(receivedCount == -1 || receivedCount == 0)
+        safethrow("can't receive data from socket", ;)
+
+    *senderEnd = knIPV4Endpoint_fromSockaddr(remote_saddr);
+    return SUCCESS(UniUInt64(receivedCount));
+}

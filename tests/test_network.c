@@ -57,7 +57,7 @@ void* tcp_client_connect_async(void* _data){
 
 static void test_tcp(){
     kprintf("\e[96m----------[test_network/tcp]----------\n");
-    knIPV4Endpoint serverEnd = knIPV4Endpoint_create(IPV4_LOOPBACK, 4444);
+    knIPV4Endpoint serverEnd = knIPV4Endpoint_create(knIPV4Address_LOOPBACK, 4444);
     knSocketTCP *socket_server, *clientConnection, *socket_client;
     // server
     {
@@ -65,7 +65,7 @@ static void test_tcp(){
         socket_server=m_socketS.value.VoidPtr;
         kprintf("\e[92mTCP server socket created\n");    
         
-        tryLast(knSocketTCP_listen(socket_server, serverEnd), _m81775, ;)
+        tryLast(knSocketTCP_bindAndListen(socket_server, serverEnd), _m81775, ;)
         kprintf("\e[92mserver socket is listening\n");
     }
     // client
