@@ -1,5 +1,5 @@
 #include "../network.h"
-#include "../stdSocketHeaders.h"
+#include "../socket_impl_includes.h"
 ktid_define(knSocketUDP);
 
 Maybe knSocketUDP_open(){
@@ -12,19 +12,15 @@ Maybe knSocketUDP_open(){
     return SUCCESS(UniHeapPtr(knSocketUDP, newSocket));
 }
 
-Maybe knSocketUDP_close(knSocketUDP* socket){
-    int result=
-#if KN_USE_WINSOCK
-        closesocket
-#else
-        close
-#endif
-        (socket->socketfd);
-    if(result==-1)
-        safethrow("can't close socket",;);
+Maybe knSocketUDP_shutdown(knSocketUDP* socket, knShutdownType direction){
+    try(__kn_StdSocket_shutdown(socket->socketfd, direction), _m875, ;);
+    return MaybeNull;
+}
 
+Maybe knSocketUDP_close(knSocketUDP* socket){
+    try(__kn_StdSocket_close(socket->socketfd), _m875, ;);
     socket->socketfd = 0;
-    socket->localEndpoint = knIPV4Endpoint_create(0,0);
+    socket->localEndpoint = knIPV4Endpoint_create(IPV4_NONE, -1);
     return MaybeNull;
 }
 

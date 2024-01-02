@@ -4,8 +4,7 @@
 extern "C" {
 #endif
 
-#include "../../base/base.h"
-#include "../knAddress.h"
+#include "../network_types.h"
 
 #define KNPAC_MAX_DATA_SIZE (65535-sizeof(knPackage)+sizeof(u8*))
 
@@ -74,7 +73,7 @@ Maybe knSocketChanneled_accept(knSocketChanneled* socket);
 ///@return Maybe<void>
 Maybe knSocketChanneled_send(knSocketChanneled* socket, u16 destinationIndex, u8* data, u32 dataLength);
 
-///@param buffer buffer for recieving data
+///@param buffer buffer for receiving data
 ///@param bufferLength 0-4294967295
 ///@return Maybe<u64> received bytes amount
 Maybe knSocketChanneled_receive(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);

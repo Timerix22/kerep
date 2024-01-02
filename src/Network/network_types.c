@@ -1,4 +1,4 @@
-#include "knAddress.h"
+#include "network_types.h"
 
 ktid_define(knIPV4Address);
 ktid_define(knIPV4Endpoint);
@@ -8,7 +8,7 @@ Maybe knIPV4Address_fromStr(char* addrStr){
     char* errmsg_extra="wrong char";
     u8 c;
     knIPV4Address addr;
-    addr.u32=0;
+    addr.UintBigEndian=0;
     u16 n=0;
     for(u8 i=0; i<4; ){
         c=*addrStr++;
@@ -45,5 +45,5 @@ Maybe knIPV4Address_fromStr(char* addrStr){
         }
     }
     //TODO UniStack for generic structs
-    return SUCCESS(UniUInt64(addr.u32));
+    return SUCCESS(UniUInt64(addr.UintBigEndian));
 }

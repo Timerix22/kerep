@@ -4,16 +4,21 @@
 extern "C" {
 #endif
 
-#include "knSocketUDP.h"
+#include "../network_types.h"
 
 typedef struct knSocketUDP {
     i64 socketfd;
     knIPV4Endpoint localEndpoint;
+    // TODO socket status enum
 } knSocketUDP;
 ktid_declare(knSocketUDP);
 
 ///@return Maybe<knSocketUDP*> new socket
 Maybe knSocketUDP_open();
+
+///@param direction receive/send/both
+///@return Maybe<void> error or nothing
+Maybe knSocketUDP_shutdown(knSocketUDP* socket, knShutdownType direction);
 
 ///@return Maybe<void> error or nothing
 Maybe knSocketUDP_close(knSocketUDP* socket);
@@ -29,7 +34,7 @@ Maybe knSocketUDP_accept(knSocketUDP* socket);
 ///@return Maybe<void>
 Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, u32 dataLength, knIPV4Endpoint destination);
 
-///@param buffer buffer for recieving data
+///@param buffer buffer for receiving data
 ///@param bufferLength 0-4294967295
 ///@return Maybe<u64> received bytes amount
 Maybe knSocketUDP_receive(knSocketUDP* socket, char* buffer, u32 bufferLength);

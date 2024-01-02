@@ -4,18 +4,22 @@
 extern "C" {
 #endif
 
-#include "../../base/base.h"
-#include "../knAddress.h"
+#include "../network_types.h"
 
 typedef struct knSocketTCP {
     i64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;
+    // TODO socket status enum
 } knSocketTCP;
 ktid_declare(knSocketTCP);
 
 ///@return Maybe<knSocketTCP*> new socket
 Maybe knSocketTCP_open();
+
+///@param direction receive/send/both
+///@return Maybe<void> error or nothing
+Maybe knSocketTCP_shutdown(knSocketTCP* socket, knShutdownType direction);
 
 ///@return Maybe<void> error or nothing
 Maybe knSocketTCP_close(knSocketTCP* socket);
@@ -35,7 +39,7 @@ Maybe knSocketTCP_accept(knSocketTCP* socket);
 ///@return Maybe<void>
 Maybe knSocketTCP_send(knSocketTCP* socket, char* data, u32 dataLength);
 
-///@param buffer buffer for recieving data
+///@param buffer buffer for receiving data
 ///@param bufferLength 0-4294967295
 ///@return Maybe<u64> received bytes amount
 Maybe knSocketTCP_receive(knSocketTCP* socket, char* buffer, u32 bufferLength);

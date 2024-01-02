@@ -1,5 +1,5 @@
 #include "../network.h"
-#include "../stdSocketHeaders.h"
+#include "../socket_impl_includes.h"
 
 ktid_define(knPackage);
 ktid_define(knPackageQueueElem);
