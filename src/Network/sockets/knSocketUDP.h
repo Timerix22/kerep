@@ -31,8 +31,8 @@ Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, u32 dataLength, knIPV4
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
-///@return Maybe<u64> recieved bytes amount
-Maybe knSocketUDP_recieve(knSocketUDP* socket, char* buffer, u32 bufferLength);
+///@return Maybe<u64> received bytes amount
+Maybe knSocketUDP_receive(knSocketUDP* socket, char* buffer, u32 bufferLength);
 
 
 #if __cplusplus

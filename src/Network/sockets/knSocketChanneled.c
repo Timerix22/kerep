@@ -56,4 +56,4 @@ Maybe knSocketChanneled_accept(knSocketChanneled* socket);
 
 Maybe knSocketChanneled_send(knSocketChanneled* socket, u16 destinationIndex, u8* data, u32 dataLength);
 
-Maybe knSocketChanneled_recieve(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);
+Maybe knSocketChanneled_receive(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);

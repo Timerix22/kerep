@@ -37,8 +37,8 @@ Maybe knSocketTCP_send(knSocketTCP* socket, char* data, u32 dataLength);
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
-///@return Maybe<u64> recieved bytes amount
-Maybe knSocketTCP_recieve(knSocketTCP* socket, char* buffer, u32 bufferLength);
+///@return Maybe<u64> received bytes amount
+Maybe knSocketTCP_receive(knSocketTCP* socket, char* buffer, u32 bufferLength);
 
 #if __cplusplus
 }

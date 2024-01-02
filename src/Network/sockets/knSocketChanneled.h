@@ -76,8 +76,8 @@ Maybe knSocketChanneled_send(knSocketChanneled* socket, u16 destinationIndex, u8
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
-///@return Maybe<u64> recieved bytes amount
-Maybe knSocketChanneled_recieve(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);
+///@return Maybe<u64> received bytes amount
+Maybe knSocketChanneled_receive(knSocketChanneled* socket, u16 destinationIndex, u8* buffer, u32 bufferLength);
 
 #if __cplusplus
 }

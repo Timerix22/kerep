@@ -39,8 +39,8 @@ Maybe __next_toString(kp_fmt f, void* object){
 }
 
 Maybe check_argsN(u8 n){
-    if(n%2 != 0) safethrow("kprint recieved non-even number of arguments",;);
-    if(n > 32) safethrow("kprint recieved >32 number of arguments",;);
+    if(n%2 != 0) safethrow("kprint received non-even number of arguments",;);
+    if(n > 32) safethrow("kprint received >32 number of arguments",;);
     return MaybeNull;
 }
 

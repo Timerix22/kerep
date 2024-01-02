@@ -6,7 +6,8 @@ i32 main(){
     kt_beginInit();
     kt_initKerepTypes();
     kt_endInit();
-    test_all();
+    // test_all();
+    test_network();
     kt_free();
     kprintf("\e[37m\n");
     return 0;

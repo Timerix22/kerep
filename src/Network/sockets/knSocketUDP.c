@@ -9,6 +9,7 @@ Maybe knSocketUDP_open(){
     newSocket->socketfd=socket(AF_INET, SOCK_DGRAM, 0);
     if(newSocket->socketfd==-1)
         safethrow("can't create UDP socket", free(newSocket));
+
     return SUCCESS(UniHeapPtr(knSocketUDP, newSocket));
 }
 
@@ -25,5 +26,5 @@ Maybe knSocketUDP_sendto(knSocketUDP* socket, char* data, u32 dataLength, knIPV4
 
 ///@param buffer buffer for recieving data
 ///@param bufferLength 0-4294967295
-///@return Maybe<u64> recieved bytes amount
-Maybe knSocketUDP_recieve(knSocketUDP* socket, char* buffer, u32 bufferLength);
+///@return Maybe<u64> received bytes amount
+Maybe knSocketUDP_receive(knSocketUDP* socket, char* buffer, u32 bufferLength);

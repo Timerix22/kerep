@@ -22,24 +22,33 @@ void __test_knIPV4Address_fromStr(char* addrStr, u8 a, u8 b, u8 c, u8 d){
 void test_network(){
     optime(__func__,1,({
         kprintf("\e[96m------------[test_network]------------\n");
+        tryLast(kn_tryInit(), _mjj64g, ;);
+        kprintf("\e[92m\nkerepNetwork initialized");
         
         PRINT_SIZEOF(knIPV4Address);
         PRINT_SIZEOF(knPort);
         PRINT_SIZEOF(knIPV4Endpoint);
+        PRINT_SIZEOF(knSocketTCP);
+        PRINT_SIZEOF(knSocketUDP);
         PRINT_SIZEOF(knPackage);
         PRINT_SIZEOF(knChannel);
-        PRINT_SIZEOF(knSocketTCP);
 
         test_knIPV4Address_fromStr(127,0,0,1);
         test_knIPV4Address_fromStr(34,255,45,0);
         test_knIPV4Address_fromStr(3,3,3,128);
-        /*
+        
         knSocketTCP* s;
-        tryLast(knSocket_open(knSocketProtocol_TCP), maybeS)
-            s=maybeS.value.VoidPtr;
+        tryLast(knSocketTCP_open(), maybeS, ;);
+        s=maybeS.value.VoidPtr;
         kprintf("\e[92mTCP socket created\n");
-        tryLast(knSocket_close(s);,_);
+
+        knIPV4Endpoint localEnd = knIPV4Endpoint_create(knIPV4Address_fromBytes(127,0,0,1), 4444);
+        tryLast(knSocketTCP_listen(s, localEnd), _m81775, ;)
+
+        tryLast(knSocketTCP_close(s), _m676, ;);
         kprintf("\e[92mTCP socket closed\n");
-        */
+
+        tryLast(kt_tryDispose(), _m88ag, ;);
+        kprintf("\e[92mkerepNetwork disposed\n");
     }));
 }
