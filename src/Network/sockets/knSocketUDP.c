@@ -2,13 +2,18 @@
 #include "../socket_impl_includes.h"
 ktid_define(knSocketUDP);
 
-Maybe knSocketUDP_open(){
+Maybe knSocketUDP_open(bool allowReuse){
     knSocketUDP* newSocket=malloc(sizeof(knSocketUDP));
     newSocket->localEndpoint=knIPV4Endpoint_create(knIPV4Address_fromBytes(0,0,0,0),0);
     newSocket->socketfd=socket(AF_INET, SOCK_DGRAM, 0);
     if(newSocket->socketfd==-1)
-        safethrow("can't create UDP socket", free(newSocket));
-
+        safethrow("can't create socket", free(newSocket));
+    
+    // set value of REUSEADDR socket option
+    int opt_val = allowReuse;
+    if(setsockopt(newSocket->socketfd, SOL_SOCKET, SO_REUSEADDR, (void*)&opt_val, sizeof(opt_val)) != 0)
+        safethrow("can't set socket options", free(newSocket));
+    
     return SUCCESS(UniHeapPtr(knSocketUDP, newSocket));
 }
 
@@ -19,8 +24,7 @@ Maybe knSocketUDP_shutdown(knSocketUDP* socket, knShutdownType direction){
 
 Maybe knSocketUDP_close(knSocketUDP* socket){
     try(__kn_StdSocket_close(socket->socketfd), _m875, ;);
-    socket->socketfd = 0;
-    socket->localEndpoint = knIPV4Endpoint_create(IPV4_NONE, -1);
+    free(socket);
     return MaybeNull;
 }
 

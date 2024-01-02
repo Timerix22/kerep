@@ -28,7 +28,7 @@ Maybe kt_tryDispose(){
 
 
 Maybe __kn_StdSocket_shutdown(i64 socketfd, knShutdownType direction){
-    if(shutdown(socketfd, SD_SEND) == -1)
+    if(shutdown(socketfd, (int)direction) == -1)
         safethrow("can't shutdown socket", ;);
     return MaybeNull;
 }
@@ -37,7 +37,7 @@ Maybe __kn_StdSocket_close(i64 socketfd){
 #if KN_USE_WINSOCK
     if(closesocket(socketfd) == -1)
 #else
-    if(close(socket->socketfd) == -1)
+    if(close(socketfd) == -1)
 #endif
         safethrow("can't close socket", ;);
 

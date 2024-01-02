@@ -14,13 +14,17 @@ typedef struct knSocketTCP {
 } knSocketTCP;
 ktid_declare(knSocketTCP);
 
+///@note EXAMPLE 1: socket = open(false); bind(socket, localhost:8080); close(socket); - the socket on port 8080 still unavaliable for several minutes
+///@note EXAMPLE 2: socket = open(true); bind(socket, localhost:8080); close(socket); - the socket on port 8080 can be opened again
+///@param allowReuse enables binding multiple sockets to single port. Set to TRUE on a listening socket if you want to bind it to the same port after close.
 ///@return Maybe<knSocketTCP*> new socket
-Maybe knSocketTCP_open();
+Maybe knSocketTCP_open(bool allowReuse);
 
 ///@param direction receive/send/both
 ///@return Maybe<void> error or nothing
 Maybe knSocketTCP_shutdown(knSocketTCP* socket, knShutdownType direction);
 
+/// closes file descriptor and frees socket pointer
 ///@return Maybe<void> error or nothing
 Maybe knSocketTCP_close(knSocketTCP* socket);
 
