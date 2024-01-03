@@ -4,6 +4,8 @@
 extern "C" {
 #endif
 
+#include "../base/type_system/typedef_macros.h"
+
 //         10000000 00000000  00000000 00000000
 //         ^   ^^^^
 //         |   color num

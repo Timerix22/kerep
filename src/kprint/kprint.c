@@ -89,8 +89,7 @@ void __kprint(u8 n, kp_fmt* formats, __kp_value_union* objects){
 #include <windows.h>
 #define FOREGROUND_YELLOW FOREGROUND_GREEN | FOREGROUND_RED
 
-DWORD kp_fgColor_toWin(kp_fgColor f){ 
-    //kprintf("fg: %x\n", f);
+DWORD kp_fgColor_toWin(kp_fgColor f){
     switch(f){
         case kp_fgBlack: return 0;
         case kp_fgRedD: return FOREGROUND_RED;
@@ -112,8 +111,7 @@ DWORD kp_fgColor_toWin(kp_fgColor f){
     }
 }
 
-DWORD kp_bgColor_toWin(kp_bgColor f){ 
-    //kprintf("bg: %x\n", f);
+DWORD kp_bgColor_toWin(kp_bgColor f){
     switch(f){
         case kp_bgBlack: return 0;
         case kp_bgRedD: return BACKGROUND_RED;
