@@ -7,7 +7,7 @@ kt_define(knIPV4Address, NULL, __knIPV4Address_toString);
 kt_define(knIPV4Endpoint, NULL, __knIPV4Endpoint_toString);
 
 
-Maybe knIPV4Address_fromStr(char* addrStr){
+Maybe knIPV4Address_fromStr(char* addrStr, knIPV4Address* addrVal){
     char* addrStr_src=addrStr;
     char* errmsg_extra="wrong char";
     u8 c;
@@ -48,8 +48,9 @@ Maybe knIPV4Address_fromStr(char* addrStr){
                 break;
         }
     }
-    //TODO UniStack for generic structs
-    return SUCCESS(UniUInt64(addr.UintBigEndian));
+    
+    *addrVal=addr;
+    return MaybeNull;
 }
 
 char* knIPV4Address_toString(knIPV4Address* address) {
@@ -63,6 +64,23 @@ char* knIPV4Address_toString(knIPV4Address* address) {
     free(c);
     free(d);
     return s;
+}
+
+
+Maybe knIPV4Endpoint_fromStr(char* endStr, knIPV4Endpoint* endVal){
+    i32 sep_i = cptr_seekChar(endStr, ':', 0, 48);
+    if(sep_i < 7)
+        safethrow(cptr_concat("can't find ':' in '", endStr, "'"), ;);
+    char* portBegin = endStr+sep_i+1;
+    u64 port = knPort_INVALID;
+    if(sscanf(portBegin, "%llu", &port)!=1)
+        safethrow(cptr_concat("can't recognise port number in '", portBegin, "'"), ;)
+    
+    knIPV4Address addr = knIPV4Address_INVALID;
+    try(knIPV4Address_fromStr(endStr, &addr), _m865, ;);
+
+    *endVal = knIPV4Endpoint_create(addr, port);
+    return MaybeNull;
 }
 
 char* knIPV4Endpoint_toString(knIPV4Endpoint* end) {

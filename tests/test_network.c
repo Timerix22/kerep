@@ -3,11 +3,10 @@
 #include <pthread.h>
 
 static void __test_knIPV4Address_fromStr(char* addrStr, u8 a, u8 b, u8 c, u8 d){
-    tryLast(knIPV4Address_fromStr(addrStr), maybeAddr, ;)
     knIPV4Address addr;
-    addr.UintBigEndian=(u32)maybeAddr.value.UInt64;
+    tryLast(knIPV4Address_fromStr(addrStr, &addr), maybeAddr, ;)
     kprintf("\e[92mknIPV4Address_fromStr(\e[96m%s\e[92m) -> ", addrStr);
-    if(maybeAddr.value.UInt64!=knIPV4Address_fromBytes(a,b,c,d).UintBigEndian){
+    if(addr.UintBigEndian != knIPV4Address_fromBytes(a,b,c,d).UintBigEndian){
         kprintf("\e[91m%u.%u.%u.%u\n", 
             (u8)addr.bytes[0], (u8)addr.bytes[1], (u8)addr.bytes[2], (u8)addr.bytes[3]);
         throw("knIPV4Address_fromStr returned wrong value");
