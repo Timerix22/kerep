@@ -73,7 +73,7 @@ Maybe knIPV4Endpoint_fromStr(char* endStr, knIPV4Endpoint* endVal){
         safethrow(cptr_concat("can't find ':' in '", endStr, "'"), ;);
     char* portBegin = endStr+sep_i+1;
     u64 port = knPort_INVALID;
-    if(sscanf(portBegin, "%llu", &port)!=1)
+    if(sscanf(portBegin, IFWIN("%llu", "%lu"), &port)!=1)
         safethrow(cptr_concat("can't recognise port number in '", portBegin, "'"), ;)
     
     knIPV4Address addr = knIPV4Address_INVALID;
