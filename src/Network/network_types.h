@@ -23,7 +23,7 @@ kt_declare(knIPV4Address);
 #define knIPV4Address_ANY      knIPV4Address_fromBytes(0,0,0,0)
 #define knIPV4Address_LOOPBACK knIPV4Address_fromBytes(127,0,0,1)
 #define knIPV4Address_INVALID  knIPV4Address_fromBytes(255,255,255,255)
-#define knIPV4Address_isINVALID(ADDR) (ADDR.UintBigEndian == ~0)
+#define knIPV4Address_isINVALID(ADDR) (ADDR.UintBigEndian == (u32)~0)
 
 ///@return Maybe<null>
 Maybe knIPV4Address_fromStr(char* addrStr, knIPV4Address* addrPtr);

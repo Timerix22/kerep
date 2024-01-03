@@ -71,13 +71,16 @@ Maybe knIPV4Endpoint_fromStr(char* endStr, knIPV4Endpoint* endVal){
     i32 sep_i = cptr_seekChar(endStr, ':', 0, 48);
     if(sep_i < 7)
         safethrow(cptr_concat("can't find ':' in '", endStr, "'"), ;);
-    char* portBegin = endStr+sep_i+1;
+    const char* portBegin = endStr+sep_i+1;
     u64 port = knPort_INVALID;
     if(sscanf(portBegin, IFWIN("%llu", "%lu"), &port)!=1)
         safethrow(cptr_concat("can't recognise port number in '", portBegin, "'"), ;)
     
     knIPV4Address addr = knIPV4Address_INVALID;
-    try(knIPV4Address_fromStr(endStr, &addr), _m865, ;);
+    char* addrStr = cptr_copy(endStr);
+    addrStr[sep_i] = 0; 
+    try(knIPV4Address_fromStr(addrStr, &addr), _m865, ;);
+    free(addrStr);
 
     *endVal = knIPV4Endpoint_create(addr, port);
     return MaybeNull;
