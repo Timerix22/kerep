@@ -52,10 +52,15 @@ ktid ktid_last=-1;
 ENUM(ktDescriptorsState,
     NotInitialized, Initializing, Initialized
 )
+
 ktDescriptorsState initState=NotInitialized;
 
-void kt_beginInit(){
-    kprintf("\e[94mtype descriptors initializing...\n");
+bool _printDebugMessages = false;
+
+void kt_beginInit(bool printDebugMessages){
+    _printDebugMessages = printDebugMessages;
+    if(printDebugMessages)
+        kprintf("\e[94mtype descriptors initializing...\n");
     __descriptorPointers=Autoarr_create(Pointer, 256, 256);
 }
 
@@ -65,7 +70,8 @@ void kt_endInit(){
     typeDescriptors=(ktDescriptor**)Autoarr_toArray(__descriptorPointers);
     Autoarr_free(__descriptorPointers,true);
     if(typeDescriptors==NULL) throw(ERR_NULLPTR);
-    kprintf("\e[92minitialized %u type descriptors\n", ktid_last);
+    if(_printDebugMessages)
+        kprintf("\e[92minitialized %u type descriptors\n", ktid_last);
 }
 
 void __kt_register(ktDescriptor* descriptor){
@@ -74,10 +80,9 @@ void __kt_register(ktDescriptor* descriptor){
 }
 
 ktDescriptor* ktDescriptor_get(ktid id){
-    if(id>ktid_last || id==ktid_undefined) {
-        kprintf("\ntype id: %u\n",id);
-        throw("invalid type id");
-    }
+    if(id>ktid_last || id==ktid_undefined)
+        throw(cptr_concat("invalid type id ", toString_i64(id)));
+    
     return typeDescriptors[id];
 }
 

@@ -17,7 +17,7 @@ void __kt_register(ktDescriptor* descriptor);
     __kt_register(&ktDescriptor_##TYPE##_Ptr); \
     ktid_##TYPE##_Ptr=ktid_last;
 
-void kt_beginInit();
+void kt_beginInit(bool printDebugMessages);
 void kt_endInit();
 
 /// @param id id of registered type
