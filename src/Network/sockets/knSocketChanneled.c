@@ -9,8 +9,8 @@ kt_define(knSocketChanneled, __knSocketChanneled_close, NULL);
 
 Maybe knSocketChanneled_open(){
     knSocketChanneled* newSocket=malloc(sizeof(knSocketChanneled));
-    newSocket->localEndpoint=knIPV4Endpoint_create(knIPV4Address_fromBytes(0,0,0,0),0);
-    newSocket->remoteEndpoint=newSocket->localEndpoint;
+    newSocket->localEndpoint=knIPV4Endpoint_INVALID;
+    newSocket->remoteEndpoint=knIPV4Endpoint_INVALID;
     newSocket->channels=NULL;
     newSocket->channelsAmount=0;
     return SUCCESS(UniHeapPtr(knSocketChanneled, newSocket));

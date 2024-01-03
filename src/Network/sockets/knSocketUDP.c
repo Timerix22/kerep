@@ -6,9 +6,9 @@ kt_define(knSocketUDP, __knSocketUDP_close, NULL);
 
 Maybe knSocketUDP_open(bool allowReuse){
     knSocketUDP* newSocket=malloc(sizeof(knSocketUDP));
-    newSocket->localEndpoint=knIPV4Endpoint_create(knIPV4Address_fromBytes(0,0,0,0),0);
+    newSocket->localEndpoint=knIPV4Endpoint_INVALID;
     newSocket->socketfd=socket(AF_INET, SOCK_DGRAM, 0);
-    if(newSocket->socketfd==-1)
+    if(newSocket->socketfd==-1 || newSocket->socketfd == ~0)
         safethrow("can't create socket", free(newSocket));
     
     // set value of REUSEADDR socket option

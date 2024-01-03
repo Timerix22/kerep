@@ -7,6 +7,8 @@ extern "C" {
 #include "../base/base.h"
 
 typedef u16 knPort;
+#define knPort_INVALID ((knPort)~0)
+#define knPort_isINVALID(PORT) (PORT == knPort_INVALID)
 
 typedef union knIPV4Address {
     u32 UintBigEndian;
@@ -20,9 +22,10 @@ kt_declare(knIPV4Address);
 ///@return Maybe<knIPV4Address> as Maybe<knIPV4Address>
 Maybe knIPV4Address_fromStr(char* addrStr);
 
-#define knIPV4Address_INVALID  knIPV4Address_fromBytes(255,255,255,255)
 #define knIPV4Address_ANY      knIPV4Address_fromBytes(0,0,0,0)
 #define knIPV4Address_LOOPBACK knIPV4Address_fromBytes(127,0,0,1)
+#define knIPV4Address_INVALID  knIPV4Address_fromBytes(255,255,255,255)
+#define knIPV4Address_isINVALID(ADDR) (ADDR.UintBigEndian == ~0)
 
 char* knIPV4Address_toString(knIPV4Address* address);
 
@@ -34,7 +37,8 @@ STRUCT(knIPV4Endpoint,
 
 #define knIPV4Endpoint_create(ADDR, PORT) ((knIPV4Endpoint){ADDR, PORT})
 
-#define knIPV4Endpoint_INVALID knIPV4Endpoint_create(knIPV4Address_INVALID, ~0)
+#define knIPV4Endpoint_INVALID knIPV4Endpoint_create(knIPV4Address_INVALID, knPort_INVALID)
+#define knIPV4Address_isINVALID(ENDP) (knIPV4Address_isINVALID(ENDP.address) || knPort_isINVALID(ENDP.port))
 
 char* knIPV4Endpoint_toString(knIPV4Endpoint* end);
 
