@@ -6,12 +6,11 @@ extern "C" {
 
 #include "../network_types.h"
 
-typedef struct knSocketUDP {
+STRUCT(knSocketUDP,
     i64 socketfd;
     knIPV4Endpoint localEndpoint;
-    // TODO socket status enum
-} knSocketUDP;
-ktid_declare(knSocketUDP);
+    /* TODO socket status enum */
+)
 
 ///@note EXAMPLE 1: socket = open(false); bind(socket, localhost:8080); close(socket); - the socket on port 8080 still unavaliable for several minutes
 ///@note EXAMPLE 2: socket = open(true); bind(socket, localhost:8080); close(socket); - the socket on port 8080 can be opened again

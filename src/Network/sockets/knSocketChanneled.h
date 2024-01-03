@@ -15,39 +15,33 @@ typedef enum __attribute__((__packed__)) knPacVersion {
 
 static const char knPacHeader[5]={'k','n','p','a','c'};
 
-typedef struct knPackage {
-    char header[5];             // knpac
-    knPacVersion version;       // protocol version
-    u16 data_size;           // size of data block in bytes (1-KNPAC_MAX_DATA_SIZE)
-    u32 channel_id;          // id of knChannel in socket
-    u32 package_num;         // number in sequence of sent packages
-    u64 data_hash;           // hash64 of data
-    u8* data;                // ptr to data
-} knPackage;
-ktid_declare(knPackage);
+STRUCT(knPackage,
+    char header[5];          /* knpac */
+    knPacVersion version;    /* protocol version */
+    u16 data_size;           /* size of data block in bytes (1-KNPAC_MAX_DATA_SIZE) */
+    u32 channel_id;          /* id of knChannel in socket */
+    u32 package_num;         /* number in sequence of sent packages */
+    u64 data_hash;           /* hash64 of data */
+    u8* data;                /* ptr to data */
+)
 
-typedef struct knPackageQueueElem knPackageQueueElem;
-struct knPackageQueueElem {
+STRUCT(knPackageQueueElem,
     knPackage package;
     knPackageQueueElem* previousElem;
     knPackageQueueElem* nextElem;
-};
-ktid_declare(knPackageQueueElem);
+)
 
-typedef struct knChannel {
+STRUCT(knChannel,
     knPackageQueueElem* queueStart;
-} knChannel;
-ktid_declare(knChannel);
+)
 
-typedef struct knSocketChanneled{
+STRUCT(knSocketChanneled,
     i64 socketfd;
     knIPV4Endpoint localEndpoint;
     knIPV4Endpoint remoteEndpoint;
     u16 channelsAmount;
     knChannel** channels;
-} knSocketChanneled;
-ktid_declare(knSocketChanneled);
-
+)
 
 ///@return Maybe<knSocketChanneled*> new socket
 Maybe knSocketChanneled_open();

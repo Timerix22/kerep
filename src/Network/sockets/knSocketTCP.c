@@ -1,6 +1,8 @@
 #include "../network_internal.h"
 
-ktid_define(knSocketTCP);
+void __knSocketTCP_close(void* p){ knSocketTCP_close(p); }
+
+kt_define(knSocketTCP, __knSocketTCP_close, NULL);
 
 Maybe knSocketTCP_open(bool allowReuse){
     knSocketTCP* newSocket=malloc(sizeof(knSocketTCP));

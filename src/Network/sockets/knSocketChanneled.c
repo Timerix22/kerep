@@ -1,9 +1,11 @@
 #include "../network_internal.h"
 
-ktid_define(knPackage);
-ktid_define(knPackageQueueElem);
-ktid_define(knChannel);
-ktid_define(knSocketChanneled);
+void __knSocketChanneled_close(void* p){ knSocketChanneled_close(p); }
+
+kt_define(knPackage, NULL, NULL);
+kt_define(knPackageQueueElem, NULL, NULL);
+kt_define(knChannel, NULL, NULL);
+kt_define(knSocketChanneled, __knSocketChanneled_close, NULL);
 
 Maybe knSocketChanneled_open(){
     knSocketChanneled* newSocket=malloc(sizeof(knSocketChanneled));
@@ -15,17 +17,9 @@ Maybe knSocketChanneled_open(){
 }
 
 Maybe knSocketChanneled_close(knSocketChanneled* socket){
-    int result=
-#if KN_USE_WINSOCK
-    closesocket
-#else
-    close
-#endif
-    (socket->socketfd);
-    if(result==-1) {
-        safethrow("can't close socket",;);
-    }
-    else return MaybeNull;
+    try(__kn_StdSocket_close(socket->socketfd), _m762, ;);
+    free(socket);
+    return MaybeNull;
 }
 
 knChannel* __createChannel(){

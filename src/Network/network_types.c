@@ -1,7 +1,11 @@
 #include "network_types.h"
 
-ktid_define(knIPV4Address);
-ktid_define(knIPV4Endpoint);
+char* __knIPV4Address_toString(void* p, u32 f){ return knIPV4Address_toString(p); }
+char* __knIPV4Endpoint_toString(void* p, u32 f){ return knIPV4Endpoint_toString(p); }
+
+kt_define(knIPV4Address, NULL, __knIPV4Address_toString);
+kt_define(knIPV4Endpoint, NULL, __knIPV4Endpoint_toString);
+
 
 Maybe knIPV4Address_fromStr(char* addrStr){
     char* addrStr_src=addrStr;

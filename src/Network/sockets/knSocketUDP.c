@@ -1,6 +1,8 @@
 #include "../network_internal.h"
 
-ktid_define(knSocketUDP);
+void __knSocketUDP_close(void* p){ knSocketUDP_close(p); }
+
+kt_define(knSocketUDP, __knSocketUDP_close, NULL);
 
 Maybe knSocketUDP_open(bool allowReuse){
     knSocketUDP* newSocket=malloc(sizeof(knSocketUDP));

@@ -5,6 +5,7 @@
 #include "../../Hashtable/Hashtable.h"
 #include "../../String/StringBuilder.h"
 #include "../../Filesystem/filesystem.h"
+#include "../../Network/network.h"
 #include "base_toString.h"
 
 void kt_initKerepTypes(){
@@ -82,6 +83,13 @@ void kt_initKerepTypes(){
     // StringBuilder
     kt_register(StringBuilder);
 
-    //File
+    // File
     kt_register(FileHandle);
+
+    // Network
+    kt_register(knIPV4Address);
+    kt_register(knIPV4Endpoint);
+    kt_register(knSocketTCP);
+    kt_register(knSocketUDP);
+    kt_register(knSocketChanneled);
 }

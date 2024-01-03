@@ -12,7 +12,7 @@ typedef union knIPV4Address {
     u32 UintBigEndian;
     char bytes[4];
 } knIPV4Address;
-ktid_declare(knIPV4Address);
+kt_declare(knIPV4Address);
 
 #define knIPV4Address_fromBytes(A, B, C, D) ((knIPV4Address){.bytes={A,B,C,D}})
 #define knIPV4Address_fromU32(N) ((knIPV4Address){.UintBigEndian=N})
@@ -27,11 +27,10 @@ Maybe knIPV4Address_fromStr(char* addrStr);
 char* knIPV4Address_toString(knIPV4Address* address);
 
 
-typedef struct knIPV4Endpoint {
+STRUCT(knIPV4Endpoint,
     knIPV4Address address;
     knPort port;
-} knIPV4Endpoint;
-ktid_declare(knIPV4Endpoint);
+)
 
 #define knIPV4Endpoint_create(ADDR, PORT) ((knIPV4Endpoint){ADDR, PORT})
 
