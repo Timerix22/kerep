@@ -1,7 +1,6 @@
 #include "tests.h"
 #include "../src/Network/network.h"
-#include "pthread.h"
-#include "../src/Network/socket_impl_includes.h"
+#include <pthread.h>
 
 static void __test_knIPV4Address_fromStr(char* addrStr, u8 a, u8 b, u8 c, u8 d){
     tryLast(knIPV4Address_fromStr(addrStr), maybeAddr, ;)
@@ -143,7 +142,71 @@ static void test_tcp(){
 
 void test_udp(){
     kprintf("\e[96m----------[test_network/udp]----------\n");
+    knIPV4Endpoint serverEnd = knIPV4Endpoint_create(knIPV4Address_LOOPBACK, 4444);
+    knSocketUDP *socket_server, *socket_client;
+    // server
+    {
+        tryLast(knSocketUDP_open(true), m_socketS, ;);
+        socket_server=m_socketS.value.VoidPtr;
+        kprintf("\e[92mUDP server socket created\n");    
+        
+        tryLast(knSocketUDP_bind(socket_server, serverEnd), _m81775, ;)
+        kprintf("\e[92mserver socket is bound\n");
+    }
+    // client
+    {
+        tryLast(knSocketUDP_open(false), m_socketC, ;);
+        socket_client=m_socketC.value.VoidPtr;
+        kprintf("\e[92mUDP client socket created\n");
+        
+        const char client_msg[] = "ping";
+        tryLast(knSocketUDP_sendTo(socket_client, client_msg, sizeof(client_msg), serverEnd), _mu75q2, ;);
+        kprintf("\e[92mmessage sent to server\n\e[94m");
+    }
+    // server
+    {
+        char received_client_msg[32];
+        knIPV4Endpoint clientEnd = knIPV4Endpoint_INVALID;
+        tryLast(knSocketUDP_receiveAny(socket_server, received_client_msg, sizeof(received_client_msg), &clientEnd), m_recCount, ;);
+        u64 recCount = m_recCount.value.UInt64;
+        fwrite(received_client_msg, sizeof(char), recCount, stdout);
+        fputc('\n', stdout);
+        if(!cptr_equals(received_client_msg, "ping"))
+            throw("received_client_msg != \"ping\"");
+        kprintf("\e[92mmessage received by server\n");
 
+        const char server_msg[] = "pong";
+        tryLast(knSocketUDP_sendTo(socket_server, server_msg, sizeof(server_msg), clientEnd), _mu75q2, ;);
+        char* adrstr = knIPV4Endpoint_toString(&clientEnd);
+        kprintf("\e[92mmessage sent to client (%s)\n\e[94m", adrstr);
+        free(adrstr);
+        fflush(stdout);
+    }
+    // client
+    {
+        char received_server_msg[32];
+        knIPV4Endpoint senderEnd = knIPV4Endpoint_INVALID;
+        tryLast(knSocketUDP_receiveAny(socket_client, received_server_msg, sizeof(received_server_msg), &senderEnd), m_recCount, ;);
+        u64 recCount = m_recCount.value.UInt64;
+        fwrite(received_server_msg, sizeof(char), recCount, stdout);
+        fputc('\n', stdout);
+        if(!cptr_equals(received_server_msg, "pong"))
+            throw("received_server_msg != \"pong\"");
+        char* adrstr = knIPV4Endpoint_toString(&serverEnd);
+        kprintf("\e[92mmessage received by client (%s)\n", adrstr);
+        free(adrstr);
+        fflush(stdout);
+    }
+    // server
+    {
+        tryLast(knSocketUDP_close(socket_server), _m676, ;);
+        kprintf("\e[92mUDP server socket closed\n");
+    }
+    // client
+    {
+        tryLast(knSocketUDP_close(socket_client), _m964, ;);
+        kprintf("\e[92mUDP client socket closed\n");
+    }
     fflush(stdout);
 }
 

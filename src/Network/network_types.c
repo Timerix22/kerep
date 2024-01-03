@@ -47,3 +47,25 @@ Maybe knIPV4Address_fromStr(char* addrStr){
     //TODO UniStack for generic structs
     return SUCCESS(UniUInt64(addr.UintBigEndian));
 }
+
+char* knIPV4Address_toString(knIPV4Address* address) {
+    char* a = toString_u64(address->bytes[0], 0, 0);
+    char* b = toString_u64(address->bytes[1], 0, 0);
+    char* c = toString_u64(address->bytes[2], 0, 0);
+    char* d = toString_u64(address->bytes[3], 0, 0);
+    char* s = cptr_concat(a,".",b,".",c,".",d);
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    return s;
+}
+
+char* knIPV4Endpoint_toString(knIPV4Endpoint* end) {
+    char* a = knIPV4Address_toString(&end->address);
+    char* p = toString_u64(end->port, 0, 0);
+    char* s = cptr_concat(a,":",p);
+    free(a);
+    free(p);
+    return s;
+}
