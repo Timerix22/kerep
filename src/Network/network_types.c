@@ -42,8 +42,7 @@ Maybe knIPV4Address_fromStr(char* addrStr, knIPV4Address* addrVal){
             default:
                 u32 errmsgL=cptr_length(addrStr) + 80;
                 char* errmsg=malloc(errmsgL);
-                IFMSC(sprintf_s(errmsg, errmsgL, "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra), 
-                      sprintf(  errmsg,          "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra));
+                ksprintf(errmsg, errmsgL, "wrong ip address string: %s\n   %s", addrStr_src, errmsg_extra);
                 safethrow(errmsg,;);
                 break;
         }

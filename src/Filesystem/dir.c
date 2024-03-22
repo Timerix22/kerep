@@ -36,9 +36,7 @@ Maybe dir_create(const char* path){
 #endif
     {
         char err[512];
-        IFWIN(
-            sprintf_s(err, 512, "can't create dicectory <%s>", path),
-            sprintf(err, "can't create dicectory <%s>", path));
+        ksprintf(err, 512, "can't create dicectory <%s>", path);
         safethrow(err,;);
     }
 

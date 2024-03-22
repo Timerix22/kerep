@@ -44,16 +44,10 @@ Maybe ERROR_WRONGCHAR(const char c, char* _text, char* text_first, const char* s
         if(!_c) break;
     }
     char errmsg[1024];
-    IFMSC(
-        sprintf_s(errmsg,1024, "unexpected <%c> at:\n"
-                        "  \"%s\"\n"
-                        "\\___[%s:%d] %s()", 
-                        c,errBuf, srcfile,line,funcname),
-        sprintf(errmsg, "unexpected <%c> at:\n"
-                        "  \"%s\"\n"
-                        " \\___[%s:%d] %s()", 
-                        c,errBuf, srcfile,line,funcname)
-    );
+    ksprintf(errmsg,1024, "unexpected <%c> at:\n"
+                    "  \"%s\"\n"
+                    "\\___[%s:%d] %s()", 
+                    c,errBuf, srcfile,line,funcname);
     safethrow(errmsg,;);
 }
 #define safethrow_wrongchar(C, freeMem) { freeMem; return ERROR_WRONGCHAR(C, text, shared->sh_text_first, __FILE__,__LINE__,__func__); }
@@ -192,10 +186,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             char* _c=string_extract(str);
             if(sscanf(_c, IFWIN("%llu", "%lu"), &lu)!=1){
                 char err[64];
-                IFMSC(
-                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
-                    sprintf(err,"can't parse to int: <%s>",_c)
-                );
+                ksprintf(err,64,"can't parse to int: <%s>",_c);
                 safethrow(err,free(_c));
             }
             free(_c);
@@ -208,10 +199,7 @@ Maybe __ParseValue(DeserializeSharedData* shared, string str){
             char* _c=string_extract(str);
             if(sscanf(_c, IFWIN("%lli", "%li"), &li)!=1){
                 char err[64];
-                IFMSC(
-                    sprintf_s(err,64,"can't parse to int: <%s>",_c),
-                    sprintf(err,"can't parse to int: <%s>",_c)
-                );
+                ksprintf(err,64,"can't parse to int: <%s>",_c);
                 safethrow(err,free(_c));
             }
             free(_c);

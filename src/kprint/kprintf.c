@@ -45,111 +45,211 @@ WORD unixColorToWin(u8 c){
 }
 #endif
 
-void kprintf(const char* format, ...){
+i32 kprintf(const char* format, ...){
     va_list vl;
     va_start(vl, format);
-    u32 i=0;
-    for(char c=format[i++]; c!=0; c=format[i++]){
+    i32 i = 0;
+    for(char c = format[i++]; c != 0; c = format[i++]){
         // value format specifiers
-        if(c=='%'){
-            char* argstr=NULL;
-            bool l=false;
-            c=format[i++];
+        if(c == '%'){
+            char* argstr = NULL;
+            bool l = false;
+            c = format[i++];
             format_escape_seq:
             switch (c) {
                 case 'u':
-                    argstr=toString_u64(
+                    argstr = toString_u64(
                         l ? va_arg(vl, u64) : va_arg(vl, u32)
                         ,0,0);
                     break;
                 case 'i': case 'd':
-                    argstr=toString_i64(
+                    argstr = toString_i64(
                         l ? va_arg(vl, i64) : va_arg(vl, i32)
                         );
                     break;
                 case 'f':
                     // f32 is promoted to f64 when passed through '...'
-                    argstr=toString_f64(va_arg(vl, f64), toString_float_default_precision,0,0);
+                    argstr = toString_f64(va_arg(vl, f64), toString_float_default_precision,0,0);
                     break;
                case 'l':
-                    l=true;
-                    if((c=format[i++]))
+                    l = true;
+                    if((c = format[i++]))
                         goto format_escape_seq;
                     break;
                 case 'p': ;
-                    void* phex=va_arg(vl, void*);
-                    argstr=toString_hex(&phex,getEndian()==LittleEndian,sizeof(phex),1,0);
+                    void* phex = va_arg(vl, void*);
+                    argstr = toString_hex(&phex,getEndian() == LittleEndian,sizeof(phex),1,0);
                     break;
                 case 'x': ;
                     if(l){
-                        u64 xhex=va_arg(vl, u64);
-                        argstr=toString_hex(&xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
+                        u64 xhex = va_arg(vl, u64);
+                        argstr = toString_hex(&xhex,getEndian() == LittleEndian,sizeof(xhex),0,1);
                     }
                     else {
-                        u32 xhex=va_arg(vl, u32);
-                        argstr=toString_hex(&xhex,getEndian()==LittleEndian,sizeof(xhex),0,1);
+                        u32 xhex = va_arg(vl, u32);
+                        argstr = toString_hex(&xhex,getEndian() == LittleEndian,sizeof(xhex),0,1);
                     }
                     break;
                 case 's': ;
-                    char* cptr=va_arg(vl,char*);
+                    char* cptr = va_arg(vl,char*);
                     if(!cptr)
-                        cptr="<nullstr>";
+                        cptr = "<nullstr>";
                     if(*cptr)
                         fputs(cptr, stdout);
                     break;
                 case 'c':
-                    argstr=malloc(2);
-                    argstr[0]=(char)va_arg(vl,int);
-                    argstr[1]=0;
+                    putc((char)va_arg(vl,int), stdout);
                     break;
                 default:
-                    putc('\n',stdout);
-                    putc('<',stdout);
-                    putc(c,stdout);
-                    putc('>',stdout);
-                    throw(ERR_FORMAT);
+                    fputs("<INCORRECT FORMAT STRING>", stdout);
+                    return kprintf_INVALID_FORMAT;
             }
             if(argstr){
                 fputs(argstr, stdout);
                 free(argstr);
             }
         }
+        
         // escape sequences 
-        else if(c=='\e'){
-            IFWIN(
-                /* WINDOWS */
-                ({
-                    if((c=format[i++])=='['){
-                        u8 colorUnix=0;
-                        for(i8 n=0; n<6 && c!=0; n++){
-                            c=format[i++];
-                            switch (c){
-                                case '0': case '1': case '2': case '3': case '4':
-                                case '5': case '6': case '7': case '8': case '9':
-                                    colorUnix=colorUnix*10+c-'0';
-                                    break;
-                                case 'm': ;
-                                    WORD colorWin=unixColorToWin(colorUnix);
-                                    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-                                    SetConsoleTextAttribute(hConsole, colorWin);
-                                    goto end_iteration;
-                                default:
-                                    goto end_iteration;
-                            }
+        else if(c == '\e'){
+            //////////////////// WINDOWS ////////////////////
+            #if defined(_WIN64) || defined(_WIN32)
+                if((c = format[i++]) == '['){
+                    u8 colorUnix = 0;
+                    for(i8 n = 0; n<6 && c != 0; n++){
+                        c = format[i++];
+                        switch (c){
+                            case '0': case '1': case '2': case '3': case '4':
+                            case '5': case '6': case '7': case '8': case '9':
+                                colorUnix = colorUnix*10+c-'0';
+                                break;
+                            case 'm': ;
+                                WORD colorWin = unixColorToWin(colorUnix);
+                                HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+                                SetConsoleTextAttribute(hConsole, colorWin);
+                                goto end_iteration;
+                            default:
+                                goto end_iteration;
                         }
                     }
-                }),
-                /* UNIX */
+                }
+            ////////////////////// UNIX //////////////////////
+            #else
                 putc(c,stdout);
-            );
+            #endif
         }
+        
         // common characters 
         else {
             putc(c,stdout);
         }
         #if defined(_WIN64) || defined(_WIN32)
-        end_iteration:;
+            end_iteration:;
         #endif
     }
     va_end(vl);
+    return i;
+}
+
+
+i32 ksprintf(char* buffer, i32 buffer_size, const char* format, ...){
+    if(buffer ==  NULL)
+        return kprintf_BUFFER_IS_NULL;
+
+    va_list vl;
+    va_start(vl, format);
+    i32 i = 0;
+    i32 written = 0;
+    for(char c = format[i++]; c != 0; c = format[i++]){
+        // value format specifiers
+        if(c == '%'){
+            char* argstr = NULL;
+            bool l = false;
+            c = format[i++];
+            format_escape_seq:
+            switch (c) {
+                case 'u':
+                    argstr = toString_u64(
+                        l ? va_arg(vl, u64) : va_arg(vl, u32)
+                        ,0,0);
+                    break;
+                case 'i': case 'd':
+                    argstr = toString_i64(
+                        l ? va_arg(vl, i64) : va_arg(vl, i32)
+                        );
+                    break;
+                case 'f':
+                    // f32 is promoted to f64 when passed through '...'
+                    argstr = toString_f64(va_arg(vl, f64), toString_float_default_precision,0,0);
+                    break;
+               case 'l':
+                    l = true;
+                    if((c = format[i++]))
+                        goto format_escape_seq;
+                    break;
+                case 'p': ;
+                    void* phex = va_arg(vl, void*);
+                    argstr = toString_hex(&phex,getEndian() == LittleEndian,sizeof(phex),1,0);
+                    break;
+                case 'x': ;
+                    if(l){
+                        u64 xhex = va_arg(vl, u64);
+                        argstr = toString_hex(&xhex,getEndian() == LittleEndian,sizeof(xhex),0,1);
+                    }
+                    else {
+                        u32 xhex = va_arg(vl, u32);
+                        argstr = toString_hex(&xhex,getEndian() == LittleEndian,sizeof(xhex),0,1);
+                    }
+                    break;
+                case 's': ;
+                    char* cptr = va_arg(vl,char*);
+                    if(!cptr)
+                        cptr = "<nullstr>";
+                    if(*cptr){
+                        i32 str_length = cptr_length(cptr);
+                        if(written + str_length > buffer_size)
+                            return kprintf_BUFFER_IS_TOO_SMALL;
+                        
+                        memcpy(buffer + written, cptr, str_length);
+                        written += str_length;
+                    }
+                    break;
+                case 'c': ;
+                    char ch = (char)va_arg(vl,int);
+                    if(written > buffer_size)
+                        return kprintf_BUFFER_IS_TOO_SMALL;
+                    
+                    buffer[written++] = ch;
+                    break;
+                default:
+                    const char errformat_str[] = "<INCORRECT FORMAT STRING>";
+                    if(written + (i32)sizeof(errformat_str) <= buffer_size)
+                        memcpy(buffer + written, errformat_str, sizeof(errformat_str));
+                    return kprintf_INVALID_FORMAT;
+            }
+            if(argstr){
+                i32 str_length = cptr_length(argstr);
+                if(written + str_length > buffer_size)
+                    return kprintf_BUFFER_IS_TOO_SMALL;
+                
+                memcpy(buffer + written, argstr, str_length);
+                written += str_length;
+                free(argstr);
+            }
+        }
+        
+        // common characters 
+        else {
+            if(written > buffer_size)
+                return kprintf_BUFFER_IS_TOO_SMALL;
+            
+            buffer[written++] = c;
+        }
+    }
+    
+    va_end(vl);
+    if(written > buffer_size)
+        return kprintf_BUFFER_IS_TOO_SMALL;
+    buffer[written] = '\0';
+    return i;
 }

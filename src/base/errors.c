@@ -1,7 +1,4 @@
-#include "std.h"
-#include "errors.h"
-#include "cptr.h"
-#include "../kprint/kprintf.h"
+#include "base.h"
 
 char* errname(ErrorId err){
     switch(err){
@@ -21,25 +18,19 @@ char* errname(ErrorId err){
     }
 }
 
-#define ERRMSG_MAXLENGTH 1024
+#define ERRMSG_MAXLENGTH 4096
 
 char* __genErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=ERRMSG_MAXLENGTH;
     char* result=malloc(bufsize);
-    IFMSC(
-        sprintf_s(result,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg),
-        sprintf(result,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg)
-    );
+    ksprintf(result,bufsize,"[%s:%d] %s() throwed error: %s",srcfile,line,funcname,errmsg);
     return result;
 }
 
 char* __extendErrMsg(const char* errmsg, const char* srcfile, i32 line, const char* funcname){
     size_t bufsize=cptr_length(errmsg)+ERRMSG_MAXLENGTH;
     char* result=malloc(bufsize);
-    IFMSC(
-        sprintf_s(result,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname),
-        sprintf(result,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname)
-    );
+    ksprintf(result,bufsize,"%s\n \\___[%s:%d] %s()",errmsg,srcfile,line,funcname);
     free(errmsg);
     return result;
 }

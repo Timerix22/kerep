@@ -38,10 +38,7 @@ void printrowgraph(Hashtable* ht){
 
 char* genkey(u32 i){
     char* key=malloc(12);
-    IFMSC(
-        sprintf_s(key,12,"key_%u",i),
-        sprintf(key,"key_%u",i)
-    );
+    ksprintf(key,12,"key_%u",i);
     return key;
 }
 

@@ -25,12 +25,12 @@ char* __path_concat(u32 n, ...){
     // copying content of all strings to result
     u16 k=0;
     for(; k<n-1; k++){
-        memcopy(parts[k], totality, lengths[k]);
+        memcpy(totality, parts[k], lengths[k]);
         totality+=lengths[k];
         *totality=path_sep;
         totality++;
     }
-    memcopy(parts[k], totality, lengths[k]);
+    memcpy(totality, parts[k], lengths[k]);
 
     free(parts);
     free(lengths);

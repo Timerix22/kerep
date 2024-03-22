@@ -14,6 +14,7 @@ extern "C" {
 #include <setjmp.h>
 #include <signal.h>
 #include <math.h>
+#include <string.h>
 
 typedef int8_t i8;
 typedef uint8_t u8;

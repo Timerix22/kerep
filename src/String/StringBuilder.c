@@ -139,9 +139,6 @@ void StringBuilder_append_u64(StringBuilder* b, u64 a){
 void StringBuilder_append_f64(StringBuilder* b, f64 a){
     try_complete_buf(b);
     char buf[32];
-    IFMSC(
-        sprintf_s(buf,32,"%lf",a),
-        sprintf(buf,"%lf",a)
-    );
+    ksprintf(buf,32,"%lf",a);
     curr_buf_add_string(b, (string){.ptr=buf, .length=cptr_length(buf)});
 }

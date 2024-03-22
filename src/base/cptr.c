@@ -131,13 +131,6 @@ i32 cptr_seekCharReverse(const char* src, char fragment, u32 startIndex, u32 see
     return -1;
 }
 
-void memcopy(void* from, void* to, u32 size){
-    if(from==NULL || to==NULL)
-        throw(ERR_NULLPTR);
-    for(u32 i=0; i<size; i++)
-        ((char*)to)[i]=((char*)from)[i];
-}
-
 char* __cptr_concat(u32 n, ...){
     char** strs=(char**)malloc(n*sizeof(char*));
     u32* lengths=malloc(n*sizeof(u32));
@@ -162,7 +155,7 @@ char* __cptr_concat(u32 n, ...){
     
     // copying content of all strings to result
     for(u16 k=0; k<n; k++){
-        memcopy(strs[k], totality, lengths[k]);
+        memcpy(totality, strs[k], lengths[k]);
         totality+=lengths[k];
     }
     

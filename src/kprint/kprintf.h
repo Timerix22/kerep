@@ -6,8 +6,17 @@ extern "C" {
 
 #include "../base/type_system/base_toString.h"
 
-// cross-platform printf analog
-void kprintf(const char* format, ...);
+#define kprintf_INVALID_FORMAT -1
+#define kprintf_BUFFER_IS_NULL -2
+#define kprintf_BUFFER_IS_TOO_SMALL -3
+
+/// cross-platform printf analog
+///@return number of processed format string characters or error code
+i32 kprintf(const char* format, ...);
+
+/// @return number of processed format string characters or error code
+i32 ksprintf(char* buffer, i32 buffer_size, const char* format, ...);
+
 
 // printf format terminal color sequence
 #define _PRINTF_COLOR(N) "\e["#N"m"
