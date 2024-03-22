@@ -45,13 +45,17 @@ WORD unixColorToWin(u8 c){
 }
 #endif
 
-i32 kprintf(const char* format, ...){
+i32 _kprintf(const char* format, const i32 args_count, ...){
     va_list vl;
-    va_start(vl, format);
+    va_start(vl, args_count);
     i32 i = 0;
+    i32 args_left = args_count;
     for(char c = format[i++]; c != 0; c = format[i++]){
         // value format specifiers
         if(c == '%'){
+            if(args_left-- == 0)
+                return kprintf_NOT_ENOUGH_ARGUMENTS;
+                    
             char* argstr = NULL;
             bool l = false;
             c = format[i++];
@@ -152,17 +156,21 @@ i32 kprintf(const char* format, ...){
 }
 
 
-i32 ksprintf(char* buffer, i32 buffer_size, const char* format, ...){
+i32 _ksprintf(char* buffer, i32 buffer_size, const char* format, const i32 args_count, ...){
     if(buffer ==  NULL)
         return kprintf_BUFFER_IS_NULL;
 
     va_list vl;
-    va_start(vl, format);
+    va_start(vl, args_count);
     i32 i = 0;
     i32 written = 0;
+    i32 args_left = args_count;
     for(char c = format[i++]; c != 0; c = format[i++]){
         // value format specifiers
         if(c == '%'){
+            if(args_left-- == 0)
+                return kprintf_NOT_ENOUGH_ARGUMENTS;
+            
             char* argstr = NULL;
             bool l = false;
             c = format[i++];

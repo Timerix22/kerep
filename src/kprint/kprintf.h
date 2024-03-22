@@ -7,15 +7,18 @@ extern "C" {
 #include "../base/type_system/base_toString.h"
 
 #define kprintf_INVALID_FORMAT -1
-#define kprintf_BUFFER_IS_NULL -2
+#define kprintf_NOT_ENOUGH_ARGUMENTS -2
 #define kprintf_BUFFER_IS_TOO_SMALL -3
+#define kprintf_BUFFER_IS_NULL -4
 
 /// cross-platform printf analog
 ///@return number of processed format string characters or error code
-i32 kprintf(const char* format, ...);
+i32 _kprintf(const char* format, const i32 args_count, ...);
+#define kprintf(FORMAT, ARGS... ) _kprintf(FORMAT, count_args(ARGS) ,##ARGS)
 
 /// @return number of processed format string characters or error code
-i32 ksprintf(char* buffer, i32 buffer_size, const char* format, ...);
+i32 _ksprintf(char* buffer, i32 buffer_size, const char* format, const i32 args_count, ...);
+#define ksprintf(BUFFER, BUFFER_SIZE, FORMAT, ARGS... ) _ksprintf(BUFFER, BUFFER_SIZE, FORMAT, count_args(ARGS) ,##ARGS)
 
 
 // printf format terminal color sequence
